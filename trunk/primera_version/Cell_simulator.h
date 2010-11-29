@@ -22,6 +22,7 @@ public:
         return IFNgamma_d;
     };
 
+
     /// maximum number of cells tolerated by the media
     /// proliferation occurs when the number of cells is lower than this number
     double& Max_num_cells()
@@ -52,15 +53,7 @@ public:
     {
         return AG_d;
     };
-    /// 4-1BB blocking antibody concentration
-      double& Ab()
-    {
-        return Ab_d;
-    };
-    const double& Ab()const
-    {
-        return Ab_d;
-    };
+
 
     void update(double time_step,const APC_cells& APC_,const LT_cells& LT_);
 
