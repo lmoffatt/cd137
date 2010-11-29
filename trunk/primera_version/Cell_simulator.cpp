@@ -35,18 +35,18 @@ void Cell_simulator::ask_parameters()
 
     double init_num_APC_cells;
     std::cout<<"enter the intialnumber of APC cells\n";
-    std::cout<<"defaut is 1e5, enter 0 to keep this value\n";
+    std::cout<<"defaut is 1e5, enter -1 to keep this value\n";
     std::cin>>init_num_APC_cells;
-    if (init_num_APC_cells==0)
+    if (init_num_APC_cells==-1)
         init_num_APC_cells=1e5;
 
 
     double AG;
     std::cout<<"enter the applied concentration of AG\n";
-    std::cout<<"default is 10 ug, enter -1 to keep this value\n";
+    std::cout<<"default is 5 ug, enter -1 to keep this value\n";
     std::cin>>AG;
     if (AG==-1)
-        AG=10;
+        AG=5;
 
 
 
@@ -123,13 +123,33 @@ void Cell_simulator::ask_parameters()
    // std::cout<<"of cells with free receptor  default value is 500 pg per hour per 1e5 cells\n";
    // std::cin>>LT_IFN_free_prod_rate_;
     //if (LT_IFN_free_prod_rate_==0)
-    LT_IFN_free_prod_rate_=100.0/1e5;
+    LT_IFN_free_prod_rate_=101.0/1e5;
 
 
     //std::cout<<"of cells with bound receptor,  default value is 1000 pg per hour per 1e5 cells \n";
     //std::cin>>LT_IFN_bound_prod_rate_;
     //if (LT_IFN_bound_prod_rate_==0)
     LT_IFN_bound_prod_rate_=200.0/1e5;
+
+    double LT_TNF_no_rec_prod_rate_;
+    double LT_TNF_free_prod_rate_;
+    double LT_TNF_bound_prod_rate_;
+  //  std::cout<<"\n\n enter the following IFN production rates in LT cells\n";
+   // std::cout<<"of cells without receptor default value is 0.001 pg per hour per 1e5 cells \n";
+   // std::cin>>LT_IFN_no_rec_prod_rate_;
+   // if (LT_IFN_no_rec_prod_rate_==0)
+   LT_TNF_no_rec_prod_rate_=0.001/1e5;
+
+   // std::cout<<"of cells with free receptor  default value is 500 pg per hour per 1e5 cells\n";
+   // std::cin>>LT_IFN_free_prod_rate_;
+    //if (LT_IFN_free_prod_rate_==0)
+    LT_TNF_free_prod_rate_=10.0/1e5;
+
+
+    //std::cout<<"of cells with bound receptor,  default value is 1000 pg per hour per 1e5 cells \n";
+    //std::cin>>LT_IFN_bound_prod_rate_;
+    //if (LT_IFN_bound_prod_rate_==0)
+    LT_TNF_bound_prod_rate_=20.0/1e5;
 
     double APC_IFN_free_prod_rate_,
     APC_IFN_AG_prod_rate_,
@@ -150,7 +170,24 @@ void Cell_simulator::ask_parameters()
     //if (APC_IFN_bound_prod_rate_==0)
     APC_IFN_bound_prod_rate_=10.0/1e5;
 
+double APC_TNF_free_prod_rate_,
+    APC_TNF_AG_prod_rate_,
+    APC_TNF_bound_prod_rate_;
+    //std::cout<<"\n\n enter the following IFN production rates in LT cells\n";
+    //std::cout<<"of cells without receptor or free receptor default value is 0.5 pg per hour per 1e5 cells \n";
+    //std::cin>>APC_IFN_free_prod_rate_;
+    //if (APC_IFN_free_prod_rate_==0)
+    APC_TNF_free_prod_rate_=5/1e5;
 
+    //std::cout<<"of cells with the internalized antigen  default value is 5 pg per hour per 1e5 cells  \n";
+    //std::cin>>APC_IFN_AG_prod_rate_;
+    //if (APC_IFN_AG_prod_rate_==0)
+    APC_TNF_AG_prod_rate_=570/1e5;
+
+    //std::cout<<"of cells with bound receptor  default value is 10 pg per hour per 1e5 cells  \n";
+    //std::cin>>APC_IFN_bound_prod_rate_;
+    //if (APC_IFN_bound_prod_rate_==0)
+    APC_TNF_bound_prod_rate_=1110/1e5;
 
 
 
@@ -163,7 +200,10 @@ void Cell_simulator::ask_parameters()
                   free_to_bound_rate_per_LT_,
                   APC_IFN_free_prod_rate_,
                   APC_IFN_AG_prod_rate_,
-                  APC_IFN_bound_prod_rate_);
+                  APC_IFN_bound_prod_rate_,
+                  APC_TNF_free_prod_rate_,
+                  APC_TNF_AG_prod_rate_,
+                  APC_TNF_bound_prod_rate_);
 
     LT=LT_cells( init_num_LT_cells,
                  num_specific,
@@ -173,6 +213,9 @@ void Cell_simulator::ask_parameters()
                  LT_IFN_no_rec_prod_rate_,
                  LT_IFN_free_prod_rate_,
                  LT_IFN_bound_prod_rate_,
+                 LT_TNF_no_rec_prod_rate_,
+                 LT_TNF_free_prod_rate_,
+                 LT_TNF_bound_prod_rate_,
                  no_to_free_rate_per_APC_,
                  free_to_bound_rate_per_APC_);
 
@@ -182,17 +225,20 @@ void Cell_simulator::run()
     std::ofstream f;
     f.open(filename.c_str());
     trun_d=0;
-    std::cout<<"trun_d"<<"\t"<<"m.IFNgamma()"<<"\t"<<"LT.num()"<<"\t";
+    std::cout<<"trun_d"<<"\t"<<"m.IFNgamma()"<<"\t"<<"m.TNF()"<<"\t"<<"LT.num()"<<"\t";
     std::cout<<"no receptor"<<"\t";
     std::cout<<"free "<<"\t";
     std::cout<<"bound"<<"\t";
     std::cout<<"APC"<<"\n";
     std::cout<<"AG"<<"\n";
     std::cout<<"bound"<<"\n";
-    std::cout<<"APC.IFNgamma_production_rate"<<"\n"
-;    std::cout<<"LT.IFNgamma_production_rate"<<"\n"
+    std::cout<<"APC.IFNgamma_production_rate"<<"\n";
+    std::cout<<"LT.IFNgamma_production_rate"<<"\n";
+    std::cout<<"APC.TNF_production_rate"<<"\n";
+    std::cout<<"LT.TNF_production_rate"<<"\n"
+
 ,
-    f<<"trun_d"<<" , "<<"m.IFNamma()"<<" , "<<"LT.num()"<<" , ";
+    f<<"trun_d"<<" , "<<"m.IFNamma()"<<" , "<<"m.TNF"<<" , "<<"LT.num()"<<" , ";
     f<<"no receptor"<<",";
     f<<"free "<<" , ";
     f<<"bound"<<" , ";
@@ -201,13 +247,15 @@ void Cell_simulator::run()
     f<<"bound"<<" , ";
     f<<"APC.IFNgamma_production_rate"<<" , ";
     f<<"LT.IFNgamma_production_rate"<<" , ";
+    f<<"APC.TNF_production_rate"<<" , ";
+    f<<"LT.TNF_production_rate"<<" , ";
     f<<"\n";
 
     while (trun_d<this->sim_duration_d)
     {
         if (trun_d-floor(trun_d)<time_step_d)
         {
-            std::cout<<trun_d<<"\t"<<m.IFNgamma()<<"\t"<<LT.num()<<"\t";
+            std::cout<<trun_d<<"\t"<<m.IFNgamma()<<m.TNF()<<"\t"<<LT.num()<<"\t";
             std::cout<<LT.num_cells_not_expressing_receptor()<<"\t";
             std::cout<<LT.num_cells_expressing_receptor_and_free()<<"\t";
             std::cout<<LT.num_cells_expressing_receptor_and_bound()<<"\t";
@@ -215,9 +263,11 @@ void Cell_simulator::run()
             std::cout<<APC.num_AG()<<"\t";
             std::cout<<APC.num_bound()<<"\t";
             std::cout<<APC.IFNgamma_production_rate()<<"\t";
-            std::cout<<LT.IFNgamma_production_rate()<<"\n";
+            std::cout<<LT.IFNgamma_production_rate()<<"\t";
+            std::cout<<APC.TNF_production_rate()<<"\t";
+            std::cout<<LT.TNF_production_rate()<<"\n";
 
-       f<<trun_d<<" , "<<m.IFNgamma()<<" , "<<LT.num()<<" , ";
+       f<<trun_d<<" , "<<m.IFNgamma()<<" , "<<m.TNF()<<" , "<<LT.num()<<" , ";
             f<<LT.num_cells_not_expressing_receptor()<<" , ";
             f<<LT.num_cells_expressing_receptor_and_free()<<" , ";
             f<<LT.num_cells_expressing_receptor_and_bound()<<" , ";
@@ -225,7 +275,9 @@ void Cell_simulator::run()
             f<<APC.num_AG()<<",";
             f<<APC.num_bound()<<",";
             f<<APC.IFNgamma_production_rate()<<",";
-            f<<LT.IFNgamma_production_rate()<<"\n";
+            f<<LT.IFNgamma_production_rate()<<",";
+            f<<APC.TNF_production_rate()<<",";
+            f<<LT.TNF_production_rate()<<"\n";
 
         };
         APC.update(time_step_d,m,LT);
@@ -249,6 +301,10 @@ void Media::update(double time_step,const APC_cells& APC_,const LT_cells& LT_)
     /// IFN is increased by the production rate of each population;
     IFNgamma_d+=LT_.IFNgamma_production_rate()*time_step+APC_.IFNgamma_production_rate()*time_step;
     num_cells_d=APC_.num()+LT_.num();
+    /// TNF is increased by the production rate of each population;
+    TNF_d+=LT_.TNF_production_rate()*time_step+APC_.TNF_production_rate()*time_step;
+    num_cells_d=APC_.num()+LT_.num();
+
 };
 
 
@@ -268,7 +324,7 @@ void APC_cells::update(double time_step,const Media& m, const LT_cells& LT)
                 (proliferation_ratio*max_proliferation_rate_d- no_to_free_rate_per_AG_d*m.AG());
 
 
-    /** the cells that have internalize the AG proliferate in the same wat than the free
+    /** the cells that have internalize the AG proliferate in the same way than the free
     they grow also by the free cells that internalize the AG
     they shrink by the cells that interact with the LT cells
 

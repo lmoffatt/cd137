@@ -22,6 +22,16 @@ public:
         return IFNgamma_d;
     };
 
+ /// Tumor Necrosis Factor alpha concentration in the media
+    double& TNF()
+    {
+        return TNF_d;
+    };
+    const double& TNF()const
+    {
+        return TNF_d;
+    };
+
 
     /// maximum number of cells tolerated by the media
     /// proliferation occurs when the number of cells is lower than this number
@@ -57,8 +67,9 @@ public:
 
     void update(double time_step,const APC_cells& APC_,const LT_cells& LT_);
 
-    Media(double& max_num_cells_,double init_num_cells_ ,double AG_=0,double IFNgamma_init=0):
+    Media(double& max_num_cells_,double init_num_cells_ ,double AG_=0,double IFNgamma_init=0, double TNF_init=0):
         IFNgamma_d(IFNgamma_init),
+        TNF_d(TNF_init),
         max_num_cells_d(max_num_cells_),
         num_cells_d(init_num_cells_),
         AG_d(AG_) {}
@@ -69,10 +80,10 @@ public:
 
 private:
     double IFNgamma_d;
+    double TNF_d;
     double max_num_cells_d;
     double num_cells_d;
     double AG_d;
-    double Ab_d;
 
 };
 
@@ -97,6 +108,16 @@ public:
         IFN_bound_prod_rate_d*num_LT_bound_d;
         return sum;
     };
+
+      /// total production of Tumor Necrosis Factor
+    double TNF_production_rate() const{
+
+        double sum=TNF_free_prod_rate_d*num_free_d+
+        TNF_AG_prod_rate_d*num_AG_d+
+        TNF_bound_prod_rate_d*num_LT_bound_d;
+        return sum;
+    };
+
 
     /// number of cells that have bound the antigen
     double& num_AG()
@@ -124,7 +145,10 @@ public:
               double free_to_bound_rate_per_LT,
               double IFN_free_prod_rate_,
               double IFN_AG_prod_rate_,
-              double IFN_bound_prod_rate_):
+              double IFN_bound_prod_rate_,
+              double TNF_free_prod_rate_,
+              double TNF_AG_prod_rate_,
+              double TNF_bound_prod_rate_):
 
         num_free_d(APC_init),
         num_AG_d(0),
@@ -132,6 +156,9 @@ public:
         IFN_free_prod_rate_d(IFN_free_prod_rate_),
         IFN_AG_prod_rate_d(IFN_AG_prod_rate_),
         IFN_bound_prod_rate_d(IFN_bound_prod_rate_),
+        TNF_free_prod_rate_d(TNF_free_prod_rate_),
+        TNF_AG_prod_rate_d(TNF_AG_prod_rate_),
+        TNF_bound_prod_rate_d(TNF_bound_prod_rate_),
         max_proliferation_rate_d(max_proliferation_rate_),
         no_to_free_rate_per_AG_d(no_to_free_rate_per_AG_),
         free_to_bound_rate_per_LT_d (free_to_bound_rate_per_LT) {};
@@ -151,14 +178,14 @@ private:
     /// number of cells that have the receptor bound to its ligand
     double num_LT_bound_d;
 
-    /// number of cells that have the receptor bound to the blocking antibody
-    double num_Ab_d;
 
     double IFN_free_prod_rate_d;
     double IFN_AG_prod_rate_d;
     double IFN_bound_prod_rate_d;
 
-
+    double TNF_free_prod_rate_d;
+    double TNF_AG_prod_rate_d;
+    double TNF_bound_prod_rate_d;
 
 
 /// those are parameters that do not vary
@@ -190,6 +217,13 @@ public:
                num_AGsp_bound_receptor_d*IFN_bound_prod_rate_d;
     };
 
+  /// total production of Tumor Necrosis alpha
+    double TNF_production_rate() const
+    {
+        return (num_non_AGsp_d+num_AGsp_no_receptor_d)*TNF_no_rec_prod_rate_d+
+               num_AGsp_free_receptor_d*TNF_free_prod_rate_d+
+               num_AGsp_bound_receptor_d*TNF_bound_prod_rate_d;
+    };
 ///number of non specific cells
    double num_cells_not_AG_specific()const
     {
@@ -235,6 +269,9 @@ public:
              double IFN_no_rec_prod_rate_,
              double IFN_free_prod_rate_,
              double IFN_bound_prod_rate_,
+             double TNF_no_rec_prod_rate_,
+             double TNF_free_prod_rate_,
+             double TNF_bound_prod_rate_,
              double no_to_free_rate_per_APC_,
              double free_to_bound_rate_per_APC_):
         num_non_AGsp_d(num_LT_init_),
@@ -244,6 +281,9 @@ public:
         IFN_free_prod_rate_d(IFN_free_prod_rate_),
         IFN_no_rec_prod_rate_d(IFN_no_rec_prod_rate_),
         IFN_bound_prod_rate_d(IFN_bound_prod_rate_),
+        TNF_free_prod_rate_d(TNF_free_prod_rate_),
+        TNF_no_rec_prod_rate_d(TNF_no_rec_prod_rate_),
+        TNF_bound_prod_rate_d(TNF_bound_prod_rate_),
         max_no_receptor_prol_rate_d(max_no_receptor_prol_rate_),
         max_free_prol_rate_d(max_free_prol_rate_),
         max_bound_prol_rate_d(max_bound_prol_rate_),
@@ -278,6 +318,11 @@ private:
     double IFN_no_rec_prod_rate_d;
     double IFN_free_prod_rate_d;
     double IFN_bound_prod_rate_d;
+
+///TNF production rates
+     double TNF_no_rec_prod_rate_d;
+     double TNF_free_prod_rate_d;
+     double TNF_bound_prod_rate_d;
 
 ///proliferation rates
 double max_no_receptor_prol_rate_d;
