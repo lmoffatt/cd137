@@ -6,29 +6,30 @@
 
 void Cell_simulator::ask_parameters()
 {
-    std::cout<<"enter the filename where you want to store the values";
-    std::cin>>this->filename;
+   // std::cout<<"enter the filename where you want to store the values";
+   // std::cin>>this->filename;
+   filename="out.txt";
 
     double max_num_cells_;
-    std::cout<<"enter the number of cells that the media supports\n";
-    std::cout<<"defaut is 2e6, enter 0 to keep this value\n";
-    std::cin>>max_num_cells_;
-    if (max_num_cells_==0)
+  // std::cout<<"enter the number of cells that the media supports\n";
+  //  std::cout<<"defaut is 2e6, enter 0 to keep this value\n";
+  //  std::cin>>max_num_cells_;
+  //  if (max_num_cells_==0)
         max_num_cells_=2e6;
 
 
     double init_num_LT_cells;
     std::cout<<"enter the intialnumber of LT cells\n";
-    std::cout<<"defaut is 9e5, enter 0 to keep this value\n";
+    std::cout<<"defaut is 9e5, enter -1 to keep this value\n";
     std::cin>>init_num_LT_cells;
-    if (init_num_LT_cells==0)
+    if (init_num_LT_cells==-1)
         init_num_LT_cells=9e5;
 
     double num_specific;
     std::cout<<"enter the intial number of LT cells specific for the antigen \n";
-    std::cout<<"defaut is 1000, enter 0 to keep this value\n";
-    std::cin>>num_specific;
-    if (num_specific==0)
+    std::cout<<"defaut is 1000, enter -1  to keep this value\n";
+   std::cin>>num_specific;
+   if (num_specific==-1)
         num_specific=1000;
 
 
@@ -47,95 +48,107 @@ void Cell_simulator::ask_parameters()
     if (AG==-1)
         AG=10;
 
-  double Ab;
-    std::cout<<"enter the applied concentration of Ab\n";
-    std::cout<<"default is 5 ug, enter -1 to keep this value\n";
-    std::cin>>AG;
-    if (Ab==-1)
-        Ab=5;
-
-    std::cout<<"enter the duration of the simulation in hours\n";
-    std::cout<<"default is 120, enter 0 to keep this value\n";
-    std::cin>>this->sim_duration_d;
-    if (sim_duration_d==0) sim_duration_d=120;
 
 
-    std::cout<<"enter the duration of the time step of the simulation in hours\n";
-    std::cout<<"defaut is 0.01, enter 0 to keep this value\n";
-    std::cin>>this->time_step_d;
-    if(time_step_d==0) time_step_d=0.01;
+    //std::cout<<"enter the duration of the simulation in hours\n";
+    //std::cout<<"default is 120, enter 0 to keep this value\n";
+    //std::cin>>this->sim_duration_d;
+    //if (sim_duration_d==0)
+      sim_duration_d=120;
 
-    double max_proliferation_rate_, max_no_receptor_prol_rate_,
-    max_free_prol_rate_,
-    max_bound_prol_rate_;
-    std::cout<<"enter the following proliferation rates\n";
-    std::cout<<"of APC cells default value =1/240 h\n";
-    std::cin>>max_proliferation_rate_;
-    if (max_proliferation_rate_==0) max_proliferation_rate_=1.0/240;
-    std::cout<<"of LT cells that do not express the receptor, default value  1/96 1/h \n";
-    std::cin>>max_no_receptor_prol_rate_;
-    if (max_no_receptor_prol_rate_==0) max_no_receptor_prol_rate_=1.0/96;
 
-    std::cout<<"of LT cells that do express the receptor and it it is free, default value 1/2 \n";
-    std::cin>>max_free_prol_rate_;
-    if (max_free_prol_rate_==0)  max_free_prol_rate_=1.0/2;
+    //std::cout<<"enter the duration of the time step of the simulation in hours\n";
+    //std::cout<<"defaut is 0.01, enter 0 to keep this value\n";
+    //std::cin>>this->time_step_d;
+    //if(time_step_d==0)
+    time_step_d=0.01;
 
-    std::cout<<"of LT cells where the receptor have been bound, default value 1/1.2 \n";
-    std::cin>>max_bound_prol_rate_;
-    if (max_bound_prol_rate_==0) max_bound_prol_rate_=1.0/1.2;
+    double max_proliferation_rate_, max_no_receptor_prol_rate_;
+
+    double max_free_prol_rate_;
+    double max_bound_prol_rate_;
+    //std::cout<<"enter the following proliferation rates\n";
+   // std::cout<<"of APC cells default value =1/240 h\n";
+   // std::cin>>max_proliferation_rate_;
+   // if (max_proliferation_rate_==0)
+   max_proliferation_rate_=1.0/240;
+    //std::cout<<"of LT cells that do not express the receptor, default value  1/96 1/h \n";
+    //std::cin>>max_no_receptor_prol_rate_;
+    //if (max_no_receptor_prol_rate_==0)
+    max_no_receptor_prol_rate_=1.0/96;
+
+    //std::cout<<"of LT cells that do express the receptor and it it is free, default value 1/2 \n";
+    //std::cin>>max_free_prol_rate_;
+   // if (max_free_prol_rate_==0)
+   max_free_prol_rate_=1.0/2;
+
+    //std::cout<<"of LT cells where the receptor have been bound, default value 1/1.2 \n";
+   // std::cin>>max_bound_prol_rate_;
+   // if (max_bound_prol_rate_==0)
+   max_bound_prol_rate_=1.0/1.2;
 
     double no_to_free_rate_per_AG_ ,free_to_bound_rate_per_LT_;
-    std::cout<<"\n\n enter the following conversion rates in APC cells\n";
-    std::cout<<"of Antigen internalization default it needs 30 h for 1 ug/ml of antigen \n";
-    std::cin>>no_to_free_rate_per_AG_;
-    if (no_to_free_rate_per_AG_==0) no_to_free_rate_per_AG_=1.0/30;
+   // std::cout<<"\n\n enter the following conversion rates in APC cells\n";
+   // std::cout<<"of Antigen internalization default it needs 30 h for 1 ug/ml of antigen \n";
+//    std::cin>>no_to_free_rate_per_AG_;
+   // if (no_to_free_rate_per_AG_==0)
+   no_to_free_rate_per_AG_=1.0/30;
 
-    std::cout<<"of lingand receptor binding default value it needs 1 h for a population of 100e3 \n";
-    std::cin>>free_to_bound_rate_per_LT_;
-    if (free_to_bound_rate_per_LT_==0) free_to_bound_rate_per_LT_=1.0/1e5;
+   // std::cout<<"of lingand receptor binding default value it needs 1 h for a population of 100e3 \n";
+   // std::cin>>free_to_bound_rate_per_LT_;
+   // if (free_to_bound_rate_per_LT_==0)
+    free_to_bound_rate_per_LT_=1.0/1e5;
 
     double no_to_free_rate_per_APC_;
     double free_to_bound_rate_per_APC_;
-    std::cout<<"\n\n enter the following conversion rates in LT cells\n";
-    std::cout<<"of receptor expression per APC cell default value is 6 hours for 1e5 cells\n";
-    std::cin>>no_to_free_rate_per_APC_;
-    if (no_to_free_rate_per_APC_==0) no_to_free_rate_per_APC_=1.0/6e5;
-    std::cout<<"of lingand receptor binding per APC cell  default value is 1h for a population of 1e5 cells\n";
-    std::cin>>free_to_bound_rate_per_APC_;
-    if (free_to_bound_rate_per_APC_==0) free_to_bound_rate_per_APC_=1.0/1e5;
+    //std::cout<<"\n\n enter the following conversion rates in LT cells\n";
+    //std::cout<<"of receptor expression per APC cell default value is 6 hours for 1e5 cells\n";
+    //std::cin>>no_to_free_rate_per_APC_;
+   // if (no_to_free_rate_per_APC_==0)
+    no_to_free_rate_per_APC_=1.0/6e5;
+    //std::cout<<"of lingand receptor binding per APC cell  default value is 1h for a population of 1e5 cells\n";
+    //std::cin>>free_to_bound_rate_per_APC_;
+   // if (free_to_bound_rate_per_APC_==0)
+   free_to_bound_rate_per_APC_=1.0/1e5;
 
     double LT_IFN_no_rec_prod_rate_;
     double LT_IFN_free_prod_rate_;
     double LT_IFN_bound_prod_rate_;
-    std::cout<<"\n\n enter the following IFN production rates in LT cells\n";
-    std::cout<<"of cells without receptor default value is 0.001 pg per hour per 1e5 cells \n";
-    std::cin>>LT_IFN_no_rec_prod_rate_;
-    if (LT_IFN_no_rec_prod_rate_==0) LT_IFN_no_rec_prod_rate_=0.001/1e5;
+  //  std::cout<<"\n\n enter the following IFN production rates in LT cells\n";
+   // std::cout<<"of cells without receptor default value is 0.001 pg per hour per 1e5 cells \n";
+   // std::cin>>LT_IFN_no_rec_prod_rate_;
+   // if (LT_IFN_no_rec_prod_rate_==0)
+   LT_IFN_no_rec_prod_rate_=0.001/1e5;
 
-    std::cout<<"of cells with free receptor  default value is 500 pg per hour per 1e5 cells\n";
-    std::cin>>LT_IFN_free_prod_rate_;
-    if (LT_IFN_free_prod_rate_==0)  LT_IFN_free_prod_rate_=100.0/1e5;
+   // std::cout<<"of cells with free receptor  default value is 500 pg per hour per 1e5 cells\n";
+   // std::cin>>LT_IFN_free_prod_rate_;
+    //if (LT_IFN_free_prod_rate_==0)
+    LT_IFN_free_prod_rate_=100.0/1e5;
 
 
-    std::cout<<"of cells with bound receptor,  default value is 1000 pg per hour per 1e5 cells \n";
-    std::cin>>LT_IFN_bound_prod_rate_;
-    if (LT_IFN_bound_prod_rate_==0) LT_IFN_bound_prod_rate_=200.0/1e5;
+    //std::cout<<"of cells with bound receptor,  default value is 1000 pg per hour per 1e5 cells \n";
+    //std::cin>>LT_IFN_bound_prod_rate_;
+    //if (LT_IFN_bound_prod_rate_==0)
+    LT_IFN_bound_prod_rate_=200.0/1e5;
 
     double APC_IFN_free_prod_rate_,
     APC_IFN_AG_prod_rate_,
     APC_IFN_bound_prod_rate_;
-    std::cout<<"\n\n enter the following IFN production rates in LT cells\n";
-    std::cout<<"of cells without receptor or free receptor default value is 0.5 pg per hour per 1e5 cells \n";
-    std::cin>>APC_IFN_free_prod_rate_;
-    if (APC_IFN_free_prod_rate_==0) APC_IFN_free_prod_rate_=0.5/1e5;
+    //std::cout<<"\n\n enter the following IFN production rates in LT cells\n";
+    //std::cout<<"of cells without receptor or free receptor default value is 0.5 pg per hour per 1e5 cells \n";
+    //std::cin>>APC_IFN_free_prod_rate_;
+    //if (APC_IFN_free_prod_rate_==0)
+    APC_IFN_free_prod_rate_=0.5/1e5;
 
-    std::cout<<"of cells with the internalized antigen  default value is 5 pg per hour per 1e5 cells  \n";
-    std::cin>>APC_IFN_AG_prod_rate_;
-    if (APC_IFN_AG_prod_rate_==0) APC_IFN_AG_prod_rate_=5.0/1e5;
+    //std::cout<<"of cells with the internalized antigen  default value is 5 pg per hour per 1e5 cells  \n";
+    //std::cin>>APC_IFN_AG_prod_rate_;
+    //if (APC_IFN_AG_prod_rate_==0)
+    APC_IFN_AG_prod_rate_=5.0/1e5;
 
-    std::cout<<"of cells with bound receptor  default value is 10 pg per hour per 1e5 cells  \n";
-    std::cin>>APC_IFN_bound_prod_rate_;
-    if (APC_IFN_bound_prod_rate_==0) APC_IFN_bound_prod_rate_=10.0/1e5;
+    //std::cout<<"of cells with bound receptor  default value is 10 pg per hour per 1e5 cells  \n";
+    //std::cin>>APC_IFN_bound_prod_rate_;
+    //if (APC_IFN_bound_prod_rate_==0)
+    APC_IFN_bound_prod_rate_=10.0/1e5;
 
 
 
@@ -174,7 +187,11 @@ void Cell_simulator::run()
     std::cout<<"free "<<"\t";
     std::cout<<"bound"<<"\t";
     std::cout<<"APC"<<"\n";
-
+    std::cout<<"AG"<<"\n";
+    std::cout<<"bound"<<"\n";
+    std::cout<<"APC.IFNgamma_production_rate"<<"\n"
+;    std::cout<<"LT.IFNgamma_production_rate"<<"\n"
+,
     f<<"trun_d"<<" , "<<"m.IFNamma()"<<" , "<<"LT.num()"<<" , ";
     f<<"no receptor"<<",";
     f<<"free "<<" , ";
@@ -182,6 +199,8 @@ void Cell_simulator::run()
     f<<"APC"<<" , ";
     f<<"AG "<<" , ";
     f<<"bound"<<" , ";
+    f<<"APC.IFNgamma_production_rate"<<" , ";
+    f<<"LT.IFNgamma_production_rate"<<" , ";
     f<<"\n";
 
     while (trun_d<this->sim_duration_d)
@@ -194,7 +213,9 @@ void Cell_simulator::run()
             std::cout<<LT.num_cells_expressing_receptor_and_bound()<<"\t";
             std::cout<<APC.num()<<"\t";
             std::cout<<APC.num_AG()<<"\t";
-            std::cout<<APC.num_bound()<<"\n";
+            std::cout<<APC.num_bound()<<"\t";
+            std::cout<<APC.IFNgamma_production_rate()<<"\t";
+            std::cout<<LT.IFNgamma_production_rate()<<"\n";
 
        f<<trun_d<<" , "<<m.IFNgamma()<<" , "<<LT.num()<<" , ";
             f<<LT.num_cells_not_expressing_receptor()<<" , ";
@@ -202,7 +223,9 @@ void Cell_simulator::run()
             f<<LT.num_cells_expressing_receptor_and_bound()<<" , ";
             f<<APC.num()<<",";
             f<<APC.num_AG()<<",";
-            f<<APC.num_bound()<<"\n";
+            f<<APC.num_bound()<<",";
+            f<<APC.IFNgamma_production_rate()<<",";
+            f<<LT.IFNgamma_production_rate()<<"\n";
 
         };
         APC.update(time_step_d,m,LT);
