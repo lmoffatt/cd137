@@ -1,0 +1,51 @@
+# depslib dependency file v1.0
+1307046150 source:c:\documents and settings\usuario\mis documentos\dario\cell simulator 2.1\cell_simulator.cpp
+	<iostream>
+	<string>
+	<cmath>
+	<fstream>
+	"Cell_simulator.h"
+	"SimParameters.h"
+
+1307047848 c:\documents and settings\usuario\mis documentos\dario\cell simulator 2.1\cell_simulator.h
+	<iostream>
+	<string>
+	"SimParameters.h"
+	"Media.h"
+	"APC.h"
+	"NK.h"
+	"LT.h"
+
+1307030872 c:\documents and settings\usuario\mis documentos\dario\cell simulator 2.1\simparameters.h
+
+1307046406 c:\documents and settings\usuario\mis documentos\dario\cell simulator 2.1\media.h
+
+1307043669 c:\documents and settings\usuario\mis documentos\dario\cell simulator 2.1\apc.h
+
+1307043669 c:\documents and settings\usuario\mis documentos\dario\cell simulator 2.1\nk.h
+
+1307027273 c:\documents and settings\usuario\mis documentos\dario\cell simulator 2.1\lt.h
+
+1307025638 source:c:\documents and settings\usuario\mis documentos\dario\cell simulator 2.1\lt.cpp
+	"LT.h"
+
+1307046442 source:c:\documents and settings\usuario\mis documentos\dario\cell simulator 2.1\media.cpp
+	"Media.h"
+
+1307028937 source:c:\documents and settings\usuario\mis documentos\dario\cell simulator 2.1\nk.cpp
+	"NK.h"
+
+1307046099 source:c:\documents and settings\usuario\mis documentos\dario\cell simulator 2.1\experiment1.cpp
+	"experiment1.h"
+	"Cell_simulator.h"
+
+1306959652 c:\documents and settings\usuario\mis documentos\dario\cell simulator 2.1\experiment1.h
+
+1307027780 source:c:\documents and settings\usuario\mis documentos\dario\cell simulator 2.1\main.cpp
+	"experiment1.h"
+	"Cell_simulator.h"
+	"SimParameters.h"
+
+1307046099 source:c:\documents and settings\usuario\mis documentos\dario\cell simulator 2.1\apc.cpp
+	"APC.h"
+

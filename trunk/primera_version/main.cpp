@@ -1,10 +1,10 @@
+#include "experiment1.h"
 #include "Cell_simulator.h"
-
+#include "SimParameters.h"
 
 int main()
 {
-    Cell_simulator simulation;
-    simulation.ask_parameters();
-    simulation.run();
-//    simulation.show_results();
+    experiment5();
+
 };
+
