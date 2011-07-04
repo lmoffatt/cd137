@@ -23,17 +23,17 @@ void APC_cells::update(double time_step,const Media& m, const NK_cells& NK, cons
     num_Ag_d+=num_free_d*time_step*APC_no_to_free_rate_per_Ag_d*m.Ag()+
               num_Ag_d*time_step*
               (proliferation_ratio*APC_max_proliferation_rate_d
-               -APC_free_to_bound_rate_per_LT_d*LT.num_cells_expressing_receptor());
+               -APC_free_to_bound_rate_per_LT_d*LT.num_cells_expressing_receptor_and_free()*NK.NK_num_Ag()-num_Ag_d*time_step*APC_Ab_binding_rate_d*m.Ab());
 
     /// the cells that have interacted with LT grow accordingly with the number of cells that have internalized the Ag and the
     /// number of APC cells expressing the ligand and receptor and bound with monocytes, NK or LT cells (Monocytes, NK or LT can
     /// interact only with one cell). We are supposing that all activated cells express receptor and ligand.
-    num_LT_bound_d+=num_Ag_d*time_step*APC_free_to_bound_rate_per_LT_d*num_Ag()*LT.num_cells_expressing_receptor()*NK.NK_num_Ag()+
+    num_LT_bound_d+=num_Ag_d*time_step*APC_free_to_bound_rate_per_LT_d*LT.num_cells_expressing_receptor_and_free()*NK.NK_num_Ag()+
                     num_LT_bound_d*time_step*(proliferation_ratio*APC_max_proliferation_rate_d -
                             APC_exh_rate_d);
 
     /// the cells that binds the Ab
-    num_blocked_d+=num_Ag_d*time_step*APC_Ab_binding_rate_d*m.Ab()+num_blocked_d*time_step*proliferation_ratio*APC_max_proliferation_rate_d;
+    num_blocked_d+=num_Ag_d*time_step*APC_Ab_binding_rate_d*m.Ab()+num_blocked_d*time_step*(proliferation_ratio*APC_max_proliferation_rate_d - APC_exh_rate_d);
 
 
     /// the cells that have interacted with LT get exhausted
@@ -52,7 +52,7 @@ double APC_cells::IFNgamma_production_rate() const
         double sum=IFN_free_prod_rate_d*num_free_d+
                    IFN_Ag_prod_rate_d*num_Ag_d+
                    IFN_bound_prod_rate_d*num_LT_bound_d+
-                   IFN_blocked_prod_rate_d;
+                   IFN_blocked_prod_rate_d*num_blocked_d;
 
         return sum;
     }
@@ -62,7 +62,7 @@ double APC_cells::TNF_production_rate() const
         double sum=TNF_free_prod_rate_d*num_free_d+
                    TNF_Ag_prod_rate_d*num_Ag_d+
                    TNF_bound_prod_rate_d*num_LT_bound_d+
-                   TNF_blocked_prod_rate_d;
+                   TNF_blocked_prod_rate_d*num_blocked_d;
 
         return sum;
     }
