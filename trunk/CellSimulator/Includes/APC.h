@@ -23,8 +23,11 @@ class APC_cells
         double& num_Ag();
         const double& num_Ag()const;
 
-        /// Number of cells that have express the ligand and bound to LT
+        /// Number of cells that have express the ligand and bound to ligand/receptor
         double num_bound() const;
+
+        /// Percentage of cells exprssing receptor
+        double percentage_cell_expressing_receptor () const;
 
         /// Number of cells that express the receptor and bind the mAb
         double& num_blocked();

@@ -26,9 +26,11 @@ void APC_cells::update(double time_step,const Media& m, const NK_cells& NK, cons
                -APC_free_to_bound_rate_per_LT_d*LT.num_cells_expressing_receptor_and_free()*NK.NK_num_Ag()-num_Ag_d*time_step*APC_Ab_binding_rate_d*m.Ab());
 
     /// the cells that have interacted with LT grow accordingly with the number of cells that have internalized the Ag and the
-    /// number of APC cells expressing the ligand and receptor and bound with monocytes, NK or LT cells (Monocytes, NK or LT can
+    /// number of APC cells expressing the ligand and receptor and bound with monocytes, NK or LT cells with the same rate (Monocytes, NK or LT can
     /// interact only with one cell). We are supposing that all activated cells express receptor and ligand.
-    num_LT_bound_d+=num_Ag_d*time_step*APC_free_to_bound_rate_per_LT_d*LT.num_cells_expressing_receptor_and_free()*NK.NK_num_Ag()+
+    num_LT_bound_d+=num_Ag_d*time_step*APC_free_to_bound_rate_per_LT_d*LT.num_cells_expressing_receptor_and_free()+
+                    num_Ag_d*time_step*APC_free_to_bound_rate_per_LT_d*NK.NK_num_Ag()+
+                    num_Ag_d*time_step*APC_free_to_bound_rate_per_LT_d*num_Ag_d+
                     num_LT_bound_d*time_step*(proliferation_ratio*APC_max_proliferation_rate_d -
                             APC_exh_rate_d);
 
@@ -46,6 +48,7 @@ double APC_cells::num() const
     {
         return num_Ag_d+num_free_d+num_LT_bound_d+num_exhausted_d+num_blocked_d;
     }
+
 
 double APC_cells::IFNgamma_production_rate() const
     {
@@ -67,7 +70,6 @@ double APC_cells::TNF_production_rate() const
         return sum;
     }
 
-
 double& APC_cells::num_Ag()
     {
         return num_Ag_d;
@@ -82,6 +84,11 @@ double APC_cells::num_bound() const
     {
         return num_LT_bound_d;
     }
+
+double APC_cells::percentage_cell_expressing_receptor()const
+{
+return num_Ag_d/num()*100;
+};
 
 const double& APC_cells::num_blocked() const
     {

@@ -11,6 +11,6 @@ void experiment4();
 
 void experiment5();
 
-void experiment6();
+void sin_bloqueo();
 
 #endif // EXPERIMENT1_H_INCLUDED

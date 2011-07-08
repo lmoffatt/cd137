@@ -30,6 +30,9 @@ class NK_cells
         double& NK_num_bound();
         const double& NK_num_bound() const;
 
+        /// Percentage of cells exprssing receptor
+        double percentage_cell_expressing_receptor () const;
+
         /// Number of cells that are exhausted
         double& NK_exhausted ();
         const double& NK_exhausted()const;

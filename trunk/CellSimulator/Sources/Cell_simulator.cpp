@@ -317,11 +317,15 @@ void Cell_simulator::ask_parameters()
                 LT_IFN_no_rec_prod_rate_,
                 LT_IFN_free_prod_rate_,
                 LT_IFN_bound_prod_rate_,
+                LT_IFN_blocked_prod_rate_,
                 LT_TNF_no_rec_prod_rate_,
                 LT_TNF_free_prod_rate_,
                 LT_TNF_bound_prod_rate_,
+                LT_TNF_blocked_prod_rate_,
                 LT_no_to_free_rate_per_APC_,
-                LT_free_to_bound_rate_per_APC_);
+                LT_free_to_bound_rate_per_APC_,
+                LT_mAb_binding_rate_
+                );
 
 }
 void Cell_simulator::run()
@@ -359,6 +363,7 @@ void Cell_simulator::run()
     f<<"APC with Ag "<<" , ";
     f<<"APC bound"<<" , ";
     f<<"APC blocked"<<" , ";
+    f<<"%APC expresing receptor"<<" , ";
     f<<"APC exhausted"<<" , ";
     f<<"APC.IFNgamma_production_rate"<<" , ";
     f<<"APC.TNF_production_rate"<<" , ";
@@ -366,11 +371,13 @@ void Cell_simulator::run()
     f<<"NK bound"<<" , ";
     f<<"NK blocked"<<" , ";
     f<<"NK exhausted"<<" , ";
+    f<<"%NK expresing receptor"<<" , ";
     f<<"NK.IFNgamma_production_rate"<<" , ";
     f<<"NK.TNF_production_rate"<<" , ";
     f<<"LT no receptor"<<",";
     f<<"LT free "<<" , ";
     f<<"LT bound"<<" , ";
+    f<<"%LT expresing receptor"<<" , ";
     f<<"LT.IFNgamma_production_rate"<<" , ";
     f<<"LT.TNF_production_rate"<<" , ";
     f<<"Ag"<<" , ";
@@ -408,6 +415,7 @@ void Cell_simulator::run()
             f<<APC.num_Ag()<<" , ";
             f<<APC.num_bound()<<" , ";
             f<<APC.num_blocked()<<" , ";
+            f<<APC.percentage_cell_expressing_receptor()<<" , ";
             f<<APC.num_exhausted()<<" , ";
             f<<APC.IFNgamma_production_rate()<<" , ";
             f<<APC.TNF_production_rate()<<" , ";
@@ -415,11 +423,13 @@ void Cell_simulator::run()
             f<<NK.NK_num_bound()<<" , ";
             f<<NK.NK_blocked()<<" , ";
             f<<NK.NK_exhausted()<<" , ";
+            f<<NK.percentage_cell_expressing_receptor()<<" , ";
             f<<NK.IFNgamma_production_rate()<<" , ";
             f<<NK.TNF_production_rate()<<" , ";
             f<<LT.num_cells_not_expressing_receptor()<<" , ";
             f<<LT.num_cells_expressing_receptor_and_free()<<" , ";
             f<<LT.num_cells_expressing_receptor_and_bound()<<" , ";
+            f<<LT.LT_percentage_cell_expressing_receptor()<<" , ";
             f<<LT.IFNgamma_production_rate()<<" , ";
             f<<LT.TNF_production_rate()<<" , ";
             f<<m.Ag()<<"\n";
@@ -490,9 +500,12 @@ Cell_simulator::Cell_simulator(const SimParameters& sp):
                  sp.LT_IFN_no_rec_prod_rate_,
                  sp.LT_IFN_free_prod_rate_,
                  sp.LT_IFN_bound_prod_rate_,
+                 sp.LT_IFN_blocked_prod_rate_,
                  sp.LT_TNF_no_rec_prod_rate_,
                  sp.LT_TNF_free_prod_rate_,
                  sp.LT_TNF_bound_prod_rate_,
+                 sp.LT_TNF_blocked_prod_rate_,
                  sp.LT_no_to_free_rate_per_APC_,
-                 sp.LT_free_to_bound_rate_per_APC_) {}
+                 sp.LT_free_to_bound_rate_per_APC_,
+                 sp.LT_mAb_binding_rate_) {}
 

@@ -51,12 +51,15 @@ class Cell_simulator
     double NK_exh_rate;
     double LT_no_to_free_rate_per_APC_;
     double LT_free_to_bound_rate_per_APC_;
+    double LT_mAb_binding_rate_;
     double LT_IFN_no_rec_prod_rate_;
     double LT_IFN_free_prod_rate_;
     double LT_IFN_bound_prod_rate_;
+    double LT_IFN_blocked_prod_rate_;
     double LT_TNF_no_rec_prod_rate_;
     double LT_TNF_free_prod_rate_;
     double LT_TNF_bound_prod_rate_;
+    double LT_TNF_blocked_prod_rate_;
     double APC_IFN_free_prod_rate_;
     double APC_IFN_Ag_prod_rate_;
     double APC_IFN_bound_prod_rate_;
