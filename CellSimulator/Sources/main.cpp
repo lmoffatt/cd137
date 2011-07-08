@@ -5,7 +5,7 @@
 int main()
 {
 
-    experiment6();
+    sin_bloqueo();
 
 }
 
