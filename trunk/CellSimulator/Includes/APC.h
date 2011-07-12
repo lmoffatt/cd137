@@ -19,6 +19,10 @@ class APC_cells
         /// Total production of Tumor Necrosis Factor
         double TNF_production_rate() const;
 
+        /// Number of cells free
+        double& num_free();
+        const double& num_free()const;
+
         /// Number of cells that have bound the antigen and express the receptor
         double& num_Ag();
         const double& num_Ag()const;

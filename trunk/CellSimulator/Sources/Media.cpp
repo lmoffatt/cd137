@@ -29,6 +29,16 @@ double& Media::TNF_degradation ()
    return TNF_deg;
    }
 
+const double& Media::IFN_degradation () const
+   {
+   return IFN_deg;
+   }
+
+double& Media::IFN_degradation ()
+   {
+   return IFN_deg;
+   }
+
 const double& Media::TNF_degradation () const
    {
    return TNF_deg;
@@ -80,7 +90,8 @@ void Media::update(double time_step,const APC_cells& APC_, const NK_cells& NK_, 
     /// IFN is increased by the production rate of each population;
     IFNgamma_d+=APC_.IFNgamma_production_rate()*time_step+
                 NK_.IFNgamma_production_rate()*time_step +
-                LT_.IFNgamma_production_rate()*time_step ;
+                LT_.IFNgamma_production_rate()*time_step -
+                IFNgamma_d*time_step*IFN_degradation();
     /// TNF is increased by the production rate of each population;
     TNF_d+=APC_.TNF_production_rate()*time_step+
            NK_.TNF_production_rate()*time_step +
@@ -97,7 +108,8 @@ Media::Media( double max_num_cells_,
               double Ab_=0,
               double IFNgamma_init=0,
               double TNF_init=0,
-              double TNF_deg_init=0):
+              double TNF_deg_init=0,
+              double IFN_deg_init=0):
            //   double internalization_init=0):
 
               IFNgamma_d(IFNgamma_init),

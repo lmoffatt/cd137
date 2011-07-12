@@ -18,6 +18,10 @@ class NK_cells
         /// Total production of Tumor Necrosis Factor
         double TNF_production_rate() const;
 
+        /// Number of cells free
+        double& NK_num_free();
+        const double& NK_num_free()const;
+
         /// Number of cells that have bound the antigen and express the receptor
         double& NK_num_Ag();
         const double& NK_num_Ag()const;

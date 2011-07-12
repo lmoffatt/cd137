@@ -21,6 +21,7 @@ struct SimParameters{
    double LT_max_no_receptor_prol_rate_;
    double LT_max_free_prol_rate_;
    double LT_max_bound_prol_rate_;
+   double LT_max_blocked_prol_rate_;
 
    double APC_no_to_free_rate_per_Ag_;
    double APC_free_to_bound_rate_per_LT_;
@@ -63,7 +64,7 @@ struct SimParameters{
 
 
    double TNF_deg;
-
+   double IFN_deg;
 
 
 
