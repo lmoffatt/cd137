@@ -46,6 +46,7 @@ class LT_cells
                  double LT_max_no_receptor_prol_rate_,
                  double LT_max_free_prol_rate_,
                  double LT_max_bound_prol_rate_,
+                 double LT_max_blocked_prol_rate_,
                  double IFN_no_rec_prod_rate_,
                  double IFN_free_prod_rate_,
                  double IFN_bound_prod_rate_,
@@ -72,6 +73,7 @@ class LT_cells
             LT_max_no_receptor_prol_rate_d(LT_max_no_receptor_prol_rate_),
             LT_max_free_prol_rate_d(LT_max_free_prol_rate_),
             LT_max_bound_prol_rate_d(LT_max_bound_prol_rate_),
+            LT_max_blocked_prol_rate_d(LT_max_blocked_prol_rate_),
             LT_no_to_free_rate_per_APC_d(LT_no_to_free_rate_per_APC_),
             LT_free_to_bound_rate_per_APC_d (LT_free_to_bound_rate_per_APC_),
             LT_mAb_binding_rate_d (LT_mAb_binding_rate_){};
@@ -114,6 +116,7 @@ class LT_cells
         double LT_max_no_receptor_prol_rate_d;
         double LT_max_free_prol_rate_d;
         double LT_max_bound_prol_rate_d;
+        double LT_max_blocked_prol_rate_d;
 
 
         ///conversion rates

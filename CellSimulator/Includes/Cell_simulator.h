@@ -17,7 +17,7 @@ class Cell_simulator
         void run();
         void update(double time_step);
 
-        Cell_simulator(){};
+        Cell_simulator(){}
 
     private:
         LT_cells LT;
@@ -41,6 +41,7 @@ class Cell_simulator
     double LT_max_no_receptor_prol_rate_;
     double LT_max_free_prol_rate_;
     double LT_max_bound_prol_rate_;
+    double LT_max_blocked_prol_rate_;
     double APC_no_to_free_rate_per_Ag_;
     double APC_free_to_bound_rate_per_LT_;
     double APC_Ab_binding_rate_;
@@ -77,6 +78,7 @@ class Cell_simulator
     double NK_TNF_bound_prod_rate_;
     double NK_TNF_blocked_prod_rate_;
     double TNF_deg;
+    double IFN_deg;
 
    std::string filename;
 

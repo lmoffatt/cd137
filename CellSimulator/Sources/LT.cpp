@@ -13,31 +13,32 @@ void LT_cells::update(double time_step,const Media& m,const APC_cells& a,const N
     num_non_Agsp_d+=time_step*num_non_Agsp_d*proliferation_ratio*LT_max_no_receptor_prol_rate_d;
 
 
-    /// Ag specific cells proliferate and som of them start to express the receptor
+    /// Ag specific cells proliferate and some of them interact with APC and get activated and express the receptor
     num_Agsp_no_receptor_d+=time_step*num_Agsp_no_receptor_d*
                             (proliferation_ratio*LT_max_no_receptor_prol_rate_d-LT_no_to_free_rate_per_APC_d*a.num_Ag());
 
-
+    /// Acà hay algo que clarificar (La cèlula T no interactúa solo una vez con la APC???)
     num_Agsp_free_receptor_d+=time_step*num_Agsp_no_receptor_d*LT_no_to_free_rate_per_APC_d*a.num_Ag()+
                               time_step*num_Agsp_free_receptor_d*
-                              (proliferation_ratio*LT_max_free_prol_rate_d-LT_free_to_bound_rate_per_APC_d*a.num_Ag());
+                              (proliferation_ratio*LT_max_free_prol_rate_d-LT_free_to_bound_rate_per_APC_d*a.num_Ag()
+                               -LT_mAb_binding_rate_d*m.Ab());
 
-    /// (Monocytes, NK or LT can interact only with one cell)
+    /// (Monocytes, NK or LT can interact only with one cell) (There are not LT exhausted at the times of experiment)
     num_Agsp_bound_receptor_d+=time_step*num_Agsp_free_receptor_d*LT_free_to_bound_rate_per_APC_d*a.num_Ag()+
                                time_step*num_Agsp_free_receptor_d*LT_free_to_bound_rate_per_APC_d*NK.NK_num_Ag()+
                                time_step*num_Agsp_bound_receptor_d*proliferation_ratio*LT_max_bound_prol_rate_d;
 
 
-    /// LT interact with blocking mAb and grow as LT free rates
-    num_blocked_d+=time_step*num_Agsp_free_receptor_d*LT_mAb_binding_rate_d*m.Ab()+
-                   time_step*num_blocked_d*proliferation_ratio*LT_max_free_prol_rate_d;
+    /// LT interact with blocking mAb and grow as LT free rates (There are not LT exhausted at the times of experiment)
+    num_blocked_d+= num_Agsp_free_receptor_d*time_step*LT_mAb_binding_rate_d*m.Ab() +
+                    time_step*num_blocked_d*proliferation_ratio*LT_max_blocked_prol_rate_d;
 }
 
 
 
 double LT_cells::num() const
     {
-        return num_Agsp_bound_receptor_d+num_Agsp_free_receptor_d+num_Agsp_no_receptor_d+num_non_Agsp_d;
+        return num_Agsp_bound_receptor_d+num_Agsp_free_receptor_d+num_Agsp_no_receptor_d+num_non_Agsp_d+num_blocked_d;
     }
 
 double LT_cells::IFNgamma_production_rate() const
@@ -53,7 +54,7 @@ double LT_cells::TNF_production_rate() const
         return (num_non_Agsp_d+num_Agsp_no_receptor_d)*TNF_no_rec_prod_rate_d+
                 num_Agsp_free_receptor_d*TNF_free_prod_rate_d+
                 num_Agsp_bound_receptor_d*TNF_bound_prod_rate_d+
-                num_blocked_d*IFN_blocked_prod_rate_d;
+                num_blocked_d*TNF_blocked_prod_rate_d;
     };
 
 double LT_cells::num_cells_not_Ag_specific()const

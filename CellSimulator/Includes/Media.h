@@ -21,6 +21,10 @@ class Media
         double& TNF_degradation ();
         const double& TNF_degradation () const;
 
+        /// IFN degradation
+        double& IFN_degradation ();
+        const double& IFN_degradation () const;
+
         /// Maximum number of cells tolerated by the media
         /// Proliferation occurs when the number of cells is lower than this number
         double& Max_num_cells();
@@ -46,7 +50,8 @@ class Media
               double Ab_,
               double IFNgamma_init,
               double TNF_init,
-              double TNF_deg_init);
+              double TNF_deg_init,
+              double IFN_deg_init);
      //         double internalization_init);
 
         Media(){}
@@ -62,6 +67,7 @@ class Media
         double Ag_d;
         double Ab_d;
         double TNF_deg;
+        double IFN_deg;
    //     double Ag_internalization_rate;
 
 };
