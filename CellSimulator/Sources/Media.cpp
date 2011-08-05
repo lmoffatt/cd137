@@ -100,7 +100,7 @@ void Media::update(double time_step,const APC_cells& APC_, const NK_cells& NK_, 
     /// The total number of cells is the adittion of APC + NK + LT
     num_cells_d=APC_.num()+NK_.num()+LT_.num();
 
-};
+}
 
 Media::Media( double max_num_cells_,
               double init_num_cells,
@@ -110,13 +110,14 @@ Media::Media( double max_num_cells_,
               double TNF_init=0,
               double TNF_deg_init=0,
               double IFN_deg_init=0):
-           //   double internalization_init=0):
+    //   double internalization_init=0):
 
-              IFNgamma_d(IFNgamma_init),
-              TNF_d(TNF_init),
-              max_num_cells_d(max_num_cells_),
-              num_cells_d(init_num_cells),
-              Ag_d(Ag_),
-              Ab_d(Ab_),
-              TNF_deg(TNF_deg_init)
-            /*  Ag_internalization_rate (internalization_init)*/ {}
+    IFNgamma_d(IFNgamma_init),
+    TNF_d(TNF_init),
+    max_num_cells_d(max_num_cells_),
+    num_cells_d(init_num_cells),
+    Ag_d(Ag_),
+    Ab_d(Ab_),
+    TNF_deg(TNF_deg_init),
+    IFN_deg(IFN_deg_init)
+  /*  Ag_internalization_rate (internalization_init)*/ {}
