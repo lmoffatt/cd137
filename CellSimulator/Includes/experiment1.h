@@ -13,4 +13,10 @@ void experiment5();
 
 void sin_bloqueo();
 
+void expresion2 ();
+
+void expresion1 ();
+
+void con_bloqueo ();
+
 #endif // EXPERIMENT1_H_INCLUDED

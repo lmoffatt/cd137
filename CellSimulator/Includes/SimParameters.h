@@ -1,3 +1,4 @@
+
 #ifndef SIMPARAMETERS_H_INCLUDED
 #define SIMPARAMETERS_H_INCLUDED
 
@@ -41,8 +42,8 @@ struct SimParameters{
    double APC_IFN_blocked_prod_rate_;
    double NK_IFN_free_prod_rate_;
    double NK_IFN_Ag_prod_rate_;
-   double NK_IFN_blocked_prod_rate_;
    double NK_IFN_bound_prod_rate_;
+   double NK_IFN_blocked_prod_rate_;
    double LT_IFN_no_rec_prod_rate_;
    double LT_IFN_free_prod_rate_;
    double LT_IFN_bound_prod_rate_;
