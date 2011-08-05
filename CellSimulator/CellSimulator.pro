@@ -14,6 +14,9 @@ CONFIG   -= app_bundle
 
 TEMPLATE = app
 
+INCLUDEPATH = $$PWD/Includes/
+
+DEPENDPATH = $$PWD/Includes/
 
 SOURCES += \
     Sources/NK.cpp \
@@ -23,7 +26,10 @@ SOURCES += \
     Sources/experiment1.cpp \
     Sources/Cell_simulator.cpp \
     Sources/APC.cpp \
-    Sources/SimParameters.cpp
+    Sources/SimParameters.cpp \
+    Sources/Results.cpp \
+    Sources/ResultsSimulator.cpp \
+    Sources/Measurement.cpp
 
 HEADERS += \
     Includes/NK.h \
@@ -32,4 +38,7 @@ HEADERS += \
     Includes/experiment1.h \
     Includes/Cell_simulator.h \
     Includes/APC.h \
-    Includes/SimParameters.h
+    Includes/SimParameters.h \
+    Includes/Results.h \
+    Includes/Measurement.h \
+    Includes/ResultsSimulator.h
