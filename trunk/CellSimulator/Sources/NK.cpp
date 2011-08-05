@@ -116,7 +116,7 @@ const double& NK_cells::NK_blocked()const
 
 double NK_cells::percentage_cell_expressing_receptor()const
     {
-        return NK_num_Ag_d/num()*100;
+        return (NK_num_Ag_d+NK_num_LT_bound_d+NK_blocked_d)/num()*100;
     }
 
 double& NK_cells::NK_num_bound()
