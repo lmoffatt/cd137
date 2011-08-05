@@ -65,7 +65,6 @@ class NK_cells
                   double NK_no_to_free_rate_per_Ag_ ,
                   double NK_free_to_bound_rate_per_LT,
                   double NK_Ab_binding_rate,
-                  double NK_exh_rate,
                   double NK_IFN_free_prod_rate_,
                   double NK_IFN_Ag_prod_rate_,
                   double NK_IFN_bound_prod_rate_,
@@ -73,7 +72,8 @@ class NK_cells
                   double NK_TNF_free_prod_rate_,
                   double NK_TNF_Ag_prod_rate_,
                   double NK_TNF_bound_prod_rate_,
-                  double NK_TNF_blocked_prod_rate_
+                  double NK_TNF_blocked_prod_rate_,
+                  double NK_exh_rate
                   ):
 
                   NK_num_free_d(NK_init),
@@ -81,7 +81,6 @@ class NK_cells
                   NK_num_LT_bound_d(0),
                   NK_blocked_d(0),
                   NK_num_exhausted_d(0),
-                  NK_exh_rate_d (NK_exh_rate),
                   NK_IFN_free_prod_rate_d(NK_IFN_free_prod_rate_),
                   NK_IFN_Ag_prod_rate_d(NK_IFN_Ag_prod_rate_),
                   NK_IFN_bound_prod_rate_d(NK_IFN_bound_prod_rate_),
@@ -93,9 +92,10 @@ class NK_cells
                   NK_max_proliferation_rate_d(NK_max_proliferation_rate_),
                   NK_no_to_free_rate_per_Ag_d(NK_no_to_free_rate_per_Ag_),
                   NK_free_to_bound_rate_per_LT_d (NK_free_to_bound_rate_per_LT),
-                  NK_Ab_binding_rate_d (NK_Ab_binding_rate)
+                  NK_Ab_binding_rate_d (NK_Ab_binding_rate),
+                  NK_exh_rate_d (NK_exh_rate)
 
-                  {};
+                  {}
 
         NK_cells(){};
 
@@ -109,10 +109,10 @@ class NK_cells
         double NK_num_free_d;
         /// number of cells that have internalized  the antigen (and therefore express the ligand)
         double NK_num_Ag_d;
-        /// number of cells that are blocked
-        double NK_blocked_d;
         /// number of cells that have the receptor bound to its ligand
         double NK_num_LT_bound_d;
+        /// number of cells that are blocked
+        double NK_blocked_d;
         /// number of cells that are exhausted
         double NK_num_exhausted_d;
 
@@ -132,6 +132,12 @@ class NK_cells
         double NK_free_to_bound_rate_per_LT_d;
         double NK_Ab_binding_rate_d;
         double NK_exh_rate_d;
+
+
+
+
+
+
 
 };
 #endif // NK_H_INCLUDED

@@ -42,7 +42,10 @@ class Media
         double& Ab();
         const double& Ab()const;
 
-        void update(double time_step,const APC_cells& APC_ ,const NK_cells& NK,const LT_cells& LT_);
+        void update(double time_step,
+                    const APC_cells& APC_ ,
+                    const NK_cells& NK,
+                    const LT_cells& LT_);
 
         Media(double max_num_cells_,
               double init_num_cells,

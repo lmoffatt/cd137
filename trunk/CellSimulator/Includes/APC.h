@@ -33,6 +33,9 @@ class APC_cells
         /// Percentage of cells exprssing receptor
         double percentage_cell_expressing_receptor () const;
 
+        /// Percentage of cells producing IFN
+        double percentage_cell_producing_IFN () const;
+
         /// Number of cells that express the receptor and bind the mAb
         double& num_blocked();
         const double& num_blocked()const;
