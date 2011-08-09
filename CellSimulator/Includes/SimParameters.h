@@ -5,16 +5,12 @@
 struct SimParameters{
    double max_num_cells_;
    double max_num_cells;
-   double init_num_APC_cells;
-   double init_num_NK_cells;
-   double init_num_LT_cells;
-   double LT_num_specific;
+   double init_ratio_APC_cells;
+   double init_ratio_NK_cells;
+   double init_ratio_LT_cells;
+   double LT_ratio_specific;
 
-   double sim_duration_d;
-   double time_step_d;
 
-   double Ag;
-   double Ab;
   // double Ag_internalization_rate;
 
    double APC_max_proliferation_rate_;

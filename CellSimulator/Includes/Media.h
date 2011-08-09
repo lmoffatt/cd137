@@ -1,5 +1,7 @@
 #ifndef MEDIA_H_INCLUDED
 #define MEDIA_H_INCLUDED
+#include "SimParameters.h"
+#include "Treatment.h"
 
 class APC_cells;
 class NK_cells;
@@ -47,7 +49,8 @@ class Media
                     const NK_cells& NK,
                     const LT_cells& LT_);
 
-        Media(double max_num_cells_,
+        Media(
+              double max_num_cells_,
               double init_num_cells,
               double Ag_,
               double Ab_,
@@ -55,7 +58,13 @@ class Media
               double TNF_init,
               double TNF_deg_init,
               double IFN_deg_init);
-     //         double internalization_init);
+
+        Media(const SimParameters& sp,
+              const Treatment& tr);
+
+
+
+        //         double internalization_init);
 
         Media(){}
 

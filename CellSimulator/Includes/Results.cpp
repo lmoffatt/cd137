@@ -6,9 +6,7 @@ const std::vector<Measurement>& Results::TNF()const
     return TNF_;
 }
 
-Results::Results(std::string experimentName):
-    TNF_(),duration_()
-
+Results::Results(std::string experimentName)
 {
 
     if (experimentName=="Fig_1_2")
@@ -17,6 +15,14 @@ Results::Results(std::string experimentName):
         TNF_.push_back(Measurement(16.0,50.0));
         TNF_.push_back(Measurement(48.0,40.0));
         TNF_.push_back(Measurement(120.0,30.0));
+        IFN_.push_back(Measurement(16.0,12.0));
+        IFN_.push_back(Measurement(48.0,30.0));
+        IFN_.push_back(Measurement(120.0,50.0));
+
+    }
+    else if (experimentName=="block")
+    {
+
     }
 }
 
@@ -42,10 +48,7 @@ Results::Results(std::string experimentName):
     if (experimentName=="Fig_1_2")
     {
         duration_=120.0;
-        IFN_.push_back(Measurement(16.0,12.0));
-        IFN_.push_back(Measurement(48.0,30.0));
-        IFN_.push_back(Measurement(120.0,50.0));
-    }
+      }
 }
 
 Results::Results(std::vector<Measurement> myIFN):

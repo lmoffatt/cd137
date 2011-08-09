@@ -3,11 +3,12 @@
 #include "Results.h"
 #include "SimParameters.h"
 #include "Cell_simulator.h"
+#include "Includes/Experiment.h"
 
 class ResultsSimulator {
 public:
-    Results Simulate(const SimParameters& simPar,
-                     const Results& results);
+    Experiment Simulate(const SimParameters& simPar,
+                     const Experiment& results);
 
     double SumSquare(const SimParameters& SimPar,
                      const Results& results);

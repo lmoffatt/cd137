@@ -10,8 +10,8 @@ class Results
 public:
     const std::vector<Measurement>& TNF()const;
     const std::vector<Measurement>& IFN() const;
-    const std::vector<Measurement>& APC_expression () const;
-    const std::vector<Measurement>& NK_expression () const;
+    const std::vector<Measurement>& APC_expression() const;
+    const std::vector<Measurement>& NK_expression() const;
     const std::vector<Measurement>& LT_expression () const;
 
     Results();
@@ -42,7 +42,7 @@ private:
 
 double SumSquare(const Results one, const Results two);
 std::vector<double> SumSquare_i(const Results one, const Results two);
-void SumSquareTXT(const Results one, const Results two);
+void SumSquareTXT(const Results& one, const Results& two);
 
 
 #endif // RESULTS_H
