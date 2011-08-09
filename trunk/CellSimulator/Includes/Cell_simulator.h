@@ -7,29 +7,34 @@
 #include "Includes/APC.h"
 #include "Includes/NK.h"
 #include "Includes/LT.h"
-#include "Results.h"
-
+#include "Experiment.h"
 class Cell_simulator
 {
-    public:
+public:
 
-        void ask_parameters();
-        Cell_simulator(const SimParameters& sp);
-        void run();
+    void ask_parameters();
+    void run();
 
-        Results Simulate(const SimParameters& simPar,
-                         const Results& results);
+    Cell_simulator(const SimParameters& sp,
+                   const Treatment& tr);
 
-        void update(double time_step);
+    Results Simulate(const SimParameters& simPar,
+                     const Treatment& protocol,
+                     const Results& results);
+
+    Experiment Simulate(const SimParameters& simPar,
+                        const Experiment& exp);
+
+    void update(double time_step);
 
 
-        Cell_simulator(){}
+    Cell_simulator(){}
 
-    private:
-        Media   m;
-        APC_cells APC;
-        NK_cells NK;
-        LT_cells LT;
+private:
+    Media   m;
+    APC_cells APC;
+    NK_cells NK;
+    LT_cells LT;
 
     double time_step_d;
     double sim_duration_d;

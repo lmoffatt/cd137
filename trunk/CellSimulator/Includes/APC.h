@@ -1,5 +1,8 @@
 #ifndef APC_H_INCLUDED
 #define APC_H_INCLUDED
+#include "Includes/SimParameters.h"
+#include "Includes/Treatment.h"
+
 
 class Media;
 class LT_cells;
@@ -99,9 +102,35 @@ class APC_cells
                   APC_free_to_bound_rate_per_LT_d (free_to_bound_rate_per_LT),
                   APC_Ab_binding_rate_d (APC_Ab_binding_rate),
                   APC_exh_rate_d (APC_exh_rate)
-                  {};
+                  {}
 
-        APC_cells(){};
+
+        APC_cells(const SimParameters& sp,
+                  const Treatment& tr):
+
+                  num_free_d(sp.init_ratio_APC_cells*tr.init_cells),
+                  num_Ag_d(0),
+                  num_LT_bound_d(0),
+                  num_blocked_d (0),
+                  num_exhausted_d(0),
+                  IFN_free_prod_rate_d(sp.APC_IFN_free_prod_rate_),
+                  IFN_Ag_prod_rate_d(sp.APC_IFN_Ag_prod_rate_),
+                  IFN_bound_prod_rate_d(sp.APC_IFN_bound_prod_rate_),
+                  IFN_blocked_prod_rate_d(sp.APC_IFN_blocked_prod_rate_),
+                  TNF_free_prod_rate_d(sp.APC_TNF_free_prod_rate_),
+                  TNF_Ag_prod_rate_d(sp.APC_TNF_Ag_prod_rate_),
+                  TNF_bound_prod_rate_d(sp.APC_TNF_bound_prod_rate_),
+                  TNF_blocked_prod_rate_d (sp.APC_TNF_blocked_prod_rate_),
+                  APC_max_proliferation_rate_d(sp.APC_max_proliferation_rate_),
+                  APC_no_to_free_rate_per_Ag_d(sp.APC_no_to_free_rate_per_Ag_),
+                  APC_free_to_bound_rate_per_LT_d (sp.APC_free_to_bound_rate_per_LT_),
+                  APC_Ab_binding_rate_d (sp.APC_Ab_binding_rate_),
+                  APC_exh_rate_d (sp.APC_exh_rate)
+                  {}
+
+        APC_cells(){}
+
+        void reset(const SimParameters& sp,const Treatment& tr);
 
         /// main step for the APC cells
 

@@ -1,5 +1,8 @@
 #ifndef LT_H_INCLUDED
 #define LT_H_INCLUDED
+#include "Includes/SimParameters.h"
+#include "Includes/Treatment.h"
+
 class Media;
 class APC_cells;
 class NK_cells;
@@ -79,8 +82,33 @@ class LT_cells
             LT_free_to_bound_rate_per_APC_d (LT_free_to_bound_rate_per_APC_),
             LT_mAb_binding_rate_d (LT_mAb_binding_rate_){}
 
+        LT_cells(const SimParameters& sp,
+                 const Treatment& tr):
+            num_non_Agsp_d(sp.init_ratio_LT_cells*tr.init_cells),
+            num_Agsp_no_receptor_d(sp.LT_ratio_specific),
+            num_Agsp_free_receptor_d(0),
+            num_Agsp_bound_receptor_d(0),
+            num_blocked_d(0),
+            IFN_no_rec_prod_rate_d(sp.LT_IFN_no_rec_prod_rate_),
+            IFN_free_prod_rate_d(sp.LT_IFN_free_prod_rate_),
+            IFN_bound_prod_rate_d(sp.LT_IFN_bound_prod_rate_),
+            IFN_blocked_prod_rate_d(sp.LT_IFN_blocked_prod_rate_),
+            TNF_no_rec_prod_rate_d(sp.LT_TNF_no_rec_prod_rate_),
+            TNF_free_prod_rate_d(sp.LT_TNF_free_prod_rate_),
+            TNF_bound_prod_rate_d(sp.LT_TNF_bound_prod_rate_),
+            TNF_blocked_prod_rate_d (sp.LT_TNF_blocked_prod_rate_),
+            LT_max_no_receptor_prol_rate_d(sp.LT_max_no_receptor_prol_rate_),
+            LT_max_free_prol_rate_d(sp.LT_max_free_prol_rate_),
+            LT_max_bound_prol_rate_d(sp.LT_max_bound_prol_rate_),
+            LT_max_blocked_prol_rate_d(sp.LT_max_blocked_prol_rate_),
+            LT_no_to_free_rate_per_APC_d(sp.LT_no_to_free_rate_per_APC_),
+            LT_free_to_bound_rate_per_APC_d (sp.LT_free_to_bound_rate_per_APC_),
+            LT_mAb_binding_rate_d (sp.LT_mAb_binding_rate_){}
 
             LT_cells(){}
+
+            void reset(const SimParameters& sp,const Treatment& tr);
+
 
     private:
 
