@@ -6,7 +6,7 @@
 int main()
 {
 
-    con_bloqueo();
+    experiment2();
 
 
 }

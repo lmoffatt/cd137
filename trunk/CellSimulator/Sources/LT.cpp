@@ -32,8 +32,18 @@ void LT_cells::update(double time_step,const Media& m,const APC_cells& a,const N
     /// LT interact with blocking mAb and grow as LT free rates (There are not LT exhausted at the times of experiment)
     num_blocked_d+= num_Agsp_free_receptor_d*time_step*LT_mAb_binding_rate_d*m.Ab() +
                     time_step*num_blocked_d*proliferation_ratio*LT_max_blocked_prol_rate_d;
-}
+};
 
+void LT_cells::reset(const SimParameters& sp,
+                      const Treatment& tr)
+    {
+        num_non_Agsp_d=sp.init_ratio_LT_cells*tr.init_cells;
+        num_Agsp_no_receptor_d=sp.LT_ratio_specific;
+        num_Agsp_free_receptor_d=0;
+        num_Agsp_bound_receptor_d=0;
+        num_blocked_d=0;
+
+    }
 
 
 double LT_cells::num() const

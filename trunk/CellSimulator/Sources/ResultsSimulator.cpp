@@ -1,10 +1,17 @@
 #include "ResultsSimulator.h"
-
-Results ResultsSimulator::Simulate(const SimParameters& simPar,
-                                   const Results& results)
+#include <vector>
+Experiment ResultsSimulator::Simulate(const SimParameters& simPar,
+                 const Experiment& E)
 {
-    Cell_simulator Cell(simPar);
-    return Cell.Simulate(simPar,results);
+    Cell_simulator sim(simPar,E.Treatment_i(0));
+    Experiment out;
+    for (std::size_t i=0; i<E.size();i++)
+
+    {
+        Results simRes=sim.Simulate(simPar,E.Treatment_i(i),E.Result_i(i));
+        out.push_back(E.Treatment_i(i),simRes);
+    };
+    return out;
 
 
 }

@@ -2,6 +2,8 @@
 #include "Includes/APC.h"
 #include "Includes/LT.h"
 #include "Includes/NK.h"
+
+
 /// Main step for APC
 void APC_cells::update(double time_step,const Media& m, const NK_cells& NK, const LT_cells& LT)
 {
@@ -47,13 +49,23 @@ void APC_cells::update(double time_step,const Media& m, const NK_cells& NK, cons
                     APC_exh_rate_d);
 
 
+
     /// the cells that have interacted with LT get exhausted
     num_exhausted_d+=num_LT_bound_d*APC_exh_rate_d*time_step+
                      num_blocked_d*time_step*APC_exh_rate_d+
                      num_exhausted_d*time_step*proliferation_ratio*APC_max_proliferation_rate_d;
 
 
-};
+}
+void APC_cells::reset(const SimParameters& sp,
+                      const Treatment& tr)
+{
+    num_free_d=sp.init_ratio_APC_cells*tr.init_cells;
+    num_Ag_d=0;
+    num_LT_bound_d=0;
+    num_blocked_d=0;
+    num_exhausted_d=0;
+ }
 
 double APC_cells::num() const
     {

@@ -5,14 +5,10 @@ SimParameters::SimParameters():
 
 
     max_num_cells(2e6),
-    init_num_APC_cells (1e5),
-    init_num_NK_cells(1e5),
-    init_num_LT_cells (9e5),
-    LT_num_specific (1000),
-    sim_duration_d (120),
-    time_step_d (0.01),
-    Ag(10),
-    Ab (5),
+    init_ratio_APC_cells (1e5),
+    init_ratio_NK_cells(1e5),
+    init_ratio_LT_cells (9e5),
+    LT_ratio_specific (1000),
     APC_max_proliferation_rate_ (1.0/240),
     NK_max_proliferation_rate_(1.0/240),
     LT_max_no_receptor_prol_rate_(1.0/240),
