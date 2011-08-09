@@ -121,3 +121,18 @@ Media::Media( double max_num_cells_,
     TNF_deg(TNF_deg_init),
     IFN_deg(IFN_deg_init)
   /*  Ag_internalization_rate (internalization_init)*/ {}
+
+
+Media::Media(const SimParameters& sp,
+             const Treatment& tr):
+    //   double internalization_init=0):
+
+    IFNgamma_d(0),
+    TNF_d(0),
+    max_num_cells_d(sp.max_num_cells_),
+    num_cells_d(tr.init_cells),
+    Ag_d(tr.Ag),
+    Ab_d(tr.Ab),
+    TNF_deg(sp.TNF_deg),
+    IFN_deg(sp.IFN_deg)
+{}

@@ -309,7 +309,7 @@ void Cell_simulator::ask_parameters()
         LT_TNF_free_prod_rate_=10.0/1e5;
     std::cout<<"of cells with bound receptor,  default value is 1000 pg per hour per 1e5 cells, enter -1 to keep this value \n";
     std::cin>>LT_IFN_bound_prod_rate_;
-    if (LT_TNF_bound_prod_rate_==-1)
+       if (LT_TNF_bound_prod_rate_==-1)
         LT_TNF_bound_prod_rate_=20.0/1e5;
 
     IFN_deg=0;
@@ -519,12 +519,13 @@ void Cell_simulator::run()
 }
 
 
-Cell_simulator::Cell_simulator(const SimParameters& sp):
+Cell_simulator::Cell_simulator(const SimParameters& sp,
+                               const Treatment& tr):
 
-        m(sp.max_num_cells_,
-        sp.init_num_APC_cells+sp.init_num_LT_cells+sp.init_num_NK_cells,
-        sp.Ag,
-        sp.Ab,
+    m(sp.max_num_cells_,
+        tr.init_cells,
+        tr.Ag,
+        tr.Ab,
         0,
         0,
         sp.TNF_deg,
@@ -533,7 +534,7 @@ Cell_simulator::Cell_simulator(const SimParameters& sp):
         ),
 
 
-    APC(APC_cells(sp.init_num_APC_cells,
+    APC(APC_cells(sp.init_ratio_APC_cells,
                   sp.APC_max_proliferation_rate_,
                   sp.APC_no_to_free_rate_per_Ag_ ,
                   sp.APC_free_to_bound_rate_per_LT_,
@@ -548,7 +549,7 @@ Cell_simulator::Cell_simulator(const SimParameters& sp):
                   sp.APC_TNF_bound_prod_rate_,
                   sp.APC_TNF_blocked_prod_rate_)),
 
-    NK(NK_cells (sp.init_num_NK_cells,
+    NK(NK_cells (sp.init_ratio_NK_cells,
                  sp.NK_max_proliferation_rate_,
                  sp.NK_no_to_free_rate_per_Ag_ ,
                  sp.NK_free_to_bound_rate_per_LT_,
@@ -564,8 +565,8 @@ Cell_simulator::Cell_simulator(const SimParameters& sp):
                  sp.NK_TNF_blocked_prod_rate_)),
 
 
-    LT  (sp.init_num_LT_cells,
-        sp.LT_num_specific,
+    LT  (sp.init_ratio_LT_cells,
+        sp.LT_ratio_specific,
         sp.LT_max_no_receptor_prol_rate_,
         sp.LT_max_free_prol_rate_,
         sp.LT_max_bound_prol_rate_,
@@ -581,8 +582,9 @@ Cell_simulator::Cell_simulator(const SimParameters& sp):
         sp.LT_no_to_free_rate_per_APC_,
         sp.LT_free_to_bound_rate_per_APC_,
         sp.LT_mAb_binding_rate_),
-        time_step_d(sp.time_step_d),
-        sim_duration_d(sp.sim_duration_d),
+
+    time_step_d(tr.time_step_d),
+    sim_duration_d(tr.sim_duration_d),
     trun_d(0)
 
 
@@ -595,8 +597,11 @@ Cell_simulator::Cell_simulator(const SimParameters& sp):
 
 
 Results Cell_simulator::Simulate(const SimParameters& simPar,
+                                 const Treatment& tr,
                                  const Results& results)
 {
+    *this=Cell_simulator(simPar, tr);
+
     std::vector<Measurement> TNFs=results.TNF();
     std::size_t iTNFs=0;
     double tTNFs=TNFs[iTNFs].Time();
@@ -711,4 +716,19 @@ Results Cell_simulator::Simulate(const SimParameters& simPar,
     Results SimRes(TNFs,IFNs,APC_exp,NK_exp,LT_exp,Duratione);
     return SimRes;
 }
+
+Experiment Cell_simulator::Simulate(const SimParameters& simPar,
+                    const Experiment& exp)
+{
+    Experiment sim;
+    for (std::size_t i=0; i<exp.size(); i++)
+    {
+        sim.push_back(exp.Treatment_i(i),
+                      Simulate(simPar,exp.Treatment_i(i),exp.Result_i(i)));
+    }
+
+    return sim;
+
+}
+
 

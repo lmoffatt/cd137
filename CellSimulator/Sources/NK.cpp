@@ -56,6 +56,15 @@ void NK_cells::update(double time_step,const Media& m,const APC_cells& APC, cons
 
 };
 
+void NK_cells::reset(const SimParameters& sp,
+                      const Treatment& tr)
+{
+    NK_num_free_d=sp.init_ratio_NK_cells*tr.init_cells;
+    NK_num_Ag_d=0;
+    NK_num_LT_bound_d=0;
+    NK_blocked_d=0;
+    NK_num_exhausted_d=0;
+ }
 
 double NK_cells::num() const
     {
