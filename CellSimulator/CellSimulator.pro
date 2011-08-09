@@ -29,7 +29,8 @@ SOURCES += \
     Sources/SimParameters.cpp \
     Sources/Results.cpp \
     Sources/ResultsSimulator.cpp \
-    Sources/Measurement.cpp
+    Sources/Measurement.cpp \
+    Sources/Experiment.cpp
 
 HEADERS += \
     Includes/NK.h \
@@ -41,4 +42,6 @@ HEADERS += \
     Includes/SimParameters.h \
     Includes/Results.h \
     Includes/Measurement.h \
-    Includes/ResultsSimulator.h
+    Includes/ResultsSimulator.h \
+    Includes/Treatment.h \
+    Includes/Experiment.h
