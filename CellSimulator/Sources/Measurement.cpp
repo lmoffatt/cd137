@@ -1,5 +1,5 @@
 #include "Measurement.h"
-#
+#include <algorithm>
 
 double Measurement::Time()const
 {
@@ -30,7 +30,7 @@ Measurement::Measurement(const Measurement& other):
     time_(other.time_),
     measure_(other.measure_){}
 
-/*Measurement& operator=(const Measurement& other)
+Measurement& Measurement::operator=(const Measurement& other)
 {
     if (this!=&other)
     {
@@ -38,13 +38,15 @@ Measurement::Measurement(const Measurement& other):
         swap(*this,tmp);
     }
     return *this;
-}*/
+}
 
-//Measurement();
+Measurement::Measurement():
+    time_(),
+    measure_(){}
 
-/*void friend swap(Measurement& one, Measurement& two)
+void  swap(Measurement& one, Measurement& two)
 {
    std::swap(one.time_,two.time_);
    std::swap(one.measure_,two.measure_);
 }
-*/
+

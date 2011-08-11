@@ -85,7 +85,7 @@ Results::Results(std::string experimentName):
         IFN_.push_back(Measurement(16.0,10.3));
         IFN_.push_back(Measurement(48.0,8.1));
         IFN_.push_back(Measurement(120.0,12.4));
-      /*  APC_expression_.push_back(Measurement(0.0,3.2));
+        /*  APC_expression_.push_back(Measurement(0.0,3.2));
         APC_expression_.push_back(Measurement(16.0,11.4));
         APC_expression_.push_back(Measurement(120.0,2.3));
         NK_expression_.push_back (Measurement (24.0, 11.3));
@@ -105,33 +105,31 @@ Results::Results(std::vector<Measurement> myTNF,
                  std::vector<Measurement> myNKexpression_,
                  std::vector<Measurement> myLTexpression_,
                  double duration_):
-                 TNF_(myTNF),
-                 IFN_(myIFN),
-                 APC_expression_(myAPCexpression_),
-                 NK_expression_(myNKexpression_),
-                 LT_expression_(myLTexpression_),
+    TNF_(myTNF),
+    IFN_(myIFN),
+    APC_expression_(myAPCexpression_),
+    NK_expression_(myNKexpression_),
+    LT_expression_(myLTexpression_),
     duration_(0)
-{if (duration_<TNF_[TNF_.size()-1].Time())
+{if ((!TNF_.empty())&&duration_<TNF_[TNF_.size()-1].Time())
         duration_=TNF_[TNF_.size()-1].Time();
 
 
- if (duration_<IFN_[IFN_.size()-1].Time())
-            duration_=IFN_[IFN_.size()-1].Time();
+    if ((!IFN_.empty())&&duration_<IFN_[IFN_.size()-1].Time())
+        duration_=IFN_[IFN_.size()-1].Time();
 
- if (duration_<APC_expression_[APC_expression_.size()-1].Time())
- duration_=APC_expression_[APC_expression_.size()-1].Time();
+    if ((!APC_expression_.empty())&&duration_<APC_expression_[APC_expression_.size()-1].Time())
+        duration_=APC_expression_[APC_expression_.size()-1].Time();
 
- if (duration_<NK_expression_[NK_expression_.size()-1].Time())
- duration_=NK_expression_[NK_expression_.size()-1].Time();
+    if ((!NK_expression_.empty())&&duration_<NK_expression_[NK_expression_.size()-1].Time())
+        duration_=NK_expression_[NK_expression_.size()-1].Time();
 
- if (duration_<LT_expression_[LT_expression_.size()-1].Time())
- duration_=LT_expression_[LT_expression_.size()-1].Time();
+    if ((!LT_expression_.empty())&&duration_<LT_expression_[LT_expression_.size()-1].Time())
+        duration_=LT_expression_[LT_expression_.size()-1].Time();
 
- };
+}
 
- Results::Results(){}
-
-
+Results::Results(){}
 
 
 
@@ -139,205 +137,263 @@ Results::Results(std::vector<Measurement> myTNF,
 
 
 
- std::vector<double> SumSquare_TNF(const Results one, const Results two)
- {
-     std::vector<double> ss_TNF;
-     std::size_t n=0;
-     std::size_t i=0;
-     std::size_t j=0;
-
-     for (;;)
-     {
-         if(two.TNF()[j].Time()==one.TNF()[i].Time())
-         {
-             ss_TNF.push_back(pow(two.TNF()[j].Measure()-one.TNF()[i].Measure(),2));
-             n++;
-         }
-         if (one.TNF()[i].Time()<=two.TNF()[j].Time())
-         {
-             i++;
-             if (i>=one.TNF().size())
-                 break;
-         }
-         else
-         {
-             j++;
-             if (j>=two.TNF().size())
-                 break;
-         }
-
-     }
-
-         return ss_TNF;
-     }
-
- std::vector<double> SumSquare_IFN(const Results one, const Results two)
- {
-     std::vector<double> ss;
-     std::size_t n=0;
-     std::size_t i=0;
-     std::size_t j=0;
-
-     for (;;)
-     {
-         if(two.IFN()[j].Time()==one.IFN()[i].Time())
-         {
-             ss.push_back(std::pow(two.IFN()[j].Measure()-one.IFN()[i].Measure(),2));
-             n++;
-         }
-         if (one.IFN()[i].Time()<=two.IFN()[j].Time())
-         {
-             i++;
-             if (i>=one.IFN().size())
-                 break;
-         }
-         else
-         {
-             j++;
-             if (j>=two.IFN().size())
-                 break;
-         }
-
-     }
-
-          return ss;
-
- }
-
- std::vector<double> SumSquare_APCexpression(const Results one, const Results two)
- {
-     std::vector<double> ss;
-     std::size_t n=0;
-     std::size_t i=0;
-     std::size_t j=0;
-
-     for (;;)
-     {
-         if(two.APC_expression()[j].Time()==one.APC_expression()[i].Time())
-         {
-             ss.push_back(std::pow(two.APC_expression()[j].Measure()-one.APC_expression()[i].Measure(),2));
-             n++;
-         }
-         if (one.APC_expression()[i].Time()<=two.APC_expression()[j].Time())
-         {
-             i++;
-             if (i>=one.APC_expression().size())
-                 break;
-         }
-         else
-         {
-             j++;
-             if (j>=two.APC_expression().size())
-                 break;
-         }
-
-     }
-
-        return ss;
-
- }
-
- std::vector<double> SumSquare_NKexpression(const Results one, const Results two)
- {
-     std::vector<double> ss;
-     std::size_t n=0;
-     std::size_t i=0;
-     std::size_t j=0;
-
-     for (;;)
-     {
-         if(two.NK_expression()[j].Time()==one.NK_expression()[i].Time())
-         {
-             ss.push_back(std::pow(two.NK_expression()[j].Measure()-one.NK_expression()[i].Measure(),2));
-             n++;
-         }
-         if (one.NK_expression()[i].Time()<=two.NK_expression()[j].Time())
-         {
-             i++;
-             if (i>=one.NK_expression().size())
-                 break;
-         }
-         else
-         {
-             j++;
-             if (j>=two.NK_expression().size())
-                 break;
-         }
-
-     }
-      return ss;
-
- }
-
- std::vector<double> SumSquare_LTexpression(const Results one, const Results two)
- {
-     std::vector<double> ss;
-     std::size_t n=0;
-     std::size_t i=0;
-     std::size_t j=0;
-
-     for (;;)
-     {
-         if(two.LT_expression()[j].Time()==one.LT_expression()[i].Time())
-         {
-             ss.push_back(std::pow(two.LT_expression()[j].Measure()-one.LT_expression()[i].Measure(),2));
-             n++;
-         }
-         if (one.LT_expression()[i].Time()<=two.LT_expression()[j].Time())
-         {
-             i++;
-             if (i>=one.LT_expression().size())
-                 break;
-         }
-         else
-         {
-             j++;
-             if (j>=two.LT_expression().size())
-                 break;
-         }
-
-     }
-
-         return ss;
-
- }
 
 
+std::vector<double> SumSquare_TNF(const Results one, const Results two)
+{
+    std::vector<double> ss_TNF;
+    std::size_t n=0;
+    std::size_t i=0;
+    std::size_t j=0;
 
- std::vector<double> SumSquare_i(const Results one, const Results two)
- {
-     std::vector<double> ss=SumSquare_TNF(one,two);
-     std::vector<double> ss_other=SumSquare_IFN(one,two);
-     ss.insert(ss.end(),ss_other.begin(),ss_other.end());
+    for (;;)
+    {
+        if (one.TNF().empty())
+            break;
+        if (two.TNF().empty())
+            break;
 
-     ss_other=SumSquare_APCexpression(one,two);
-     ss.insert(ss.end(),ss_other.begin(),ss_other.end());
+        if(two.TNF()[j].Time()==one.TNF()[i].Time())
+        {
+            ss_TNF.push_back(pow(two.TNF()[j].Measure()-one.TNF()[i].Measure(),2));
+            n++;
+        }
+        if (one.TNF()[i].Time()<=two.TNF()[j].Time())
+        {
+            i++;
+            if (i>=one.TNF().size())
+                break;
+        }
+        else
+        {
+            j++;
+            if (j>=two.TNF().size())
+                break;
+        }
 
-     ss_other=SumSquare_NKexpression(one,two);
-     ss.insert(ss.end(),ss_other.begin(),ss_other.end());
+    }
 
-     ss_other=SumSquare_LTexpression(one,two);
-     ss.insert(ss.end(),ss_other.begin(),ss_other.end());
+    return ss_TNF;
+}
 
-     return ss;
- }
+std::vector<double> SumSquare_IFN(const Results one, const Results two)
+{
+    std::vector<double> ss;
+    std::size_t n=0;
+    std::size_t i=0;
+    std::size_t j=0;
 
- double SumSquare(const Results one, const Results two)
- {
-     std::vector<double> ss=SumSquare_i(one,two);
-      double s=0;
-     for (std::size_t i=0;i>ss.size();i++)
-         s+=ss[i];
-     return s;
- }
+    for (;;)
+    {
+        if (one.IFN().empty())
+            break;
+        if (two.IFN().empty())
+            break;
+        if(two.IFN()[j].Time()==one.IFN()[i].Time())
+        {
+            ss.push_back(std::pow(two.IFN()[j].Measure()-one.IFN()[i].Measure(),2));
+            n++;
+        }
+        if (one.IFN()[i].Time()<=two.IFN()[j].Time())
+        {
+            i++;
+            if (i>=one.IFN().size())
+                break;
+        }
+        else
+        {
+            j++;
+            if (j>=two.IFN().size())
+                break;
+        }
 
- void SumSquareTXT(const Results one, const Results two)
- {
-     std::string file="SumSquare.txt";
-     std::ofstream fi;
-     fi.open(file.c_str());
-     fi<<"La suma de cuadrados obtenida para sus parámetros es ";
-     fi<<SumSquare(one, two);
+    }
 
- }
+    return ss;
+
+}
+
+std::vector<double> SumSquare_APCexpression(const Results one, const Results two)
+{
+    std::vector<double> ss;
+    std::size_t n=0;
+    std::size_t i=0;
+    std::size_t j=0;
+
+    for (;;)
+    {
+        if (one.APC_expression().empty())
+            break;
+        if (two.APC_expression().empty())
+            break;
+
+        if(two.APC_expression()[j].Time()==one.APC_expression()[i].Time())
+        {
+            ss.push_back(std::pow(two.APC_expression()[j].Measure()-one.APC_expression()[i].Measure(),2));
+            n++;
+        }
+        if (one.APC_expression()[i].Time()<=two.APC_expression()[j].Time())
+        {
+            i++;
+            if (i>=one.APC_expression().size())
+                break;
+        }
+        else
+        {
+            j++;
+            if (j>=two.APC_expression().size())
+                break;
+        }
+
+    }
+
+    return ss;
+
+}
+
+std::vector<double> SumSquare_NKexpression(const Results one, const Results two)
+{
+    std::vector<double> ss;
+    std::size_t n=0;
+    std::size_t i=0;
+    std::size_t j=0;
+
+    for (;;)
+    {
+        if (one.NK_expression().empty())
+            break;
+        if (two.NK_expression().empty())
+            break;
+
+        if(two.NK_expression()[j].Time()==one.NK_expression()[i].Time())
+        {
+            ss.push_back(std::pow(two.NK_expression()[j].Measure()-one.NK_expression()[i].Measure(),2));
+            n++;
+        }
+        if (one.NK_expression()[i].Time()<=two.NK_expression()[j].Time())
+        {
+            i++;
+            if (i>=one.NK_expression().size())
+                break;
+        }
+        else
+        {
+            j++;
+            if (j>=two.NK_expression().size())
+                break;
+        }
+
+    }
+    return ss;
+
+}
+
+std::vector<double> SumSquare_LTexpression(const Results one, const Results two)
+{
+    std::vector<double> ss;
+    std::size_t n=0;
+    std::size_t i=0;
+    std::size_t j=0;
+
+    for (;;)
+    {
+        if (one.LT_expression().empty())
+            break;
+        if (two.LT_expression().empty())
+            break;
+
+        if(two.LT_expression()[j].Time()==one.LT_expression()[i].Time())
+        {
+            ss.push_back(std::pow(two.LT_expression()[j].Measure()-one.LT_expression()[i].Measure(),2));
+            n++;
+        }
+        if (one.LT_expression()[i].Time()<=two.LT_expression()[j].Time())
+        {
+            i++;
+            if (i>=one.LT_expression().size())
+                break;
+        }
+        else
+        {
+            j++;
+            if (j>=two.LT_expression().size())
+                break;
+        }
+
+    }
+
+    return ss;
+
+}
+
+
+
+std::vector<double> SumSquare_i(const Results& one, const Results& two)
+{
+    std::vector<double> ss=SumSquare_TNF(one,two);
+    std::vector<double> ss_other=SumSquare_IFN(one,two);
+    ss.insert(ss.end(),ss_other.begin(),ss_other.end());
+
+    ss_other=SumSquare_APCexpression(one,two);
+    ss.insert(ss.end(),ss_other.begin(),ss_other.end());
+
+    ss_other=SumSquare_NKexpression(one,two);
+    ss.insert(ss.end(),ss_other.begin(),ss_other.end());
+
+    ss_other=SumSquare_LTexpression(one,two);
+    ss.insert(ss.end(),ss_other.begin(),ss_other.end());
+
+    return ss;
+}
+
+double SumSquare(const Results& one, const Results& two)
+{
+    std::vector<double> ss=SumSquare_i(one,two);
+    double s=0;
+    for (std::size_t i=0;i>ss.size();i++)
+        s+=ss[i];
+    return s;
+}
+
+void SumSquareTXT(const Results& one, const Results& two)
+{
+    std::string file="SumSquare.txt";
+    std::ofstream fi;
+    fi.open(file.c_str());
+    fi<<"La suma de cuadrados obtenida para sus parámetros es ";
+    fi<<SumSquare(one, two);
+
+}
+
+
+std::ostream& operator<<(std::ostream& s, const Results& res)
+{
+    s<<"Results \n\n";
+
+    s<<"TNF\n";
+    for (std::size_t i=0; i<res.TNF().size(); i++)
+        s<<res.TNF()[i].Time()<<"\t"<<res.TNF()[i].Measure()<<"\n";
+
+    s<<"IFN\n";
+    for (std::size_t i=0; i<res.IFN().size(); i++)
+        s<<res.IFN()[i].Time()<<"\t"<<res.IFN()[i].Measure()<<"\n";
+
+    s<<"APC_expression \n";
+    for (std::size_t i=0; i<res.APC_expression().size(); i++)
+        s<<res.APC_expression()[i].Time()<<"\t"<<
+           res.APC_expression()[i].Measure()<<"\n";
+
+    s<<"NK_expression \n";
+    for (std::size_t i=0; i<res.NK_expression().size(); i++)
+        s<<res.NK_expression()[i].Time()<<"\t"<<
+           res.NK_expression()[i].Measure()<<"\n";
+
+    s<<"LT_expression \n";
+    for (std::size_t i=0; i<res.LT_expression().size(); i++)
+        s<<res.LT_expression()[i].Time()<<"\t"<<
+           res.LT_expression()[i].Measure()<<"\n";
+
+    return s;
+
+}
 

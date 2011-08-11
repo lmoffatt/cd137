@@ -83,7 +83,7 @@ void experiment2()
 
     Treatment Mtb;
     Mtb.Ag=10.0;
-    Mtb.Ab=0,0;
+    Mtb.Ab=0.0;
     Mtb.sim_duration_d=120;
     Mtb.time_step_d=1.0/3600;
     Mtb.init_cells=1e6;
@@ -155,10 +155,17 @@ void experiment2()
     sp.IFN_deg=1.0/120;
     Cell_simulator cell(sp, media);
     Experiment simulExp=cell.Simulate(sp,E);
+    std::cout<<"Media\n";
+    std::cout<<simulExp.Result_i(0);
+    std::cout<<"Mtb\n";
+    std::cout<<simulExp.Result_i(1);
+    std::cout<<"CD137\n";
+    std::cout<<simulExp.Result_i(2);
+    //std::cout<<simulExp.
     SumSquare (E, simulExp);
     SumSquareTXT (E, simulExp);
 
-};
+}
 
 
 /*void con_bloqueo ()
