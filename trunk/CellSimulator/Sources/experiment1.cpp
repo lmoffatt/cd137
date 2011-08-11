@@ -1,7 +1,9 @@
+#include <fstream>
 #include "Includes/experiment1.h"
 #include "Includes/Cell_simulator.h"
 #include "Includes/Treatment.h"
 #include "Includes/Experiment.h"
+
 
 void experiment1()
 {
@@ -161,7 +163,14 @@ void experiment2()
     std::cout<<simulExp.Result_i(1);
     std::cout<<"CD137\n";
     std::cout<<simulExp.Result_i(2);
-    //std::cout<<simulExp.
+    std::ofstream f;
+    f.open("results.txt");
+    f<<"Media\n";
+    f<<simulExp.Result_i(0);
+    f<<"Mtb\n";
+    f<<simulExp.Result_i(1);
+    f<<"CD137\n";
+    f<<simulExp.Result_i(2);
     SumSquare (E, simulExp);
     SumSquareTXT (E, simulExp);
 
