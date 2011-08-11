@@ -122,7 +122,7 @@ double APC_cells::num_bound() const
 double APC_cells::percentage_cell_expressing_receptor()const
 {
 return (num_Ag_d+num_LT_bound_d+num_blocked_d)/num()*100;
-};
+}
 
 
 const double& APC_cells::num_blocked() const

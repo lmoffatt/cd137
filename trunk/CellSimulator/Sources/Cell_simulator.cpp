@@ -2,6 +2,9 @@
 #include <string>
 #include <cmath>
 #include <fstream>
+#include <cstddef>
+#include <vector>
+#include "Results.h"
 #include "Includes/Cell_simulator.h"
 #include "Includes/SimParameters.h"
 #include "Includes/Media.h"
@@ -19,7 +22,7 @@ void Cell_simulator::ask_parameters()
     double LT_num_specific;
     double Ag;
     double Ab;
-  //  double Ag_internalization_rate;
+    //  double Ag_internalization_rate;
     double APC_max_proliferation_rate_;
     double NK_max_proliferation_rate_;
     double LT_max_no_receptor_prol_rate_;
@@ -87,7 +90,7 @@ void Cell_simulator::ask_parameters()
     if (Ab==-1)
         Ab=5;
 
-  /*  std::cout<<"Enter de Antigen internalization rate";
+    /*  std::cout<<"Enter de Antigen internalization rate";
     std::cout<<"default is, 0.000005, enter -1 to keep this value";
     std::cin>>this->Ag_internalization_rate;
     if (Ag_internalization_rate==-1)
@@ -138,7 +141,7 @@ void Cell_simulator::ask_parameters()
     ///Proliferation rates
     std::cout<<"enter the following proliferation rates\n";
     std::cout<<"of APC cells default value =1/240 h, enter -1 to keep this value\n";
-        std::cin>>APC_max_proliferation_rate_;
+    std::cin>>APC_max_proliferation_rate_;
     if (APC_max_proliferation_rate_==-1)
         APC_max_proliferation_rate_=1.0/240;
 
@@ -309,7 +312,7 @@ void Cell_simulator::ask_parameters()
         LT_TNF_free_prod_rate_=10.0/1e5;
     std::cout<<"of cells with bound receptor,  default value is 1000 pg per hour per 1e5 cells, enter -1 to keep this value \n";
     std::cin>>LT_IFN_bound_prod_rate_;
-       if (LT_TNF_bound_prod_rate_==-1)
+    if (LT_TNF_bound_prod_rate_==-1)
         LT_TNF_bound_prod_rate_=20.0/1e5;
 
     IFN_deg=0;
@@ -337,7 +340,7 @@ void Cell_simulator::ask_parameters()
             0,
             TNF_deg,
             IFN_deg
-          //  Ag_internalization_rate
+            //  Ag_internalization_rate
             );
 
     APC=APC_cells(init_num_APC_cells,
@@ -406,17 +409,17 @@ void Cell_simulator::run()
     std::cout<<"NK"<<"\t";
     std::cout<<"LT()"<<"\n";
     std::cout<<std::endl;
-//    std::cout<<"LT no receptor"<<"\t";
-//    std::cout<<"LT free "<<"\t";
-//    std::cout<<"LT bound"<<"\t";
-//    std::cout<<"APC with Ag"<<"\t";
-//    std::cout<<"APC bound"<<"\t";
-//    std::cout<<"APC exhausted"<<"t";
-//    std::cout<<"APC.IFNgamma_production_rate"<<"\t";
-//    std::cout<<"LT.IFNgamma_production_rate"<<"\t";
-//    std::cout<<"APC.TNF_production_rate"<<"\t";
-//    std::cout<<"LT.TNF_production_rate"<<"\t";
-//    std::cout<<"Ag"<<"\n",
+    //    std::cout<<"LT no receptor"<<"\t";
+    //    std::cout<<"LT free "<<"\t";
+    //    std::cout<<"LT bound"<<"\t";
+    //    std::cout<<"APC with Ag"<<"\t";
+    //    std::cout<<"APC bound"<<"\t";
+    //    std::cout<<"APC exhausted"<<"t";
+    //    std::cout<<"APC.IFNgamma_production_rate"<<"\t";
+    //    std::cout<<"LT.IFNgamma_production_rate"<<"\t";
+    //    std::cout<<"APC.TNF_production_rate"<<"\t";
+    //    std::cout<<"LT.TNF_production_rate"<<"\t";
+    //    std::cout<<"Ag"<<"\n",
 
 
     f<<"round"<<" , ";
@@ -455,64 +458,64 @@ void Cell_simulator::run()
     while (trun_d<this->sim_duration_d)
     {
 
-            if (trun_d-floor(trun_d)<time_step_d)
-            {
-                std::cout<<trun_d<<"\t";
-                std::cout<<m.IFNgamma()<<"\t";
-                std::cout<<m.TNF()<<"\t";
-                std::cout<<APC.num()<<"\t";
-                std::cout<<NK.num()<<"\t";
-                std::cout<<LT.num()<<"\n";
-                //            std::cout<<APC.num_Ag()<<"\t";
-                //            std::cout<<APC.num_bound()<<"\t";
-                //            std::cout<<APC.num_exhausted()<<"t";
-                //            std::cout<<APC.IFNgamma_production_rate()<<"\t";
-                //            std::cout<<LT.num_cells_not_expressing_receptor()<<"\t";
-                //            std::cout<<LT.num_cells_expressing_receptor_and_free()<<"\t";
-                //            std::cout<<LT.num_cells_expressing_receptor_and_bound()<<"\t";
-                //            std::cout<<LT.IFNgamma_production_rate()<<"\t";
-                //            std::cout<<APC.TNF_production_rate()<<"\t";
-                //            std::cout<<LT.TNF_production_rate()<<"\t";
-                //            std::cout<<m.Ag()<<"\n";
+        if (trun_d-floor(trun_d)<time_step_d)
+        {
+            std::cout<<trun_d<<"\t";
+            std::cout<<m.IFNgamma()<<"\t";
+            std::cout<<m.TNF()<<"\t";
+            std::cout<<APC.num()<<"\t";
+            std::cout<<NK.num()<<"\t";
+            std::cout<<LT.num()<<"\n";
+            //            std::cout<<APC.num_Ag()<<"\t";
+            //            std::cout<<APC.num_bound()<<"\t";
+            //            std::cout<<APC.num_exhausted()<<"t";
+            //            std::cout<<APC.IFNgamma_production_rate()<<"\t";
+            //            std::cout<<LT.num_cells_not_expressing_receptor()<<"\t";
+            //            std::cout<<LT.num_cells_expressing_receptor_and_free()<<"\t";
+            //            std::cout<<LT.num_cells_expressing_receptor_and_bound()<<"\t";
+            //            std::cout<<LT.IFNgamma_production_rate()<<"\t";
+            //            std::cout<<APC.TNF_production_rate()<<"\t";
+            //            std::cout<<LT.TNF_production_rate()<<"\t";
+            //            std::cout<<m.Ag()<<"\n";
 
-                f<<trun_d<<" , ";
-                f<<m.IFNgamma()<<" , ";
-                f<<m.TNF()<<" , ";
-                f<<APC.num()<<" , ";
-                f<<NK.num()<<" , ";
-                f<<LT.num()<<" , ";
-                f<<APC.num_free()<<" , ";
-                f<<APC.num_Ag()<<" , ";
-                f<<APC.num_bound()<<" , ";
-                f<<APC.num_blocked()<<" , ";
-                f<<APC.percentage_cell_expressing_receptor()<<" , ";
-                f<<APC.num_exhausted()<<" , ";
-                f<<APC.IFNgamma_production_rate()<<" , ";
-                f<<APC.TNF_production_rate()<<" , ";
-                f<<NK.NK_num_free()<<" , ";
-                f<<NK.NK_num_Ag()<<" , ";
-                f<<NK.NK_num_bound()<<" , ";
-                f<<NK.NK_blocked()<<" , ";
-                f<<NK.NK_exhausted()<<" , ";
-                f<<NK.percentage_cell_expressing_receptor()<<" , ";
-                f<<NK.IFNgamma_production_rate()<<" , ";
-                f<<NK.TNF_production_rate()<<" , ";
-                f<<LT.num_cells_not_expressing_receptor()<<" , ";
-                f<<LT.num_cells_expressing_receptor_and_free()<<" , ";
-                f<<LT.num_cells_expressing_receptor_and_bound()<<" , ";
-                f<<LT.num_blocked()<<" , ";
-                f<<LT.LT_percentage_cell_expressing_receptor()<<" , ";
-                f<<LT.IFNgamma_production_rate()<<" , ";
-                f<<LT.TNF_production_rate()<<" , ";
-                f<<m.Ag()<<"\n";
+            f<<trun_d<<" , ";
+            f<<m.IFNgamma()<<" , ";
+            f<<m.TNF()<<" , ";
+            f<<APC.num()<<" , ";
+            f<<NK.num()<<" , ";
+            f<<LT.num()<<" , ";
+            f<<APC.num_free()<<" , ";
+            f<<APC.num_Ag()<<" , ";
+            f<<APC.num_bound()<<" , ";
+            f<<APC.num_blocked()<<" , ";
+            f<<APC.percentage_cell_expressing_receptor()<<" , ";
+            f<<APC.num_exhausted()<<" , ";
+            f<<APC.IFNgamma_production_rate()<<" , ";
+            f<<APC.TNF_production_rate()<<" , ";
+            f<<NK.NK_num_free()<<" , ";
+            f<<NK.NK_num_Ag()<<" , ";
+            f<<NK.NK_num_bound()<<" , ";
+            f<<NK.NK_blocked()<<" , ";
+            f<<NK.NK_exhausted()<<" , ";
+            f<<NK.percentage_cell_expressing_receptor()<<" , ";
+            f<<NK.IFNgamma_production_rate()<<" , ";
+            f<<NK.TNF_production_rate()<<" , ";
+            f<<LT.num_cells_not_expressing_receptor()<<" , ";
+            f<<LT.num_cells_expressing_receptor_and_free()<<" , ";
+            f<<LT.num_cells_expressing_receptor_and_bound()<<" , ";
+            f<<LT.num_blocked()<<" , ";
+            f<<LT.LT_percentage_cell_expressing_receptor()<<" , ";
+            f<<LT.IFNgamma_production_rate()<<" , ";
+            f<<LT.TNF_production_rate()<<" , ";
+            f<<m.Ag()<<"\n";
 
-            };
+        };
 
-            APC.update(time_step_d,m,NK,LT);
-            NK.update(time_step_d,m,APC,LT);
-            LT.update(time_step_d,m,APC,NK);
-            m.update(time_step_d,APC,NK,LT);
-            trun_d+=time_step_d;
+        APC.update(time_step_d,m,NK,LT);
+        NK.update(time_step_d,m,APC,LT);
+        LT.update(time_step_d,m,APC,NK);
+        m.update(time_step_d,APC,NK,LT);
+        trun_d+=time_step_d;
 
     }
     f.close();
@@ -602,37 +605,53 @@ Results Cell_simulator::Simulate(const SimParameters& simPar,
 {
     *this=Cell_simulator(simPar, tr);
 
-    std::vector<Measurement> TNFs=results.TNF();
-    std::size_t iTNFs=0;
-    double tTNFs=TNFs[iTNFs].Time();
-
-    std::vector<Measurement> IFNs=results.IFN();
-    std::size_t iIFNs=0;
-    double tIFNs=IFNs[iIFNs].Time();
-
-    std::vector<Measurement> APC_exp=results.APC_expression();
-    std::size_t iAPC_exp=0;
-    double tAPC_exp=APC_exp[iAPC_exp].Time();
-
-    std::vector<Measurement> NK_exp=results.NK_expression();
-    std::size_t iNK_exp=0;
-    double tNK_exp=NK_exp[iNK_exp].Time();
-
-    std::vector<Measurement> LT_exp=results.LT_expression();
-    std::size_t iLT_exp=0;
-    double tLT_exp=LT_exp[iLT_exp].Time();
-
     double Duratione=results.Duration();
 
 
+    std::vector<Measurement> TNFs=results.TNF();
+    std::size_t iTNFs=0;
 
-    while (trun_d<results.Duration())
+    double tTNFs;
+    if (!TNFs.empty())
+        tTNFs=TNFs[iTNFs].Time();
+    else
+        tTNFs=Duratione+1;
+
+    std::vector<Measurement> IFNs=results.IFN();
+    std::size_t iIFNs=0;
+    double tIFNs;
+    if (!IFNs.empty())
+        tIFNs=IFNs[iIFNs].Time();
+    else
+        tIFNs=Duratione+1;
+
+    std::vector<Measurement> APC_exp=results.APC_expression();
+    std::size_t iAPC_exp=0;
+    double tAPC_exp;
+    if (!APC_exp.empty())
+        tAPC_exp=APC_exp[iAPC_exp].Time();
+    else
+        tAPC_exp=Duratione+1;
+
+    std::vector<Measurement> NK_exp=results.NK_expression();
+    std::size_t iNK_exp=0;
+    double tNK_exp;
+    if (!NK_exp.empty())
+        tNK_exp=NK_exp[iNK_exp].Time();
+    else
+        tNK_exp=Duratione+1;
+
+    std::vector<Measurement> LT_exp=results.LT_expression();
+    std::size_t iLT_exp=0;
+    double tLT_exp;
+    if (!LT_exp.empty())
+        tLT_exp=LT_exp[iLT_exp].Time();
+    else tLT_exp=Duratione+1;
+
+
+
+    while (trun_d<=results.Duration())
     {
-        APC.update(time_step_d,m,NK,LT);
-        NK.update(time_step_d,m,APC,LT);
-        LT.update(time_step_d,m,APC,NK);
-        m.update(time_step_d,APC,NK,LT);
-        trun_d+=time_step_d;
 
         if(trun_d>=tTNFs)
         {
@@ -665,7 +684,8 @@ Results Cell_simulator::Simulate(const SimParameters& simPar,
 
         if(trun_d>=tAPC_exp)
         {
-            APC_exp[iAPC_exp]=Measurement(trun_d,APC.percentage_cell_expressing_receptor());
+            APC_exp[iAPC_exp].setMeasurement(
+                        APC.percentage_cell_expressing_receptor());
             ++iAPC_exp;
             if (iAPC_exp<APC_exp.size())
             {
@@ -681,7 +701,8 @@ Results Cell_simulator::Simulate(const SimParameters& simPar,
 
         if(trun_d>=tNK_exp)
         {
-            APC_exp[iNK_exp]=Measurement(trun_d,NK.percentage_cell_expressing_receptor());
+            NK_exp[iNK_exp].setMeasurement (
+                        NK.percentage_cell_expressing_receptor());
             ++iNK_exp;
             if (iNK_exp<NK_exp.size())
             {
@@ -696,7 +717,8 @@ Results Cell_simulator::Simulate(const SimParameters& simPar,
 
         if(trun_d>=tLT_exp)
         {
-            LT_exp[iLT_exp]=Measurement(trun_d,LT.LT_percentage_cell_expressing_receptor());
+            LT_exp[iLT_exp].setMeasurement (
+                        LT.LT_percentage_cell_expressing_receptor());
             ++iLT_exp;
             if (iLT_exp<LT_exp.size())
             {
@@ -710,6 +732,11 @@ Results Cell_simulator::Simulate(const SimParameters& simPar,
 
 
         }
+        APC.update(time_step_d,m,NK,LT);
+        NK.update(time_step_d,m,APC,LT);
+        LT.update(time_step_d,m,APC,NK);
+        m.update(time_step_d,APC,NK,LT);
+        trun_d+=time_step_d;
 
     }
 
@@ -718,7 +745,7 @@ Results Cell_simulator::Simulate(const SimParameters& simPar,
 }
 
 Experiment Cell_simulator::Simulate(const SimParameters& simPar,
-                    const Experiment& exp)
+                                    const Experiment& exp)
 {
     Experiment sim;
     for (std::size_t i=0; i<exp.size(); i++)

@@ -2,6 +2,7 @@
 #define RESULTS_H
 #include <vector>
 #include <string>
+#include <iostream>
 
 #include "Measurement.h"
 
@@ -26,7 +27,10 @@ public:
 
 
     double Duration()const;
-    std::string filename;
+ //   std::string filename;
+
+
+
 
 
 private:
@@ -40,9 +44,11 @@ private:
 
 };
 
-double SumSquare(const Results one, const Results two);
-std::vector<double> SumSquare_i(const Results one, const Results two);
+double SumSquare(const Results& one, const Results& two);
+std::vector<double> SumSquare_i(const Results& one, const Results& two);
 void SumSquareTXT(const Results& one, const Results& two);
 
+
+std::ostream& operator<<(std::ostream& s, const Results& res);
 
 #endif // RESULTS_H
