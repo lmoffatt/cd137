@@ -1,7 +1,9 @@
 #ifndef EXPERIMENT_H
 #define EXPERIMENT_H
+#include <cstddef>
 #include "Includes/Results.h"
 #include "Includes/Treatment.h"
+
 
 class Experiment
 {
@@ -24,9 +26,9 @@ private:
 
 };
 
-double SumSquare(const Experiment one, const Experiment two);
+double SumSquare(const Experiment& one, const Experiment& two);
 void SumSquareTXT(const Experiment& one, const Experiment& two);
-std::vector<double>SumSquare_i(const Experiment one, const Experiment two);
+std::vector<double>SumSquare_i(const Experiment& one, const Experiment& two);
 
 
 #endif // EXPERIMENT_H
