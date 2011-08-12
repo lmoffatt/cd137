@@ -167,10 +167,13 @@ void experiment2()
     f.open("results.txt");
     f<<"Media\n";
     f<<simulExp.Result_i(0);
+    f<<E.Result_i(0);
     f<<"Mtb\n";
     f<<simulExp.Result_i(1);
+    f<<E.Result_i(1);
     f<<"CD137\n";
     f<<simulExp.Result_i(2);
+    f<<E.Result_i(2);
     SumSquare (E, simulExp);
     SumSquareTXT (E, simulExp);
 
