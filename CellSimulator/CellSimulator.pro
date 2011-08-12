@@ -30,7 +30,9 @@ SOURCES += \
     Sources/Results.cpp \
     Sources/ResultsSimulator.cpp \
     Sources/Measurement.cpp \
-    Sources/Experiment.cpp
+    Sources/Experiment.cpp \
+    Sources/LevenbergMarquardt.cpp \
+    Sources/MatrixInverse.cpp
 
 HEADERS += \
     Includes/NK.h \
@@ -44,4 +46,6 @@ HEADERS += \
     Includes/Measurement.h \
     Includes/ResultsSimulator.h \
     Includes/Treatment.h \
-    Includes/Experiment.h
+    Includes/Experiment.h \
+    Includes/LevenbergMarquardt.h \
+    Includes/MatrixInverse.h
