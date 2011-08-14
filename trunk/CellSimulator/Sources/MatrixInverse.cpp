@@ -55,3 +55,15 @@ inv(const std::vector< std::vector< double> >& matrix)
     }
 
 
+std::ostream& operator<<(
+    std::ostream& s,const std::vector< std::vector< double> >& matrix)
+{
+    s<<"\n";
+    for (std::size_t i=0; i<matrix.size();++i)
+    {
+	for (std::size_t j=0; j<matrix[i].size();j++)
+	    s<<matrix[i][j]<<"\t";
+	s<<"\n";
+    }
+    return s;
+}

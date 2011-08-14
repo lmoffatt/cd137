@@ -30,6 +30,9 @@ private:
     std::size_t maxIter_;
     std::size_t maxFeval_;
 
+    double minParamChange_;
+    double minSSChange_;
+    double minGradient_;
 
     // variables that change on each iteration
 
@@ -57,15 +60,25 @@ private:
     std::vector<double> d_;
 
 
-
-
-
     std::vector<double> optimParam_;
 
+    bool surpassIter_;
+    bool surpassFeval_;
+
+    double ParamChange_;
+    double SSChange_;
+    double NormGrad_;
+
+    bool smallParamChange_;
+
+    bool smallSSChange_;
+
+    bool smallGradient_;
 
 
-    bool meetConvergenceCriteria()const;
+    bool meetConvergenceCriteria();
 
+    void initialize();
     void iterate();
 
     void computeJacobian();
