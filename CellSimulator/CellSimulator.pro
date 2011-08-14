@@ -32,7 +32,8 @@ SOURCES += \
     Sources/Measurement.cpp \
     Sources/Experiment.cpp \
     Sources/LevenbergMarquardt.cpp \
-    Sources/MatrixInverse.cpp
+    Sources/MatrixInverse.cpp \
+    Sources/MatrixInverse_Test.cpp
 
 HEADERS += \
     Includes/NK.h \
@@ -48,4 +49,9 @@ HEADERS += \
     Includes/Treatment.h \
     Includes/Experiment.h \
     Includes/LevenbergMarquardt.h \
-    Includes/MatrixInverse.h
+    Includes/MatrixInverse.h \
+    Includes/MatrixInverse_Test.h
+
+
+LIBS += -L$$PWD/bin -lcygblas \
+	-L$$PWD/bin -lcyglapack
