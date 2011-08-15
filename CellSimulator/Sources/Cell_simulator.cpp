@@ -524,11 +524,24 @@ void Cell_simulator::run()
 
 
 Cell_simulator::Cell_simulator(const SimParameters& sp,
-			       const Treatment& tr)
-{
-     applyParameters(sp,tr);
+                               const Experiment& E):
 
-}
+    m(),
+    APC(),
+    NK(),
+    LT(),
+
+    time_step_d(),
+    sim_duration_d(),
+    trun_d(),
+    filename(),
+
+
+    experiment_(E),
+    fitExperiment_(),
+    initialPar_(sp),
+    fitPar_()
+{}
 
 
 Cell_simulator& Cell_simulator::applyParameters(const SimParameters& sp,
@@ -599,8 +612,61 @@ Cell_simulator& Cell_simulator::applyParameters(const SimParameters& sp,
     sim_duration_d=tr.sim_duration_d;
     trun_d=0;
 
-
+return *this;
 }
+
+
+
+Cell_simulator::Cell_simulator(){}
+
+
+
+
+Cell_simulator::Cell_simulator(const Cell_simulator& other):
+    m(other.m),
+    APC(other.APC),
+    NK(other.NK),
+    LT(other.LT),
+
+    time_step_d(other.time_step_d),
+    sim_duration_d(other.sim_duration_d),
+    trun_d(other.trun_d),
+    filename (other.filename),
+
+
+    experiment_(other.experiment_),
+    fitExperiment_(other.fitExperiment_),
+    initialPar_(other.initialPar_),
+    fitPar_(fitPar_)
+    {}
+
+
+Cell_simulator&
+Cell_simulator::operator=(const Cell_simulator& other)
+{
+    if (this!=&other)
+    {
+        Cell_simulator tmp(other);
+        swap(*this,tmp);
+    }
+    return *this;
+}
+
+void swap(Cell_simulator& one, Cell_simulator& other)
+{
+    std::swap(one.m,other.m);
+    std::swap(one.APC,other.APC);
+    std::swap(one.NK,other.NK);
+    std::swap(one.LT,other.LT);
+    std::swap(one.time_step_d,other.time_step_d);
+    std::swap(one.sim_duration_d,other.sim_duration_d);
+    std::swap(one.trun_d,other.trun_d);
+    std::swap(one.filename,other.filename);
+    std::swap(one.experiment_,other.experiment_);
+    std::swap(one.fitExperiment_,other.fitExperiment_);
+    std::swap(one.initialPar_,other.initialPar_);
+    std::swap(one.fitPar_,other.fitPar_);
+    }
 
 /**
   @param results the method Simulate only uses  the Time() of
@@ -664,7 +730,7 @@ Results Cell_simulator::Simulate(const SimParameters& simPar,
 
         if(trun_d>=tTNFs)
         {
-            TNFs[iTNFs]=Measurement(trun_d,m.TNF());
+            TNFs[iTNFs]=Measurement(tTNFs,m.TNF());
             ++iTNFs;
             if (iTNFs<TNFs.size())
             {
@@ -672,13 +738,13 @@ Results Cell_simulator::Simulate(const SimParameters& simPar,
             }
             else
             {
-                tTNFs=results.Duration();
+                tTNFs=results.Duration()+1;
             }
         };
 
         if(trun_d>=tIFNs)
         {
-            IFNs[iIFNs]=Measurement(trun_d,m.IFNgamma());
+            IFNs[iIFNs]=Measurement(tIFNs,m.IFNgamma());
             ++iIFNs;
             if (iIFNs<IFNs.size())
             {
@@ -686,14 +752,14 @@ Results Cell_simulator::Simulate(const SimParameters& simPar,
             }
             else
             {
-                tIFNs=results.Duration();
+                tIFNs=results.Duration()+1;
             }
         }
 
 
         if(trun_d>=tAPC_exp)
         {
-            APC_exp[iAPC_exp].setMeasurement(
+            APC_exp[iAPC_exp]=Measurement(tAPC_exp,
                         APC.percentage_cell_expressing_receptor());
             ++iAPC_exp;
             if (iAPC_exp<APC_exp.size())
@@ -702,7 +768,7 @@ Results Cell_simulator::Simulate(const SimParameters& simPar,
             }
             else
             {
-                tAPC_exp=results.Duration();
+                tAPC_exp=results.Duration()+1;
             }
         }
 
@@ -719,7 +785,7 @@ Results Cell_simulator::Simulate(const SimParameters& simPar,
             }
             else
             {
-                tNK_exp=results.Duration();
+                tNK_exp=results.Duration()+1;
             }
         }
 
@@ -735,7 +801,7 @@ Results Cell_simulator::Simulate(const SimParameters& simPar,
             }
             else
             {
-                tLT_exp=results.Duration();
+                tLT_exp=results.Duration()+1;
             }
 
 

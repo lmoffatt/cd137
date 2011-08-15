@@ -4,7 +4,8 @@
 
 #include <vector>
 #include<string>
-class SimParameters{
+class SimParameters
+{
 public:
    std::vector<double> getParameters()const;
 
@@ -71,9 +72,17 @@ public:
    double TNF_deg;
    double IFN_deg;
 
+   SimParameters(const SimParameters& other);
 
+   friend void swap(SimParameters& one, SimParameters& other);
 
-SimParameters();
+   SimParameters& operator=(const SimParameters& other);
+
+   SimParameters();
+
+   void reset(const SimParameters& sp);
+
 };
+
 
 #endif // SIMPARAMETERS_H_INCLUDED

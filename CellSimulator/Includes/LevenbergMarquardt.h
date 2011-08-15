@@ -20,6 +20,17 @@ public:
                        const std::vector<double>& data,
                        const std::vector<double>& initialParam);
 
+
+    LevenbergMarquardt(const LevenbergMarquardt& other);
+
+    friend void swap(LevenbergMarquardt& one, LevenbergMarquardt& other);
+
+    LevenbergMarquardt& operator=(const LevenbergMarquardt& other);
+
+    LevenbergMarquardt();
+
+   // void reset(const SimParameters& sp,const Treatment& tr);
+
 private:
     ABC_function* f_;
     std::vector<double> data_;

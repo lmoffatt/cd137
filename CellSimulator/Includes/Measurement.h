@@ -1,6 +1,7 @@
 #ifndef MEASUREMENT_H
 #define MEASUREMENT_H
 
+
 class Measurement
 {
 public:
@@ -25,6 +26,8 @@ private:
     double time_;
     double measure_;
 };
+
+
 
 #endif // MEASUREMENT_H
 
