@@ -17,6 +17,13 @@ public:
     void push_back(const Treatment& treatment,
                    const Results& result);
 
+    std::vector<double> getData();
+
+    Experiment(const Experiment& other);
+    ~Experiment();
+    Experiment();
+    Experiment& operator=(const Experiment& other);
+    friend void swap(Experiment& one, Experiment& two);
 
 
 private:

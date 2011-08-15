@@ -2,6 +2,12 @@
 #define LEVENBERGMARQUARDT_H
 #include <vector>
 
+class ABC_function
+{
+public:
+    virtual std::vector<double> yfit(const std::vector<double>& parameters)=0;
+};
+
 
 class LevenbergMarquardt
 {
@@ -10,12 +16,12 @@ public:
     LevenbergMarquardt& optimize();
 
 
-    LevenbergMarquardt(std::vector<double> (*fun) (std::vector<double>),
+    LevenbergMarquardt(ABC_function* f,
                        const std::vector<double>& data,
                        const std::vector<double>& initialParam);
 
 private:
-    std::vector<double> (*fun_) (std::vector<double> );
+    ABC_function* f_;
     std::vector<double> data_;
     std::vector<double> initialParam_;
 

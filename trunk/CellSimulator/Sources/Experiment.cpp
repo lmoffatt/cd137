@@ -54,3 +54,35 @@ void SumSquareTXT(const Experiment& one, const Experiment& two)
 
 }
 
+std::vector<double> Experiment::getData()
+{
+    std::vector<double> data;
+    for (std::size_t i=0; i<results_.size(); i++)
+    {
+	std::vector<double> datai=Result_i(i).getData();
+	data.insert(data.begin(),datai.begin(),datai.end());
+    }
+    return data;
+}
+Experiment::Experiment(const Experiment& other):
+    treatments_(other.treatments_),
+    results_(other.results_)
+{}
+Experiment::~Experiment(){}
+Experiment::Experiment(){}
+Experiment& Experiment::operator=(const Experiment& other)
+{
+    if (this!=&other)
+    {
+	Experiment tmp(other);
+	swap(*this, tmp);
+    }
+    return *this;
+}
+ void swap(Experiment& one, Experiment& two)
+{
+    std::swap(one.treatments_,two.treatments_);
+    std::swap(one.results_,two.results_);
+
+}
+

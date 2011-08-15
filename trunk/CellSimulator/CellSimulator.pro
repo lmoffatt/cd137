@@ -50,7 +50,8 @@ HEADERS += \
     Includes/Experiment.h \
     Includes/LevenbergMarquardt.h \
     Includes/MatrixInverse.h \
-    Includes/MatrixInverse_Test.h
+    Includes/MatrixInverse_Test.h \
+    Includes/OptimizationResults.h
 
 
 LIBS += -L$$PWD/bin -lcygblas \

@@ -60,7 +60,7 @@ void APC_cells::update(double time_step,const Media& m, const NK_cells& NK, cons
 void APC_cells::reset(const SimParameters& sp,
                       const Treatment& tr)
 {
-    num_free_d=sp.init_ratio_APC_cells*tr.init_cells;
+    num_free_d=sp.init_ratio_APC_cells_*tr.init_cells;
     num_Ag_d=0;
     num_LT_bound_d=0;
     num_blocked_d=0;

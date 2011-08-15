@@ -80,21 +80,21 @@ void experiment2()
     media.Ag=0.0;
     media.Ab=0.0;
     media.sim_duration_d=120;
-    media.time_step_d=1.0/3600;
+    media.time_step_d=1.0/8;
     media.init_cells=1e6;
 
     Treatment Mtb;
     Mtb.Ag=10.0;
     Mtb.Ab=0.0;
     Mtb.sim_duration_d=120;
-    Mtb.time_step_d=1.0/3600;
+    Mtb.time_step_d=1.0/8;
     Mtb.init_cells=1e6;
 
     Treatment block;
     block.Ag=10.0;
     block.Ab=10.0;
     block.sim_duration_d=120;
-    block.time_step_d=1.0/3600;
+    block.time_step_d=1.0/8;
     block.init_cells=1e6;
 
     Results MediaRes ("media");
@@ -104,12 +104,15 @@ void experiment2()
     E.push_back(media,MediaRes);
     E.push_back(Mtb,MtbRes);
     E.push_back(block,blockRes);
+
+
+
     SimParameters sp;
-    sp.max_num_cells=2e6;
-    sp.init_ratio_LT_cells=9e5;
-    sp.init_ratio_NK_cells=1e5;
-    sp.LT_ratio_specific=1000;
-    sp.init_ratio_APC_cells=1e5;
+    sp.max_num_cells_=2e6;
+    sp.init_ratio_LT_cells_=9e5;
+    sp.init_ratio_NK_cells_=1e5;
+    sp.LT_ratio_specific_=1000;
+    sp.init_ratio_APC_cells_=1e5;
     sp.APC_max_proliferation_rate_=120;
     sp.NK_max_proliferation_rate_=1.0/240;
     sp.LT_max_no_receptor_prol_rate_=1.0/240;
@@ -157,6 +160,9 @@ void experiment2()
     sp.IFN_deg=1.0/120;
     Cell_simulator cell(sp, media);
     Experiment simulExp=cell.Simulate(sp,E);
+
+    cell.Optimize(sp,E);
+
     std::cout<<"Media\n";
     std::cout<<simulExp.Result_i(0);
     std::cout<<"Mtb\n";

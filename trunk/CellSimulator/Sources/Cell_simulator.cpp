@@ -11,6 +11,7 @@
 #include "Includes/APC.h"
 #include "Includes/NK.h"
 #include "Includes/LT.h"
+#include "Includes/LevenbergMarquardt.h"
 
 
 void Cell_simulator::ask_parameters()
@@ -523,75 +524,83 @@ void Cell_simulator::run()
 
 
 Cell_simulator::Cell_simulator(const SimParameters& sp,
-                               const Treatment& tr):
+			       const Treatment& tr)
+{
+     applyParameters(sp,tr);
 
-    m(sp.max_num_cells_,
-        tr.init_cells,
-        tr.Ag,
-        tr.Ab,
-        0,
-        0,
-        sp.TNF_deg,
-        sp.IFN_deg
-        // Ag_internalization_rate
-        ),
+}
 
 
-    APC(APC_cells(sp.init_ratio_APC_cells,
-                  sp.APC_max_proliferation_rate_,
-                  sp.APC_no_to_free_rate_per_Ag_ ,
-                  sp.APC_free_to_bound_rate_per_LT_,
-                  sp.APC_Ab_binding_rate_,
-                  sp.APC_exh_rate,
-                  sp.APC_IFN_free_prod_rate_,
-                  sp.APC_IFN_Ag_prod_rate_,
-                  sp.APC_IFN_bound_prod_rate_,
-                  sp.APC_IFN_blocked_prod_rate_,
-                  sp.APC_TNF_free_prod_rate_,
-                  sp.APC_TNF_Ag_prod_rate_,
-                  sp.APC_TNF_bound_prod_rate_,
-                  sp.APC_TNF_blocked_prod_rate_)),
-
-    NK(NK_cells (sp.init_ratio_NK_cells,
-                 sp.NK_max_proliferation_rate_,
-                 sp.NK_no_to_free_rate_per_Ag_ ,
-                 sp.NK_free_to_bound_rate_per_LT_,
-                 sp.NK_Ab_binding_rate,
-                 sp.NK_exh_rate,
-                 sp.NK_IFN_free_prod_rate_,
-                 sp.NK_IFN_Ag_prod_rate_,
-                 sp.NK_IFN_bound_prod_rate_,
-                 sp.NK_IFN_blocked_prod_rate_,
-                 sp.NK_TNF_free_prod_rate_,
-                 sp.NK_TNF_Ag_prod_rate_,
-                 sp.NK_TNF_bound_prod_rate_,
-                 sp.NK_TNF_blocked_prod_rate_)),
+Cell_simulator& Cell_simulator::applyParameters(const SimParameters& sp,
+						const Treatment& tr)
+{
+    m=Media(sp.max_num_cells_,
+	tr.init_cells,
+	tr.Ag,
+	tr.Ab,
+	0,
+	0,
+	sp.TNF_deg,
+	sp.IFN_deg
+	// Ag_internalization_rate
+	);
 
 
-    LT  (sp.init_ratio_LT_cells,
-        sp.LT_ratio_specific,
-        sp.LT_max_no_receptor_prol_rate_,
-        sp.LT_max_free_prol_rate_,
-        sp.LT_max_bound_prol_rate_,
-        sp.LT_max_blocked_prol_rate_,
-        sp.LT_IFN_no_rec_prod_rate_,
-        sp.LT_IFN_free_prod_rate_,
-        sp.LT_IFN_bound_prod_rate_,
-        sp.LT_IFN_blocked_prod_rate_,
-        sp.LT_TNF_no_rec_prod_rate_,
-        sp.LT_TNF_free_prod_rate_,
-        sp.LT_TNF_bound_prod_rate_,
-        sp.LT_TNF_blocked_prod_rate_,
-        sp.LT_no_to_free_rate_per_APC_,
-        sp.LT_free_to_bound_rate_per_APC_,
-        sp.LT_mAb_binding_rate_),
+    APC=APC_cells(sp.init_ratio_APC_cells_,
+		  sp.APC_max_proliferation_rate_,
+		  sp.APC_no_to_free_rate_per_Ag_ ,
+		  sp.APC_free_to_bound_rate_per_LT_,
+		  sp.APC_Ab_binding_rate_,
+		  sp.APC_exh_rate,
+		  sp.APC_IFN_free_prod_rate_,
+		  sp.APC_IFN_Ag_prod_rate_,
+		  sp.APC_IFN_bound_prod_rate_,
+		  sp.APC_IFN_blocked_prod_rate_,
+		  sp.APC_TNF_free_prod_rate_,
+		  sp.APC_TNF_Ag_prod_rate_,
+		  sp.APC_TNF_bound_prod_rate_,
+		  sp.APC_TNF_blocked_prod_rate_);
 
-    time_step_d(tr.time_step_d),
-    sim_duration_d(tr.sim_duration_d),
-    trun_d(0)
+    NK=NK_cells (sp.init_ratio_NK_cells_,
+		 sp.NK_max_proliferation_rate_,
+		 sp.NK_no_to_free_rate_per_Ag_ ,
+		 sp.NK_free_to_bound_rate_per_LT_,
+		 sp.NK_Ab_binding_rate,
+		 sp.NK_exh_rate,
+		 sp.NK_IFN_free_prod_rate_,
+		 sp.NK_IFN_Ag_prod_rate_,
+		 sp.NK_IFN_bound_prod_rate_,
+		 sp.NK_IFN_blocked_prod_rate_,
+		 sp.NK_TNF_free_prod_rate_,
+		 sp.NK_TNF_Ag_prod_rate_,
+		 sp.NK_TNF_bound_prod_rate_,
+		 sp.NK_TNF_blocked_prod_rate_);
 
 
-{}
+    LT=LT_cells  (sp.init_ratio_LT_cells_,
+	sp.LT_ratio_specific_,
+	sp.LT_max_no_receptor_prol_rate_,
+	sp.LT_max_free_prol_rate_,
+	sp.LT_max_bound_prol_rate_,
+	sp.LT_max_blocked_prol_rate_,
+	sp.LT_IFN_no_rec_prod_rate_,
+	sp.LT_IFN_free_prod_rate_,
+	sp.LT_IFN_bound_prod_rate_,
+	sp.LT_IFN_blocked_prod_rate_,
+	sp.LT_TNF_no_rec_prod_rate_,
+	sp.LT_TNF_free_prod_rate_,
+	sp.LT_TNF_bound_prod_rate_,
+	sp.LT_TNF_blocked_prod_rate_,
+	sp.LT_no_to_free_rate_per_APC_,
+	sp.LT_free_to_bound_rate_per_APC_,
+	sp.LT_mAb_binding_rate_);
+
+    time_step_d=tr.time_step_d;
+    sim_duration_d=tr.sim_duration_d;
+    trun_d=0;
+
+
+}
 
 /**
   @param results the method Simulate only uses  the Time() of
@@ -603,12 +612,12 @@ Results Cell_simulator::Simulate(const SimParameters& simPar,
                                  const Treatment& tr,
                                  const Results& results)
 {
-    *this=Cell_simulator(simPar, tr);
+    applyParameters(simPar, tr);
 
     double Duratione=results.Duration();
 
 
-    std::vector<Measurement> TNFs=results.TNF();
+    std::vector<Measurement> TNFs(results.TNF());
     std::size_t iTNFs=0;
 
     double tTNFs;
@@ -750,12 +759,36 @@ Experiment Cell_simulator::Simulate(const SimParameters& simPar,
     Experiment sim;
     for (std::size_t i=0; i<exp.size(); i++)
     {
+	Results r=Simulate(simPar,exp.Treatment_i(i),exp.Result_i(i));
         sim.push_back(exp.Treatment_i(i),
-                      Simulate(simPar,exp.Treatment_i(i),exp.Result_i(i)));
+		      r);
     }
 
     return sim;
 
 }
 
+
+OptimizationResults Cell_simulator::Optimize(const SimParameters& initPar,
+			     const Experiment& experiment)
+{
+    experiment_=experiment;
+    LevenbergMarquardt LM(this,experiment_.getData(),initPar.getParameters());
+    LM.optimize();
+    return buildOptimizationResults();
+
+}
+
+OptimizationResults Cell_simulator::buildOptimizationResults()
+{
+}
+
+std::vector<double> Cell_simulator::yfit (const std::vector<double>& param)
+{
+    SimParameters par;
+    par.applyParameters(param);
+    fitExperiment_=Simulate(par,experiment_);
+
+    return fitExperiment_.getData();
+ }
 

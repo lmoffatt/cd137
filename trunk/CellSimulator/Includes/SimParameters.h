@@ -2,13 +2,21 @@
 #ifndef SIMPARAMETERS_H_INCLUDED
 #define SIMPARAMETERS_H_INCLUDED
 
-struct SimParameters{
+#include <vector>
+#include<string>
+class SimParameters{
+public:
+   std::vector<double> getParameters()const;
+
+   SimParameters& applyParameters(const std::vector<double>& param);
+
+   std::string mode_;
+
    double max_num_cells_;
-   double max_num_cells;
-   double init_ratio_APC_cells;
-   double init_ratio_NK_cells;
-   double init_ratio_LT_cells;
-   double LT_ratio_specific;
+   double init_ratio_APC_cells_;
+   double init_ratio_NK_cells_;
+   double init_ratio_LT_cells_;
+   double LT_ratio_specific_;
 
 
   // double Ag_internalization_rate;
