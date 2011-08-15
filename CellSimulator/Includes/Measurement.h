@@ -18,7 +18,7 @@ public:
 
     Measurement();
 
-    virtual ~Measurement(){}
+    ~Measurement(){}
 
     void friend swap(Measurement& one, Measurement& two);
 private:

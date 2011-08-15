@@ -103,7 +103,7 @@ class NK_cells
         NK_cells (const SimParameters& sp,
                   const Treatment& tr):
 
-                  NK_num_free_d(sp.init_ratio_NK_cells*tr.init_cells),
+                  NK_num_free_d(sp.init_ratio_NK_cells_*tr.init_cells),
                   NK_num_Ag_d(0),
                   NK_num_LT_bound_d(0),
                   NK_blocked_d(0),

@@ -7,14 +7,20 @@
 #include "Includes/APC.h"
 #include "Includes/NK.h"
 #include "Includes/LT.h"
+
+#include "Includes/OptimizationResults.h"
+#include "Includes/LevenbergMarquardt.h"
+
 #include "Experiment.h"
-class Cell_simulator
+class Cell_simulator: public ABC_function
 {
 public:
 
     void ask_parameters();
     void run();
 
+    Cell_simulator& applyParameters(const SimParameters& sp,
+				    const Treatment& tr);
     Cell_simulator(const SimParameters& sp,
                    const Treatment& tr);
 
@@ -25,10 +31,18 @@ public:
     Experiment Simulate(const SimParameters& simPar,
                         const Experiment& exp);
 
+
+    OptimizationResults Optimize(const SimParameters& simPar,
+				 const Experiment& exp);
+
+
     void update(double time_step);
 
 
     Cell_simulator(){}
+
+   virtual std::vector<double> yfit (const std::vector<double>& param);
+
 
 private:
     Media   m;
@@ -41,6 +55,19 @@ private:
     double trun_d;
     std::string filename;
 
+
+    Experiment experiment_;
+    Experiment fitExperiment_;
+    SimParameters initialPar_;
+    SimParameters fitPar_;
+
+
+
+
+    void formatInputsforLM();
+    void runLM();
+    void formatOutputsfromLM();
+    OptimizationResults buildOptimizationResults();
 
 };
 

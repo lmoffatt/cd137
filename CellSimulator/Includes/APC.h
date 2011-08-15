@@ -108,7 +108,7 @@ class APC_cells
         APC_cells(const SimParameters& sp,
                   const Treatment& tr):
 
-                  num_free_d(sp.init_ratio_APC_cells*tr.init_cells),
+                  num_free_d(sp.init_ratio_APC_cells_*tr.init_cells),
                   num_Ag_d(0),
                   num_LT_bound_d(0),
                   num_blocked_d (0),

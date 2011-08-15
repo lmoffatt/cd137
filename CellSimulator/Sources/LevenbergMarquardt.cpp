@@ -4,10 +4,10 @@
 #include "Includes/MatrixInverse.h"
 
 LevenbergMarquardt::LevenbergMarquardt(
-    std::vector<double> (*fun) (std::vector<double>),
+    ABC_function* f,
     const std::vector<double>& data,
     const std::vector<double>& initialParam):
-    fun_(fun),
+    f_(f),
     data_(data),
     initialParam_(initialParam),
     nPar_(initialParam_.size()),
@@ -21,8 +21,8 @@ LevenbergMarquardt::LevenbergMarquardt(
     landa_(1e5),
     nIter_(0),
     nFeval_(0),
-    currSS_(std::numeric_limits<double>::quiet_NaN()),
-    newSS_(std::numeric_limits<double>::quiet_NaN()),
+    currSS_(std::numeric_limits<double>::infinity()),
+    newSS_(std::numeric_limits<double>::infinity()),
     currParam_(std::vector<double>(nPar_)),
     newParam_(currParam_),
     currYfit_(std::vector<double>(nData_)),
@@ -61,6 +61,7 @@ void LevenbergMarquardt::iterate()
     computeJacobian();
     computeSearchDirection();
     updateLanda();
+    std::cout<<nIter_<<"\t"<<currSS_<<"\n";
     nIter_++;
 }
 
@@ -72,8 +73,8 @@ void LevenbergMarquardt::computeJacobian()
     {
         std::vector<double> x(currParam_);
         x[i]+=dx_;
-        std::vector<double> yfit=(*fun_)(x);
-        nFeval_++;
+	std::vector<double> yfit=f_->yfit(x);
+	std::cout<<nFeval_++<<" ";
         for (std::size_t j=0;j<currYfit_.size();++j)
         {
             J_[i][j]=(yfit[j]-currYfit_[j])/dx_;
@@ -127,7 +128,7 @@ void LevenbergMarquardt::computeSearchDirection()
     for (std::size_t i=0; i<nPar_; ++i)
         newParam_[i]+=d_[i];
 
-    newYfit_=(*fun_)(newParam_);
+    newYfit_=f_->yfit(newParam_);
     nFeval_++;
 
     newSS_=0;
@@ -187,12 +188,13 @@ void LevenbergMarquardt::initialize()
     NormGrad_=std::numeric_limits<double>::infinity();
     currParam_=initialParam_;
 
-    currYfit_=(*fun_)(currParam_);
+    currYfit_=f_->yfit(currParam_);
     nFeval_++;
     currSS_=0;
     for (std::size_t n=0; n<nData_; ++n)
     {
 	currSS_+=(currYfit_[n]-data_[n])*(currYfit_[n]-data_[n]);
     }
+
 
 }

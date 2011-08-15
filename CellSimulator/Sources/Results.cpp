@@ -99,18 +99,18 @@ Results::Results(std::string experimentName):
 
 
 
-Results::Results(std::vector<Measurement> myTNF,
-                 std::vector<Measurement> myIFN,
-                 std::vector<Measurement> myAPCexpression_,
-                 std::vector<Measurement> myNKexpression_,
-                 std::vector<Measurement> myLTexpression_,
-                 double duration_):
+Results::Results(const std::vector<Measurement>& myTNF,
+		 const std::vector<Measurement>& myIFN,
+		 const std::vector<Measurement>& myAPCexpression,
+		 const std::vector<Measurement>& myNKexpression,
+		 const std::vector<Measurement>& myLTexpression,
+		 double duration):
     TNF_(myTNF),
     IFN_(myIFN),
-    APC_expression_(myAPCexpression_),
-    NK_expression_(myNKexpression_),
-    LT_expression_(myLTexpression_),
-    duration_(0)
+    APC_expression_(myAPCexpression),
+    NK_expression_(myNKexpression),
+    LT_expression_(myLTexpression),
+    duration_(duration)
 {if ((!TNF_.empty())&&duration_<TNF_[TNF_.size()-1].Time())
         duration_=TNF_[TNF_.size()-1].Time();
 
@@ -397,3 +397,55 @@ std::ostream& operator<<(std::ostream& s, const Results& res)
 
 }
 
+std::vector<double> Results::getData()const
+{
+    std::vector<double> data;
+    for (std::size_t i=0; i<TNF_.size(); ++i)
+	data.push_back(TNF_[i].Measure());
+
+    for (std::size_t i=0; i<IFN_.size(); ++i)
+	data.push_back(IFN_[i].Measure());
+
+    for (std::size_t i=0; i<APC_expression_.size(); ++i)
+	data.push_back(APC_expression_[i].Measure());
+
+    for (std::size_t i=0; i<NK_expression_.size(); ++i)
+	data.push_back(NK_expression_[i].Measure());
+
+    for (std::size_t i=0; i<LT_expression_.size(); ++i)
+	data.push_back(LT_expression_[i].Measure());
+
+     return data;
+ }
+
+
+
+Results::Results(const Results& other):
+    TNF_(other.TNF_),
+    IFN_(other.IFN_),
+    APC_expression_(other.APC_expression_),
+    NK_expression_(other.NK_expression_),
+    LT_expression_(other.LT_expression_),
+    duration_(other.duration_)
+{}
+Results& Results::operator=(const Results& other)
+{
+    if (this!=&other)
+    {
+	Results tmp(other);
+	swap(*this,tmp);
+
+    }
+    return *this;
+}
+
+Results::~Results(){}
+void swap(Results& one, Results& other)
+{
+    std::swap(one.TNF_,other.TNF_);
+    std::swap(one.IFN_,other.IFN_);
+    std::swap(one.APC_expression_,other.APC_expression_);
+    std::swap(one.NK_expression_,other.NK_expression_);
+    std::swap(one.LT_expression_,other.LT_expression_);
+    std::swap(one.duration_,other.duration_);
+}

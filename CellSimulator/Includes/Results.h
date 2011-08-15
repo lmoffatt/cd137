@@ -17,12 +17,14 @@ public:
 
     Results();
     Results(std::string experimentName);
-    Results(std::vector<Measurement> myTNF,
-            std::vector<Measurement> myIFN,
-            std::vector<Measurement> myAPCexpression,
-            std::vector<Measurement> myNKexpression,
-            std::vector<Measurement> myLTexpression,
+    Results(const std::vector<Measurement>& myTNF,
+	    const std::vector<Measurement>& myIFN,
+	    const std::vector<Measurement>& myAPCexpression,
+	    const std::vector<Measurement>& myNKexpression,
+	    const std::vector<Measurement>& myLTexpression,
             double duration);
+
+    std::vector<double> getData()const;
 
 
 
@@ -30,6 +32,10 @@ public:
  //   std::string filename;
 
 
+    Results(const Results& other);
+    Results& operator=(const Results& other);
+    ~Results();
+    friend void swap(Results& one, Results& other);
 
 
 

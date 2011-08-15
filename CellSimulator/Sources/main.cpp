@@ -7,8 +7,8 @@
 int main()
 {
 
- //  experiment2();
-  inv_test();
+  experiment2();
+ // inv_test();
 
 }
 
