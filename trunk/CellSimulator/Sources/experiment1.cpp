@@ -76,12 +76,12 @@ void experiment1()
 };
 */
 void experiment2()
-{   Treatment  media;
-    media.Ag=0.0;
-    media.Ab=0.0;
-    media.sim_duration_d=120;
-    media.time_step_d=1.0/8;
-    media.init_cells=1e6;
+{   Treatment  med;
+    med.Ag=0.0;
+    med.Ab=0.0;
+    med.sim_duration_d=120;
+    med.time_step_d=1.0/8;
+    med.init_cells=1e6;
 
     Treatment Mtb;
     Mtb.Ag=10.0;
@@ -101,7 +101,7 @@ void experiment2()
     Results MtbRes("mtb");
     Results blockRes ("block");
     Experiment E;
-    E.push_back(media,MediaRes);
+    E.push_back(med,MediaRes);
     E.push_back(Mtb,MtbRes);
     E.push_back(block,blockRes);
 
@@ -158,7 +158,7 @@ void experiment2()
   //  sp.Ag_internalization_rate=0.5,
     sp.TNF_deg=1.0/120;
     sp.IFN_deg=1.0/120;
-    Cell_simulator cell(sp, media);
+    Cell_simulator cell(sp, E);
     Experiment simulExp=cell.Simulate(sp,E);
 
     cell.Optimize(sp,E);

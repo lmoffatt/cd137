@@ -3,6 +3,128 @@
 #include "Includes/NK.h"
 #include "Includes/LT.h"
 
+NK_cells::NK_cells(double NK_init,
+          double NK_max_proliferation_rate_,
+          double NK_no_to_free_rate_per_Ag_ ,
+          double NK_free_to_bound_rate_per_LT,
+          double NK_Ab_binding_rate,
+          double NK_exh_rate,
+          double NK_IFN_free_prod_rate_,
+          double NK_IFN_Ag_prod_rate_,
+          double NK_IFN_bound_prod_rate_,
+          double NK_IFN_blocked_prod_rate_,
+          double NK_TNF_free_prod_rate_,
+          double NK_TNF_Ag_prod_rate_,
+          double NK_TNF_bound_prod_rate_,
+          double NK_TNF_blocked_prod_rate_
+          ):
+
+          NK_num_free_d(NK_init),
+          NK_num_Ag_d(0),
+          NK_num_LT_bound_d(0),
+          NK_blocked_d (0),
+          NK_num_exhausted_d(0),
+          NK_IFN_free_prod_rate_d(NK_IFN_free_prod_rate_),
+          NK_IFN_Ag_prod_rate_d(NK_IFN_Ag_prod_rate_),
+          NK_IFN_bound_prod_rate_d(NK_IFN_bound_prod_rate_),
+          NK_IFN_blocked_prod_rate_d(NK_IFN_blocked_prod_rate_),
+          NK_TNF_free_prod_rate_d(NK_TNF_free_prod_rate_),
+          NK_TNF_Ag_prod_rate_d(NK_TNF_Ag_prod_rate_),
+          NK_TNF_bound_prod_rate_d(NK_TNF_bound_prod_rate_),
+          NK_TNF_blocked_prod_rate_d (NK_TNF_blocked_prod_rate_),
+          NK_max_proliferation_rate_d(NK_max_proliferation_rate_),
+          NK_no_to_free_rate_per_Ag_d(NK_no_to_free_rate_per_Ag_),
+          NK_free_to_bound_rate_per_LT_d (NK_free_to_bound_rate_per_LT),
+          NK_Ab_binding_rate_d (NK_Ab_binding_rate),
+          NK_exh_rate_d (NK_exh_rate)
+          {}
+
+
+NK_cells::NK_cells(const SimParameters& sp,
+          const Treatment& tr):
+
+          NK_num_free_d(sp.init_ratio_APC_cells_*tr.init_cells),
+          NK_num_Ag_d(0),
+          NK_num_LT_bound_d(0),
+          NK_blocked_d (0),
+          NK_num_exhausted_d(0),
+          NK_IFN_free_prod_rate_d(sp.NK_IFN_free_prod_rate_),
+          NK_IFN_Ag_prod_rate_d(sp.NK_IFN_Ag_prod_rate_),
+          NK_IFN_bound_prod_rate_d(sp.NK_IFN_bound_prod_rate_),
+          NK_IFN_blocked_prod_rate_d(sp.NK_IFN_blocked_prod_rate_),
+          NK_TNF_free_prod_rate_d(sp.NK_TNF_free_prod_rate_),
+          NK_TNF_Ag_prod_rate_d(sp.NK_TNF_Ag_prod_rate_),
+          NK_TNF_bound_prod_rate_d(sp.NK_TNF_bound_prod_rate_),
+          NK_TNF_blocked_prod_rate_d (sp.NK_TNF_blocked_prod_rate_),
+          NK_max_proliferation_rate_d(sp.NK_max_proliferation_rate_),
+          NK_no_to_free_rate_per_Ag_d(sp.NK_no_to_free_rate_per_Ag_),
+          NK_free_to_bound_rate_per_LT_d (sp.NK_free_to_bound_rate_per_LT_),
+          NK_Ab_binding_rate_d (sp.NK_Ab_binding_rate),
+          NK_exh_rate_d (sp.NK_exh_rate)
+          {}
+
+NK_cells::NK_cells(){}
+
+
+
+
+NK_cells::NK_cells(const NK_cells& other):
+    NK_num_free_d(other.NK_num_free_d),
+    NK_num_Ag_d(other.NK_num_Ag_d),
+    NK_num_LT_bound_d(other.NK_num_LT_bound_d),
+    NK_blocked_d (other.NK_blocked_d),
+    NK_num_exhausted_d(other.NK_num_exhausted_d),
+    NK_IFN_free_prod_rate_d(other.NK_IFN_free_prod_rate_d),
+    NK_IFN_Ag_prod_rate_d(other.NK_IFN_Ag_prod_rate_d),
+    NK_IFN_bound_prod_rate_d(other.NK_IFN_bound_prod_rate_d),
+    NK_IFN_blocked_prod_rate_d(other.NK_IFN_blocked_prod_rate_d),
+    NK_TNF_free_prod_rate_d(other.NK_TNF_free_prod_rate_d),
+    NK_TNF_Ag_prod_rate_d(other.NK_TNF_Ag_prod_rate_d),
+    NK_TNF_bound_prod_rate_d(other.NK_TNF_bound_prod_rate_d),
+    NK_TNF_blocked_prod_rate_d (other.NK_TNF_blocked_prod_rate_d),
+    NK_max_proliferation_rate_d(other.NK_max_proliferation_rate_d),
+    NK_no_to_free_rate_per_Ag_d(other.NK_no_to_free_rate_per_Ag_d),
+    NK_free_to_bound_rate_per_LT_d (other.NK_free_to_bound_rate_per_LT_d),
+    NK_Ab_binding_rate_d (other.NK_Ab_binding_rate_d),
+    NK_exh_rate_d (other.NK_exh_rate_d)
+    {}
+
+NK_cells&
+NK_cells::operator=(const NK_cells& other)
+{
+    if (this!=&other)
+    {
+        NK_cells tmp(other);
+        swap(*this,tmp);
+    }
+    return *this;
+}
+
+ void swap(NK_cells& one, NK_cells& other)
+{
+    std::swap(one.NK_num_free_d,other.NK_num_free_d);
+    std::swap(one.NK_num_Ag_d,other.NK_num_Ag_d);
+    std::swap(one.NK_num_LT_bound_d,other.NK_num_LT_bound_d);
+    std::swap(one.NK_blocked_d ,other.NK_blocked_d);
+    std::swap(one.NK_num_exhausted_d,other.NK_num_exhausted_d);
+    std::swap(one.NK_IFN_free_prod_rate_d,other.NK_IFN_free_prod_rate_d);
+    std::swap(one.NK_IFN_Ag_prod_rate_d,other.NK_IFN_Ag_prod_rate_d);
+    std::swap(one.NK_IFN_bound_prod_rate_d,other.NK_IFN_bound_prod_rate_d);
+    std::swap(one.NK_IFN_blocked_prod_rate_d,other.NK_IFN_blocked_prod_rate_d);
+    std::swap(one.NK_TNF_free_prod_rate_d,other.NK_TNF_free_prod_rate_d);
+    std::swap(one.NK_TNF_Ag_prod_rate_d,other.NK_TNF_Ag_prod_rate_d);
+    std::swap(one.NK_TNF_bound_prod_rate_d,other.NK_TNF_bound_prod_rate_d);
+    std::swap(one.NK_TNF_blocked_prod_rate_d ,other.NK_TNF_blocked_prod_rate_d);
+    std::swap(one.NK_max_proliferation_rate_d,other.NK_max_proliferation_rate_d);
+    std::swap(one.NK_no_to_free_rate_per_Ag_d,other.NK_no_to_free_rate_per_Ag_d);
+    std::swap(one.NK_free_to_bound_rate_per_LT_d ,other.NK_free_to_bound_rate_per_LT_d);
+    std::swap(one.NK_Ab_binding_rate_d ,other.NK_Ab_binding_rate_d);
+    std::swap(one.NK_exh_rate_d ,other.NK_exh_rate_d);
+
+}
+
+
+
 /// main step for the NK cells
 void NK_cells::update(double time_step,const Media& m,const APC_cells& APC, const LT_cells& LT)
 {
@@ -54,7 +176,7 @@ void NK_cells::update(double time_step,const Media& m,const APC_cells& APC, cons
                         NK_blocked_d*time_step*NK_exh_rate_d;
 
 
-};
+}
 
 void NK_cells::reset(const SimParameters& sp,
                       const Treatment& tr)

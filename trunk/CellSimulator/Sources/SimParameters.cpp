@@ -198,3 +198,143 @@ SimParameters& SimParameters::applyParameters(const std::vector<double>& param)
 
 return *this;
 }
+
+
+
+
+
+SimParameters::SimParameters(const SimParameters& other):
+max_num_cells_(other.max_num_cells_),
+init_ratio_APC_cells_(other.init_ratio_APC_cells_),
+init_ratio_NK_cells_ (other.init_ratio_NK_cells_),
+init_ratio_LT_cells_(other.init_ratio_LT_cells_),
+LT_ratio_specific_ (other.LT_ratio_specific_),
+
+
+//  (Ag_internalization_rate),
+
+APC_max_proliferation_rate_  (other.APC_max_proliferation_rate_),
+NK_max_proliferation_rate_ (other.NK_max_proliferation_rate_),
+LT_max_no_receptor_prol_rate_ (other.LT_max_no_receptor_prol_rate_),
+LT_max_free_prol_rate_ (other.LT_max_free_prol_rate_),
+LT_max_bound_prol_rate_ (other.LT_max_bound_prol_rate_),
+LT_max_blocked_prol_rate_ (other.LT_max_blocked_prol_rate_),
+
+APC_no_to_free_rate_per_Ag_ (other.APC_no_to_free_rate_per_Ag_),
+APC_free_to_bound_rate_per_LT_ (other.APC_free_to_bound_rate_per_LT_),
+APC_Ab_binding_rate_ (other.APC_Ab_binding_rate_),
+APC_exh_rate (other.APC_exh_rate),
+NK_no_to_free_rate_per_Ag_ (other.NK_no_to_free_rate_per_Ag_),
+NK_free_to_bound_rate_per_LT_ (other.NK_free_to_bound_rate_per_LT_),
+NK_Ab_binding_rate (other.NK_Ab_binding_rate),
+NK_exh_rate  (other.NK_exh_rate),
+LT_no_to_free_rate_per_APC_ (other.LT_no_to_free_rate_per_APC_),
+LT_free_to_bound_rate_per_APC_ (other.LT_free_to_bound_rate_per_APC_),
+LT_mAb_binding_rate_ (other.LT_mAb_binding_rate_),
+
+APC_IFN_free_prod_rate_  (other.APC_IFN_free_prod_rate_),
+APC_IFN_Ag_prod_rate_ (other.APC_IFN_Ag_prod_rate_),
+APC_IFN_bound_prod_rate_  (other.APC_IFN_bound_prod_rate_),
+APC_IFN_blocked_prod_rate_ (other.APC_IFN_blocked_prod_rate_),
+NK_IFN_free_prod_rate_ (other.NK_IFN_free_prod_rate_),
+NK_IFN_Ag_prod_rate_(other.NK_IFN_Ag_prod_rate_),
+NK_IFN_bound_prod_rate_(other.NK_IFN_bound_prod_rate_),
+NK_IFN_blocked_prod_rate_(other.NK_IFN_blocked_prod_rate_),
+LT_IFN_no_rec_prod_rate_ (other.LT_IFN_no_rec_prod_rate_),
+LT_IFN_free_prod_rate_(other.LT_IFN_free_prod_rate_),
+LT_IFN_bound_prod_rate_(other.LT_IFN_bound_prod_rate_),
+LT_IFN_blocked_prod_rate_(other.LT_IFN_blocked_prod_rate_),
+
+APC_TNF_free_prod_rate_(other.APC_TNF_free_prod_rate_),
+APC_TNF_Ag_prod_rate_(other.APC_TNF_Ag_prod_rate_),
+APC_TNF_bound_prod_rate_(other.APC_TNF_bound_prod_rate_),
+APC_TNF_blocked_prod_rate_(other.APC_TNF_blocked_prod_rate_),
+NK_TNF_free_prod_rate_(other.NK_TNF_free_prod_rate_),
+NK_TNF_Ag_prod_rate_(other.NK_TNF_Ag_prod_rate_),
+NK_TNF_bound_prod_rate_(other.NK_TNF_bound_prod_rate_),
+NK_TNF_blocked_prod_rate_(other.NK_TNF_blocked_prod_rate_),
+LT_TNF_no_rec_prod_rate_(other.LT_TNF_no_rec_prod_rate_),
+LT_TNF_free_prod_rate_(other.LT_TNF_free_prod_rate_),
+LT_TNF_bound_prod_rate_(other.LT_TNF_bound_prod_rate_),
+LT_TNF_blocked_prod_rate_(other.LT_TNF_blocked_prod_rate_),
+
+
+
+TNF_deg (other.TNF_deg),
+IFN_deg (other.IFN_deg)
+{}
+
+SimParameters&
+SimParameters::operator=(const SimParameters& other)
+{
+    if (this!=&other)
+    {
+        SimParameters tmp(other);
+        swap(*this,tmp);
+    }
+    return *this;
+}
+
+void swap(SimParameters& one, SimParameters& other)
+{
+    std::swap(one.max_num_cells_,other.max_num_cells_);
+    std::swap(one.init_ratio_APC_cells_,other.init_ratio_APC_cells_);
+    std::swap(one.init_ratio_NK_cells_ ,other.init_ratio_NK_cells_);
+    std::swap(one.init_ratio_LT_cells_,other.init_ratio_LT_cells_);
+    std::swap(one.LT_ratio_specific_ ,other.LT_ratio_specific_);
+
+
+    //  (Ag_internalization_rate),
+
+    std::swap(one.APC_max_proliferation_rate_  ,other.APC_max_proliferation_rate_);
+    std::swap(one.NK_max_proliferation_rate_ ,other.NK_max_proliferation_rate_);
+    std::swap(one.LT_max_no_receptor_prol_rate_ ,other.LT_max_no_receptor_prol_rate_);
+    std::swap(one.LT_max_free_prol_rate_ ,other.LT_max_free_prol_rate_);
+    std::swap(one.LT_max_bound_prol_rate_ ,other.LT_max_bound_prol_rate_);
+    std::swap(one.LT_max_blocked_prol_rate_ ,other.LT_max_blocked_prol_rate_);
+
+    std::swap(one.APC_no_to_free_rate_per_Ag_ ,other.APC_no_to_free_rate_per_Ag_);
+    std::swap(one.APC_free_to_bound_rate_per_LT_ ,other.APC_free_to_bound_rate_per_LT_);
+    std::swap(one.APC_Ab_binding_rate_ ,other.APC_Ab_binding_rate_);
+    std::swap(one.APC_exh_rate ,other.APC_exh_rate);
+    std::swap(one.NK_no_to_free_rate_per_Ag_ ,other.NK_no_to_free_rate_per_Ag_);
+    std::swap(one.NK_free_to_bound_rate_per_LT_ ,other.NK_free_to_bound_rate_per_LT_);
+    std::swap(one.NK_Ab_binding_rate ,other.NK_Ab_binding_rate);
+    std::swap(one.NK_exh_rate  ,other.NK_exh_rate);
+    std::swap(one.LT_no_to_free_rate_per_APC_ ,other.LT_no_to_free_rate_per_APC_);
+    std::swap(one.LT_free_to_bound_rate_per_APC_ ,other.LT_free_to_bound_rate_per_APC_);
+    std::swap(one.LT_mAb_binding_rate_ ,other.LT_mAb_binding_rate_);
+
+    std::swap(one.APC_IFN_free_prod_rate_  ,other.APC_IFN_free_prod_rate_);
+    std::swap(one.APC_IFN_Ag_prod_rate_ ,other.APC_IFN_Ag_prod_rate_);
+    std::swap(one.APC_IFN_bound_prod_rate_ ,other.APC_IFN_bound_prod_rate_);
+    std::swap(one.APC_IFN_blocked_prod_rate_ ,other.APC_IFN_blocked_prod_rate_);
+    std::swap(one.NK_IFN_free_prod_rate_ ,other.NK_IFN_free_prod_rate_);
+    std::swap(one.NK_IFN_Ag_prod_rate_,other.NK_IFN_Ag_prod_rate_);
+    std::swap(one.NK_IFN_bound_prod_rate_,other.NK_IFN_bound_prod_rate_);
+    std::swap(one.NK_IFN_blocked_prod_rate_,other.NK_IFN_blocked_prod_rate_);
+    std::swap(one.LT_IFN_no_rec_prod_rate_ ,other.LT_IFN_no_rec_prod_rate_);
+    std::swap(one.LT_IFN_free_prod_rate_,other.LT_IFN_free_prod_rate_);
+    std::swap(one.LT_IFN_bound_prod_rate_,other.LT_IFN_bound_prod_rate_);
+    std::swap(one.LT_IFN_blocked_prod_rate_,other.LT_IFN_blocked_prod_rate_);
+
+    std::swap(one.APC_TNF_free_prod_rate_,other.APC_TNF_free_prod_rate_);
+    std::swap(one.APC_TNF_Ag_prod_rate_,other.APC_TNF_Ag_prod_rate_);
+    std::swap(one.APC_TNF_bound_prod_rate_,other.APC_TNF_bound_prod_rate_);
+    std::swap(one.APC_TNF_blocked_prod_rate_,other.APC_TNF_blocked_prod_rate_);
+    std::swap(one.NK_TNF_free_prod_rate_,other.NK_TNF_free_prod_rate_);
+    std::swap(one.NK_TNF_Ag_prod_rate_,other.NK_TNF_Ag_prod_rate_);
+    std::swap(one.NK_TNF_bound_prod_rate_,other.NK_TNF_bound_prod_rate_);
+    std::swap(one.NK_TNF_blocked_prod_rate_,other.NK_TNF_blocked_prod_rate_);
+    std::swap(one.LT_TNF_no_rec_prod_rate_,other.LT_TNF_no_rec_prod_rate_);
+    std::swap(one.LT_TNF_free_prod_rate_,other.LT_TNF_free_prod_rate_);
+    std::swap(one.LT_TNF_bound_prod_rate_,other.LT_TNF_bound_prod_rate_);
+    std::swap(one.LT_TNF_blocked_prod_rate_,other.LT_TNF_blocked_prod_rate_);
+
+
+
+    std::swap(one.TNF_deg,other.TNF_deg);
+    std::swap(one.IFN_deg,other.IFN_deg);
+    }
+
+

@@ -92,7 +92,9 @@ APC_cells::APC_cells(const APC_cells& other):
     APC_exh_rate_d (other.APC_exh_rate_d)
     {}
 
-APC_cells& operator=(const APC_cells& other)
+
+APC_cells&
+APC_cells::operator=(const APC_cells& other)
 {
     if (this!=&other)
     {
@@ -102,7 +104,7 @@ APC_cells& operator=(const APC_cells& other)
     return *this;
 }
 
-friend void swap(APC_cells& one, APC_cells& other)
+void swap(APC_cells& one, APC_cells& other)
 {
     std::swap(one.num_free_d,other.num_free_d);
     std::swap(one.num_Ag_d,other.num_Ag_d);

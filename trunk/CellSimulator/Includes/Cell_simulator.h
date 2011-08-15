@@ -7,7 +7,6 @@
 #include "Includes/APC.h"
 #include "Includes/NK.h"
 #include "Includes/LT.h"
-
 #include "Includes/OptimizationResults.h"
 #include "Includes/LevenbergMarquardt.h"
 
@@ -22,7 +21,7 @@ public:
     Cell_simulator& applyParameters(const SimParameters& sp,
 				    const Treatment& tr);
     Cell_simulator(const SimParameters& sp,
-                   const Treatment& tr);
+                   const Experiment& E);
 
     Results Simulate(const SimParameters& simPar,
                      const Treatment& protocol,
@@ -39,10 +38,23 @@ public:
     void update(double time_step);
 
 
-    Cell_simulator(){}
 
    virtual std::vector<double> yfit (const std::vector<double>& param);
 
+
+
+
+
+
+    Cell_simulator(const Cell_simulator& other);
+
+    friend void swap(Cell_simulator& one, Cell_simulator& other);
+
+    Cell_simulator& operator=(const Cell_simulator& other);
+
+    Cell_simulator();
+
+    void reset(const SimParameters& sp,const Treatment& tr);
 
 private:
     Media   m;

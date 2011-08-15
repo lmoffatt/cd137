@@ -62,13 +62,16 @@ class Media
         Media(const SimParameters& sp,
               const Treatment& tr);
 
+        Media(const Media& other);
 
 
         //         double internalization_init);
 
         Media(){}
 
-
+        Media&
+        operator=(const Media& other);
+        friend void swap(Media& one, Media& other);
 
 
     private:

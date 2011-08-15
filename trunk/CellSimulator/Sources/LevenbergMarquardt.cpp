@@ -44,6 +44,117 @@ LevenbergMarquardt::LevenbergMarquardt(
 
 
 
+LevenbergMarquardt::LevenbergMarquardt(){}
+
+LevenbergMarquardt::LevenbergMarquardt (const LevenbergMarquardt& other):
+    data_(other.data_),
+            initialParam_(other.initialParam_),
+            nPar_(other.nPar_),
+            nData_(other.nData_),
+            dx_(other.dx_),
+            maxIter_(other.maxIter_),
+            maxFeval_(other.maxFeval_),
+            minParamChange_(other.minParamChange_),
+            minSSChange_(other.minSSChange_),
+            minGradient_(other.minGradient_),
+            landa_(other.landa_),
+            nIter_(other.nIter_),
+            nFeval_(other.nFeval_),
+
+
+
+            currSS_(other.currSS_),
+            newSS_ (other.newSS_),
+            currParam_ (other.currParam_),
+            newParam_ (other.newParam_),
+            currYfit_(other.currYfit_),
+            newYfit_(other.newYfit_),
+
+            J_(other.J_),
+            G_(other.G_),
+            JTJ_(other.JTJ_),
+            JTJinv_(other.JTJinv_),
+
+            d_(other.d_),
+
+            optimParam_(other.optimParam_),
+
+            surpassIter_(other.surpassIter_),
+            surpassFeval_(other.surpassFeval_),
+
+            ParamChange_(other.ParamChange_),
+            SSChange_(other.SSChange_),
+            NormGrad_(other.NormGrad_),
+
+            smallParamChange_(other.smallParamChange_),
+
+            smallSSChange_(other.smallSSChange_),
+
+            smallGradient_(other.smallGradient_)
+
+    {}
+
+
+
+LevenbergMarquardt&
+LevenbergMarquardt::operator=(const LevenbergMarquardt& other)
+{
+    if (this!=&other)
+    {
+        LevenbergMarquardt tmp(other);
+        swap(*this,tmp);
+    }
+    return *this;
+}
+
+void swap(LevenbergMarquardt& one, LevenbergMarquardt& other)
+{
+    std::swap(one.data_,other.data_);
+    std::swap(one.initialParam_,other.initialParam_);
+    std::swap(one.nPar_,other.nPar_);
+    std::swap(one.nData_,other.nData_);
+    std::swap(one.dx_,other.dx_);
+    std::swap(one.maxIter_,other.maxIter_);
+    std::swap(one.maxFeval_,other.maxFeval_);
+    std::swap(one.minParamChange_,other.minParamChange_);
+    std::swap(one.minSSChange_,other.minSSChange_);
+    std::swap(one.minGradient_,other.minGradient_);
+    std::swap(one.landa_,other.landa_);
+    std::swap(one.nIter_,other.nIter_);
+    std::swap(one.nFeval_,other.nFeval_);
+
+
+
+    std::swap(one.currSS_,other.currSS_);
+    std::swap(one.newSS_,other.newSS_);
+    std::swap(one.currParam_,other.currParam_);
+    std::swap(one.newParam_,other.newParam_);
+    std::swap(one.currYfit_,other.currYfit_);
+    std::swap(one.newYfit_,other.newYfit_);
+
+    std::swap(one.J_,other.J_);
+    std::swap(one.G_,other.G_);
+    std::swap(one.JTJ_,other.JTJ_);
+    std::swap(one.JTJinv_,other.JTJinv_);
+
+    std::swap(one.d_,other.d_);
+
+    std::swap(one.optimParam_,other.optimParam_);
+
+    std::swap(one.surpassIter_,other.surpassIter_);
+    std::swap(one.surpassFeval_,other.surpassFeval_);
+
+    std::swap(one.ParamChange_,other.ParamChange_);
+    std::swap(one.SSChange_,other.SSChange_);
+    std::swap(one.NormGrad_,other.NormGrad_);
+
+    std::swap(one.smallParamChange_,other.smallParamChange_);
+
+    std::swap(one.smallSSChange_,other.smallSSChange_);
+
+    std::swap(one.smallGradient_,other.smallGradient_);
+
+    }
 
 LevenbergMarquardt& LevenbergMarquardt::optimize()
 {

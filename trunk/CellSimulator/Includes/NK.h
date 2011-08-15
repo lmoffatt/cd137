@@ -77,54 +77,18 @@ class NK_cells
                   double NK_TNF_bound_prod_rate_,
                   double NK_TNF_blocked_prod_rate_,
                   double NK_exh_rate
-                  ):
-
-                  NK_num_free_d(NK_init),
-                  NK_num_Ag_d(0),
-                  NK_num_LT_bound_d(0),
-                  NK_blocked_d(0),
-                  NK_num_exhausted_d(0),
-                  NK_IFN_free_prod_rate_d(NK_IFN_free_prod_rate_),
-                  NK_IFN_Ag_prod_rate_d(NK_IFN_Ag_prod_rate_),
-                  NK_IFN_bound_prod_rate_d(NK_IFN_bound_prod_rate_),
-                  NK_IFN_blocked_prod_rate_d(NK_IFN_blocked_prod_rate_),
-                  NK_TNF_free_prod_rate_d(NK_TNF_free_prod_rate_),
-                  NK_TNF_Ag_prod_rate_d(NK_TNF_Ag_prod_rate_),
-                  NK_TNF_bound_prod_rate_d(NK_TNF_bound_prod_rate_),
-                  NK_TNF_blocked_prod_rate_d(NK_TNF_blocked_prod_rate_),
-                  NK_max_proliferation_rate_d(NK_max_proliferation_rate_),
-                  NK_no_to_free_rate_per_Ag_d(NK_no_to_free_rate_per_Ag_),
-                  NK_free_to_bound_rate_per_LT_d (NK_free_to_bound_rate_per_LT),
-                  NK_Ab_binding_rate_d (NK_Ab_binding_rate),
-                  NK_exh_rate_d (NK_exh_rate)
-
-                  {}
+                  );
 
         NK_cells (const SimParameters& sp,
-                  const Treatment& tr):
+                  const Treatment& tr);
 
-                  NK_num_free_d(sp.init_ratio_NK_cells_*tr.init_cells),
-                  NK_num_Ag_d(0),
-                  NK_num_LT_bound_d(0),
-                  NK_blocked_d(0),
-                  NK_num_exhausted_d(0),
-                  NK_IFN_free_prod_rate_d(sp.NK_IFN_free_prod_rate_),
-                  NK_IFN_Ag_prod_rate_d(sp.NK_IFN_Ag_prod_rate_),
-                  NK_IFN_bound_prod_rate_d(sp.NK_IFN_bound_prod_rate_),
-                  NK_IFN_blocked_prod_rate_d(sp.NK_IFN_blocked_prod_rate_),
-                  NK_TNF_free_prod_rate_d(sp.NK_TNF_free_prod_rate_),
-                  NK_TNF_Ag_prod_rate_d(sp.NK_TNF_Ag_prod_rate_),
-                  NK_TNF_bound_prod_rate_d(sp.NK_TNF_bound_prod_rate_),
-                  NK_TNF_blocked_prod_rate_d(sp.NK_TNF_blocked_prod_rate_),
-                  NK_max_proliferation_rate_d(sp.NK_max_proliferation_rate_),
-                  NK_no_to_free_rate_per_Ag_d(sp.NK_no_to_free_rate_per_Ag_),
-                  NK_free_to_bound_rate_per_LT_d (sp.NK_free_to_bound_rate_per_LT_),
-                  NK_Ab_binding_rate_d (sp.NK_Ab_binding_rate),
-                  NK_exh_rate_d (sp.NK_exh_rate)
+        NK_cells& operator=(const NK_cells& other);
 
-                  {}
+        friend void swap(NK_cells& one, NK_cells& other);
 
-        NK_cells(){};
+        NK_cells(const NK_cells& other);
+
+        NK_cells();
 
         void reset(const SimParameters& sp,const Treatment& tr);
 
