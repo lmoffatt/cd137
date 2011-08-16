@@ -1,5 +1,9 @@
 #include "Includes/SimParameters.h"
 #include <cmath>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
 
 
 SimParameters::SimParameters():
@@ -66,7 +70,7 @@ std::vector<double> SimParameters::getParameters()const
 
     if (true)
     {
-	par.push_back(log(max_num_cells_));
+	par.push_back(10*log(max_num_cells_));
 	par.push_back(log(init_ratio_APC_cells_));
 	par.push_back(log(init_ratio_NK_cells_));
 	par.push_back(log(init_ratio_LT_cells_));
@@ -134,7 +138,7 @@ std::vector<double> SimParameters::getParameters()const
 SimParameters& SimParameters::applyParameters(const std::vector<double>& param)
 {
 
-    max_num_cells_=exp(param[0]);
+    max_num_cells_=exp(param[0]/10);
     init_ratio_APC_cells_=exp(param[1]);
     init_ratio_NK_cells_=exp(param[2]);
     init_ratio_LT_cells_=exp(param[3]);
@@ -391,3 +395,14 @@ void swap(SimParameters& one, SimParameters& other)
     return s;
 
 }
+ std::vector<double> SimParameters::getRandomParameters(double range)const
+ {
+     std::vector<double> result=getParameters();
+     srand ( time(NULL) );
+
+     for (std::size_t i=0; i<result.size();++i)
+     {
+	 result[i]+=2*range*((1.0*rand())/RAND_MAX-0.5);
+     }
+     return result;
+ }

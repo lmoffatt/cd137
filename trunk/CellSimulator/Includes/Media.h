@@ -11,6 +11,7 @@ class LT_cells;
 class Media
 {
     public:
+    ~Media(){}
         /// Interpheron gamma concentration in the media
         double& IFNgamma();
         const double& IFNgamma()const;

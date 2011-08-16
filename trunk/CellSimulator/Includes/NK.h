@@ -12,6 +12,7 @@ class LT_cells;
 class NK_cells
 {
     public:
+    ~NK_cells(){}
         /// Total NK cells
         double num() const;
 

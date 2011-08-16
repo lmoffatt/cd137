@@ -15,7 +15,7 @@ class OptimizationResults;
 class Cell_simulator: public ABC_function
 {
 public:
-
+    ~Cell_simulator(){}
     void ask_parameters();
     void run();
 
@@ -33,7 +33,9 @@ public:
 
 
     OptimizationResults Optimize(const SimParameters& simPar,
-				 const Experiment& exp);
+				 const Experiment& exp,
+				 double range,
+				 std::size_t numStarts);
 
 
     void update(double time_step);
