@@ -10,7 +10,7 @@ void experiment1()
     Cell_simulator simulation;
     simulation.ask_parameters();
     simulation.run();
-  };
+  }
 
 
 
@@ -80,21 +80,21 @@ void experiment2()
     med.Ag=0.0;
     med.Ab=0.0;
     med.sim_duration_d=120;
-    med.time_step_d=1.0/8/8;
+    med.time_step_d=1.0/120;
     med.init_cells=1e6;
 
     Treatment Mtb;
     Mtb.Ag=10.0;
     Mtb.Ab=0.0;
     Mtb.sim_duration_d=120;
-    Mtb.time_step_d=1.0/8/8;
+    Mtb.time_step_d=1.0/120;
     Mtb.init_cells=1e6;
 
     Treatment block;
     block.Ag=10.0;
     block.Ab=10.0;
     block.sim_duration_d=120;
-    block.time_step_d=1.0/8/8;
+    block.time_step_d=1.0/120;
     block.init_cells=1e6;
 
     Results MediaRes ("media");
@@ -107,56 +107,51 @@ void experiment2()
 
 
     SimParameters sp;
-    sp.max_num_cells_=2e6;
-    sp.init_ratio_LT_cells_=9e5/1e6;
-    sp.init_ratio_NK_cells_=1e5/1e6;
-    sp.LT_ratio_specific_=1000.0/1e6;
-    sp.init_ratio_APC_cells_=1e5/1e6;
     sp.APC_max_proliferation_rate_=1.0/120;
-    sp.NK_max_proliferation_rate_=1.0/240;
-    sp.LT_max_no_receptor_prol_rate_=1.0/240;
-    sp.LT_max_free_prol_rate_=1.0/4;
-    sp.LT_max_bound_prol_rate_=1.0/2;
-    sp.LT_max_blocked_prol_rate_=1.0/4;
-    sp.APC_no_to_free_rate_per_Ag_=1.0/4/10000;
-    sp.APC_free_to_bound_rate_per_LT_=1.0/10/10000;
-    sp.APC_Ab_binding_rate_=1.0/10/10000;
-    sp.NK_no_to_free_rate_per_Ag_=1.0/4/10000;
-    sp.NK_free_to_bound_rate_per_LT_=1.0/10/10000;
-    sp.NK_Ab_binding_rate=1.0/10/10000,
-    sp.LT_no_to_free_rate_per_APC_=1.0/6e5;
-    sp.LT_free_to_bound_rate_per_APC_=1.0/1e6;
-    sp.LT_mAb_binding_rate_=1.0/10/10000;
-    sp.APC_exh_rate=1.0/12/10000;
-    sp.NK_exh_rate=1.0/25/10000;
-    sp.LT_IFN_no_rec_prod_rate_=0.0001/240e6;
-    sp.LT_IFN_free_prod_rate_=3.0/240e6;
-    sp.LT_IFN_bound_prod_rate_=9.0/240e6;
-    sp.LT_IFN_blocked_prod_rate_=3.0/240e6;
-    sp.LT_TNF_no_rec_prod_rate_=0.0000001/240e6;
-    sp.LT_TNF_free_prod_rate_=0.00001/240e6;
-    sp.LT_TNF_bound_prod_rate_=0.00002/240e6;
-    sp.LT_TNF_blocked_prod_rate_=0.00001/240e6;
-    sp.APC_IFN_free_prod_rate_=0.00005/120e5;
-    sp.APC_IFN_Ag_prod_rate_=0.000005/120e5;
-    sp.APC_IFN_bound_prod_rate_=0.000001/120e5;
-    sp.APC_IFN_blocked_prod_rate_=0.000005/120e5;
-    sp.APC_TNF_free_prod_rate_=5.0/120e5;
-    sp.APC_TNF_Ag_prod_rate_=8000.0/120e5;
-    sp.APC_TNF_bound_prod_rate_=6000.0/120e5;
-    sp.APC_TNF_blocked_prod_rate_=8000.0/120e5;
-    sp.NK_IFN_free_prod_rate_=0.0001/240e6;
-    sp.NK_IFN_Ag_prod_rate_=0.3/240e6;
-    sp.NK_IFN_blocked_prod_rate_=0.9/240e6;
-    sp.NK_IFN_bound_prod_rate_=0.3/240e6;
-    sp.NK_TNF_free_prod_rate_=0.00001/120e5;
-    sp.NK_TNF_Ag_prod_rate_=0.00002/120e5;
-    sp.NK_TNF_bound_prod_rate_=0.000015/120e5;
-    sp.NK_TNF_blocked_prod_rate_=0.00002/120e5;
-    sp.max_num_cells_=2e6;
-  //  sp.Ag_internalization_rate=0.5,
-    sp.TNF_deg=1.0/120;
-    sp.IFN_deg=1.0/120;
+        sp.NK_max_proliferation_rate_=1.0/120;
+        sp.LT_max_no_receptor_prol_rate_=1.0/240;
+        sp.LT_max_free_prol_rate_=1.0/4;
+        sp.LT_max_bound_prol_rate_=1.0/2;
+        sp.LT_max_blocked_prol_rate_=1.0/4;
+        sp.APC_no_to_free_rate_per_Ag_=1.0/400;
+        sp.APC_free_to_bound_rate_per_LT_=0.25/1e5;
+        sp.APC_Ab_binding_rate_=1.0/30;
+        sp.NK_no_to_free_rate_per_Ag_=1.0/600;
+        sp.NK_free_to_bound_rate_per_LT_=0.25/1e5;
+        sp.NK_Ab_binding_rate=1.0/30;
+        sp.LT_no_to_free_rate_per_APC_=1.0/6e5;
+        sp.LT_free_to_bound_rate_per_APC_=1.0/1e6;
+        sp.LT_mAb_binding_rate_=1.0/30;
+        sp.APC_exh_rate=1.0/25;
+        sp.NK_exh_rate=1.0/25;
+        sp.LT_IFN_no_rec_prod_rate_=0.0001/240e6;
+        sp.LT_IFN_free_prod_rate_=3.0/240e6;
+        sp.LT_IFN_bound_prod_rate_=9.0/240e6;
+        sp.LT_IFN_blocked_prod_rate_=3.0/240e6;
+        sp.LT_TNF_no_rec_prod_rate_=0.0000001/240e6;
+        sp.LT_TNF_free_prod_rate_=0.00001/240e6;
+        sp.LT_TNF_bound_prod_rate_=0.00002/240e6;
+        sp.LT_TNF_blocked_prod_rate_=0.00001/240e6;
+        sp.APC_IFN_free_prod_rate_=0.00005/120e5;
+        sp.APC_IFN_Ag_prod_rate_=0.000005/120e5;
+        sp.APC_IFN_bound_prod_rate_=0.000001/120e5;
+        sp.APC_IFN_blocked_prod_rate_=0.000005/120e5;
+        sp.APC_TNF_free_prod_rate_=5.0/120e5;
+        sp.APC_TNF_Ag_prod_rate_=8000.0/120e5;
+        sp.APC_TNF_bound_prod_rate_=6000.0/120e5;
+        sp.APC_TNF_blocked_prod_rate_=8000.0/120e5;
+        sp.NK_IFN_free_prod_rate_=0.0001/240e6;
+        sp.NK_IFN_Ag_prod_rate_=0.3/240e6;
+        sp.NK_IFN_blocked_prod_rate_=0.9/240e6;
+        sp.NK_IFN_bound_prod_rate_=0.3/240e6;
+        sp.NK_TNF_free_prod_rate_=0.00001/120e5;
+        sp.NK_TNF_Ag_prod_rate_=0.00002/120e5;
+        sp.NK_TNF_bound_prod_rate_=0.000015/120e5;
+        sp.NK_TNF_blocked_prod_rate_=0.00002/120e5;
+        sp.max_num_cells_=2e6;
+      //  sp.Ag_internalization_rate=0.5,
+        sp.TNF_deg=1.0/120;
+        sp.IFN_deg=1.0/120;
 
   //  sp.APC_TNF_free_prod_rate_=5.0/1.0e7;
    //    sp.APC_TNF_Ag_prod_rate_=8.0/100000;
@@ -168,8 +163,8 @@ void experiment2()
     Experiment simulExp=cell.Simulate(sp,E);
 
     std::cout<<simulExp.Result_i(0);
-
-    OptimizationResults O=cell.Optimize(sp,E,2,200);
+//Modificar num iteracines
+    OptimizationResults O=cell.Optimize(sp,E,4,500);
 
     std::cout<<"Lower to 1\n";
     O=cell.Optimize(O.OptimalParameters(),E,1,200);

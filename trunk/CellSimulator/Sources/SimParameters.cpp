@@ -12,7 +12,7 @@ SimParameters::SimParameters():
     max_num_cells_(2e6),
     init_ratio_APC_cells_ (1e5/1e6),
     init_ratio_NK_cells_(1e5/1e6),
-    init_ratio_LT_cells_ (9e5/1e6),
+    init_ratio_LT_cells_ (7.99e5/1e6),
     LT_ratio_specific_ (1000/1e6),
     APC_max_proliferation_rate_ (1.0/240),
     NK_max_proliferation_rate_(1.0/240),
@@ -70,10 +70,10 @@ std::vector<double> SimParameters::getParameters()const
 
     if (true)
     {
-	par.push_back(10*log(max_num_cells_));
-	par.push_back(log(init_ratio_APC_cells_));
-	par.push_back(log(init_ratio_NK_cells_));
-	par.push_back(log(init_ratio_LT_cells_));
+        par.push_back(10*log(max_num_cells_)); // multiplicar si estoy seguro del valor
+        par.push_back(10*log(init_ratio_APC_cells_));
+        par.push_back(10*log(init_ratio_NK_cells_));
+        par.push_back(10*log(init_ratio_LT_cells_));
 	par.push_back(log(LT_ratio_specific_));
 
 
@@ -138,10 +138,10 @@ std::vector<double> SimParameters::getParameters()const
 SimParameters& SimParameters::applyParameters(const std::vector<double>& param)
 {
 
-    max_num_cells_=exp(param[0]/10);
-    init_ratio_APC_cells_=exp(param[1]);
-    init_ratio_NK_cells_=exp(param[2]);
-    init_ratio_LT_cells_=exp(param[3]);
+    max_num_cells_=exp(param[0]/10);//Divdir si estoy seguro de su valor
+    init_ratio_APC_cells_=exp(param[1]/10);
+    init_ratio_NK_cells_=exp(param[2]/10);
+    init_ratio_LT_cells_=exp(param[3]/10);
     LT_ratio_specific_=exp(param[4]);
 
 
