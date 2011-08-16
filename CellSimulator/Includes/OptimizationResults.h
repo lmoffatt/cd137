@@ -7,6 +7,7 @@
 class OptimizationResults
 {
 public:
+    ~OptimizationResults(){}
     SimParameters OptimalParameters()const;
     SimParameters InitialParameters()const;
 

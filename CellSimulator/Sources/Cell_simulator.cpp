@@ -842,20 +842,39 @@ Experiment Cell_simulator::Simulate(const SimParameters& simPar,
 
 
 OptimizationResults Cell_simulator::Optimize(const SimParameters& initPar,
-			     const Experiment& experiment)
+					     const Experiment& experiment,
+					     double range,
+					     std::size_t numEval)
 {
     experiment_=experiment;
-    LevenbergMarquardt LM(this,getData(initPar.getParameters()),initPar.getParameters());
-    LM.optimize();
+    SimParameters runPar(initPar);
+    LevenbergMarquardt LM0(this,getData(initPar.getParameters()),initPar.getParameters());
+    LM0.optimize();
+   runPar.applyParameters(LM0.OptimParameters());
+    std::size_t iEvals=0;
+    while (iEvals<numEval)
+    {
+	LevenbergMarquardt LM(this,
+			      getData(initPar.getParameters()),
+			      runPar.getRandomParameters(range));
+	LM.optimize();
+	if (LM.SS()<LM0.SS())
+	{
+	    LM0=LM;
+	    runPar.applyParameters(LM.OptimParameters());
+	}
+	iEvals+=LM.numIter();
 
-    fitPar_.applyParameters(LM.OptimParameters());
+
+    }
+    fitPar_.applyParameters(LM0.OptimParameters());
 
     OptimizationResults O;
     O.InitialParameters_=initPar;
     O.OptimalParameters_=fitPar_;
     O.Data_=experiment;
     O.FittedData_=Simulate(fitPar_,experiment);
-    O.SS_=LM.SS();
+    O.SS_=LM0.SS();
     return O;
 
 
@@ -870,9 +889,11 @@ std::vector<double> Cell_simulator::yfit (const std::vector<double>& param0)
 
 
     std::vector<double> f=fitExperiment_.getData();
+    for (std::size_t i=0; i<f.size();i++)
+	f[i]=f[i];
     std::vector<double> param(param0);
     for (std::size_t i=0; i<param.size();i++)
-	param[i]=param[i]/1;
+	param[i]=param[i];
 
 
     f.insert(f.end(),param.begin(),param.end());
@@ -894,12 +915,14 @@ std::vector<double> Cell_simulator::difParam(const std::vector<double>& param)
 std::vector<double> Cell_simulator::getData(const std::vector<double>& param0)
 {
     std::vector<double> f=experiment_.getData();
+    for (std::size_t i=0; i<f.size();i++)
+	f[i]=f[i];
     std::vector<double> param(param0);
 
     for (std::size_t i=0; i<param.size();i++)
-	param[i]=param[i]/1;
+	param[i]=param[i];
 
-    f.insert(f.end(),param.begin(),param.end());
+   f.insert(f.end(),param.begin(),param.end());
     return f;
 
 }

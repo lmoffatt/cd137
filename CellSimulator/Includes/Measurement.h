@@ -5,6 +5,7 @@
 class Measurement
 {
 public:
+
     double Time()const;
     double Measure()const;
 

@@ -80,21 +80,21 @@ void experiment2()
     med.Ag=0.0;
     med.Ab=0.0;
     med.sim_duration_d=120;
-    med.time_step_d=1.0/8;
+    med.time_step_d=1.0/8/8;
     med.init_cells=1e6;
 
     Treatment Mtb;
     Mtb.Ag=10.0;
     Mtb.Ab=0.0;
     Mtb.sim_duration_d=120;
-    Mtb.time_step_d=1.0/8;
+    Mtb.time_step_d=1.0/8/8;
     Mtb.init_cells=1e6;
 
     Treatment block;
     block.Ag=10.0;
     block.Ab=10.0;
     block.sim_duration_d=120;
-    block.time_step_d=1.0/8;
+    block.time_step_d=1.0/8/8;
     block.init_cells=1e6;
 
     Results MediaRes ("media");
@@ -104,7 +104,6 @@ void experiment2()
     E.push_back(Mtb,MtbRes);
     E.push_back(block,blockRes);
     E.push_back(med,MediaRes);
-
 
 
     SimParameters sp;
@@ -158,12 +157,26 @@ void experiment2()
   //  sp.Ag_internalization_rate=0.5,
     sp.TNF_deg=1.0/120;
     sp.IFN_deg=1.0/120;
+
+  //  sp.APC_TNF_free_prod_rate_=5.0/1.0e7;
+   //    sp.APC_TNF_Ag_prod_rate_=8.0/100000;
+    //   sp.APC_TNF_bound_prod_rate_=6.0/100000;
+    //   sp.APC_TNF_blocked_prod_rate_=8.0/100000;
+
+
     Cell_simulator cell(sp, E);
     Experiment simulExp=cell.Simulate(sp,E);
 
     std::cout<<simulExp.Result_i(0);
 
-    OptimizationResults O=cell.Optimize(sp,E);
+    OptimizationResults O=cell.Optimize(sp,E,2,200);
+
+    std::cout<<"Lower to 1\n";
+    O=cell.Optimize(O.OptimalParameters(),E,1,200);
+    std::cout<<"Lower to 0.5\n";
+
+    O=cell.Optimize(O.OptimalParameters(),E,0.5,200);
+
 
 
     std::ofstream f;

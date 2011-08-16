@@ -40,6 +40,8 @@ public:
 
     LevenbergMarquardt();
 
+    ~LevenbergMarquardt(){}
+
    // void reset(const SimParameters& sp,const Treatment& tr);
 
 private:
@@ -61,6 +63,8 @@ private:
     double minParamChange_;
     double minSSChange_;
     double minGradient_;
+
+    double maxLanda_;
 
     // variables that change on each iteration
 
@@ -92,6 +96,7 @@ private:
 
     bool surpassIter_;
     bool surpassFeval_;
+    bool surpassLanda_;
 
     double ParamChange_;
     double SSChange_;

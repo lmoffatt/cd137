@@ -94,6 +94,7 @@ class APC_cells
                   const Treatment& tr);
 
         APC_cells();
+	~APC_cells(){};
 
         void reset(const SimParameters& sp,const Treatment& tr);
 

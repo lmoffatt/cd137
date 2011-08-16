@@ -9,7 +9,9 @@
 class SimParameters
 {
 public:
-   std::vector<double> getParameters()const;
+    std::vector<double> getParameters()const;
+
+   std::vector<double> getRandomParameters(double range)const;
 
    SimParameters& applyParameters(const std::vector<double>& param);
 
