@@ -47,10 +47,10 @@ APC_cells::APC_cells(const SimParameters& sp,
           const Treatment& tr):
 
           num_free_d(sp.init_ratio_APC_cells_*tr.init_cells),
-          num_Ag_d(0),
-          num_LT_bound_d(0),
-          num_blocked_d (0),
-          num_exhausted_d(0),
+	  num_Ag_d(0.0),
+	  num_LT_bound_d(0.0),
+	  num_blocked_d (0.0),
+	  num_exhausted_d(0.0),
           IFN_free_prod_rate_d(sp.APC_IFN_free_prod_rate_),
           IFN_Ag_prod_rate_d(sp.APC_IFN_Ag_prod_rate_),
           IFN_bound_prod_rate_d(sp.APC_IFN_bound_prod_rate_),
@@ -281,3 +281,39 @@ double& APC_cells::no_to_free_rate_per_Ag()
     {
         return APC_no_to_free_rate_per_Ag_d;
     }
+
+
+
+ std::ostream& operator<<(std::ostream& s, const APC_cells& c)
+{
+
+       s<<"\n num_free_d \t"<<c.num_free_d;
+
+       s<<"\n num_Ag_d \t"<<c.num_Ag_d;
+       s<<"\n num_LT_bound_d \t"<<c.num_LT_bound_d;
+       s<<"\n num_blocked_d \t"<<c.num_blocked_d;
+       s<<"\n num_exhausted_d \t"<<c.num_exhausted_d;
+
+       if (0)
+       {
+       s<<"\n///TNF and INF Poductions rates of each type of APC\n";
+       s<<"\n IFN_free_prod_rate_d \t"<<c.IFN_free_prod_rate_d;
+       s<<"\n IFN_Ag_prod_rate_d \t"<<c.IFN_Ag_prod_rate_d;
+       s<<"\n IFN_bound_prod_rate_d \t"<<c.IFN_bound_prod_rate_d;
+       s<<"\n IFN_blocked_prod_rate_d \t"<<c.IFN_blocked_prod_rate_d;
+       s<<"\n TNF_free_prod_rate_d \t"<<c.TNF_free_prod_rate_d;
+       s<<"\n TNF_Ag_prod_rate_d \t"<<c.TNF_Ag_prod_rate_d;
+       s<<"\n TNF_bound_prod_rate_d \t"<<c.TNF_bound_prod_rate_d;
+       s<<"\n TNF_blocked_prod_rate_d \t"<<c.TNF_blocked_prod_rate_d;
+
+       s<<"\n/// those are parameters that do not vary\n";
+       s<<"\n APC_max_proliferation_rate_d \t"<<c.APC_max_proliferation_rate_d;
+       s<<"\n APC_no_to_free_rate_per_Ag_d \t"<<c.APC_no_to_free_rate_per_Ag_d;
+       s<<"\n APC_free_to_bound_rate_per_LT_d \t"<<c.APC_free_to_bound_rate_per_LT_d;
+       s<<"\n APC_Ab_binding_rate_d \t"<<c.APC_Ab_binding_rate_d;
+       s<<"\n APC_exh_rate_d \t"<<c.APC_exh_rate_d;
+       }
+       return s;
+
+
+}

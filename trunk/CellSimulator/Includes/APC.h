@@ -99,6 +99,7 @@ class APC_cells
 
         /// main step for the APC cells
 
+	friend std::ostream& operator<<(std::ostream& s, const APC_cells& c);
 
     private:
 

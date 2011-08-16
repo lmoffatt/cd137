@@ -12,13 +12,13 @@ LevenbergMarquardt::LevenbergMarquardt(
     initialParam_(initialParam),
     nPar_(initialParam_.size()),
     nData_(data.size()),
-    dx_(1e-7),
-    maxIter_(100),
-    maxFeval_(100),
+    dx_(1e-8),
+    maxIter_(20),
+    maxFeval_(100000),
     minParamChange_(1e-5),
     minSSChange_(1e-4),
     minGradient_(1e-4),
-    landa_(1e5),
+    landa_(1e3),
     nIter_(0),
     nFeval_(0),
     currSS_(std::numeric_limits<double>::infinity()),
@@ -172,7 +172,7 @@ void LevenbergMarquardt::iterate()
     computeJacobian();
     computeSearchDirection();
     updateLanda();
-    std::cout<<nIter_<<"\t"<<currSS_<<"\n";
+    std::cout<<nIter_<<"\t"<<currSS_<<"\t"<<landa_<<"\n";
     nIter_++;
 }
 
@@ -185,7 +185,7 @@ void LevenbergMarquardt::computeJacobian()
         std::vector<double> x(currParam_);
         x[i]+=dx_;
 	std::vector<double> yfit=f_->yfit(x);
-	std::cout<<nFeval_++<<" ";
+	//std::cout<<nFeval_++<<" ";
         for (std::size_t j=0;j<currYfit_.size();++j)
         {
             J_[i][j]=(yfit[j]-currYfit_[j])/dx_;
@@ -197,14 +197,14 @@ void LevenbergMarquardt::computeJacobian()
 void LevenbergMarquardt::computeSearchDirection()
 {
     for (std::size_t i=0; i<nPar_; ++i)
-        for (std::size_t j=0; j<nPar_; ++j)
-        {
-            JTJ_[i][j]=0;
-            for (std::size_t n=0; n<nData_; ++n)
-            {
-                JTJ_[i][j]+=J_[i][n]*J_[j][n];
-            }
-        }
+	for (std::size_t j=0; j<nPar_; ++j)
+	{
+	    JTJ_[i][j]=0;
+	    for (std::size_t n=0; n<nData_; ++n)
+	    {
+		JTJ_[i][j]+=J_[i][n]*J_[j][n];
+	    }
+	}
 
 
 
@@ -237,7 +237,7 @@ void LevenbergMarquardt::computeSearchDirection()
     }
     newParam_=currParam_;
     for (std::size_t i=0; i<nPar_; ++i)
-        newParam_[i]+=d_[i];
+	newParam_[i]-=d_[i];
 
     newYfit_=f_->yfit(newParam_);
     nFeval_++;
@@ -253,11 +253,14 @@ void LevenbergMarquardt::computeSearchDirection()
 void LevenbergMarquardt::updateLanda()
 {
 
-    while((newSS_>=currSS_)&&(nFeval_<maxFeval_))
+    while((newSS_>=currSS_)&&(nFeval_<maxFeval_)||(newSS_!=newSS_))
     {
-        landa_=landa_*10;
+	landa_=landa_*2;
+	if (landa_>1e5) break;
         computeSearchDirection();
     }
+    if (landa_<1e5)
+	landa_=std::max(landa_*0.5,2000.0);
     ParamChange_=0;
     for (std::size_t i=0; i<nPar_; ++i)
 	ParamChange_+=(currParam_[i]-newParam_[i])*(currParam_[i]-newParam_[i]);
@@ -287,7 +290,8 @@ bool LevenbergMarquardt::meetConvergenceCriteria()
 	    surpassFeval_||
 	    smallParamChange_||
 	    smallSSChange_||
-	    smallGradient_;
+	    smallGradient_||
+	    landa_>1e5;
 }
 
 void LevenbergMarquardt::initialize()
@@ -308,4 +312,31 @@ void LevenbergMarquardt::initialize()
     }
 
 
+}
+
+
+std::vector<double> LevenbergMarquardt::OptimParameters()const
+{
+    return currParam_;
+}
+std::vector< std::vector<double> > LevenbergMarquardt::OptimParCov()const
+{
+    return JTJinv_;
+}
+
+std::size_t LevenbergMarquardt::numEval()const
+{
+    return nFeval_;
+}
+std::size_t LevenbergMarquardt::numIter()const
+{
+    return nIter_;
+}
+double LevenbergMarquardt::SS()const
+{
+    return currSS_;
+}
+std::vector<double> LevenbergMarquardt::Gradient()const
+{
+    return G_;
 }

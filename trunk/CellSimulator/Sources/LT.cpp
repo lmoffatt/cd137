@@ -208,4 +208,43 @@ double LT_cells::num_cells_expressing_receptor()const
 double LT_cells::num_cells_expressing_receptor_and_bound()const
     {
         return num_Agsp_bound_receptor_d;
-    };
+    }
+
+
+
+
+
+std::ostream& operator<<(std::ostream& s, const LT_cells& c)
+{
+
+   s<<"\n num_non_Agsp_d \t"<<c.num_non_Agsp_d;
+
+   s<<"\n num_Agsp_no_receptor_d \t"<<c.num_Agsp_no_receptor_d;
+   s<<"\n num_Agsp_free_receptor_d \t"<<c.num_Agsp_free_receptor_d;
+   s<<"\n num_Agsp_bound_receptor_d \t"<<c.num_Agsp_bound_receptor_d;
+   s<<"\n num_blocked_d \t"<<c.num_blocked_d;
+   if (0)
+   {
+   s<<"///\n----------------------------------\n";
+   s<<"those are parameters that do not vary\n\n";
+
+   s<<"\n IFN_no_rec_prod_rate_d \t"<<c.IFN_no_rec_prod_rate_d;
+   s<<"\n IFN_free_prod_rate_d \t"<<c.IFN_free_prod_rate_d;
+   s<<"\n IFN_bound_prod_rate_d \t"<<c.IFN_bound_prod_rate_d;
+   s<<"\n IFN_blocked_prod_rate_d \t"<<c.IFN_blocked_prod_rate_d;
+   s<<"\n TNF_no_rec_prod_rate_d \t"<<c.TNF_no_rec_prod_rate_d;
+   s<<"\n TNF_free_prod_rate_d \t"<<c.TNF_free_prod_rate_d;
+   s<<"\n TNF_bound_prod_rate_d \t"<<c.TNF_bound_prod_rate_d;
+   s<<"\n TNF_blocked_prod_rate_d \t"<<c.TNF_blocked_prod_rate_d;
+   s<<"\n LT_max_no_receptor_prol_rate_d \t"<<c.LT_max_no_receptor_prol_rate_d;
+   s<<"\n LT_max_free_prol_rate_d \t"<<c.LT_max_free_prol_rate_d;
+   s<<"\n LT_max_bound_prol_rate_d \t"<<c.LT_max_bound_prol_rate_d;
+   s<<"\n LT_max_blocked_prol_rate_d \t"<<c.LT_max_blocked_prol_rate_d;
+   s<<"\n LT_no_to_free_rate_per_APC_d \t"<<c.LT_no_to_free_rate_per_APC_d;
+   s<<"\n LT_free_to_bound_rate_per_APC_d \t"<<c.LT_free_to_bound_rate_per_APC_d;
+   s<<"\n LT_mAb_binding_rate_d \t"<<c.LT_mAb_binding_rate_d;
+}
+   return s;
+}
+
+

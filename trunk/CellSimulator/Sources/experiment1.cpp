@@ -3,7 +3,7 @@
 #include "Includes/Cell_simulator.h"
 #include "Includes/Treatment.h"
 #include "Includes/Experiment.h"
-
+#include "Includes/OptimizationResults.h"
 
 void experiment1()
 {
@@ -101,35 +101,35 @@ void experiment2()
     Results MtbRes("mtb");
     Results blockRes ("block");
     Experiment E;
-    E.push_back(med,MediaRes);
     E.push_back(Mtb,MtbRes);
     E.push_back(block,blockRes);
+    E.push_back(med,MediaRes);
 
 
 
     SimParameters sp;
     sp.max_num_cells_=2e6;
-    sp.init_ratio_LT_cells_=9e5;
-    sp.init_ratio_NK_cells_=1e5;
-    sp.LT_ratio_specific_=1000;
-    sp.init_ratio_APC_cells_=1e5;
-    sp.APC_max_proliferation_rate_=120;
+    sp.init_ratio_LT_cells_=9e5/1e6;
+    sp.init_ratio_NK_cells_=1e5/1e6;
+    sp.LT_ratio_specific_=1000.0/1e6;
+    sp.init_ratio_APC_cells_=1e5/1e6;
+    sp.APC_max_proliferation_rate_=1.0/120;
     sp.NK_max_proliferation_rate_=1.0/240;
     sp.LT_max_no_receptor_prol_rate_=1.0/240;
     sp.LT_max_free_prol_rate_=1.0/4;
     sp.LT_max_bound_prol_rate_=1.0/2;
     sp.LT_max_blocked_prol_rate_=1.0/4;
-    sp.APC_no_to_free_rate_per_Ag_=1.0/120;
-    sp.APC_free_to_bound_rate_per_LT_=1.0/20;
-    sp.APC_Ab_binding_rate_=1.0/60;
-    sp.NK_no_to_free_rate_per_Ag_=1.0/600;
-    sp.NK_free_to_bound_rate_per_LT_=0.25/1e5;
-    sp.NK_Ab_binding_rate=1.0/30;
+    sp.APC_no_to_free_rate_per_Ag_=1.0/4/10000;
+    sp.APC_free_to_bound_rate_per_LT_=1.0/10/10000;
+    sp.APC_Ab_binding_rate_=1.0/10/10000;
+    sp.NK_no_to_free_rate_per_Ag_=1.0/4/10000;
+    sp.NK_free_to_bound_rate_per_LT_=1.0/10/10000;
+    sp.NK_Ab_binding_rate=1.0/10/10000,
     sp.LT_no_to_free_rate_per_APC_=1.0/6e5;
     sp.LT_free_to_bound_rate_per_APC_=1.0/1e6;
-    sp.LT_mAb_binding_rate_=1.0/30;
-    sp.APC_exh_rate=1.0/12;
-    sp.NK_exh_rate=1.0/25;
+    sp.LT_mAb_binding_rate_=1.0/10/10000;
+    sp.APC_exh_rate=1.0/12/10000;
+    sp.NK_exh_rate=1.0/25/10000;
     sp.LT_IFN_no_rec_prod_rate_=0.0001/240e6;
     sp.LT_IFN_free_prod_rate_=3.0/240e6;
     sp.LT_IFN_bound_prod_rate_=9.0/240e6;
@@ -161,29 +161,15 @@ void experiment2()
     Cell_simulator cell(sp, E);
     Experiment simulExp=cell.Simulate(sp,E);
 
-    cell.Optimize(sp,E);
-
-    std::cout<<"Media\n";
     std::cout<<simulExp.Result_i(0);
-    std::cout<<"Mtb\n";
-    std::cout<<simulExp.Result_i(1);
-    std::cout<<"CD137\n";
-    std::cout<<simulExp.Result_i(2);
+
+    OptimizationResults O=cell.Optimize(sp,E);
+
+
     std::ofstream f;
     f.open("results.txt");
-    f<<"Media\n";
-    f<<simulExp.Result_i(0);
-    f<<E.Result_i(0);
-    f<<"Mtb\n";
-    f<<simulExp.Result_i(1);
-    f<<E.Result_i(1);
-    f<<"CD137\n";
-    f<<simulExp.Result_i(2);
-    f<<E.Result_i(2);
-    SumSquare (E, simulExp);
-    SumSquareTXT (E, simulExp);
-
-}
+    f<<O;
+    }
 
 
 /*void con_bloqueo ()

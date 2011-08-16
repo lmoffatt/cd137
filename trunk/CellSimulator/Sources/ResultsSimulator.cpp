@@ -3,7 +3,7 @@
 Experiment ResultsSimulator::Simulate(const SimParameters& simPar,
                  const Experiment& E)
 {
-    Cell_simulator sim(simPar,E.Treatment_i(0));
+    Cell_simulator sim(simPar,E);
     Experiment out;
     for (std::size_t i=0; i<E.size();i++)
 

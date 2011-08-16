@@ -86,3 +86,18 @@ Experiment& Experiment::operator=(const Experiment& other)
 
 }
 
+ std::ostream& operator<<(std::ostream& s, const Experiment& e)
+ {
+     s<<"\n Experiment\n";
+     for (std::size_t i=0; i<e.size(); ++i)
+     {
+	 s<<"\n Treatment number "<<i<<"\n";
+	 s<<e.Treatment_i(i);
+
+	 s<<"\n Results \n";
+	 s<<e.Result_i(i);
+     }
+
+     return s;
+
+ }

@@ -3,7 +3,7 @@
 #include "Includes/LT.h"
 #include "Includes/NK.h"
 
-Media::Media( double max_num_cells_,
+Media::Media( double max_num_cells,
               double init_num_cells,
               double Ag_=0,
               double Ab_=0,
@@ -15,7 +15,7 @@ Media::Media( double max_num_cells_,
 
     IFNgamma_d(IFNgamma_init),
     TNF_d(TNF_init),
-    max_num_cells_d(max_num_cells_),
+    max_num_cells_d(max_num_cells),
     num_cells_d(init_num_cells),
     Ag_d(Ag_),
     Ab_d(Ab_),
@@ -156,24 +156,36 @@ const double& Media::Ab()const
     }
 /// Media Main step of the simulation
 /// it updates the state of the media and the cells populations for a given time period
-void Media::update(double time_step,const APC_cells& APC_, const NK_cells& NK_, const LT_cells& LT_)
+void Media::update(double time_step,const APC_cells& APC, const NK_cells& NK, const LT_cells& LT)
 {
     /// IFN is increased by the production rate of each population;
-    IFNgamma_d+=APC_.IFNgamma_production_rate()*time_step+
-                NK_.IFNgamma_production_rate()*time_step +
-                LT_.IFNgamma_production_rate()*time_step -
+    IFNgamma_d+=APC.IFNgamma_production_rate()*time_step+
+		NK.IFNgamma_production_rate()*time_step +
+		LT.IFNgamma_production_rate()*time_step -
                 IFNgamma_d*time_step*IFN_degradation();
     /// TNF is increased by the production rate of each population;
-    TNF_d+=APC_.TNF_production_rate()*time_step+
-           NK_.TNF_production_rate()*time_step +
-           LT_.TNF_production_rate()*time_step -
+    TNF_d+=APC.TNF_production_rate()*time_step+
+	   NK.TNF_production_rate()*time_step +
+	   LT.TNF_production_rate()*time_step -
            TNF_d*time_step*TNF_degradation();
     /// The total number of cells is the adittion of APC + NK + LT
-    num_cells_d=APC_.num()+NK_.num()+LT_.num();
+    num_cells_d=APC.num()+NK.num()+LT.num();
 
 }
 
 
+ std::ostream& operator<<(std::ostream& s, const Media& c)
+{
+    s<<"\n IFNgamma_d \t"<<c.IFNgamma_d;
+    s<<"\n TNF_d \t"<<c.TNF_d;
+    s<<"\n max_num_cells_d \t"<<c.max_num_cells_d;
+    s<<"\n num_cells_d \t"<<c.num_cells_d;
+    s<<"\n Ag_d \t"<<c.Ag_d;
+    s<<"\n Ab_d \t"<<c.Ab_d;
+    s<<"\n TNF_deg \t"<<c.TNF_deg;
+    s<<"\n IFN_deg \t"<<c.IFN_deg;
+  return s;
+}
 
 
 
