@@ -93,6 +93,8 @@ class LT_cells
             LT_cells& operator=(const LT_cells& other);
 
             friend void swap(LT_cells& one, LT_cells& other);
+	    friend std::ostream& operator<<(std::ostream& s, const LT_cells& c);
+
 
             void reset(const SimParameters& sp,const Treatment& tr);
 

@@ -33,7 +33,8 @@ SOURCES += \
     Sources/Experiment.cpp \
     Sources/LevenbergMarquardt.cpp \
     Sources/MatrixInverse.cpp \
-    Sources/MatrixInverse_Test.cpp
+    Sources/MatrixInverse_Test.cpp \
+    Sources/OptimizationResults.cpp
 
 HEADERS += \
     Includes/NK.h \

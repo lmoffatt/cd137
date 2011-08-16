@@ -279,3 +279,39 @@ double& NK_cells::NK_no_to_free_rate_per_Ag()
     {
         return NK_no_to_free_rate_per_Ag_d;
     }
+
+
+ std::ostream& operator<<(std::ostream& s, const NK_cells& c)
+{
+
+    s<<"\n NK_num_free_d \t"<<c.NK_num_free_d;
+
+    s<<"\n NK_num_Ag_d \t"<<c.NK_num_Ag_d;
+
+    s<<"\n NK_num_LT_bound_d \t"<<c.NK_num_LT_bound_d;
+    s<<"\n NK_blocked_d \t"<<c.NK_blocked_d;
+
+    s<<"\n NK_num_exhausted_d \t"<<c.NK_num_exhausted_d;
+
+    if (0)
+    {
+
+    s<<"\n NK_IFN_free_prod_rate_d \t"<<c.NK_IFN_free_prod_rate_d;
+    s<<"\n NK_IFN_Ag_prod_rate_d \t"<<c.NK_IFN_Ag_prod_rate_d;
+    s<<"\n NK_IFN_bound_prod_rate_d \t"<<c.NK_IFN_bound_prod_rate_d;
+    s<<"\n NK_IFN_blocked_prod_rate_d \t"<<c.NK_IFN_blocked_prod_rate_d;
+    s<<"\n NK_TNF_free_prod_rate_d \t"<<c.NK_TNF_free_prod_rate_d;
+    s<<"\n NK_TNF_Ag_prod_rate_d \t"<<c.NK_TNF_Ag_prod_rate_d;
+    s<<"\n NK_num_free_d \t"<<c.NK_num_free_d;
+
+
+    s<<"\n NK_TNF_bound_prod_rate_d \t"<<c.NK_TNF_bound_prod_rate_d;
+    s<<"\n NK_TNF_blocked_prod_rate_d \t"<<c.NK_TNF_blocked_prod_rate_d;
+    s<<"\n NK_max_proliferation_rate_d \t"<<c.NK_max_proliferation_rate_d;
+    s<<"\n NK_no_to_free_rate_per_Ag_d \t"<<c.NK_no_to_free_rate_per_Ag_d;
+    s<<"\n NK_free_to_bound_rate_per_LT_d \t"<<c.NK_free_to_bound_rate_per_LT_d;
+    s<<"\n NK_Ab_binding_rate_d \t"<<c.NK_Ab_binding_rate_d;
+    s<<"\n NK_exh_rate_d \t"<<c.NK_exh_rate_d;
+    }
+    return s;
+}

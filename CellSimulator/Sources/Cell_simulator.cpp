@@ -12,6 +12,7 @@
 #include "Includes/NK.h"
 #include "Includes/LT.h"
 #include "Includes/LevenbergMarquardt.h"
+#include "Includes/OptimizationResults.h"
 
 
 void Cell_simulator::ask_parameters()
@@ -559,7 +560,7 @@ Cell_simulator& Cell_simulator::applyParameters(const SimParameters& sp,
 	);
 
 
-    APC=APC_cells(sp.init_ratio_APC_cells_,
+    APC=APC_cells(sp.init_ratio_APC_cells_*tr.init_cells,
 		  sp.APC_max_proliferation_rate_,
 		  sp.APC_no_to_free_rate_per_Ag_ ,
 		  sp.APC_free_to_bound_rate_per_LT_,
@@ -574,7 +575,7 @@ Cell_simulator& Cell_simulator::applyParameters(const SimParameters& sp,
 		  sp.APC_TNF_bound_prod_rate_,
 		  sp.APC_TNF_blocked_prod_rate_);
 
-    NK=NK_cells (sp.init_ratio_NK_cells_,
+    NK=NK_cells (sp.init_ratio_NK_cells_*tr.init_cells,
 		 sp.NK_max_proliferation_rate_,
 		 sp.NK_no_to_free_rate_per_Ag_ ,
 		 sp.NK_free_to_bound_rate_per_LT_,
@@ -590,7 +591,7 @@ Cell_simulator& Cell_simulator::applyParameters(const SimParameters& sp,
 		 sp.NK_TNF_blocked_prod_rate_);
 
 
-    LT=LT_cells  (sp.init_ratio_LT_cells_,
+    LT=LT_cells  (sp.init_ratio_LT_cells_*tr.init_cells,
 	sp.LT_ratio_specific_,
 	sp.LT_max_no_receptor_prol_rate_,
 	sp.LT_max_free_prol_rate_,
@@ -678,7 +679,7 @@ Results Cell_simulator::Simulate(const SimParameters& simPar,
                                  const Treatment& tr,
                                  const Results& results)
 {
-    applyParameters(simPar, tr);
+    *this=applyParameters(simPar, tr);
 
     double Duratione=results.Duration();
 
@@ -759,8 +760,8 @@ Results Cell_simulator::Simulate(const SimParameters& simPar,
 
         if(trun_d>=tAPC_exp)
         {
-            APC_exp[iAPC_exp]=Measurement(tAPC_exp,
-                        APC.percentage_cell_expressing_receptor());
+	    Measurement xsim(tAPC_exp,APC.percentage_cell_expressing_receptor());
+	    APC_exp[iAPC_exp]=xsim;
             ++iAPC_exp;
             if (iAPC_exp<APC_exp.size())
             {
@@ -807,7 +808,12 @@ Results Cell_simulator::Simulate(const SimParameters& simPar,
 
 
         }
-        APC.update(time_step_d,m,NK,LT);
+	//char ch;
+
+//	std::cout<<"\n media\n"<<m<<"\nAPC\n"<<APC<<"\nNK\n"<<NK<<"\nLT\n"<<LT;
+//	std::cout<<"\ntime \t"<<trun_d;
+//	std::cin>>ch;
+	APC.update(time_step_d,m,NK,LT);
         NK.update(time_step_d,m,APC,LT);
         LT.update(time_step_d,m,APC,NK);
         m.update(time_step_d,APC,NK,LT);
@@ -839,22 +845,62 @@ OptimizationResults Cell_simulator::Optimize(const SimParameters& initPar,
 			     const Experiment& experiment)
 {
     experiment_=experiment;
-    LevenbergMarquardt LM(this,experiment_.getData(),initPar.getParameters());
+    LevenbergMarquardt LM(this,getData(initPar.getParameters()),initPar.getParameters());
     LM.optimize();
-    return buildOptimizationResults();
+
+    fitPar_.applyParameters(LM.OptimParameters());
+
+    OptimizationResults O;
+    O.InitialParameters_=initPar;
+    O.OptimalParameters_=fitPar_;
+    O.Data_=experiment;
+    O.FittedData_=Simulate(fitPar_,experiment);
+    O.SS_=LM.SS();
+    return O;
+
 
 }
 
-OptimizationResults Cell_simulator::buildOptimizationResults()
-{
-}
 
-std::vector<double> Cell_simulator::yfit (const std::vector<double>& param)
+std::vector<double> Cell_simulator::yfit (const std::vector<double>& param0)
 {
     SimParameters par;
-    par.applyParameters(param);
+    par.applyParameters(param0);
     fitExperiment_=Simulate(par,experiment_);
 
-    return fitExperiment_.getData();
+
+    std::vector<double> f=fitExperiment_.getData();
+    std::vector<double> param(param0);
+    for (std::size_t i=0; i<param.size();i++)
+	param[i]=param[i]/1;
+
+
+    f.insert(f.end(),param.begin(),param.end());
+    return f;
  }
+
+
+std::vector<double> Cell_simulator::difParam(const std::vector<double>& param)
+{
+    std::vector<double> result;
+    std::vector<double> p0=initialPar_.getParameters();
+    for (std::size_t i=0; i<param.size();i++)
+    {
+	result.push_back(param[i]-p0[i]);
+    }
+    return result;
+}
+
+std::vector<double> Cell_simulator::getData(const std::vector<double>& param0)
+{
+    std::vector<double> f=experiment_.getData();
+    std::vector<double> param(param0);
+
+    for (std::size_t i=0; i<param.size();i++)
+	param[i]=param[i]/1;
+
+    f.insert(f.end(),param.begin(),param.end());
+    return f;
+
+}
 

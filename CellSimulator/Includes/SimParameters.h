@@ -4,6 +4,8 @@
 
 #include <vector>
 #include<string>
+#include <iostream>
+
 class SimParameters
 {
 public:
@@ -76,13 +78,16 @@ public:
 
    friend void swap(SimParameters& one, SimParameters& other);
 
+   friend std::ostream& operator<<(std::ostream& s,SimParameters p);
+
    SimParameters& operator=(const SimParameters& other);
 
    SimParameters();
 
    void reset(const SimParameters& sp);
-
+   ~SimParameters(){}
 };
+
 
 
 #endif // SIMPARAMETERS_H_INCLUDED

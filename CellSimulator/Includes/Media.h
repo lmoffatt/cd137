@@ -73,6 +73,7 @@ class Media
         operator=(const Media& other);
         friend void swap(Media& one, Media& other);
 
+	friend std::ostream& operator<<(std::ostream& s, const Media& c);
 
     private:
         double IFNgamma_d;

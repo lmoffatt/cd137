@@ -25,7 +25,7 @@ public:
     Experiment& operator=(const Experiment& other);
     friend void swap(Experiment& one, Experiment& two);
 
-
+    friend std::ostream& operator<<(std::ostream& s, const Experiment& e);
 
 
 private:

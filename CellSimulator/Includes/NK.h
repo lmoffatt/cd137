@@ -2,7 +2,7 @@
 #define NK_H_INCLUDED
 #include "Includes/SimParameters.h"
 #include "Includes/Treatment.h"
-
+#include <iostream>
 
 class Media;
 class APC_cells;
@@ -93,6 +93,9 @@ class NK_cells
         void reset(const SimParameters& sp,const Treatment& tr);
 
         /// main step for the NK cells
+
+
+	friend std::ostream& operator<<(std::ostream& s, const NK_cells& c);
 
 
     private:

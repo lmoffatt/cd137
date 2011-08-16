@@ -7,10 +7,11 @@
 #include "Includes/APC.h"
 #include "Includes/NK.h"
 #include "Includes/LT.h"
-#include "Includes/OptimizationResults.h"
 #include "Includes/LevenbergMarquardt.h"
 
 #include "Experiment.h"
+
+class OptimizationResults;
 class Cell_simulator: public ABC_function
 {
 public:
@@ -41,8 +42,9 @@ public:
 
    virtual std::vector<double> yfit (const std::vector<double>& param);
 
+    std::vector<double> difParam(const std::vector<double>& param);
 
-
+    std::vector<double> getData(const std::vector<double>& param);
 
 
 
@@ -79,7 +81,6 @@ private:
     void formatInputsforLM();
     void runLM();
     void formatOutputsfromLM();
-    OptimizationResults buildOptimizationResults();
 
 };
 

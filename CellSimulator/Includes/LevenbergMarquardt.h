@@ -13,6 +13,17 @@ class LevenbergMarquardt
 {
 public:
 
+    std::vector<double> OptimParameters()const;
+    std::vector< std::vector<double> > OptimParCov()const;
+
+    std::size_t numEval()const;
+    std::size_t numIter()const;
+    double SS()const;
+    std::vector<double> Gradient()const;
+
+
+
+
     LevenbergMarquardt& optimize();
 
 
