@@ -59,9 +59,10 @@ std::vector<double> Experiment::getData()
     std::vector<double> data;
     for (std::size_t i=0; i<results_.size(); i++)
     {
-	std::vector<double> datai=Result_i(i).getData();
-	data.insert(data.begin(),datai.begin(),datai.end());
-    }
+        std::vector<double> datai=Result_i(i).getData();
+        for (std::size_t j=0;j<datai.size();++j)
+            data.push_back(datai[j]);
+     }
     return data;
 }
 Experiment::Experiment(const Experiment& other):

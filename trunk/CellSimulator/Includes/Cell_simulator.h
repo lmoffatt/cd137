@@ -32,7 +32,8 @@ public:
                         const Experiment& exp);
 
 
-    OptimizationResults Optimize(const SimParameters& simPar,
+    OptimizationResults Optimize(const SimParameters& priorPar,
+                                 const SimParameters& simPar,
 				 const Experiment& exp,
 				 double range,
 				 std::size_t numStarts);

@@ -841,21 +841,23 @@ Experiment Cell_simulator::Simulate(const SimParameters& simPar,
 }
 
 
-OptimizationResults Cell_simulator::Optimize(const SimParameters& initPar,
-					     const Experiment& experiment,
+OptimizationResults Cell_simulator::Optimize(const SimParameters& priorPar,
+                                             const SimParameters& initPar,
+                                             const Experiment& experiment,
 					     double range,
 					     std::size_t numEval)
 {
     experiment_=experiment;
     SimParameters runPar(initPar);
-    LevenbergMarquardt LM0(this,getData(initPar.getParameters()),initPar.getParameters());
+    LevenbergMarquardt LM0(this,getData(priorPar.getParameters()),
+                           initPar.getParameters());
     LM0.optimize();
    runPar.applyParameters(LM0.OptimParameters());
-    std::size_t iEvals=0;
+   std::size_t iEvals=LM0.numIter();
     while (iEvals<numEval)
     {
 	LevenbergMarquardt LM(this,
-			      getData(initPar.getParameters()),
+                              getData(priorPar.getParameters()),
 			      runPar.getRandomParameters(range));
 	LM.optimize();
 	if (LM.SS()<LM0.SS())
@@ -867,6 +869,7 @@ OptimizationResults Cell_simulator::Optimize(const SimParameters& initPar,
 
 
     }
+    fitPar_=priorPar;
     fitPar_.applyParameters(LM0.OptimParameters());
 
     OptimizationResults O;
@@ -883,20 +886,18 @@ OptimizationResults Cell_simulator::Optimize(const SimParameters& initPar,
 
 std::vector<double> Cell_simulator::yfit (const std::vector<double>& param0)
 {
-    SimParameters par;
+    SimParameters par(initialPar_);
     par.applyParameters(param0);
     fitExperiment_=Simulate(par,experiment_);
 
-
+//param [i], modificar el peso de los parametros dividiendo
     std::vector<double> f=fitExperiment_.getData();
-    for (std::size_t i=0; i<f.size();i++)
-	f[i]=f[i];
-    std::vector<double> param(param0);
+     std::vector<double> param(param0);
     for (std::size_t i=0; i<param.size();i++)
 	param[i]=param[i];
 
 
-    f.insert(f.end(),param.begin(),param.end());
+   f.insert(f.end(),param.begin(),param.end());
     return f;
  }
 
@@ -911,7 +912,7 @@ std::vector<double> Cell_simulator::difParam(const std::vector<double>& param)
     }
     return result;
 }
-
+//param [i], modificar el peso de los parametros dividiendo
 std::vector<double> Cell_simulator::getData(const std::vector<double>& param0)
 {
     std::vector<double> f=experiment_.getData();

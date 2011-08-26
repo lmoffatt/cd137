@@ -51,6 +51,9 @@ inv(const std::vector< std::vector< double> >& matrix)
         delete [] work1;
         delete [] A;
 
+        if (info>0)
+            std::cerr<<"\n singular matrix\n";
+
         return result;
     }
 
