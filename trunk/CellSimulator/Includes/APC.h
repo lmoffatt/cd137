@@ -5,8 +5,9 @@
 
 
 class Media;
-class LT_cells;
 class NK_cells;
+class LT_cells;
+
 
 
 /// Antigen presentation cells (Monocytes)
