@@ -69,7 +69,8 @@ private:
     // variables that change on each iteration
 
     double landa_;
-
+    double landa0_;
+    double v_;
 
     std::size_t nIter_;
     std::size_t nFeval_;
@@ -78,11 +79,14 @@ private:
 
     double currSS_;
     double newSS_;
+    double newSS0_;
     std::vector<double> currParam_;
     std::vector<double> newParam_;
+    std::vector<double> newParam0_;
 
     std::vector<double> currYfit_;
     std::vector<double> newYfit_;
+    std::vector<double> newYfit0_;
 
     std::vector< std::vector< double> > J_;
     std::vector<double> G_;

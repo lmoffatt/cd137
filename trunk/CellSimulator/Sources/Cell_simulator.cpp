@@ -402,7 +402,7 @@ void Cell_simulator::run()
 {
     filename="out.txt";
     std::ofstream f;
-    f.open(filename.c_str());
+    f.open(filename.c_str(),std::ios_base::app);
     trun_d=0;
     std::cout<<"round"<<"\t";
     std::cout<<"IFN"<<"\t";
@@ -454,13 +454,14 @@ void Cell_simulator::run()
     f<<"LT.IFNgamma_production_rate"<<" , ";
     f<<"LT.TNF_production_rate"<<" , ";
     f<<"Ag"<<" , ";
+    f<<"Ab"<<" , ";
     f<<"\n";
 
-
+    double eps=1e-7;
     while (trun_d<this->sim_duration_d)
     {
 
-        if (trun_d-floor(trun_d)<time_step_d)
+        if (trun_d+eps-floor(trun_d+eps)<time_step_d)
         {
             std::cout<<trun_d<<"\t";
             std::cout<<m.IFNgamma()<<"\t";
@@ -509,7 +510,8 @@ void Cell_simulator::run()
             f<<LT.LT_percentage_cell_expressing_receptor()<<" , ";
             f<<LT.IFNgamma_production_rate()<<" , ";
             f<<LT.TNF_production_rate()<<" , ";
-            f<<m.Ag()<<"\n";
+            f<<m.Ag()<<" , ";
+            f<<m.Ab()<<"\n";
 
         };
 
@@ -724,12 +726,12 @@ Results Cell_simulator::Simulate(const SimParameters& simPar,
         tLT_exp=LT_exp[iLT_exp].Time();
     else tLT_exp=Duratione+1;
 
+    double eps=1e-7;
 
-
-    while (trun_d<=results.Duration())
+    while (trun_d+eps<=results.Duration())
     {
 
-        if(trun_d>=tTNFs)
+        if(trun_d+eps>=tTNFs)
         {
             TNFs[iTNFs]=Measurement(tTNFs,m.TNF());
             ++iTNFs;
@@ -743,7 +745,7 @@ Results Cell_simulator::Simulate(const SimParameters& simPar,
             }
         };
 
-        if(trun_d>=tIFNs)
+        if(trun_d+eps>=tIFNs)
         {
             IFNs[iIFNs]=Measurement(tIFNs,m.IFNgamma());
             ++iIFNs;
@@ -758,7 +760,7 @@ Results Cell_simulator::Simulate(const SimParameters& simPar,
         }
 
 
-        if(trun_d>=tAPC_exp)
+      if(trun_d+eps>=tAPC_exp)
         {
 	    Measurement xsim(tAPC_exp,APC.percentage_cell_expressing_receptor());
 	    APC_exp[iAPC_exp]=xsim;
@@ -775,7 +777,7 @@ Results Cell_simulator::Simulate(const SimParameters& simPar,
 
 
 
-        if(trun_d>=tNK_exp)
+        if(trun_d+eps>=tNK_exp)
         {
             NK_exp[iNK_exp].setMeasurement (
                         NK.percentage_cell_expressing_receptor());
@@ -791,7 +793,7 @@ Results Cell_simulator::Simulate(const SimParameters& simPar,
         }
 
 
-        if(trun_d>=tLT_exp)
+        if(trun_d+eps>=tLT_exp)
         {
             LT_exp[iLT_exp].setMeasurement (
                         LT.LT_percentage_cell_expressing_receptor());

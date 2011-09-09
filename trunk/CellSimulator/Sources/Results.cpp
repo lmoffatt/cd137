@@ -45,46 +45,46 @@ Results::Results(std::string experimentName):
         duration_=120.0;
         TNF_.push_back(Measurement(16.0,2.1));
         TNF_.push_back(Measurement(48.0,1.0));
-        TNF_.push_back(Measurement(120.0,0.5));
+        TNF_.push_back(Measurement(119.0,0.5));
         IFN_.push_back(Measurement(16.0,0.02));
         IFN_.push_back(Measurement(48.0,0.03));
-        IFN_.push_back(Measurement(120.0,0.01));
+        IFN_.push_back(Measurement(119.0,0.01));
         APC_expression_.push_back(Measurement(0.0,3.2));
         APC_expression_.push_back(Measurement(16.0,3.4));
-        APC_expression_.push_back(Measurement(120.0,2.8));
+        APC_expression_.push_back(Measurement(119.0,2.8));
         NK_expression_.push_back (Measurement (24.0, 2.5));
         LT_expression_.push_back (Measurement (0.0,0.2));
         LT_expression_.push_back (Measurement (16.0,0.9));
         LT_expression_.push_back(Measurement (24.0, 0.8));
-        LT_expression_.push_back(Measurement (120.0,2.1));
+        LT_expression_.push_back(Measurement (119.0,2.1));
     }
     if (experimentName=="mtb")
     {
         duration_=120.0;
         TNF_.push_back(Measurement(16.0,50.5));
         TNF_.push_back(Measurement(48.0,40.3));
-        TNF_.push_back(Measurement(120.0,30.2));
+        TNF_.push_back(Measurement(119.0,30.2));
         IFN_.push_back(Measurement(16.0,8.1));
         IFN_.push_back(Measurement(48.0,12.0));
-        IFN_.push_back(Measurement(120.0,28.3));
+        IFN_.push_back(Measurement(119.0,28.3));
         APC_expression_.push_back(Measurement(0.0,3.2));
-        APC_expression_.push_back(Measurement(16.0,11.4));
-        APC_expression_.push_back(Measurement(120.0,2.3));
+        APC_expression_.push_back(Measurement(16.0,16.4));
+        APC_expression_.push_back(Measurement(119.0,2.3));
         NK_expression_.push_back (Measurement (24.0, 11.3));
         LT_expression_.push_back (Measurement (0.0,0.7));
         LT_expression_.push_back (Measurement (16.0,1.1));
         LT_expression_.push_back(Measurement (24.0, 1.4));
-        LT_expression_.push_back(Measurement (120.0,9.1));
+        LT_expression_.push_back(Measurement (119.0,9.1));
     }
     if (experimentName=="block")
     {
         duration_=120.0;
         TNF_.push_back(Measurement(16.0,63.7));
         TNF_.push_back(Measurement(48.0,58.6));
-        TNF_.push_back(Measurement(120.0,52.4));
+        TNF_.push_back(Measurement(119.0,52.4));
         IFN_.push_back(Measurement(16.0,10.3));
         IFN_.push_back(Measurement(48.0,8.1));
-        IFN_.push_back(Measurement(120.0,12.4));
+        IFN_.push_back(Measurement(119.0,12.4));
         /*  APC_expression_.push_back(Measurement(0.0,3.2));
         APC_expression_.push_back(Measurement(16.0,11.4));
         APC_expression_.push_back(Measurement(120.0,2.3));

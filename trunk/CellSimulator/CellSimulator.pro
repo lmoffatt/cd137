@@ -34,7 +34,8 @@ SOURCES += \
     Sources/LevenbergMarquardt.cpp \
     Sources/MatrixInverse.cpp \
     Sources/MatrixInverse_Test.cpp \
-    Sources/OptimizationResults.cpp
+    Sources/OptimizationResults.cpp \
+    Sources/LevenbergMarquardt_Test.cpp
 
 HEADERS += \
     Includes/NK.h \
@@ -52,7 +53,8 @@ HEADERS += \
     Includes/LevenbergMarquardt.h \
     Includes/MatrixInverse.h \
     Includes/MatrixInverse_Test.h \
-    Includes/OptimizationResults.h
+    Includes/OptimizationResults.h \
+    Includes/LevenbergMarquardt_Test.h
 
 
 LIBS += -L$$PWD/bin -lcygblas \

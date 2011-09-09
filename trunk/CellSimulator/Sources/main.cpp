@@ -3,11 +3,12 @@
 #include "Includes/SimParameters.h"
 #include "Results.h"
 #include "Includes/MatrixInverse_Test.h"
+#include "LevenbergMarquardt_Test.h"
 
 int main()
 {
     experiment2();
-
+ //   LevenbergMarquardt_Test();
  // inv_test();
 
 }
