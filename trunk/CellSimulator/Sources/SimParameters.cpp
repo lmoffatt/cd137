@@ -18,6 +18,7 @@ SimParameters::SimParameters():
     LT_max_free_prol_rate_(1.0/2),
     LT_max_bound_prol_rate_(1.0/1.2),
     LT_max_blocked_prol_rate_ (1.0/2),
+    LT_exh_rate_(1.0/2),
     APC_no_to_free_rate_per_Ag_(1.0/30),
     APC_free_to_bound_rate_per_LT_(1.0/1e5),
     APC_Ab_binding_rate_(1.0/30),

@@ -44,6 +44,7 @@ public:
    double LT_no_to_free_rate_per_APC_;
    double LT_free_to_bound_rate_per_APC_;
    double LT_mAb_binding_rate_;
+   double LT_exh_rate_;
 
    double APC_IFN_free_prod_rate_;
    double APC_IFN_Ag_prod_rate_;
