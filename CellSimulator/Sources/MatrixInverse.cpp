@@ -70,3 +70,10 @@ std::ostream& operator<<(
     }
     return s;
 }
+std::ostream& operator<<(
+    std::ostream& s,const std::vector<  double> & aVector){
+    for (std::size_t j=0; j<aVector.size();j++)
+        s<<aVector[j]<<"\t";
+    s<<"\n";
+return s;
+}

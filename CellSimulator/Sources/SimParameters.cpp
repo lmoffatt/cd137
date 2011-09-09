@@ -155,9 +155,9 @@ std::vector<double> SimParameters::getParameters()const
         par.push_back(log(LT_free_to_bound_rate_per_APC_));
         par.push_back(log(LT_mAb_binding_rate_));
 
-        par.push_back(log(APC_IFN_free_prod_rate_));
-        par.push_back(log(APC_IFN_Ag_prod_rate_));
-        par.push_back(log(APC_IFN_bound_prod_rate_));
+        //par.push_back(log(APC_IFN_free_prod_rate_));
+        //par.push_back(log(APC_IFN_Ag_prod_rate_));
+        //par.push_back(log(APC_IFN_bound_prod_rate_));
         //par.push_back(log(APC_IFN_blocked_prod_rate_));
         par.push_back(log(NK_IFN_free_prod_rate_));
         par.push_back(log(NK_IFN_Ag_prod_rate_));
@@ -172,13 +172,13 @@ std::vector<double> SimParameters::getParameters()const
         par.push_back(log(APC_TNF_Ag_prod_rate_));
         par.push_back(log(APC_TNF_bound_prod_rate_));
         //par.push_back(log(APC_TNF_blocked_prod_rate_));
-        par.push_back(log(NK_TNF_free_prod_rate_));
-        par.push_back(log(NK_TNF_Ag_prod_rate_));
-        par.push_back(log(NK_TNF_bound_prod_rate_));
+        //par.push_back(log(NK_TNF_free_prod_rate_));
+        //par.push_back(log(NK_TNF_Ag_prod_rate_));
+        //par.push_back(log(NK_TNF_bound_prod_rate_));
         //par.push_back(log(NK_TNF_blocked_prod_rate_));
-        par.push_back(log(LT_TNF_no_rec_prod_rate_));
-        par.push_back(log(LT_TNF_free_prod_rate_));
-        par.push_back(log(LT_TNF_bound_prod_rate_));
+        //par.push_back(log(LT_TNF_no_rec_prod_rate_));
+        //par.push_back(log(LT_TNF_free_prod_rate_));
+        //par.push_back(log(LT_TNF_bound_prod_rate_));
         //par.push_back(log(LT_TNF_blocked_prod_rate_));
 
 
@@ -286,9 +286,12 @@ SimParameters& SimParameters::applyParameters(const std::vector<double>& param)
         LT_free_to_bound_rate_per_APC_=exp(param[i++]);
         LT_mAb_binding_rate_=exp(param[i++]);
 
-        APC_IFN_free_prod_rate_=exp(param[i++]);
-        APC_IFN_Ag_prod_rate_=exp(param[i++]);
-        APC_IFN_bound_prod_rate_=exp(param[i++]);
+       // APC_IFN_free_prod_rate_=exp(param[i++]);
+        APC_IFN_free_prod_rate_=2.16602e-012;
+       // APC_IFN_Ag_prod_rate_=exp(param[i++]);
+        APC_IFN_Ag_prod_rate_=3.24964e-013;
+       // APC_IFN_bound_prod_rate_=exp(param[i++]);
+        APC_IFN_bound_prod_rate_=5.17247e-014;
         // APC_IFN_blocked_prod_rate_=exp(param[i++]);
         APC_IFN_blocked_prod_rate_=APC_IFN_Ag_prod_rate_;
         NK_IFN_free_prod_rate_=exp(param[i++]);
@@ -307,14 +310,22 @@ SimParameters& SimParameters::applyParameters(const std::vector<double>& param)
         APC_TNF_bound_prod_rate_=exp(param[i++]);
         //APC_TNF_blocked_prod_rate_=exp(param[i++]);
         APC_TNF_blocked_prod_rate_=APC_TNF_Ag_prod_rate_;
-        NK_TNF_free_prod_rate_=exp(param[i++]);
-        NK_TNF_Ag_prod_rate_=exp(param[i++]);
-        NK_TNF_bound_prod_rate_=exp(param[i++]);
+        //NK_TNF_free_prod_rate_=exp(param[i++]);
+        //NK_TNF_Ag_prod_rate_=exp(param[i++]);
+        //NK_TNF_bound_prod_rate_=exp(param[i++]);
         //NK_TNF_blocked_prod_rate_=exp(param[i++]);
+        NK_TNF_free_prod_rate_=1.31452e-012;
+        NK_TNF_Ag_prod_rate_=2.26789e-012;
+        NK_TNF_bound_prod_rate_=4.82802e-013;
         NK_TNF_blocked_prod_rate_=NK_TNF_Ag_prod_rate_;
-        LT_TNF_no_rec_prod_rate_=exp(param[i++]);
-        LT_TNF_free_prod_rate_=exp(param[i++]);
-        LT_TNF_bound_prod_rate_=exp(param[i++]);
+        //LT_TNF_no_rec_prod_rate_=exp(param[i++]);
+        //LT_TNF_free_prod_rate_=exp(param[i++]);
+        //LT_TNF_bound_prod_rate_=exp(param[i++]);
+        //LT_TNF_no_rec_prod_rate_=exp(param[i++]);
+        //LT_TNF_free_prod_rate_=exp(param[i++]);
+        LT_TNF_no_rec_prod_rate_=2.62696e-016;
+        LT_TNF_free_prod_rate_=4.69374e-014;
+        LT_TNF_bound_prod_rate_=1.62412e-013;
         // LT_TNF_blocked_prod_rate_=exp(param[i++]);
         LT_TNF_blocked_prod_rate_=LT_TNF_free_prod_rate_;
 

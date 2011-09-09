@@ -12,4 +12,8 @@ std::ostream& operator<<(
     std::ostream& s,const std::vector< std::vector< double> >& matrix);
 
 
+std::ostream& operator<<(
+    std::ostream& s,const std::vector<  double> & aVector);
+
+
 #endif // MATRIXINVERSE_H
