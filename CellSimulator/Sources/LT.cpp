@@ -20,7 +20,8 @@ LT_cells::LT_cells(double num_LT_init_,
                    double TNF_blocked_prod_rate_,
                    double LT_no_to_free_rate_per_APC_,
                    double LT_free_to_bound_rate_per_APC_,
-                   double LT_mAb_binding_rate_):
+                   double LT_mAb_binding_rate_,
+                   double LT_exh_rate_):
 
     num_non_Agsp_d(num_LT_init_),
     num_Agsp_no_receptor_d(LT_num_specific_),
@@ -123,24 +124,29 @@ void LT_cells::update(double time_step,const Media& m,const APC_cells& a,const N
 
     /// Ag specific cells proliferate and some of them interact with APC and get activated and express the receptor
     num_Agsp_no_receptor_d+=time_step*num_Agsp_no_receptor_d*
-                            (proliferation_ratio*LT_max_no_receptor_prol_rate_d-LT_no_to_free_rate_per_APC_d*a.num_Ag());
+                            (proliferation_ratio*LT_max_no_receptor_prol_rate_d-LT_no_to_free_rate_per_APC_d*(a.num_Ag()+a.num_bound()));
 
     /// Acà hay algo que clarificar (La cèlula T no interactúa solo una vez con la APC???)
-    num_Agsp_free_receptor_d+=time_step*num_Agsp_no_receptor_d*LT_no_to_free_rate_per_APC_d*a.num_Ag()+
+    num_Agsp_free_receptor_d+=time_step*num_Agsp_no_receptor_d*LT_no_to_free_rate_per_APC_d*(a.num_Ag()+ a.num_bound())+
                               time_step*num_Agsp_free_receptor_d*
-                              (proliferation_ratio*LT_max_free_prol_rate_d-LT_free_to_bound_rate_per_APC_d*a.num_Ag()
+                              (proliferation_ratio*LT_max_free_prol_rate_d-LT_free_to_bound_rate_per_APC_d*
                                -LT_mAb_binding_rate_d*m.Ab());
 
     /// (Monocytes, NK or LT can interact only with one cell) (There are not LT exhausted at the times of experiment)
-    num_Agsp_bound_receptor_d+=time_step*num_Agsp_free_receptor_d*LT_free_to_bound_rate_per_APC_d*a.num_Ag()+
-                               time_step*num_Agsp_free_receptor_d*LT_free_to_bound_rate_per_APC_d*NK.NK_num_Ag()+
-                               time_step*num_Agsp_bound_receptor_d*proliferation_ratio*LT_max_bound_prol_rate_d;
+    num_Agsp_bound_receptor_d+=time_step*num_Agsp_free_receptor_d*LT_free_to_bound_rate_per_APC_d*+
+                               time_step*num_Agsp_bound_receptor_d*proliferation_ratio*LT_max_bound_prol_rate_d-
+                               num_Agsp_bound_receptor_d*exh_rate_d*time_step;
 
 
     /// LT interact with blocking mAb and grow as LT free rates (There are not LT exhausted at the times of experiment)
     num_blocked_d+= num_Agsp_free_receptor_d*time_step*LT_mAb_binding_rate_d*m.Ab() +
-                    time_step*num_blocked_d*proliferation_ratio*LT_max_blocked_prol_rate_d;
-};
+                    time_step*num_blocked_d*proliferation_ratio*LT_max_blocked_prol_rate_d-
+                    num_blocked_d*exh_rate_d*time_step;
+    /// LT exhausted
+    num_exhausted_d+= num_Agsp_bound_receptor_d*exh_rate_d*time_step+
+                      num_blocked_d*exh_rate_d*time_step;
+
+            };
 
 void LT_cells::reset(const SimParameters& sp,
                       const Treatment& tr)
@@ -190,6 +196,10 @@ double LT_cells::num_blocked()const
         return num_blocked_d;
     };
 
+double LT_cells::num_exhausted () const
+{
+    return num_exhausted_d;
+}
 double LT_cells::LT_percentage_cell_expressing_receptor()const
     {
     return num_cells_expressing_receptor()/num()*100;

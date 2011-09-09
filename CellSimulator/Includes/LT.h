@@ -34,6 +34,9 @@ class LT_cells
     /// Number of cells that express the receptor and it is blocked
         double num_blocked () const;
 
+    /// Number of LT exhausted cells
+        double num_exhausted () const;
+
     /// Number of cell that express the receptor
         double num_cells_expressing_receptor()const;
 
@@ -62,7 +65,8 @@ class LT_cells
                  double TNF_blocked_prod_rate_,
                  double LT_no_to_free_rate_per_APC_,
                  double LT_free_to_bound_rate_per_APC_,
-                 double LT_mAb_binding_rate_);
+                 double LT_mAb_binding_rate_,
+                 double LT_exh_rate_);
 
 
         LT_cells(const SimParameters& sp,
@@ -86,7 +90,8 @@ class LT_cells
             LT_max_blocked_prol_rate_d(sp.LT_max_blocked_prol_rate_),
             LT_no_to_free_rate_per_APC_d(sp.LT_no_to_free_rate_per_APC_),
             LT_free_to_bound_rate_per_APC_d (sp.LT_free_to_bound_rate_per_APC_),
-            LT_mAb_binding_rate_d (sp.LT_mAb_binding_rate_){}
+            LT_mAb_binding_rate_d (sp.LT_mAb_binding_rate_),
+            exh_rate_d (sp.LT_exh_rate_){}
 
             LT_cells(){}
 
@@ -117,6 +122,9 @@ class LT_cells
         /// number of cells that have bound to the mAb
         double num_blocked_d;
 
+        /// number of LT exhausted
+        double num_exhausted_d;
+
         /// those are parameters that do not vary
 
         ///IFN production rates
@@ -142,6 +150,7 @@ class LT_cells
         double LT_no_to_free_rate_per_APC_d;
         double LT_free_to_bound_rate_per_APC_d;
         double LT_mAb_binding_rate_d;
+        double exh_rate_d;
 
 };
 

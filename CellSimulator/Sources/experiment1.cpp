@@ -55,9 +55,10 @@ void experiment2()
     sp.APC_max_proliferation_rate_=1.0/120;
     sp.NK_max_proliferation_rate_=1.0/120;
     sp.LT_max_no_receptor_prol_rate_=1.0/240;
-    sp.LT_max_free_prol_rate_=1.0/8;
+    sp.LT_max_free_prol_rate_=0.00000000000000000001;
     sp.LT_max_bound_prol_rate_=1.0/6;
     sp.LT_max_blocked_prol_rate_=1.0/8;
+    sp.LT_exh_rate_=1.0/1e4;
     sp.APC_no_to_free_rate_per_Ag_=1.0/120;
     sp.APC_free_to_bound_rate_per_LT_=1.0/36000;
     sp.APC_Ab_binding_rate_=1.0/120;
@@ -70,7 +71,7 @@ void experiment2()
     sp.APC_exh_rate=1.0/6;
     sp.NK_exh_rate=1.0/6;
     sp.LT_IFN_no_rec_prod_rate_=0.0001/240e6;
-    sp.LT_IFN_free_prod_rate_=1000.0/1e5;
+    sp.LT_IFN_free_prod_rate_=0.000000000000000000001;
     sp.LT_IFN_bound_prod_rate_=1600.0/1e5;
     sp.LT_IFN_blocked_prod_rate_=1000.0/1e5;
     sp.LT_TNF_no_rec_prod_rate_=0.0000001/240e6;

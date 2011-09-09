@@ -68,7 +68,7 @@ void Cell_simulator::ask_parameters()
     double NK_TNF_blocked_prod_rate_;
     double TNF_deg;
     double IFN_deg;
-
+    double LT_exh_rate_;
 
     ///Asking the user the parameters that define the system
     std::cout<<"Enter the filename where you want to store the values\n";
@@ -394,7 +394,8 @@ void Cell_simulator::ask_parameters()
                 LT_TNF_blocked_prod_rate_,
                 LT_no_to_free_rate_per_APC_,
                 LT_free_to_bound_rate_per_APC_,
-                LT_mAb_binding_rate_
+                LT_mAb_binding_rate_,
+                LT_exh_rate_
                 );
 
 }
@@ -609,7 +610,8 @@ Cell_simulator& Cell_simulator::applyParameters(const SimParameters& sp,
 	sp.LT_TNF_blocked_prod_rate_,
 	sp.LT_no_to_free_rate_per_APC_,
 	sp.LT_free_to_bound_rate_per_APC_,
-	sp.LT_mAb_binding_rate_);
+        sp.LT_mAb_binding_rate_,
+        sp.LT_exh_rate_);
 
     time_step_d=tr.time_step_d;
     sim_duration_d=tr.sim_duration_d;
