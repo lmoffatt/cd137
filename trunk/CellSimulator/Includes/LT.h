@@ -72,7 +72,7 @@ class LT_cells
         LT_cells(const SimParameters& sp,
                  const Treatment& tr):
             num_non_Agsp_d(sp.init_ratio_LT_cells_*tr.init_cells),
-            num_Agsp_no_receptor_d(sp.LT_ratio_specific_),
+            num_Agsp_no_receptor_d(sp.LT_ratio_specific_*tr.init_cells),
             num_Agsp_free_receptor_d(0),
             num_Agsp_bound_receptor_d(0),
             num_blocked_d(0),

@@ -12,13 +12,14 @@ SimParameters::SimParameters():
     init_ratio_NK_cells_(1e5/1e6),
     init_ratio_LT_cells_ (7.99e5/1e6),
     LT_ratio_specific_ (1000/1e6),
+
     APC_max_proliferation_rate_ (1.0/240),
     NK_max_proliferation_rate_(1.0/240),
     LT_max_no_receptor_prol_rate_(1.0/240),
     LT_max_free_prol_rate_(1.0/2),
     LT_max_bound_prol_rate_(1.0/1.2),
     LT_max_blocked_prol_rate_ (1.0/2),
-    LT_exh_rate_(1.0/2),
+
     APC_no_to_free_rate_per_Ag_(1.0/30),
     APC_free_to_bound_rate_per_LT_(1.0/1e5),
     APC_Ab_binding_rate_(1.0/30),
@@ -30,6 +31,8 @@ SimParameters::SimParameters():
     LT_no_to_free_rate_per_APC_(1.0/6e5),
     LT_free_to_bound_rate_per_APC_(1.0/1e5),
     LT_mAb_binding_rate_(1.0/1e5),
+    LT_exh_rate_(1.0/1e4),
+
     APC_IFN_free_prod_rate_(0.5/1e5),
     APC_IFN_Ag_prod_rate_(5.0/1e5),
     APC_IFN_bound_prod_rate_(10.0/1e5),
@@ -42,6 +45,7 @@ SimParameters::SimParameters():
     LT_IFN_free_prod_rate_(101.0/1e5),
     LT_IFN_bound_prod_rate_(200.0/1e5),
     LT_IFN_blocked_prod_rate_(101.0/1e5),
+
     APC_TNF_free_prod_rate_(5/1e5),
     APC_TNF_Ag_prod_rate_(570/1e5),
     APC_TNF_bound_prod_rate_(1110/1e5),
@@ -96,6 +100,7 @@ std::vector<double> SimParameters::getParameters()const
         par.push_back(log(LT_no_to_free_rate_per_APC_));
         par.push_back(log(LT_free_to_bound_rate_per_APC_));
         par.push_back(log(LT_mAb_binding_rate_));
+        par.push_back(log(LT_exh_rate_));
 
         par.push_back(log(APC_IFN_free_prod_rate_));
         par.push_back(log(APC_IFN_Ag_prod_rate_));
@@ -128,10 +133,10 @@ std::vector<double> SimParameters::getParameters()const
 
     else if (mode_=="PARTIAL")
     {
-        // par.push_back(10*log(max_num_cells_)); // multiplicar si estoy seguro del valor
-        //par.push_back(10*log(init_ratio_APC_cells_));
-        //par.push_back(10*log(init_ratio_NK_cells_));
-        //  par.push_back(10*log(init_ratio_LT_cells_));
+        par.push_back(10*log(max_num_cells_)); // multiplicar si estoy seguro del valor
+        par.push_back(10*log(init_ratio_APC_cells_));
+        par.push_back(10*log(init_ratio_NK_cells_));
+        par.push_back(10*log(init_ratio_LT_cells_));
         par.push_back(log(LT_ratio_specific_));
 
 
@@ -142,7 +147,7 @@ std::vector<double> SimParameters::getParameters()const
         par.push_back(log(LT_max_no_receptor_prol_rate_));
         par.push_back(log(LT_max_free_prol_rate_));
         par.push_back(log(LT_max_bound_prol_rate_));
-        //par.push_back(log(LT_max_blocked_prol_rate_));
+        par.push_back(log(LT_max_blocked_prol_rate_));
 
         par.push_back(log(APC_no_to_free_rate_per_Ag_));
         par.push_back(log(APC_free_to_bound_rate_per_LT_));
@@ -155,10 +160,11 @@ std::vector<double> SimParameters::getParameters()const
         par.push_back(log(LT_no_to_free_rate_per_APC_));
         par.push_back(log(LT_free_to_bound_rate_per_APC_));
         par.push_back(log(LT_mAb_binding_rate_));
+        par.push_back(log(LT_exh_rate_));
 
-        //par.push_back(log(APC_IFN_free_prod_rate_));
-        //par.push_back(log(APC_IFN_Ag_prod_rate_));
-        //par.push_back(log(APC_IFN_bound_prod_rate_));
+        par.push_back(log(APC_IFN_free_prod_rate_));
+        par.push_back(log(APC_IFN_Ag_prod_rate_));
+        par.push_back(log(APC_IFN_bound_prod_rate_));
         //par.push_back(log(APC_IFN_blocked_prod_rate_));
         par.push_back(log(NK_IFN_free_prod_rate_));
         par.push_back(log(NK_IFN_Ag_prod_rate_));
@@ -167,25 +173,25 @@ std::vector<double> SimParameters::getParameters()const
         par.push_back(log(LT_IFN_no_rec_prod_rate_));
         par.push_back(log(LT_IFN_free_prod_rate_));
         par.push_back(log(LT_IFN_bound_prod_rate_));
-        //par.push_back(log(LT_IFN_blocked_prod_rate_));
+        par.push_back(log(LT_IFN_blocked_prod_rate_));
 
         par.push_back(log(APC_TNF_free_prod_rate_));
         par.push_back(log(APC_TNF_Ag_prod_rate_));
         par.push_back(log(APC_TNF_bound_prod_rate_));
         //par.push_back(log(APC_TNF_blocked_prod_rate_));
-        //par.push_back(log(NK_TNF_free_prod_rate_));
-        //par.push_back(log(NK_TNF_Ag_prod_rate_));
-        //par.push_back(log(NK_TNF_bound_prod_rate_));
+        par.push_back(log(NK_TNF_free_prod_rate_));
+        par.push_back(log(NK_TNF_Ag_prod_rate_));
+        par.push_back(log(NK_TNF_bound_prod_rate_));
         //par.push_back(log(NK_TNF_blocked_prod_rate_));
-        //par.push_back(log(LT_TNF_no_rec_prod_rate_));
-        //par.push_back(log(LT_TNF_free_prod_rate_));
-        //par.push_back(log(LT_TNF_bound_prod_rate_));
-        //par.push_back(log(LT_TNF_blocked_prod_rate_));
+        par.push_back(log(LT_TNF_no_rec_prod_rate_));
+        par.push_back(log(LT_TNF_free_prod_rate_));
+        par.push_back(log(LT_TNF_bound_prod_rate_));
+        par.push_back(log(LT_TNF_blocked_prod_rate_));
 
 
 
         par.push_back(log(TNF_deg));
-        //par.push_back(log(IFN_deg));
+        par.push_back(log(IFN_deg));
     }
 
     return par;
@@ -213,7 +219,7 @@ SimParameters& SimParameters::applyParameters(const std::vector<double>& param)
         LT_max_free_prol_rate_=exp(param[i++]);
         LT_max_bound_prol_rate_=exp(param[i++]);
         LT_max_blocked_prol_rate_=exp(param[i++]);
-        LT_max_blocked_prol_rate_=LT_max_free_prol_rate_;
+
 
         APC_no_to_free_rate_per_Ag_=exp(param[i++]);
         APC_free_to_bound_rate_per_LT_=exp(param[i++]);
@@ -226,6 +232,7 @@ SimParameters& SimParameters::applyParameters(const std::vector<double>& param)
         LT_no_to_free_rate_per_APC_=exp(param[i++]);
         LT_free_to_bound_rate_per_APC_=exp(param[i++]);
         LT_mAb_binding_rate_=exp(param[i++]);
+        LT_exh_rate_=exp (param[i++]);
 
         APC_IFN_free_prod_rate_=exp(param[i++]);
         APC_IFN_Ag_prod_rate_=exp(param[i++]);
@@ -258,10 +265,10 @@ SimParameters& SimParameters::applyParameters(const std::vector<double>& param)
     else if(mode_=="PARTIAL")
     {
         std::size_t i=0;
-        //max_num_cells_=exp(param[i++]/10);
-        //init_ratio_APC_cells_=exp(param[i++]/10);
-        //init_ratio_NK_cells_=exp(param[i++]/10);
-        //init_ratio_LT_cells_=exp(param[i++]/10);
+        max_num_cells_=exp(param[i++]/10);
+        init_ratio_APC_cells_=exp(param[i++]/10);
+        init_ratio_NK_cells_=exp(param[i++]/10);
+        init_ratio_LT_cells_=exp(param[i++]/10);
         LT_ratio_specific_=exp(param[i++]);
 
 
@@ -272,8 +279,8 @@ SimParameters& SimParameters::applyParameters(const std::vector<double>& param)
         LT_max_no_receptor_prol_rate_=exp(param[i++]);
         LT_max_free_prol_rate_=exp(param[i++]);
         LT_max_bound_prol_rate_=exp(param[i++]);
-        //LT_max_blocked_prol_rate_=exp(param[i++]);
-        LT_max_blocked_prol_rate_=LT_max_free_prol_rate_;
+        LT_max_blocked_prol_rate_=exp(param[i++]);
+
 
         APC_no_to_free_rate_per_Ag_=exp(param[i++]);
         APC_free_to_bound_rate_per_LT_=exp(param[i++]);
@@ -286,13 +293,11 @@ SimParameters& SimParameters::applyParameters(const std::vector<double>& param)
         LT_no_to_free_rate_per_APC_=exp(param[i++]);
         LT_free_to_bound_rate_per_APC_=exp(param[i++]);
         LT_mAb_binding_rate_=exp(param[i++]);
+        LT_exh_rate_=exp (param[i++]);
 
-       // APC_IFN_free_prod_rate_=exp(param[i++]);
-        APC_IFN_free_prod_rate_=2.16602e-012;
-       // APC_IFN_Ag_prod_rate_=exp(param[i++]);
-        APC_IFN_Ag_prod_rate_=3.24964e-013;
-       // APC_IFN_bound_prod_rate_=exp(param[i++]);
-        APC_IFN_bound_prod_rate_=5.17247e-014;
+        APC_IFN_free_prod_rate_=exp(param[i++]);
+        APC_IFN_Ag_prod_rate_=exp(param[i++]);
+        APC_IFN_bound_prod_rate_=exp(param[i++]);
         // APC_IFN_blocked_prod_rate_=exp(param[i++]);
         APC_IFN_blocked_prod_rate_=APC_IFN_Ag_prod_rate_;
         NK_IFN_free_prod_rate_=exp(param[i++]);
@@ -303,37 +308,30 @@ SimParameters& SimParameters::applyParameters(const std::vector<double>& param)
         LT_IFN_no_rec_prod_rate_=exp(param[i++]);
         LT_IFN_free_prod_rate_=exp(param[i++]);
         LT_IFN_bound_prod_rate_=exp(param[i++]);
-        //LT_IFN_blocked_prod_rate_=exp(param[i++]);
-        LT_IFN_blocked_prod_rate_=LT_IFN_free_prod_rate_;
+        LT_IFN_blocked_prod_rate_=exp(param[i++]);
 
         APC_TNF_free_prod_rate_=exp(param[i++]);
         APC_TNF_Ag_prod_rate_=exp(param[i++]);
         APC_TNF_bound_prod_rate_=exp(param[i++]);
         //APC_TNF_blocked_prod_rate_=exp(param[i++]);
         APC_TNF_blocked_prod_rate_=APC_TNF_Ag_prod_rate_;
-        //NK_TNF_free_prod_rate_=exp(param[i++]);
-        //NK_TNF_Ag_prod_rate_=exp(param[i++]);
-        //NK_TNF_bound_prod_rate_=exp(param[i++]);
+        NK_TNF_free_prod_rate_=exp(param[i++]);
+        NK_TNF_Ag_prod_rate_=exp(param[i++]);
+        NK_TNF_bound_prod_rate_=exp(param[i++]);
         //NK_TNF_blocked_prod_rate_=exp(param[i++]);
-        NK_TNF_free_prod_rate_=1.31452e-012;
-        NK_TNF_Ag_prod_rate_=2.26789e-012;
-        NK_TNF_bound_prod_rate_=4.82802e-013;
         NK_TNF_blocked_prod_rate_=NK_TNF_Ag_prod_rate_;
-        //LT_TNF_no_rec_prod_rate_=exp(param[i++]);
-        //LT_TNF_free_prod_rate_=exp(param[i++]);
-        //LT_TNF_bound_prod_rate_=exp(param[i++]);
-        //LT_TNF_no_rec_prod_rate_=exp(param[i++]);
-        //LT_TNF_free_prod_rate_=exp(param[i++]);
-        LT_TNF_no_rec_prod_rate_=2.62696e-016;
-        LT_TNF_free_prod_rate_=4.69374e-014;
-        LT_TNF_bound_prod_rate_=1.62412e-013;
-        // LT_TNF_blocked_prod_rate_=exp(param[i++]);
-        LT_TNF_blocked_prod_rate_=LT_TNF_free_prod_rate_;
+        LT_TNF_no_rec_prod_rate_=exp(param[i++]);
+        LT_TNF_free_prod_rate_=exp(param[i++]);
+        LT_TNF_bound_prod_rate_=exp(param[i++]);
+        LT_TNF_no_rec_prod_rate_=exp(param[i++]);
+        LT_TNF_free_prod_rate_=exp(param[i++]);
+        LT_TNF_blocked_prod_rate_=exp(param[i++]);
+
 
 
         TNF_deg=exp(param[i++]);
-        // IFN_deg=exp(param[i++]);
-        IFN_deg=TNF_deg;
+        IFN_deg=exp(param[i++]);
+
 
     }
     return *this;
@@ -372,6 +370,7 @@ SimParameters::SimParameters(const SimParameters& other):
     LT_no_to_free_rate_per_APC_ (other.LT_no_to_free_rate_per_APC_),
     LT_free_to_bound_rate_per_APC_ (other.LT_free_to_bound_rate_per_APC_),
     LT_mAb_binding_rate_ (other.LT_mAb_binding_rate_),
+    LT_exh_rate_ (other.LT_exh_rate_),
 
     APC_IFN_free_prod_rate_  (other.APC_IFN_free_prod_rate_),
     APC_IFN_Ag_prod_rate_ (other.APC_IFN_Ag_prod_rate_),
@@ -446,6 +445,7 @@ void swap(SimParameters& one, SimParameters& other)
     std::swap(one.LT_no_to_free_rate_per_APC_ ,other.LT_no_to_free_rate_per_APC_);
     std::swap(one.LT_free_to_bound_rate_per_APC_ ,other.LT_free_to_bound_rate_per_APC_);
     std::swap(one.LT_mAb_binding_rate_ ,other.LT_mAb_binding_rate_);
+    std::swap(one.LT_exh_rate_,other.LT_exh_rate_);
 
     std::swap(one.APC_IFN_free_prod_rate_  ,other.APC_IFN_free_prod_rate_);
     std::swap(one.APC_IFN_Ag_prod_rate_ ,other.APC_IFN_Ag_prod_rate_);
@@ -502,6 +502,7 @@ std::ostream& operator<<(std::ostream& s,SimParameters p)
     s<<"\n NK_Ab_binding_rate \t"<<p.NK_Ab_binding_rate;
     s<<"\n NK_exh_rate \t"<<p.NK_exh_rate;
     s<<"\n LT_no_to_free_rate_per_APC_ \t"<<p.LT_no_to_free_rate_per_APC_;
+    s<<"\n LT_exh_rate_\t"<<p.LT_exh_rate_;
     s<<"\n LT_free_to_bound_rate_per_APC_ \t"<<p.LT_free_to_bound_rate_per_APC_;
     s<<"\n LT_mAb_binding_rate_ \t"<<p.LT_mAb_binding_rate_;
     s<<"\n APC_IFN_free_prod_rate_ \t"<<p.APC_IFN_free_prod_rate_;

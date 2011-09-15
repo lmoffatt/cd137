@@ -447,10 +447,12 @@ void Cell_simulator::run()
     f<<"%NK expresing receptor"<<" , ";
     f<<"NK.IFNgamma_production_rate"<<" , ";
     f<<"NK.TNF_production_rate"<<" , ";
-    f<<"LT no receptor"<<",";
+    f<<"LT no Agsp"<<" , ";
+    f<<"LT Agsp no receptor (not activated)"<<" , ";
     f<<"LT free "<<" , ";
     f<<"LT bound"<<" , ";
     f<<"LT blocked"<<" , ";
+    f<<"LT exh"<<" , ";
     f<<"%LT expresing receptor"<<" , ";
     f<<"LT.IFNgamma_production_rate"<<" , ";
     f<<"LT.TNF_production_rate"<<" , ";
@@ -504,10 +506,12 @@ void Cell_simulator::run()
             f<<NK.percentage_cell_expressing_receptor()<<" , ";
             f<<NK.IFNgamma_production_rate()<<" , ";
             f<<NK.TNF_production_rate()<<" , ";
+            f<<LT.num_cells_not_Ag_specific()<<" , ";
             f<<LT.num_cells_not_expressing_receptor()<<" , ";
             f<<LT.num_cells_expressing_receptor_and_free()<<" , ";
             f<<LT.num_cells_expressing_receptor_and_bound()<<" , ";
             f<<LT.num_blocked()<<" , ";
+            f<<LT.num_exhausted()<<" , ";
             f<<LT.LT_percentage_cell_expressing_receptor()<<" , ";
             f<<LT.IFNgamma_production_rate()<<" , ";
             f<<LT.TNF_production_rate()<<" , ";
@@ -595,7 +599,7 @@ Cell_simulator& Cell_simulator::applyParameters(const SimParameters& sp,
 
 
     LT=LT_cells  (sp.init_ratio_LT_cells_*tr.init_cells,
-	sp.LT_ratio_specific_,
+        sp.LT_ratio_specific_*tr.init_cells,
 	sp.LT_max_no_receptor_prol_rate_,
 	sp.LT_max_free_prol_rate_,
 	sp.LT_max_bound_prol_rate_,
