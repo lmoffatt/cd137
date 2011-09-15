@@ -7,7 +7,7 @@
 
 int main()
 {
-    experiment2();
+   Fitted_Parameters_SS_110();
  //   LevenbergMarquardt_Test();
  // inv_test();
 

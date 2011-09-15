@@ -1,7 +1,9 @@
 #ifndef EXPERIMENT1_H_INCLUDED
 #define EXPERIMENT1_H_INCLUDED
 
-void experiment1();
+void Fitted_Parameters_SS_110();
+
+void experiment3();
 
 void experiment2();
 
