@@ -211,8 +211,9 @@ void Fitted_Parameters_SS_110()
     sp.APC_IFN_blocked_prod_rate_=4.16568e-006;
     sp.NK_IFN_free_prod_rate_=1.2142e-008;
     sp.NK_IFN_Ag_prod_rate_=8.36737e-006;
-    sp.NK_IFN_blocked_prod_rate_=9.93579e-005;
     sp.NK_IFN_bound_prod_rate_=0.000146465;
+    sp.NK_IFN_blocked_prod_rate_=9.93579e-005;
+
     sp.LT_IFN_no_rec_prod_rate_=1.87039e-008;
     sp.LT_IFN_free_prod_rate_=4.96099e-034;
     sp.LT_IFN_bound_prod_rate_=0.000251217;
@@ -230,11 +231,11 @@ void Fitted_Parameters_SS_110()
     sp.LT_TNF_no_rec_prod_rate_=1.78249e-009;
     sp.LT_TNF_free_prod_rate_=2.47759e-032;
     sp.LT_TNF_bound_prod_rate_=3.42161e-006;
-    sp.LT_TNF_blocked_prod_rate_=7.55471e-006;
+    sp.LT_TNF_blocked_prod_rate_=0.055471e-006;
 
     //  sp.Ag_internalization_rate=0.5,
-    sp.TNF_deg=0.0113476;
-    sp.IFN_deg=0.713241;
+    sp.TNF_deg=0.053476;
+    sp.IFN_deg=0.0013241;
 
 
 
@@ -249,7 +250,7 @@ void Fitted_Parameters_SS_110()
     //simulExp: simulado  E:experimental
     //OptimizationResults O=cell.Optimize(sp,sp,simulExp,1,500);
 
-     OptimizationResults O=cell.Optimize(sp,sp,E,1,10);
+     OptimizationResults O=cell.Optimize(sp,sp,E,1,150);
 
 
 
