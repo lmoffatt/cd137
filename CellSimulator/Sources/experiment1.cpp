@@ -47,7 +47,7 @@ void experiment2()
 
 
     SimParameters sp;
-    sp.mode_="FULL";
+    sp.mode_="PARTIAL";
     sp.max_num_cells_=2e6;
     sp.init_ratio_APC_cells_=1e5/1e6;
     sp.init_ratio_NK_cells_=1e5/1e6;
