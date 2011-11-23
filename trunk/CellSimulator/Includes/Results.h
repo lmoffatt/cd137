@@ -14,6 +14,8 @@ public:
     const std::vector<Measurement>& APC_expression() const;
     const std::vector<Measurement>& NK_expression() const;
     const std::vector<Measurement>& LT_expression () const;
+    const std::vector<Measurement>& APC_IFNg()const;
+    const std::vector<Measurement>& APC_TNFa()const;
 
     Results();
     Results(std::string experimentName);
@@ -22,6 +24,8 @@ public:
 	    const std::vector<Measurement>& myAPCexpression,
 	    const std::vector<Measurement>& myNKexpression,
 	    const std::vector<Measurement>& myLTexpression,
+            const std::vector<Measurement>& myAPC_IFNg,
+            const std::vector<Measurement>& myAPC_TNFa,
             double duration);
 
     std::vector<double> getData()const;
@@ -45,6 +49,8 @@ private:
     std::vector<Measurement> APC_expression_;
     std::vector<Measurement> NK_expression_;
     std::vector<Measurement> LT_expression_;
+    std::vector<Measurement> APC_IFNg_;
+    std::vector<Measurement> APC_TNFa_;
     double duration_;
 
 
