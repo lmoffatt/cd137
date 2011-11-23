@@ -86,7 +86,8 @@ class Media
         double TNF_deg;
         double IFN_deg;
    //     double Ag_internalization_rate;
-
+        /// 14) Conversion rate Proliferation/Tymidine
+        /*34*/ double Prol_TymTr_d;
 };
 
 

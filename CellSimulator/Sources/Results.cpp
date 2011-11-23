@@ -27,8 +27,20 @@ const std::vector<Measurement>& Results::NK_expression()const
 const std::vector<Measurement>& Results::LT_expression()const
 {
     return LT_expression_;
+
 }
 
+const std::vector<Measurement>& Results::APC_IFNg()const
+{
+    return APC_IFNg_;
+
+}
+
+const std::vector<Measurement>& Results::APC_TNFa()const
+{
+    return APC_TNFa_;
+
+}
 
 double Results::Duration() const
 {
@@ -36,7 +48,7 @@ double Results::Duration() const
 }
 
 Results::Results(std::string experimentName):
-    TNF_(),IFN_(), APC_expression_(), NK_expression_ (), LT_expression_(), duration_()
+    TNF_(),IFN_(), APC_expression_(), NK_expression_ (), LT_expression_(), APC_IFNg_(), APC_TNFa_(), duration_()
 
 {
 
@@ -57,6 +69,10 @@ Results::Results(std::string experimentName):
         LT_expression_.push_back (Measurement (16.0,0.9));
         LT_expression_.push_back(Measurement (24.0, 0.8));
         LT_expression_.push_back(Measurement (119.0,2.1));
+        APC_IFNg_.push_back(Measurement (16.0,2.8));
+        APC_IFNg_.push_back (Measurement (119.0,2.1));
+        APC_TNFa_.push_back(Measurement (16.0,5.93));
+        APC_TNFa_.push_back (Measurement (119.0,4.1));
     }
     if (experimentName=="mtb")
     {
@@ -68,13 +84,17 @@ Results::Results(std::string experimentName):
         IFN_.push_back(Measurement(48.0,12.0));
         IFN_.push_back(Measurement(119.0,28.3));
         APC_expression_.push_back(Measurement(0.0,3.2));
-        APC_expression_.push_back(Measurement(16.0,16.4));
+        APC_expression_.push_back(Measurement(16.0,15.4));
         APC_expression_.push_back(Measurement(119.0,2.3));
         NK_expression_.push_back (Measurement (24.0, 11.3));
         LT_expression_.push_back (Measurement (0.0,0.7));
         LT_expression_.push_back (Measurement (16.0,1.1));
         LT_expression_.push_back(Measurement (24.0, 1.4));
         LT_expression_.push_back(Measurement (119.0,9.1));
+        APC_IFNg_.push_back(Measurement (16.0,7.7));
+        APC_IFNg_.push_back (Measurement (119.0,4.8));
+        APC_TNFa_.push_back(Measurement (16.0,13.0));
+        APC_TNFa_.push_back (Measurement (119.0,8.1));
     }
     if (experimentName=="block")
     {
@@ -85,6 +105,11 @@ Results::Results(std::string experimentName):
         IFN_.push_back(Measurement(16.0,10.3));
         IFN_.push_back(Measurement(48.0,8.1));
         IFN_.push_back(Measurement(119.0,12.4));
+        APC_IFNg_.push_back(Measurement (16.0,14.1));
+        APC_IFNg_.push_back (Measurement (119.0,4.8));
+        APC_TNFa_.push_back(Measurement (16.0,12.7));
+        APC_TNFa_.push_back (Measurement (119.0,41.3));
+
         /*  APC_expression_.push_back(Measurement(0.0,3.2));
         APC_expression_.push_back(Measurement(16.0,11.4));
         APC_expression_.push_back(Measurement(120.0,2.3));
@@ -104,12 +129,16 @@ Results::Results(const std::vector<Measurement>& myTNF,
 		 const std::vector<Measurement>& myAPCexpression,
 		 const std::vector<Measurement>& myNKexpression,
 		 const std::vector<Measurement>& myLTexpression,
+                 const std::vector<Measurement>& myAPC_IFNg,
+                 const std::vector<Measurement>& myAPC_TNFa,
 		 double duration):
     TNF_(myTNF),
     IFN_(myIFN),
     APC_expression_(myAPCexpression),
     NK_expression_(myNKexpression),
     LT_expression_(myLTexpression),
+    APC_IFNg_(myAPC_IFNg),
+    APC_TNFa_(myAPC_TNFa),
     duration_(duration)
 {if ((!TNF_.empty())&&duration_<TNF_[TNF_.size()-1].Time())
         duration_=TNF_[TNF_.size()-1].Time();
@@ -126,6 +155,13 @@ Results::Results(const std::vector<Measurement>& myTNF,
 
     if ((!LT_expression_.empty())&&duration_<LT_expression_[LT_expression_.size()-1].Time())
         duration_=LT_expression_[LT_expression_.size()-1].Time();
+
+
+    if ((!APC_IFNg_.empty())&&duration_<APC_IFNg_[APC_IFNg_.size()-1].Time())
+        duration_=APC_IFNg_[APC_IFNg_.size()-1].Time();
+
+    if ((!APC_TNFa_.empty())&&duration_<APC_TNFa_[APC_TNFa_.size()-1].Time())
+        duration_=APC_TNFa_[APC_TNFa_.size()-1].Time();
 
 }
 
@@ -326,7 +362,79 @@ std::vector<double> SumSquare_LTexpression(const Results one, const Results two)
 
 }
 
+std::vector<double> SumSquare_APC_IFN(const Results one, const Results two)
+{
+    std::vector<double> ss;
+    std::size_t n=0;
+    std::size_t i=0;
+    std::size_t j=0;
 
+    for (;;)
+    {
+        if (one.APC_IFNg().empty())
+            break;
+        if (two.APC_IFNg().empty())
+            break;
+        if(two.APC_IFNg()[j].Time()==one.APC_IFNg()[i].Time())
+        {
+            ss.push_back(std::pow(two.APC_IFNg()[j].Measure()-one.APC_IFNg()[i].Measure(),2));
+            n++;
+        }
+        if (one.APC_IFNg()[i].Time()<=two.APC_IFNg()[j].Time())
+        {
+            i++;
+            if (i>=one.APC_IFNg().size())
+                break;
+        }
+        else
+        {
+            j++;
+            if (j>=two.APC_IFNg().size())
+                break;
+        }
+
+    }
+
+    return ss;
+
+}
+
+std::vector<double> SumSquare_APC_TNF(const Results one, const Results two)
+{
+    std::vector<double> ss;
+    std::size_t n=0;
+    std::size_t i=0;
+    std::size_t j=0;
+
+    for (;;)
+    {
+        if (one.APC_TNFa().empty())
+            break;
+        if (two.APC_TNFa().empty())
+            break;
+        if(two.APC_TNFa()[j].Time()==one.APC_TNFa()[i].Time())
+        {
+            ss.push_back(std::pow(two.APC_TNFa()[j].Measure()-one.APC_TNFa()[i].Measure(),2));
+            n++;
+        }
+        if (one.APC_TNFa()[i].Time()<=two.APC_TNFa()[j].Time())
+        {
+            i++;
+            if (i>=one.APC_TNFa().size())
+                break;
+        }
+        else
+        {
+            j++;
+            if (j>=two.APC_TNFa().size())
+                break;
+        }
+
+    }
+
+    return ss;
+
+}
 
 std::vector<double> SumSquare_i(const Results& one, const Results& two)
 {
@@ -341,6 +449,12 @@ std::vector<double> SumSquare_i(const Results& one, const Results& two)
     ss.insert(ss.end(),ss_other.begin(),ss_other.end());
 
     ss_other=SumSquare_LTexpression(one,two);
+    ss.insert(ss.end(),ss_other.begin(),ss_other.end());
+
+    ss_other=SumSquare_APC_IFN(one,two);
+    ss.insert(ss.end(),ss_other.begin(),ss_other.end());
+
+    ss_other=SumSquare_APC_TNF(one,two);
     ss.insert(ss.end(),ss_other.begin(),ss_other.end());
 
     return ss;
@@ -393,6 +507,17 @@ std::ostream& operator<<(std::ostream& s, const Results& res)
         s<<res.LT_expression()[i].Time()<<"\t"<<
            res.LT_expression()[i].Measure()<<"\n";
 
+    s<<"APC_IFNg \n";
+    for (std::size_t i=0; i<res.APC_IFNg().size(); i++)
+        s<<res.APC_IFNg()[i].Time()<<"\t"<<
+           res.APC_IFNg()[i].Measure()<<"\n";
+    s<<"APC_TNFa \n";
+    for (std::size_t i=0; i<res.APC_TNFa().size(); i++)
+        s<<res.APC_TNFa()[i].Time()<<"\t"<<
+           res.APC_TNFa()[i].Measure()<<"\n";
+
+
+
     return s;
 
 }
@@ -415,6 +540,12 @@ std::vector<double> Results::getData()const
     for (std::size_t i=0; i<LT_expression_.size(); ++i)
 	data.push_back(LT_expression_[i].Measure());
 
+    for (std::size_t i=0; i<APC_IFNg_.size(); ++i)
+        data.push_back(APC_IFNg_[i].Measure());
+
+    for (std::size_t i=0; i<APC_TNFa_.size(); ++i)
+        data.push_back(APC_TNFa_[i].Measure());
+
      return data;
  }
 
@@ -426,6 +557,8 @@ Results::Results(const Results& other):
     APC_expression_(other.APC_expression_),
     NK_expression_(other.NK_expression_),
     LT_expression_(other.LT_expression_),
+    APC_IFNg_(other.APC_IFNg_),
+    APC_TNFa_(other.APC_TNFa_),
     duration_(other.duration_)
 {}
 Results& Results::operator=(const Results& other)
@@ -447,5 +580,7 @@ void swap(Results& one, Results& other)
     std::swap(one.APC_expression_,other.APC_expression_);
     std::swap(one.NK_expression_,other.NK_expression_);
     std::swap(one.LT_expression_,other.LT_expression_);
+    std::swap(one.APC_IFNg_,other.APC_IFNg_);
+    std::swap(one.APC_TNFa_,other.APC_TNFa_);
     std::swap(one.duration_,other.duration_);
 }

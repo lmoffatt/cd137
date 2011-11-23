@@ -11,7 +11,7 @@ void fitpar();
 
 void minSS();
 
-void experiment4();
+void con_APC();
 
 void experiment5();
 
