@@ -16,6 +16,13 @@ public:
     const std::vector<Measurement>& LT_expression () const;
     const std::vector<Measurement>& APC_IFNg()const;
     const std::vector<Measurement>& APC_TNFa()const;
+    const std::vector<Measurement>& NK_IFNg()const;
+    const std::vector<Measurement>& NK_TNFa()const;
+    const std::vector<Measurement>& LT_IFNg()const;
+    const std::vector<Measurement>& LT_TNFa()const;
+    const std::vector<Measurement>& LT_Apoptosis()const;
+    const std::vector<Measurement>& Proliferation()const;
+    const std::vector<Measurement>& num_cells() const;
 
     Results();
     Results(std::string experimentName);
@@ -26,6 +33,13 @@ public:
 	    const std::vector<Measurement>& myLTexpression,
             const std::vector<Measurement>& myAPC_IFNg,
             const std::vector<Measurement>& myAPC_TNFa,
+            const std::vector<Measurement>& myNK_IFNg,
+            const std::vector<Measurement>& myNK_TNFa,
+            const std::vector<Measurement>& myLT_IFNg,
+            const std::vector<Measurement>& myLT_TNFa,
+            const std::vector<Measurement>& myLT_Apoptosis,
+            const std::vector<Measurement>& myProliferation,
+            const std::vector<Measurement>& mynum_cells,
             double duration);
 
     std::vector<double> getData()const;
@@ -51,6 +65,13 @@ private:
     std::vector<Measurement> LT_expression_;
     std::vector<Measurement> APC_IFNg_;
     std::vector<Measurement> APC_TNFa_;
+    std::vector<Measurement> NK_IFNg_;
+    std::vector<Measurement> NK_TNFa_;
+    std::vector<Measurement> LT_IFNg_;
+    std::vector<Measurement> LT_TNFa_;
+    std::vector<Measurement> LT_Apoptosis_;
+    std::vector<Measurement> Proliferation_;
+    std::vector<Measurement> num_cells_;
     double duration_;
 
 

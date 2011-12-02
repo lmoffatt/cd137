@@ -65,7 +65,7 @@ class NK_cells
 
         /// 5) Percentage of activated cells expressing receptor
                 double& NKa_expressing_receptor();
-                const double NKa_expressing_receptor () const;
+                const double& NKa_expressing_receptor () const;
 
 
         /// 6) Union rates of NK

@@ -42,73 +42,140 @@ const std::vector<Measurement>& Results::APC_TNFa()const
 
 }
 
+const std::vector<Measurement>& Results::NK_IFNg()const
+{
+    return NK_IFNg_;
+
+}
+
+const std::vector<Measurement>& Results::NK_TNFa()const
+{
+    return NK_TNFa_;
+
+}
+
+const std::vector<Measurement>& Results::LT_IFNg()const
+{
+    return LT_IFNg_;
+
+}
+
+const std::vector<Measurement>& Results::LT_TNFa()const
+{
+    return LT_TNFa_;
+
+}
+
+const std::vector<Measurement>& Results::LT_Apoptosis()const
+{
+    return LT_Apoptosis_;
+
+}
+
+const std::vector<Measurement>& Results::Proliferation()const
+{
+    return Proliferation_;
+
+}
+
+const std::vector<Measurement>& Results::num_cells() const
+{
+    return num_cells_;
+}
+
 double Results::Duration() const
 {
     return duration_;
 }
 
 Results::Results(std::string experimentName):
-    TNF_(),IFN_(), APC_expression_(), NK_expression_ (), LT_expression_(), APC_IFNg_(), APC_TNFa_(), duration_()
+    TNF_(),IFN_(), APC_expression_(), NK_expression_ (), LT_expression_(), APC_IFNg_(), APC_TNFa_(),
+    NK_IFNg_(), NK_TNFa_(), LT_IFNg_(), LT_TNFa_(), LT_Apoptosis_(),Proliferation_(), num_cells_(),duration_()
 
 {
 
     if (experimentName=="media")
     {
         duration_=120.0;
-        TNF_.push_back(Measurement(16.0,2.1));
-        TNF_.push_back(Measurement(48.0,1.0));
-        TNF_.push_back(Measurement(119.0,0.5));
-        IFN_.push_back(Measurement(16.0,0.02));
-        IFN_.push_back(Measurement(48.0,0.03));
-        IFN_.push_back(Measurement(119.0,0.01));
-        APC_expression_.push_back(Measurement(0.0,3.2));
-        APC_expression_.push_back(Measurement(16.0,3.4));
-        APC_expression_.push_back(Measurement(119.0,2.8));
-        NK_expression_.push_back (Measurement (24.0, 2.5));
-        LT_expression_.push_back (Measurement (0.0,0.2));
-        LT_expression_.push_back (Measurement (16.0,0.9));
-        LT_expression_.push_back(Measurement (24.0, 0.8));
-        LT_expression_.push_back(Measurement (119.0,2.1));
-        APC_IFNg_.push_back(Measurement (16.0,2.8));
-        APC_IFNg_.push_back (Measurement (119.0,2.1));
-        APC_TNFa_.push_back(Measurement (16.0,5.93));
-        APC_TNFa_.push_back (Measurement (119.0,4.1));
+/*1*/        TNF_.push_back(Measurement(16.0,2.1));
+/*2*/        TNF_.push_back(Measurement(48.0,1.0));
+/*3*/        TNF_.push_back(Measurement(119.0,0.5));
+/*4*/        IFN_.push_back(Measurement(16.0,0.02));
+/*5*/        IFN_.push_back(Measurement(48.0,0.03));
+/*6*/        IFN_.push_back(Measurement(119.0,0.01));
+/*7*/        APC_expression_.push_back(Measurement(0.0,3.2));
+/*8*/        APC_expression_.push_back(Measurement(16.0,3.4));
+/*9*/        APC_expression_.push_back(Measurement(119.0,2.8));
+/*10*/        NK_expression_.push_back (Measurement (24.0, 2.5));
+/*11*/        LT_expression_.push_back (Measurement (0.0,0.2));
+/*12*/        LT_expression_.push_back (Measurement (16.0,0.9));
+/*13*/        LT_expression_.push_back(Measurement (24.0, 0.8));
+/*14*/        LT_expression_.push_back(Measurement (119.0,2.1));
+/*15*/        APC_IFNg_.push_back(Measurement (16.0,2.8));
+/*16*/        APC_IFNg_.push_back (Measurement (119.0,2.1));
+/*17*/        APC_TNFa_.push_back(Measurement (16.0,5.93));
+/*18*/        APC_TNFa_.push_back (Measurement (119.0,4.1));
+/*19*/        NK_IFNg_.push_back(Measurement (16.0,5.93));
+/*20*/        NK_TNFa_.push_back (Measurement (119.0,4.1));
+/*21*/        LT_IFNg_.push_back (Measurement (119.0,2.1));
+/*22*/        LT_TNFa_.push_back(Measurement (16.0,5.93));
+/*23*/        LT_Apoptosis_.push_back(Measurement(119.0,20));
+/*24*/        Proliferation_.push_back(Measurement(119,100));
+/*24a*/       num_cells_.push_back(Measurement(24,2e6));
+/*24b*/       num_cells_.push_back(Measurement(120,2e6));
     }
     if (experimentName=="mtb")
     {
         duration_=120.0;
-        TNF_.push_back(Measurement(16.0,50.5));
-        TNF_.push_back(Measurement(48.0,40.3));
-        TNF_.push_back(Measurement(119.0,30.2));
-        IFN_.push_back(Measurement(16.0,8.1));
-        IFN_.push_back(Measurement(48.0,12.0));
-        IFN_.push_back(Measurement(119.0,28.3));
-        APC_expression_.push_back(Measurement(0.0,3.2));
-        APC_expression_.push_back(Measurement(16.0,15.4));
-        APC_expression_.push_back(Measurement(119.0,2.3));
-        NK_expression_.push_back (Measurement (24.0, 11.3));
-        LT_expression_.push_back (Measurement (0.0,0.7));
-        LT_expression_.push_back (Measurement (16.0,1.1));
-        LT_expression_.push_back(Measurement (24.0, 1.4));
-        LT_expression_.push_back(Measurement (119.0,9.1));
-        APC_IFNg_.push_back(Measurement (16.0,7.7));
-        APC_IFNg_.push_back (Measurement (119.0,4.8));
-        APC_TNFa_.push_back(Measurement (16.0,13.0));
-        APC_TNFa_.push_back (Measurement (119.0,8.1));
+/*25*/        TNF_.push_back(Measurement(16.0,50.5));
+/*26*/        TNF_.push_back(Measurement(48.0,40.3));
+/*27*/        TNF_.push_back(Measurement(119.0,30.2));
+/*28*/        IFN_.push_back(Measurement(16.0,8.1));
+/*29*/        IFN_.push_back(Measurement(48.0,12.0));
+/*30*/        IFN_.push_back(Measurement(119.0,28.3));
+/*31*/        APC_expression_.push_back(Measurement(0.0,3.2));
+/*32*/        APC_expression_.push_back(Measurement(16.0,15.4));
+/*33*/        APC_expression_.push_back(Measurement(119.0,2.3));
+/*34*/        NK_expression_.push_back (Measurement (24.0, 11.3));
+/*35*/        LT_expression_.push_back (Measurement (0.0,0.7));
+/*36*/        LT_expression_.push_back (Measurement (16.0,1.1));
+/*37*/        LT_expression_.push_back(Measurement (24.0, 1.4));
+/*38*/        LT_expression_.push_back(Measurement (119.0,9.1));
+/*39*/        APC_IFNg_.push_back(Measurement (16.0,7.7));
+/*40*/        APC_IFNg_.push_back (Measurement (119.0,4.8));
+/*41*/        APC_TNFa_.push_back(Measurement (16.0,13.0));
+/*42*/        APC_TNFa_.push_back (Measurement (119.0,8.1));
+/*43*/        NK_IFNg_.push_back(Measurement (16.0,5.93));
+/*44*/        NK_TNFa_.push_back (Measurement (119.0,4.1));
+/*45*/        LT_IFNg_.push_back (Measurement (119.0,2.1));
+/*46*/        LT_TNFa_.push_back(Measurement (16.0,5.93));
+/*47*/        LT_Apoptosis_.push_back(Measurement(119.0,20));
+/*48*/        Proliferation_.push_back(Measurement(119,100));
+/*48a*/       num_cells_.push_back(Measurement(24,2e6));
+/*48b*/       num_cells_.push_back(Measurement(120,2e6));
+
     }
     if (experimentName=="block")
     {
         duration_=120.0;
-        TNF_.push_back(Measurement(16.0,63.7));
-        TNF_.push_back(Measurement(48.0,58.6));
-        TNF_.push_back(Measurement(119.0,52.4));
-        IFN_.push_back(Measurement(16.0,10.3));
-        IFN_.push_back(Measurement(48.0,8.1));
-        IFN_.push_back(Measurement(119.0,12.4));
-        APC_IFNg_.push_back(Measurement (16.0,14.1));
-        APC_IFNg_.push_back (Measurement (119.0,4.8));
-        APC_TNFa_.push_back(Measurement (16.0,12.7));
-        APC_TNFa_.push_back (Measurement (119.0,41.3));
+/*49*/        TNF_.push_back(Measurement(16.0,63.7));
+/*51*/        TNF_.push_back(Measurement(48.0,58.6));
+/*52*/        TNF_.push_back(Measurement(119.0,52.4));
+/*53*/        IFN_.push_back(Measurement(16.0,10.3));
+/*54*/        IFN_.push_back(Measurement(48.0,8.1));
+/*55*/        IFN_.push_back(Measurement(119.0,12.4));
+/*56*/        APC_IFNg_.push_back(Measurement (16.0,14.1));
+/*57*/        APC_IFNg_.push_back (Measurement (119.0,4.8));
+/*58*/        APC_TNFa_.push_back(Measurement (16.0,12.7));
+/*59*/        APC_TNFa_.push_back (Measurement (119.0,41.3));
+/*60*/        NK_IFNg_.push_back(Measurement (16.0,5.93));
+/*61*/        NK_TNFa_.push_back (Measurement (119.0,4.1));
+/*62*/        LT_IFNg_.push_back (Measurement (119.0,2.1));
+/*62*/        LT_TNFa_.push_back(Measurement (16.0,5.93));
+/*63*/        LT_Apoptosis_.push_back(Measurement(119.0,20));
+/*64*/        Proliferation_.push_back(Measurement(119,100));
+/*64a*/       num_cells_.push_back(Measurement(24,2e6));
+/*64b*/       num_cells_.push_back(Measurement(120,2e6));
 
         /*  APC_expression_.push_back(Measurement(0.0,3.2));
         APC_expression_.push_back(Measurement(16.0,11.4));
@@ -131,6 +198,13 @@ Results::Results(const std::vector<Measurement>& myTNF,
 		 const std::vector<Measurement>& myLTexpression,
                  const std::vector<Measurement>& myAPC_IFNg,
                  const std::vector<Measurement>& myAPC_TNFa,
+                 const std::vector<Measurement>& myNK_IFNg,
+                 const std::vector<Measurement>& myNK_TNFa,
+                 const std::vector<Measurement>& myLT_IFNg,
+                 const std::vector<Measurement>& myLT_TNFa,
+                 const std::vector<Measurement>& myLT_Apoptosis,
+                 const std::vector<Measurement>& myProliferation,
+                 const std::vector<Measurement>& mynum_cells,
 		 double duration):
     TNF_(myTNF),
     IFN_(myIFN),
@@ -139,7 +213,15 @@ Results::Results(const std::vector<Measurement>& myTNF,
     LT_expression_(myLTexpression),
     APC_IFNg_(myAPC_IFNg),
     APC_TNFa_(myAPC_TNFa),
+    NK_IFNg_(myNK_IFNg),
+    NK_TNFa_(myNK_TNFa),
+    LT_IFNg_(myLT_IFNg),
+    LT_TNFa_(myLT_TNFa),
+    LT_Apoptosis_(myLT_Apoptosis),
+    Proliferation_(myProliferation),
+    num_cells_(mynum_cells),
     duration_(duration)
+
 {if ((!TNF_.empty())&&duration_<TNF_[TNF_.size()-1].Time())
         duration_=TNF_[TNF_.size()-1].Time();
 
@@ -163,13 +245,30 @@ Results::Results(const std::vector<Measurement>& myTNF,
     if ((!APC_TNFa_.empty())&&duration_<APC_TNFa_[APC_TNFa_.size()-1].Time())
         duration_=APC_TNFa_[APC_TNFa_.size()-1].Time();
 
+    if ((!NK_IFNg_.empty())&&duration_<NK_IFNg_[NK_IFNg_.size()-1].Time())
+        duration_=NK_IFNg_[NK_IFNg_.size()-1].Time();
+
+    if ((!NK_TNFa_.empty())&&duration_<NK_TNFa_[NK_TNFa_.size()-1].Time())
+        duration_=NK_TNFa_[NK_TNFa_.size()-1].Time();
+
+    if ((!LT_IFNg_.empty())&&duration_<LT_IFNg_[LT_IFNg_.size()-1].Time())
+        duration_=NK_IFNg_[NK_IFNg_.size()-1].Time();
+
+    if ((!LT_TNFa_.empty())&&duration_<LT_TNFa_[LT_TNFa_.size()-1].Time())
+        duration_=LT_TNFa_[LT_TNFa_.size()-1].Time();
+
+    if ((!LT_Apoptosis_.empty())&&duration_<LT_Apoptosis_[LT_Apoptosis_.size()-1].Time())
+        duration_=LT_Apoptosis_[LT_Apoptosis_.size()-1].Time();
+
+    if ((!Proliferation_.empty())&&duration_<Proliferation_[Proliferation_.size()-1].Time())
+        duration_=Proliferation_[Proliferation_.size()-1].Time();
+
+    if ((!num_cells_.empty())&&duration_<num_cells_[num_cells_.size()-1].Time())
+        duration_=num_cells_[num_cells_.size()-1].Time();
+
 }
 
 Results::Results(){}
-
-
-
-
 
 
 
@@ -436,6 +535,271 @@ std::vector<double> SumSquare_APC_TNF(const Results one, const Results two)
 
 }
 
+std::vector<double> SumSquare_NK_IFN(const Results one, const Results two)
+{
+    std::vector<double> ss;
+    std::size_t n=0;
+    std::size_t i=0;
+    std::size_t j=0;
+
+    for (;;)
+    {
+        if (one.NK_IFNg().empty())
+            break;
+        if (two.NK_IFNg().empty())
+            break;
+        if(two.NK_IFNg()[j].Time()==one.NK_IFNg()[i].Time())
+        {
+            ss.push_back(std::pow(two.NK_IFNg()[j].Measure()-one.NK_IFNg()[i].Measure(),2));
+            n++;
+        }
+        if (one.NK_IFNg()[i].Time()<=two.NK_IFNg()[j].Time())
+        {
+            i++;
+            if (i>=one.NK_IFNg().size())
+                break;
+        }
+        else
+        {
+            j++;
+            if (j>=two.NK_IFNg().size())
+                break;
+        }
+
+    }
+
+    return ss;
+
+}
+
+std::vector<double> SumSquare_NK_TNF(const Results one, const Results two)
+{
+    std::vector<double> ss;
+    std::size_t n=0;
+    std::size_t i=0;
+    std::size_t j=0;
+
+    for (;;)
+    {
+        if (one.NK_TNFa().empty())
+            break;
+        if (two.NK_TNFa().empty())
+            break;
+        if(two.NK_TNFa()[j].Time()==one.NK_TNFa()[i].Time())
+        {
+            ss.push_back(std::pow(two.NK_TNFa()[j].Measure()-one.NK_TNFa()[i].Measure(),2));
+            n++;
+        }
+        if (one.NK_TNFa()[i].Time()<=two.NK_TNFa()[j].Time())
+        {
+            i++;
+            if (i>=one.NK_TNFa().size())
+                break;
+        }
+        else
+        {
+            j++;
+            if (j>=two.NK_TNFa().size())
+                break;
+        }
+
+    }
+
+    return ss;
+
+}
+
+
+std::vector<double> SumSquare_LT_IFN(const Results one, const Results two)
+{
+    std::vector<double> ss;
+    std::size_t n=0;
+    std::size_t i=0;
+    std::size_t j=0;
+
+    for (;;)
+    {
+        if (one.LT_IFNg().empty())
+            break;
+        if (two.LT_IFNg().empty())
+            break;
+        if(two.LT_IFNg()[j].Time()==one.LT_IFNg()[i].Time())
+        {
+            ss.push_back(std::pow(two.LT_IFNg()[j].Measure()-one.LT_IFNg()[i].Measure(),2));
+            n++;
+        }
+        if (one.LT_IFNg()[i].Time()<=two.LT_IFNg()[j].Time())
+        {
+            i++;
+            if (i>=one.LT_IFNg().size())
+                break;
+        }
+        else
+        {
+            j++;
+            if (j>=two.LT_IFNg().size())
+                break;
+        }
+
+    }
+
+    return ss;
+
+}
+
+std::vector<double> SumSquare_LT_TNF(const Results one, const Results two)
+{
+    std::vector<double> ss;
+    std::size_t n=0;
+    std::size_t i=0;
+    std::size_t j=0;
+
+    for (;;)
+    {
+        if (one.LT_TNFa().empty())
+            break;
+        if (two.LT_TNFa().empty())
+            break;
+        if(two.LT_TNFa()[j].Time()==one.LT_TNFa()[i].Time())
+        {
+            ss.push_back(std::pow(two.LT_TNFa()[j].Measure()-one.LT_TNFa()[i].Measure(),2));
+            n++;
+        }
+        if (one.LT_TNFa()[i].Time()<=two.LT_TNFa()[j].Time())
+        {
+            i++;
+            if (i>=one.LT_TNFa().size())
+                break;
+        }
+        else
+        {
+            j++;
+            if (j>=two.LT_TNFa().size())
+                break;
+        }
+
+    }
+
+    return ss;
+
+}
+
+
+
+std::vector<double> SumSquare_LT_Apoptosis(const Results one, const Results two)
+{
+    std::vector<double> ss;
+    std::size_t n=0;
+    std::size_t i=0;
+    std::size_t j=0;
+
+    for (;;)
+    {
+        if (one.LT_Apoptosis().empty())
+            break;
+        if (two.LT_Apoptosis().empty())
+            break;
+        if(two.LT_Apoptosis()[j].Time()==one.LT_Apoptosis()[i].Time())
+        {
+            ss.push_back(std::pow(two.LT_Apoptosis()[j].Measure()-one.LT_Apoptosis()[i].Measure(),2));
+            n++;
+        }
+        if (one.LT_Apoptosis()[i].Time()<=two.LT_Apoptosis()[j].Time())
+        {
+            i++;
+            if (i>=one.LT_Apoptosis().size())
+                break;
+        }
+        else
+        {
+            j++;
+            if (j>=two.LT_Apoptosis().size())
+                break;
+        }
+
+    }
+
+    return ss;
+
+}
+
+
+std::vector<double> SumSquare_Proliferation(const Results one, const Results two)
+{
+    std::vector<double> ss;
+    std::size_t n=0;
+    std::size_t i=0;
+    std::size_t j=0;
+
+    for (;;)
+    {
+        if (one.Proliferation().empty())
+            break;
+        if (two.Proliferation().empty())
+            break;
+        if(two.Proliferation()[j].Time()==one.Proliferation()[i].Time())
+        {
+            ss.push_back(std::pow(two.Proliferation()[j].Measure()-one.Proliferation()[i].Measure(),2));
+            n++;
+        }
+        if (one.Proliferation()[i].Time()<=two.Proliferation()[j].Time())
+        {
+            i++;
+            if (i>=one.Proliferation().size())
+                break;
+        }
+        else
+        {
+            j++;
+            if (j>=two.Proliferation().size())
+                break;
+        }
+
+    }
+
+    return ss;
+
+}
+
+std::vector<double> SumSquare_num_cells(const Results one, const Results two)
+{
+    std::vector<double> ss;
+    std::size_t n=0;
+    std::size_t i=0;
+    std::size_t j=0;
+
+    for (;;)
+    {
+        if (one.num_cells().empty())
+            break;
+        if (two.num_cells().empty())
+            break;
+        if(two.num_cells()[j].Time()==one.num_cells()[i].Time())
+        {
+            ss.push_back(std::pow(two.num_cells()[j].Measure()-one.num_cells()[i].Measure(),2));
+            n++;
+        }
+        if (one.num_cells()[i].Time()<=two.num_cells()[j].Time())
+        {
+            i++;
+            if (i>=one.num_cells().size())
+                break;
+        }
+        else
+        {
+            j++;
+            if (j>=two.num_cells().size())
+                break;
+        }
+
+    }
+
+    return ss;
+
+}
+
+
+
 std::vector<double> SumSquare_i(const Results& one, const Results& two)
 {
     std::vector<double> ss=SumSquare_TNF(one,two);
@@ -455,6 +819,27 @@ std::vector<double> SumSquare_i(const Results& one, const Results& two)
     ss.insert(ss.end(),ss_other.begin(),ss_other.end());
 
     ss_other=SumSquare_APC_TNF(one,two);
+    ss.insert(ss.end(),ss_other.begin(),ss_other.end());
+
+    ss_other=SumSquare_NK_IFN(one,two);
+    ss.insert(ss.end(),ss_other.begin(),ss_other.end());
+
+    ss_other=SumSquare_NK_TNF(one,two);
+    ss.insert(ss.end(),ss_other.begin(),ss_other.end());
+
+    ss_other=SumSquare_LT_IFN(one,two);
+    ss.insert(ss.end(),ss_other.begin(),ss_other.end());
+
+    ss_other=SumSquare_LT_TNF(one,two);
+    ss.insert(ss.end(),ss_other.begin(),ss_other.end());
+
+    ss_other=SumSquare_LT_Apoptosis(one,two);
+    ss.insert(ss.end(),ss_other.begin(),ss_other.end());
+
+    ss_other=SumSquare_Proliferation(one,two);
+    ss.insert(ss.end(),ss_other.begin(),ss_other.end());
+
+    ss_other=SumSquare_num_cells(one,two);
     ss.insert(ss.end(),ss_other.begin(),ss_other.end());
 
     return ss;
@@ -516,6 +901,38 @@ std::ostream& operator<<(std::ostream& s, const Results& res)
         s<<res.APC_TNFa()[i].Time()<<"\t"<<
            res.APC_TNFa()[i].Measure()<<"\n";
 
+    s<<"NK_IFNg \n";
+    for (std::size_t i=0; i<res.NK_IFNg().size(); i++)
+        s<<res.NK_IFNg()[i].Time()<<"\t"<<
+           res.NK_IFNg()[i].Measure()<<"\n";
+    s<<"NK_TNFa \n";
+    for (std::size_t i=0; i<res.NK_TNFa().size(); i++)
+        s<<res.NK_TNFa()[i].Time()<<"\t"<<
+           res.NK_TNFa()[i].Measure()<<"\n";
+
+    s<<"LT_IFNg \n";
+    for (std::size_t i=0; i<res.LT_IFNg().size(); i++)
+        s<<res.LT_IFNg()[i].Time()<<"\t"<<
+           res.LT_IFNg()[i].Measure()<<"\n";
+    s<<"LT_TNFa \n";
+    for (std::size_t i=0; i<res.LT_TNFa().size(); i++)
+        s<<res.LT_TNFa()[i].Time()<<"\t"<<
+           res.LT_TNFa()[i].Measure()<<"\n";
+
+    s<<"LT_Apoptosis \n";
+    for (std::size_t i=0; i<res.LT_Apoptosis().size(); i++)
+        s<<res.LT_Apoptosis()[i].Time()<<"\t"<<
+           res.LT_Apoptosis()[i].Measure()<<"\n";
+    s<<"Proliferation \n";
+    for (std::size_t i=0; i<res.Proliferation().size(); i++)
+        s<<res.Proliferation()[i].Time()<<"\t"<<
+           res.Proliferation()[i].Measure()<<"\n";
+
+    s<<"num_cells \n";
+    for (std::size_t i=0; i<res.num_cells().size(); i++)
+        s<<res.num_cells()[i].Time()<<"\t"<<
+           res.num_cells()[i].Measure()<<"\n";
+
 
 
     return s;
@@ -546,6 +963,28 @@ std::vector<double> Results::getData()const
     for (std::size_t i=0; i<APC_TNFa_.size(); ++i)
         data.push_back(APC_TNFa_[i].Measure());
 
+
+    for (std::size_t i=0; i<NK_IFNg_.size(); ++i)
+        data.push_back(NK_IFNg_[i].Measure());
+
+    for (std::size_t i=0; i<NK_TNFa_.size(); ++i)
+        data.push_back(NK_TNFa_[i].Measure());
+
+
+    for (std::size_t i=0; i<LT_IFNg_.size(); ++i)
+        data.push_back(LT_IFNg_[i].Measure());
+
+    for (std::size_t i=0; i<LT_TNFa_.size(); ++i)
+        data.push_back(LT_TNFa_[i].Measure());
+
+    for (std::size_t i=0; i<LT_Apoptosis_.size(); ++i)
+        data.push_back(LT_Apoptosis_[i].Measure());
+
+    for (std::size_t i=0; i<Proliferation_.size(); ++i)
+        data.push_back(Proliferation_[i].Measure());
+
+
+
      return data;
  }
 
@@ -559,6 +998,13 @@ Results::Results(const Results& other):
     LT_expression_(other.LT_expression_),
     APC_IFNg_(other.APC_IFNg_),
     APC_TNFa_(other.APC_TNFa_),
+    NK_IFNg_(other.NK_IFNg_),
+    NK_TNFa_(other.NK_TNFa_),
+    LT_IFNg_(other.LT_IFNg_),
+    LT_TNFa_(other.LT_TNFa_),
+    LT_Apoptosis_(other.LT_Apoptosis_),
+    Proliferation_(other.Proliferation_),
+    num_cells_(other.num_cells_),
     duration_(other.duration_)
 {}
 Results& Results::operator=(const Results& other)
@@ -582,5 +1028,12 @@ void swap(Results& one, Results& other)
     std::swap(one.LT_expression_,other.LT_expression_);
     std::swap(one.APC_IFNg_,other.APC_IFNg_);
     std::swap(one.APC_TNFa_,other.APC_TNFa_);
+    std::swap(one.NK_IFNg_,other.NK_IFNg_);
+    std::swap(one.NK_TNFa_,other.NK_TNFa_);
+    std::swap(one.LT_IFNg_,other.LT_IFNg_);
+    std::swap(one.LT_TNFa_,other.LT_TNFa_);
+    std::swap(one.LT_Apoptosis_,other.LT_Apoptosis_);
+    std::swap(one.Proliferation_,other.Proliferation_);
+    std::swap(one.num_cells_,other.num_cells_);
     std::swap(one.duration_,other.duration_);
 }

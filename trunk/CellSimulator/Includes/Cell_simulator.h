@@ -16,7 +16,7 @@ class Cell_simulator: public ABC_function
 {
 public:
     ~Cell_simulator(){}
-    void ask_parameters();
+//    void ask_parameters();
     void run();
 
     Cell_simulator& applyParameters(const SimParameters& sp,

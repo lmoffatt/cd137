@@ -1,27 +1,7 @@
 #ifndef EXPERIMENT1_H_INCLUDED
 #define EXPERIMENT1_H_INCLUDED
 
-void Fitted_Parameters_SS_110();
-
-void experiment3();
-
-void experiment2();
-
-void fitpar();
-
-void minSS();
-
-void con_APC();
-
-void experiment5();
-
-void sin_bloqueo();
-
-void expresion2 ();
-
-void expresion1 ();
-
-void con_bloqueo ();
+void Bayes ();
 
 
 

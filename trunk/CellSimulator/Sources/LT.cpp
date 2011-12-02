@@ -55,6 +55,7 @@ LT_cells::LT_cells(/// 1) Init number of LT
                    /// 12) apoptosis related parameters
                    /*26*/ double t_apop_meas_,
                    /*27*/ double t_duration_apoptosis_
+
                    ):
 
 
@@ -168,7 +169,6 @@ LT_cells::operator=(const LT_cells& other)
 
 void swap(LT_cells& one, LT_cells& other)
 {
-    std::swap(one.num_non_Agsp_d,other.num_non_Agsp_d);
     std::swap(one.LTns_d,other.LTns_d);
     std::swap(one.LT0_d,other.LT0_d);
     std::swap(one.LTbo_d,other.LTbo_d);
@@ -239,27 +239,27 @@ void LT_cells::update(double time_step, double t_run, const Media& m,const APC_c
     LTbo_d+=(APC.APC_LT_1()*LT0_d*(APC.APCa()/(APC.APCa()+ APC.KsAPC_LT()))+
             APC.APC_LT_2()*LT0_d*(APC.APCbo()/(APC.APCbo()+ APC.KsAPC_LT()))+
             LTbo_proliferation_rate_d*LTbo_d-LTbo_apop_rate_d*LTbo_d-
-            LTbo_d*u_LT_TNF_d(m.TNF/(m.TNF+Ks_LT_m_TNF_d))-LTbo_d*LT_exh_rate_d)*time_step;
+            LTbo_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))-LTbo_d*LT_exh_rate_d)*time_step;
 
 
     LTbl_d+=(APC.APC_LT_2()*LT0_d*(APC.APCbo_Ab()/(APC.APCbo_Ab()+ APC.KsAPC_LT()))+
              APC.APC_LT_1()*LT0_d*(APC.APCbl()/(APC.APCbl()+ APC.KsAPC_LT()))+
              LTbl_proliferation_rate_d*LTbl_d-LTbl_apop_rate_d*LTbl_d-
-             LTbl_d*u_LT_TNF_d(m.TNF/(m.TNF+Ks_LT_m_TNF_d))-LTbl_d*LT_exh_rate_d)*time_step;
+             LTbl_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))-LTbl_d*LT_exh_rate_d)*time_step;
 
     /// LT get exhausted after a period of time
     LTexh_d+=LTbo_d*LT_exh_rate_d+LTbl_d*LT_exh_rate_d-LTexh_d*LTexh_apop_rate_d-
-             LTexh_d*u_LT_TNF_d(m.TNF/(m.TNF+Ks_LT_m_TNF_d))*time_step;
+             LTexh_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))*time_step;
 
     if (m.TymidineTriteate()>0)
     LT_TymTr_incorporated_d+=(LTns_proliferation_rate_d*LTns_d+LTns_proliferation_rate_d*LT0_d+LTbo_proliferation_rate_d*LTbo_d+
-                              +LTbl_proliferation_rate_d*LTbl_d)*m.Prol_TymTr_d;
+                              +LTbl_proliferation_rate_d*LTbl_d)*m.Prol_TymTr();
 
-    if ((t_run>t_apop_meas_-t_duration_apoptosis)&&(t_run<=t_apop_meas))
+    if ((t_run>t_apop_meas_d-t_duration_apoptosis_d)&&(t_run<=t_apop_meas_d))
         Total_cells_in_apoptosis_d+=(LTns_apop_rate_d*LTns_d+LTns_apop_rate_d*LT0_d+
-                                     LTbo_apop_rate_d*LTbo_d+LTbo_d*u_LT_TNF_d(m.TNF/(m.TNF+Ks_LT_m_TNF_d))+
-                                     LTbl_apop_rate_d*LTbl_d+LTbl_d*u_LT_TNF_d(m.TNF/(m.TNF+Ks_LT_m_TNF_d))+
-                                     LTexh_d*u_LT_TNF_d(m.TNF/(m.TNF+Ks_LT_m_TNF_d)))*time_step;
+                                     LTbo_apop_rate_d*LTbo_d+LTbo_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))+
+                                     LTbl_apop_rate_d*LTbl_d+LTbl_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))+
+                                     LTexh_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d)))*time_step;
 }
 
 void LT_cells::reset(const SimParameters& sp,
@@ -273,7 +273,7 @@ void LT_cells::reset(const SimParameters& sp,
 
     }
 
-/// Total number of LT
+/// 1) Total number of LT
 double& LT_cells::num_LT()
     {
       double sum=LTns_d+LT0_d+LTbo_d+LTbl_d+LTexh_d;
@@ -286,7 +286,74 @@ const double& LT_cells::num_LT() const
       return sum;
     }
 
-/// Total cytokines production
+/// 2) números de células (5)
+double& LT_cells::LTns()
+    {
+        return LTns_d;
+    }
+
+const double& LT_cells::LTns() const
+    {
+        return LTns_d;
+    }
+
+double& LT_cells::LT0()
+    {
+        return LT0_d;
+    }
+
+const double& LT_cells::LT0() const
+    {
+        return LT0_d;
+    }
+
+double& LT_cells::LTbo()
+    {
+        return LTbo_d;
+    }
+
+const double& LT_cells::LTbo() const
+    {
+        return LTbo_d;
+    }
+
+double& LT_cells::LTbl()
+    {
+        return LTbl_d;
+    }
+
+const double& LT_cells::LTbl() const
+    {
+        return LTbl_d;
+    }
+
+double& LT_cells::LTexh()
+    {
+        return LTexh_d;
+    }
+
+const double& LT_cells::LTexh() const
+    {
+        return LTexh_d;
+    }
+
+/// 3) Percentage of cells expressing
+double& LT_cells::LT_percentage_cell_expressing_receptor()
+{
+    double sum=100*(percentage_IFN_LTns_prod_rate_d*(LTns_d+LT0_d)+
+               percentage_IFN_LTbo_prod_rate_d*LTbo_d+
+                    percentage_IFN_LTbl_prod_rate_d*LTbl_d)/num_LT();
+    return sum;
+}
+
+const double& LT_cells::LT_percentage_cell_expressing_receptor() const
+{
+    double sum=100*(percentage_IFN_LTns_prod_rate_d*(LTns_d+LT0_d)+
+               percentage_IFN_LTbo_prod_rate_d*LTbo_d+
+                    percentage_IFN_LTbl_prod_rate_d*LTbl_d)/num_LT();
+    return sum;
+}
+/// 4) Total cytokines production
 double& LT_cells::LT_IFNgamma_production_rate()
    {
       double sum=LTns_d*percentage_IFN_LTns_prod_rate_d*IFN_LTns_prod_rate_d+
@@ -306,6 +373,24 @@ const double& LT_cells::LT_IFNgamma_production_rate() const
       return sum;
   }
 
+double& LT_cells::percentage_LT_IFN_production()
+   {
+      double sum=LTns_d*percentage_IFN_LTns_prod_rate_d+
+               LT0_d*percentage_IFN_LTns_prod_rate_d+
+               LTbo_d*percentage_IFN_LTbo_prod_rate_d+
+               LTbl_d*percentage_IFN_LTbl_prod_rate_d;
+      return sum;
+  }
+
+const double& LT_cells::percentage_LT_IFN_production() const
+   {
+      double sum=LTns_d*percentage_IFN_LTns_prod_rate_d+
+               LT0_d*percentage_IFN_LTns_prod_rate_d+
+               LTbo_d*percentage_IFN_LTbo_prod_rate_d+
+               LTbl_d*percentage_IFN_LTbl_prod_rate_d;
+      return sum;
+  }
+
 double& LT_cells::TNF_production_rate()
    {
       double sum=LTns_d*percentage_TNF_LTns_prod_rate_d*TNF_LTns_prod_rate_d+
@@ -314,7 +399,6 @@ double& LT_cells::TNF_production_rate()
                  LTbl_d*percentage_TNF_LTbl_prod_rate_d*TNF_LTbl_prod_rate_d;
       return sum;
   }
-
 
 const double& LT_cells::TNF_production_rate() const
    {
@@ -325,87 +409,48 @@ const double& LT_cells::TNF_production_rate() const
       return sum;
   }
 
-/// Percentage of cells expressing
-double& LT_cells::LT_percentage_cell_expressing_receptor()
+double& LT_cells::percentage_LT_TNF_production()
+   {
+      double sum=LTns_d*percentage_TNF_LTns_prod_rate_d+
+               LT0_d*percentage_TNF_LTns_prod_rate_d+
+               LTbo_d*percentage_TNF_LTbo_prod_rate_d+
+               LTbl_d*percentage_TNF_LTbl_prod_rate_d;
+      return sum;
+  }
+
+const double& LT_cells::percentage_LT_TNF_production() const
+   {
+      double sum=LTns_d*percentage_TNF_LTns_prod_rate_d+
+               LT0_d*percentage_TNF_LTns_prod_rate_d+
+               LTbo_d*percentage_TNF_LTbo_prod_rate_d+
+               LTbl_d*percentage_TNF_LTbl_prod_rate_d;
+      return sum;
+  }
+
+/// 5) Tymidine incorporated by LT cells
+double& LT_cells::LT_TymTr_incorporated()
 {
-    double sum=100*(percentage_IFN_LTns_prod_rate_d*(LTns_d+LT0_d)+
-               percentage_IFN_LTbo_prod_rate_d*LTbo_d+
-                    percentage_IFN_LTbl_prod_rate_d*LTbl_d)/num_LT();
-    return sum;
+    return LT_TymTr_incorporated_d;
+}
+    const double&  LT_cells::LT_TymTr_incorporated()const
+
+{
+     return LT_TymTr_incorporated_d;
 }
 
-const double& LT_cells::LT_percentage_cell_expressing_receptor() const
-{
-    double sum=100*(percentage_IFN_LTns_prod_rate_d*(LTns_d+LT0_d)+
-               percentage_IFN_LTbo_prod_rate_d*LTbo_d+
-                    percentage_IFN_LTbl_prod_rate_d*LTbl_d)/num_LT();
-    return sum;
-}
 
-/// Percentage of LT undergoing apoptosis
-
-
-
-double& LT_cells::LTns()
-    {
-        return LTns_d;
-    };
-
-const double& LT_cells::LTns() const
-    {
-        return LTns_d;
-    };
-
-double& LT_cells::LT0()
-    {
-        return LT0_d;
-    };
-
-const double& LT_cells::LT0() const
-    {
-        return LT0_d;
-    };
-
-double& LT_cells::LTbo()
-    {
-        return LTbo_d;
-    };
-
-const double& LT_cells::LTbo() const
-    {
-        return LTbo_d;
-    };
-
-double& LT_cells::LTbl()
-    {
-        return LTbl_d;
-    };
-
-const double& LT_cells::LTbl() const
-    {
-        return LTbl_d;
-    };
-
-double& LT_cells::LTexh()
-    {
-        return LTexh_d;
-    };
-
-const double& LT_cells::LTexh() const
-    {
-        return LTexh_d;
-    };
-
-/// 8) Percentage of LT cells undergoing apoptosis
-       double& LT_cells::percentage_apopototic_LT_cells ()
+/// 6) Percentage of LT cells undergoing apoptosis
+       double& LT_cells::percentage_apoptotic_LT_cells()
        { double sum=100.0*Total_cells_in_apoptosis_d/num_LT();
          return sum;
        }
 
-       const double& LT_cells::percentage_apopototic_LT_cells () const
+       const double& LT_cells::percentage_apoptotic_LT_cells() const
        { double sum=100.0*Total_cells_in_apoptosis_d/num_LT();
          return sum;
        }
+
+
 
 
 std::ostream& operator<<(std::ostream& s, const LT_cells& c)
