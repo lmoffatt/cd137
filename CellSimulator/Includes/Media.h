@@ -13,60 +13,66 @@ class Media
     public:
     ~Media(){}
         /// Interpheron gamma concentration in the media
-        double& IFNgamma();
-        const double& IFNgamma()const;
+    /*1*/    double& IFNgamma();
+             const double& IFNgamma()const;
 
         /// Tumor Necrosis Factor alpha concentration in the media
-        double& TNF();
-        const double& TNF()const;
+    /*2*/    double& TNF();
+             const double& TNF()const;
 
         /// TNF degradation
-        double& TNF_degradation ();
-        const double& TNF_degradation () const;
+    /*3*/    double& TNF_degradation ();
+             const double& TNF_degradation () const;
 
         /// IFN degradation
-        double& IFN_degradation ();
-        const double& IFN_degradation () const;
-
-        /// Maximum number of cells tolerated by the media
-        /// Proliferation occurs when the number of cells is lower than this number
-        double& Max_num_cells();
-        const double& Max_num_cells() const;
+    /*4*/    double& IFN_degradation ();
+             const double& IFN_degradation () const;
 
         /// Number of cells contained by the media
-        double& num_cells();
-        const double& num_cells() const;
+    /*5*/    double& num_cells();
+             const double& num_cells() const;
 
         /// Antigen concentration
-        double& Ag();
-        const double& Ag()const;
+    /*6*/    double& Ag();
+             const double& Ag()const;
 
         /// blocking Ab concentration
-        double& Ab();
-        const double& Ab()const;
+    /*7*/    double& Ab();
+             const double& Ab()const;
+
+    /*8*/    double& TymidineTriteate();
+             const double& TymidineTriteate() const;
+
+    /*9*/    double& Prol_TymTr();
+             const double& Prol_TymTr() const;
+
+    /*10*/   double& Tymidine_incorporated();
+             const double& Tymidine_incorporated()const;
+
 
         void update(double time_step,
+                    double t_run,
                     const APC_cells& APC_ ,
                     const NK_cells& NK,
                     const LT_cells& LT_);
 
-        Media(
-              double max_num_cells_,
-              double init_num_cells,
-              double Ag_,
-              double Ab_,
-              double IFNgamma_init,
+        Media(double IFNgamma_init,
               double TNF_init,
+              double Tymidine_incorprated_init,
               double TNF_deg_init,
-              double IFN_deg_init);
+              double IFN_deg_init,
+              double init_num_cells,
+              double init_Ag,
+              double init_Ab,
+              double TymidineTriteate_init,
+              double Prol_TymTr_init
+              );
 
         Media(const SimParameters& sp,
               const Treatment& tr);
 
         Media(const Media& other);
 
-
-        //         double internalization_init);
 
         Media(){}
 
@@ -79,15 +85,17 @@ class Media
     private:
         double IFNgamma_d;
         double TNF_d;
-        double max_num_cells_d;
+        double TNF_deg_d;
+        double IFN_deg_d;
         double num_cells_d;
         double Ag_d;
         double Ab_d;
-        double TNF_deg;
-        double IFN_deg;
-   //     double Ag_internalization_rate;
-        /// 14) Conversion rate Proliferation/Tymidine
-        /*34*/ double Prol_TymTr_d;
+        double TymidineTriteate_d;
+        double Prol_TymTr_d;/// conversion rate Tym/prol
+        double Tymidine_incorporated_d;
+
+
+
 };
 
 

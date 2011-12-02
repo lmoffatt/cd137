@@ -7,7 +7,7 @@
 
 int main()
 {
-   con_APC();
+   Bayes();
 
 }
 

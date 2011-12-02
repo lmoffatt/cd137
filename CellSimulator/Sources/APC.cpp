@@ -64,7 +64,7 @@ APC_cells::APC_cells(/// 1) init number of APC
                      /*31*/ double APC0_expressing_receptor_,
                      /*32*/ double APCa_expressing_receptor_,
                      /// 13) Apoptosis rate for TNF
-                     /*33*/ double u_APC_TNF_,
+                     /*33*/ double u_APC_TNF_
 
 
           ):
@@ -74,7 +74,6 @@ APC_cells::APC_cells(/// 1) init number of APC
           APCbo_d(0),
           APCbo_Ab_d(0),
           APCbl_d (0),
-          APCbo_Ab_d(0),
           APCexh_d(0),
           APC_TymTr_incorporated_d(0),
 
@@ -130,12 +129,11 @@ APC_cells::APC_cells(/// 1) init number of APC
 APC_cells::APC_cells(const SimParameters& sp,
           const Treatment& tr):
 
-    APC0_d(sp.init_ratio_APC_cells_*tr.init_cells),
+    APC0_d(sp.init_ratio_APC_*tr.init_cells),
     APCa_d(0),
     APCbo_d(0),
     APCbo_Ab_d(0),
     APCbl_d (0),
-    APCbo_Ab_d(0),
     APCexh_d(0),
     APC_TymTr_incorporated_d(0),
 
@@ -177,8 +175,8 @@ APC_cells::APC_cells(const SimParameters& sp,
 
     KsAPC_LT_d(sp.KsAPC_LT_),
 
-    Ksi_d(sp.Ksi_),
-    Kst_d(sp.Kst_),
+    Ksi_d(sp.APC_Ksi_),
+    Kst_d(sp.APC_Kst_),
 
     APC0_expressing_receptor_d(sp.APC0_expressing_receptor_),
     APCa_expressing_receptor_d(sp.APCa_expressing_receptor_),
@@ -194,7 +192,6 @@ APC_cells::APC_cells(const APC_cells& other):
     APCbo_d(other.APCbo_d),
     APCbo_Ab_d(other.APC_Ab_d),
     APCbl_d (other.APCbl_d),
-    APCbo_Ab_d(other.APC_Ab_d),
     APCexh_d(other.APCexh_d),
     APC_TymTr_incorporated_d(other.APC_TymTr_incorporated_d),
 
@@ -260,57 +257,57 @@ APC_cells::operator=(const APC_cells& other)
 
 void swap(APC_cells& one, APC_cells& other)
 {
-   std::swap(APC0_d,other.APC0_d);
-   std::swap(APCa_d,other.APCa_d);
-   std::swap(APCbo_d,other.APCbo_d);
-   std::swap(APCbo_Ab_d,other.APC_Ab_d);
-   std::swap(APCbl_d ,other.APCbl_d);
-   std::swap(APCbo_Ab_d,other.APC_Ab_d);
-   std::swap(APCexh_d,other.APCexh_d);
-   std::swap (TymTr_incorporated_d,other.TymTr_incorporated_d);
+   std::swap(one.APC0_d,other.APC0_d);
+   std::swap(one.APCa_d,other.APCa_d);
+   std::swap(one.APCbo_d,other.APCbo_d);
+   std::swap(one.APCbo_Ab_d,other.APC_Ab_d);
+   std::swap(one.APCbl_d ,other.APCbl_d);
+   std::swap(one.APCbo_Ab_d,other.APC_Ab_d);
+   std::swap(one.APCexh_d,other.APCexh_d);
+   std::swap (one.APC_TymTr_incorporated_d,other.APC_TymTr_incorporated_d);
 
-   std::swap(IFN_APC0_prod_rate_d,other.IFN_APC0_prod_rate_d);
-   std::swap(IFN_APCa_prod_rate_d,other.IFN_APCa_prod_rate_d);
-   std::swap(IFN_APCbo_prod_rate_d,other.IFN_APCbo_prod_rate_d);
-   std::swap(TNF_APC0_prod_rate_d,other.TNF_APC0_prod_rate_d);
-   std::swap(TNF_APCa_prod_rate_d,other.TNF_APCa_prod_rate_d);
-   std::swap(TNF_APCbo_prod_rate_d,other.TNF_APCbo_prod_rate_d);
+   std::swap(one.IFN_APC0_prod_rate_d,other.IFN_APC0_prod_rate_d);
+   std::swap(one.IFN_APCa_prod_rate_d,other.IFN_APCa_prod_rate_d);
+   std::swap(one.IFN_APCbo_prod_rate_d,other.IFN_APCbo_prod_rate_d);
+   std::swap(one.TNF_APC0_prod_rate_d,other.TNF_APC0_prod_rate_d);
+   std::swap(one.TNF_APCa_prod_rate_d,other.TNF_APCa_prod_rate_d);
+   std::swap(one.TNF_APCbo_prod_rate_d,other.TNF_APCbo_prod_rate_d);
 
-   std::swap(percentage_IFN_APC0_prod_rate_d ,other.percentage_IFN_APC0_prod_rate_d);
-   std::swap(percentage_IFN_APCa_prod_rate_d ,other.percentage_IFN_APCa_prod_rate_d);
-   std::swap(percentage_IFN_APCbo_prod_rate_d ,other.percentage_IFN_APCbo_prod_rate_d);
+   std::swap(one.percentage_IFN_APC0_prod_rate_d ,other.percentage_IFN_APC0_prod_rate_d);
+   std::swap(one.percentage_IFN_APCa_prod_rate_d ,other.percentage_IFN_APCa_prod_rate_d);
+   std::swap(one.percentage_IFN_APCbo_prod_rate_d ,other.percentage_IFN_APCbo_prod_rate_d);
 
-   std::swap(percentage_TNF_APC0_prod_rate_d ,other.percentage_TNF_APC0_prod_rate_d);
-   std::swap(percentage_TNF_APCa_prod_rate_d ,other.percentage_TNF_APCa_prod_rate_d);
-   std::swap(percentage_TNF_APCbo_prod_rate_d ,other.percentage_TNF_APCbo_prod_rate_d);
+   std::swap(one.percentage_TNF_APC0_prod_rate_d ,other.percentage_TNF_APC0_prod_rate_d);
+   std::swap(one.percentage_TNF_APCa_prod_rate_d ,other.percentage_TNF_APCa_prod_rate_d);
+   std::swap(one.percentage_TNF_APCbo_prod_rate_d ,other.percentage_TNF_APCbo_prod_rate_d);
 
 
-   std::swap(APC_bound_proliferation_rate_d ,other.APC_bound_proliferation_rate_d);
+   std::swap(one.APC_bound_proliferation_rate_d ,other.APC_bound_proliferation_rate_d);
 
-   std::swap(APC0_apop_rate_d,other.APC0_apop_rate_d);
-   std::swap(APCa_apop_rate_d ,other.APCa_apop_rate_d);
-   std::swap(APCbo_apop_rate_d ,other.APCbo_apop_rate_d);
-   std::swap(APCbl_apop_rate_d ,other.APCbl_apop_rate_d);
-   std::swap(APCexh_apop_rate_d ,other.APCexh_apop_rate_d);
+   std::swap(one.APC0_apop_rate_d,other.APC0_apop_rate_d);
+   std::swap(one.APCa_apop_rate_d ,other.APCa_apop_rate_d);
+   std::swap(one.APCbo_apop_rate_d ,other.APCbo_apop_rate_d);
+   std::swap(one.APCbl_apop_rate_d ,other.APCbl_apop_rate_d);
+   std::swap(one.APCexh_apop_rate_d ,other.APCexh_apop_rate_d);
 
-   std::swap(Ks_APC_m_TNF_d ,other.Ks_APC_m_TNF_d);
+   std::swap(one.Ks_APC_m_TNF_d ,other.Ks_APC_m_TNF_d);
 
-   std::swap(APC_Ag_d ,other.APC_Ag_d);
-   std::swap(APC_APC_d,other.APC_APC_d);
-   std::swap(APC_NK_d,other.APC_NK_d);
-   std::swap(APC_LT_1_d,other.APC_LT_1_d);
-   std::swap(APC_LT_2_d,other.APC_LT_2_d);
-   std::swap(APC_Ab_d,other.APC_Ab_d);
-   std::swap(APC_exh_d,other.APC_exh_d);
+   std::swap(one.APC_Ag_d ,other.APC_Ag_d);
+   std::swap(one.APC_APC_d,other.APC_APC_d);
+   std::swap(one.APC_NK_d,other.APC_NK_d);
+   std::swap(one.APC_LT_1_d,other.APC_LT_1_d);
+   std::swap(one.APC_LT_2_d,other.APC_LT_2_d);
+   std::swap(one.APC_Ab_d,other.APC_Ab_d);
+   std::swap(one.APC_exh_d,other.APC_exh_d);
 
-   std::swap(KsAPC_LT_d,other.KsAPC_LT_d);
+   std::swap(one.KsAPC_LT_d,other.KsAPC_LT_d);
 
-   std::swap(Ksi_d,other.Ksi_d);
-   std::swap(Kst_d,other.Kst_d);
+   std::swap(one.Ksi_d,other.Ksi_d);
+   std::swap(one.Kst_d,other.Kst_d);
 
-   std::swap(APC0_expressing_receptor_d,other.APC0_expressing_receptor_d);
-   std::swap(APCa_expressing_receptor_d,other.APCa_expressing_receptor_d);
-   std::swap(u_APC_TNF_d ,other.u_APC_TNF_d);
+   std::swap(one.APC0_expressing_receptor_d,other.APC0_expressing_receptor_d);
+   std::swap(one.APCa_expressing_receptor_d,other.APCa_expressing_receptor_d);
+   std::swap(one.u_APC_TNF_d ,other.u_APC_TNF_d);
 
 
 }
@@ -326,13 +323,13 @@ void APC_cells::update(double time_step,const Media& m, const NK_cells& NK, cons
     /// the number of free cells (no Ag) they proliferate according to the cell concentration (factor proliferation ratio)
     /// and some of them are "lost" since they internalize the Ag
     APC0_d+=(-APC0_apop_rate_d*APC0_d-
-             APC_Ag_d*(m.IFNgamma()/(m.IFNgamma()+ Ksi_d))*(m.TNF_d/(m.TNF_d+Kst_d))*m.Ag()-
+             APC0_d*APC_Ag_d*(m.IFNgamma()/(m.IFNgamma()+ Ksi_d))*(m.TNF()/(m.TNF()+Kst_d))*m.Ag()-
              APC_Ag_d*m.Ag()*APC0_d)*time_step;
 
     /** the cells that have internalize the Ag proliferate in the same way than the free
     they grow also by the free cells that internalize the Ag
     they shrink by the cells that interact with the LT cells*/
-    APCa_d+=(APC_Ag_d*(m.IFNgamma()/(m.IFNgamma()+ Ksi_d))*(m.TNF_d/(m.TNF_d+Kst_d))*m.Ag() +
+    APCa_d+=(APC0_d*APC_Ag_d*(m.IFNgamma()/(m.IFNgamma()+ Ksi_d))*(m.TNF()/(m.TNF()+Kst_d))*m.Ag() +
             APC_Ag_d*m.Ag()*APC0_d -
             APCa_apop_rate_d*APCa_d -
             u_APC_TNF_d*APCa_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d))-
@@ -340,7 +337,7 @@ void APC_cells::update(double time_step,const Media& m, const NK_cells& NK, cons
             APC_APC_d*APCa_d*APCa_expressing_receptor_d*APCbo_d-
             APC_NK_d*APCa_d*APCa_expressing_receptor_d*NK.NKa()*NK.NKa_expressing_receptor()-
             APC_NK_d*APCa_d*APCa_expressing_receptor_d*NK.NKbo()-
-            APC_LT_1_d*LT.LT0*APCa_d*APCa_expressing_receptor_d/(APCa_d*APCa_expressing_receptor_d+KsAPC_LT_d)-
+            APC_LT_1_d*LT.LT0()*APCa_d*APCa_expressing_receptor_d/(APCa_d*APCa_expressing_receptor_d+KsAPC_LT_d)-
             APC_Ab_d*m.Ab()*APCa_d-APCa_d*APC_exh_d)*time_step;
 
 
@@ -352,7 +349,7 @@ void APC_cells::update(double time_step,const Media& m, const NK_cells& NK, cons
             APC_APC_d*APCa_d*APCa_expressing_receptor_d*APCbo_d+
             APC_NK_d*APCa_d*APCa_expressing_receptor_d*NK.NKa()*NK.NKa_expressing_receptor()+
             APC_NK_d*APCa_d*APCa_expressing_receptor_d*NK.NKbo()+
-            APC_LT_1_d*LT.LT0*APCa_d*APCa_expressing_receptor_d/(APCa_d*APCa_expressing_receptor_d+KsAPC_LT_d)+
+            APC_LT_1_d*LT.LT0()*APCa_d*APCa_expressing_receptor_d/(APCa_d*APCa_expressing_receptor_d+KsAPC_LT_d)+
             APCbo_d*APC_bound_proliferation_rate_d-
             APCbo_d*APCbo_apop_rate_d-
             u_APC_TNF_d*APCbo_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d))-
@@ -382,7 +379,7 @@ void APC_cells::update(double time_step,const Media& m, const NK_cells& NK, cons
                 APCexh_apop_rate_d-
                 u_APC_TNF_d*APCbo_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d)))*time_step;
     if (m.TymidineTriteate()>0)
-        APC_TymTr_incorporated_d+=(APCbo_d+APCbo_Ab_d)*APC_bound_proliferation_rate_d*m.Prol_TymTr_d;
+        APC_TymTr_incorporated_d+=(APCbo_d+APCbo_Ab_d)*APC_bound_proliferation_rate_d*m.Prol_TymTr();
 
 
 }
@@ -390,7 +387,7 @@ void APC_cells::update(double time_step,const Media& m, const NK_cells& NK, cons
 void APC_cells::reset(const SimParameters& sp,
                       const Treatment& tr)
 {
-    APC0_d=sp.init_ratio_APC_cells_*tr.init_cells;
+    APC0_d=sp.init_ratio_APC_*tr.init_cells;
     APCa_d=0;
     APCbo_d=0;
     APCbo_Ab_d=0;
@@ -399,7 +396,13 @@ void APC_cells::reset(const SimParameters& sp,
     APC_TymTr_incorporated_d=0;
  }
 /// 1) Total number of cells
-double APC_cells::num_APC() const
+double& APC_cells::num_APC()
+    {
+        double sum=APC0_d+APCa_d+APCbo_d+APCbo_Ab_d+APCbl_d+APCexh_d;
+        return sum;
+    }
+
+const double& APC_cells::num_APC() const
     {
         double sum=APC0_d+APCa_d+APCbo_d+APCbo_Ab_d+APCbl_d+APCexh_d;
         return sum;
@@ -446,7 +449,7 @@ const double& APC_cells::APCbo_Ab()const
     }
 
 
-double& APC_cells::APCbl() const
+double& APC_cells::APCbl()
     {
         return APCbl_d;
     }
@@ -456,15 +459,16 @@ const double& APC_cells::APCbl() const
         return APCbl_d;
     }
 
-double& APC_cells::APCexh() const
+double& APC_cells::APCexh()
     {
         return APCexh_d;
     }
 
-const double& APC_cells::APCbl() const
+const double& APC_cells::APCexh() const
     {
         return APCexh_d;
     }
+
 
 
 /// 3) Percentage of cells expressing receptor
@@ -481,14 +485,14 @@ const double& APC_cells::percentage_cell_expressing_receptor()const
 
 /// 4) Cytokines production rate and producing cells (6)
 
-double& APC_cells::IFNgamma_production_rate()
-    {
+double& APC_cells::APC_IFNgamma_production_rate()
+{
         double sum=APC0_d*IFN_APC0_prod_rate_d*percentage_IFN_APC0_prod_rate_d+
                   (APCa_d+APCbl_d)*IFN_APCa_prod_rate_d*percentage_IFN_APCa_prod_rate_d+
                   (APCbo_d+APCbo_Ab_d)*IFN_APCbo_prod_rate_d*percentage_IFN_APCbo_prod_rate_d;
         return sum;
     }
-const double& APC_cells::IFNgamma_production_rate() const
+const double& APC_cells::APC_IFNgamma_production_rate() const
     {
         double sum=APC0_d*IFN_APC0_prod_rate_d*percentage_IFN_APC0_prod_rate_d+
                   (APCa_d+APCbl_d)*IFN_APCa_prod_rate_d*percentage_IFN_APCa_prod_rate_d+
@@ -496,7 +500,7 @@ const double& APC_cells::IFNgamma_production_rate() const
         return sum;
     }
 
-double& APC_cells::TNF_production_rate()
+double& APC_cells::APC_TNF_production_rate()
     {
         double sum=APC0_d*TNF_APC0_prod_rate_d*percentage_TNF_APC0_prod_rate_d+
                   (APCa_d+APCbl_d)*TNF_APCa_prod_rate_d*percentage_TNF_APCa_prod_rate_d+
@@ -504,7 +508,7 @@ double& APC_cells::TNF_production_rate()
         return sum;
     }
 
-const double& APC_cells::TNF_production_rate() const
+const double& APC_cells::APC_TNF_production_rate() const
     {
         double sum=APC0_d*TNF_APC0_prod_rate_d*percentage_TNF_APC0_prod_rate_d+
                   (APCa_d+APCbl_d)*TNF_APCa_prod_rate_d*percentage_TNF_APCa_prod_rate_d+
@@ -515,23 +519,23 @@ const double& APC_cells::TNF_production_rate() const
 
 double& APC_cells::percentage_APC_producing_IFN()
     {
-       double sum=100*(percentage_IFN_APC0_prod_rate_d*APC0_d+percentage_IFN_APCa_prod_rate_d*(APCa_d+APCbl_d)+percentage_IFN_APCbo_prod_rate_d (APCbo_d+APCbo_Ab_d))/num_APC();
+       double sum=100*(percentage_IFN_APC0_prod_rate_d*APC0_d+percentage_IFN_APCa_prod_rate_d*(APCa_d+APCbl_d)+percentage_IFN_APCbo_prod_rate_d*(APCbo_d+APCbo_Ab_d))/num_APC();
        return sum;
     }
 const double& APC_cells::percentage_APC_producing_IFN() const
     {
-       double sum=100*(percentage_IFN_APC0_prod_rate_d*APC0_d+percentage_IFN_APCa_prod_rate_d*(APCa_d+APCbl_d)+percentage_IFN_APCbo_prod_rate_d (APCbo_d+APCbo_Ab_d))/num_APC();
+       double sum=100*(percentage_IFN_APC0_prod_rate_d*APC0_d+percentage_IFN_APCa_prod_rate_d*(APCa_d+APCbl_d)+percentage_IFN_APCbo_prod_rate_d*(APCbo_d+APCbo_Ab_d))/num_APC();
        return sum;
     }
 
 double& APC_cells::percentage_APC_producing_TNF()
     {
-       double sum=100*(percentage_TNF_APC0_prod_rate_d*APC0_d+percentage_TNF_APCa_prod_rate_d*(APCa_d+APCbl_d)+percentage_TNF_APCbo_prod_rate_d (APCbo_d+APCbo_Ab_d))/num_APC();
+       double sum=100*(percentage_TNF_APC0_prod_rate_d*APC0_d+percentage_TNF_APCa_prod_rate_d*(APCa_d+APCbl_d)+percentage_TNF_APCbo_prod_rate_d*(APCbo_d+APCbo_Ab_d))/num_APC();
        return sum;
     }
 const double& APC_cells::percentage_APC_producing_TNF() const
     {
-       double sum=100*(percentage_TNF_APC0_prod_rate_d*APC0_d+percentage_TNF_APCa_prod_rate_d*(APCa_d+APCbl_d)+percentage_TNF_APCbo_prod_rate_d (APCbo_d+APCbo_Ab_d))/num_APC();
+       double sum=100*(percentage_TNF_APC0_prod_rate_d*APC0_d+percentage_TNF_APCa_prod_rate_d*(APCa_d+APCbl_d)+percentage_TNF_APCbo_prod_rate_d*(APCbo_d+APCbo_Ab_d))/num_APC();
        return sum;
     }
 
@@ -540,7 +544,7 @@ double& APC_cells::APCa_TNF_production_rate()
     {
        return TNF_APCa_prod_rate_d;
     }
-const double& APC_cells::APCa_TNF_production_rate()
+const double& APC_cells::APCa_TNF_production_rate() const
     {
        return TNF_APCa_prod_rate_d;
     }
@@ -551,7 +555,7 @@ double& APC_cells::APCbo_TNF_production_rate()
    return TNF_APCbo_prod_rate_d;
 
    }
-const double& APC_cells::APCbo_TNF_production_rate()
+const double& APC_cells::APCbo_TNF_production_rate() const
    {
    return TNF_APCa_prod_rate_d;
    }
@@ -562,7 +566,7 @@ double& APC_cells::APCa_expressing_receptor ()
    {
         return APCa_expressing_receptor_d;
    }
-const double& APC_cells::APCa_expressing_receptor ()
+const double& APC_cells::APCa_expressing_receptor () const
    {
         return APCa_expressing_receptor_d;
    }
@@ -623,13 +627,21 @@ const double& APC_cells::APCa_expressing_receptor ()
             return KsAPC_LT_d;
        }
 
+        /// Tymidine incorporated by APC cells
+        double& APC_cells::APC_TymTr_incorporated()
+        { return APC_TymTr_incorporated_d;}
+
+        const double& APC_cells::APC_TymTr_incorporated()const
+         { return APC_TymTr_incorporated_d;}
+
+
 
 
 
 
  std::ostream& operator<<(std::ostream& s, const APC_cells& c)
 {
-       s<<"\n total APC \t"<<c.num_APC_d;
+       s<<"\n total APC \t"<<c.num_APC();
        s<<"\n APC0 \t"<<c.APC0_d;
        s<<"\n APCa \t"<<c.APCa_d;
        s<<"\n APCbo \t"<<c.APCbo_d;

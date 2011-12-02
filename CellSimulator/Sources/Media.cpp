@@ -3,51 +3,62 @@
 #include "Includes/LT.h"
 #include "Includes/NK.h"
 
-Media::Media( double max_num_cells,
-              double init_num_cells,
-              double Ag_=0,
-              double Ab_=0,
-              double IFNgamma_init=0,
-              double TNF_init=0,
-              double TNF_deg_init=0,
-              double IFN_deg_init=0):
-    //   double internalization_init=0):
+Media::Media(double IFNgamma_init,
+             double TNF_init,
+             double Tymidine_incorprated_init,
+             double TNF_deg_init,
+             double IFN_deg_init,
+             double init_num_cells,
+             double init_Ag,
+             double init_Ab,
+             double TymidineTriteate_init,
+             double Prol_TymTr_init
+                ):
+
 
     IFNgamma_d(IFNgamma_init),
     TNF_d(TNF_init),
-    max_num_cells_d(max_num_cells),
+    Tymidine_incorporated_d (Tymidine_incorprated_init),
+    TNF_deg_d(TNF_deg_init),
+    IFN_deg_d(IFN_deg_init),
     num_cells_d(init_num_cells),
-    Ag_d(Ag_),
-    Ab_d(Ab_),
-    TNF_deg(TNF_deg_init),
-    IFN_deg(IFN_deg_init)
-  /*  Ag_internalization_rate (internalization_init)*/ {}
+    Ag_d(init_Ag),
+    Ab_d(init_Ab),
+    TymidineTriteate_d(TymidineTriteate_init),
+    Prol_TymTr_d(Prol_TymTr_init)
+
+   {}
 
 Media::Media(const SimParameters& sp,
              const Treatment& tr):
-    //   double internalization_init=0):
 
     IFNgamma_d(0),
     TNF_d(0),
-    max_num_cells_d(sp.max_num_cells_),
+    Tymidine_incorporated_d(0),
+    TNF_deg_d(sp.TNF_deg_),
+    IFN_deg_d(sp.IFN_deg_),
     num_cells_d(tr.init_cells),
     Ag_d(tr.Ag),
     Ab_d(tr.Ab),
-    TNF_deg(sp.TNF_deg),
-    IFN_deg(sp.IFN_deg)
+    TymidineTriteate_d(sp.TymidineTriteate_),
+    Prol_TymTr_d(sp.Prol_TymTr_)
+
 {}
 
 
 Media::Media(const Media& other):
     IFNgamma_d(other.IFNgamma_d),
     TNF_d(other.TNF_d),
-    max_num_cells_d(other.max_num_cells_d),
+    Tymidine_incorporated_d(other.Tymidine_incorporated_d),
+    TNF_deg_d(other.TNF_deg_d),
+    IFN_deg_d(other.IFN_deg_d),
     num_cells_d(other.num_cells_d),
     Ag_d(other.Ag_d),
     Ab_d(other.Ab_d),
-    TNF_deg(other.TNF_deg),
-    IFN_deg(other.IFN_deg)
-  /*  Ag_internalization_rate (internalization_init)*/ {}
+    TymidineTriteate_d(other.TymidineTriteate_d),
+    Prol_TymTr_d(other.Prol_TymTr_d)
+
+  {}
 
 
 Media&
@@ -65,12 +76,14 @@ Media::operator=(const Media& other)
 void swap(Media& one, Media& other)
 {   std::swap(one.IFNgamma_d,other.IFNgamma_d);
     std::swap(one.TNF_d,other.TNF_d);
-    std::swap(one.max_num_cells_d,other.max_num_cells_d);
+    std::swap(one.Tymidine_incorporated_d,other.Tymidine_incorporated_d),
+    std::swap(one.TNF_deg_d,other.TNF_deg_d);
+    std::swap(one.IFN_deg_d, other.IFN_deg_d);
     std::swap(one.num_cells_d,other.num_cells_d);
     std::swap(one.Ag_d,other.Ag_d);
     std::swap(one.Ab_d,other.Ab_d);
-    std::swap(one.TNF_deg,other.TNF_deg);
-    std::swap(one.IFN_deg,other.IFN_deg);
+    std::swap(one.TymidineTriteate_d,other.TymidineTriteate_d);
+    std::swap(one.Prol_TymTr_d,other.Prol_TymTr_d);
  }
 
 
@@ -97,33 +110,25 @@ const double& Media::TNF()const
 
 double& Media::TNF_degradation ()
    {
-   return TNF_deg;
-   }
-
-const double& Media::IFN_degradation () const
-   {
-   return IFN_deg;
-   }
-
-double& Media::IFN_degradation ()
-   {
-   return IFN_deg;
+   return TNF_deg_d;
    }
 
 const double& Media::TNF_degradation () const
    {
-   return TNF_deg;
+   return TNF_deg_d;
    }
 
-double& Media::Max_num_cells()
-    {
-        return max_num_cells_d;
-    }
+double& Media::IFN_degradation ()
+   {
+   return IFN_deg_d;
+   }
 
-const double& Media::Max_num_cells() const
-    {
-        return max_num_cells_d;
-    }
+const double& Media::IFN_degradation () const
+   {
+   return IFN_deg_d;
+   }
+
+
 
 double& Media::num_cells()
     {
@@ -154,22 +159,56 @@ const double& Media::Ab()const
     {
         return Ab_d;
     }
+
+double& Media::TymidineTriteate()
+    {
+    return TymidineTriteate_d;
+    }
+const double& Media::TymidineTriteate() const
+    {
+    return TymidineTriteate_d;
+    }
+
+double& Media::Prol_TymTr()
+   {
+    return Prol_TymTr_d;
+   }
+
+const double& Media::Prol_TymTr() const
+    {
+     return Prol_TymTr_d;
+    }
+
+/// Tymidine incorporated by NK cells
+double& Media::Tymidine_incorporated()
+{ return Tymidine_incorporated_d;}
+
+const double& Media::Tymidine_incorporated()const
+ { return Tymidine_incorporated_d;}
+
 /// Media Main step of the simulation
 /// it updates the state of the media and the cells populations for a given time period
-void Media::update(double time_step,const APC_cells& APC, const NK_cells& NK, const LT_cells& LT)
+void Media::update(double time_step,double t_run,const APC_cells& APC, const NK_cells& NK, const LT_cells& LT)
 {
     /// IFN is increased by the production rate of each population;
-    IFNgamma_d+=APC.IFNgamma_production_rate()*time_step+
-		NK.IFNgamma_production_rate()*time_step +
-		LT.IFNgamma_production_rate()*time_step -
+    IFNgamma_d+=APC.APC_IFNgamma_production_rate()*time_step+
+                NK.NK_IFNgamma_production_rate()*time_step +
+                LT.LT_IFNgamma_production_rate()*time_step -
                 IFNgamma_d*time_step*IFN_degradation();
     /// TNF is increased by the production rate of each population;
-    TNF_d+=APC.TNF_production_rate()*time_step+
-	   NK.TNF_production_rate()*time_step +
-	   LT.TNF_production_rate()*time_step -
+    TNF_d+=APC.APC_TNF_production_rate()*time_step+
+           NK.NK_TNF_production_rate()*time_step +
+           LT.TNF_production_rate()*time_step -
            TNF_d*time_step*TNF_degradation();
     /// The total number of cells is the adittion of APC + NK + LT
-    num_cells_d=APC.num()+NK.num()+LT.num();
+    num_cells_d=APC.num_APC()+NK.num_NK()+LT.num_LT();
+
+    /// Tymidine Pulse at 114
+     if (t_run<114)
+     {TymidineTriteate_d=0;}
+     else {TymidineTriteate_d=1;}
+
+     Tymidine_incorporated_d=APC.APC_TymTr_incorporated()+NK.NK_TymTr_incorporated()+LT.LT_TymTr_incorporated();
 
 }
 
@@ -178,12 +217,17 @@ void Media::update(double time_step,const APC_cells& APC, const NK_cells& NK, co
 {
     s<<"\n IFNgamma_d \t"<<c.IFNgamma_d;
     s<<"\n TNF_d \t"<<c.TNF_d;
-    s<<"\n max_num_cells_d \t"<<c.max_num_cells_d;
+    s<<"\n Tymidine Incorprated\t"<<c.Tymidine_incorporated_d;
     s<<"\n num_cells_d \t"<<c.num_cells_d;
+    if(0)
     s<<"\n Ag_d \t"<<c.Ag_d;
     s<<"\n Ab_d \t"<<c.Ab_d;
-    s<<"\n TNF_deg \t"<<c.TNF_deg;
-    s<<"\n IFN_deg \t"<<c.IFN_deg;
+    s<<"\n TNF deg \t"<<c.TNF_deg_d;
+    s<<"\n IFN deg \t"<<c.IFN_deg_d;
+    s<<"\n TymidineTriteate_d \t"<<c.TymidineTriteate_d;
+    s<<"\n Prol_TymTr_d \t"<<c.Prol_TymTr_d;
+
+
   return s;
 }
 

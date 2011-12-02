@@ -38,34 +38,30 @@ class LT_cells
            double& LTexh ();
            const double& LTexh()const;
 
-/// 3) Percentage of cells exprssing receptor
-           double& percentage_cell_expressing_receptor ();
-           const double& percentage_cell_expressing_receptor() const;
+/// 3) Percentage of cell expressing the receptor
+       double& LT_percentage_cell_expressing_receptor ();
+       const double& LT_percentage_cell_expressing_receptor() const;
 
 /// 4) Cytokines production rate and producing cells (6)
     /// Total production of interpheron gamma by LT
         double& LT_IFNgamma_production_rate();
-        const double& LT_IFNgamma_production_rate();
+        const double& LT_IFNgamma_production_rate() const;
     /// Total production of Tumor Necrosis alpha
         double& TNF_production_rate();
         const double& TNF_production_rate() const;
     /// percentage of LT cells that produce TNF
+        double& percentage_LT_IFN_production();
+        const double& percentage_LT_IFN_production() const;
+    /// percentage of LT cells that produce TNF
         double& percentage_LT_TNF_production();
-        const double& percentage_LT_TNF_production();
+        const double& percentage_LT_TNF_production() const;
 
-/// 5) Percentage of cell expressing the receptor
-       double& LT_percentage_cell_expressing_receptor ();
-       const double& LT_percentage_cell_expressing_receptor() const;
-/// 6) Percentage of LT cell undergoing apoptosis
-       double& LT_percentage_cell_undergoing_apoptosis();
-       const double& LT_percentage_cell_undergoing_apoptosis();
-
-/// 7) Tymidine incorporated by APC cells
+/// 5) Tymidine incorporated by LT cells
        double& LT_TymTr_incorporated();
        const double& LT_TymTr_incorporated()const;
 
-/// 8) Percentage of LT cells undergoing apoptosis
-       double& percentage_apopototic_LT_cells ();
+/// 6) Percentage of LT cells undergoing apoptosis
+       double& percentage_apoptotic_LT_cells ();
        const double& percentage_apoptotic_LT_cells() const;
 
 
@@ -121,7 +117,7 @@ class LT_cells
 
                  /// 12) apoptosis related parameters
                  /*26*/ double t_apop_meas_,
-                 /*27*/ double t_duration_apoptosis_,
+                 /*27*/ double t_duration_apoptosis_
                  );
 
 
@@ -134,40 +130,40 @@ class LT_cells
             LTexh_d(0),
             LT_TymTr_incorporated_d(0),
             Total_cells_in_apoptosis_d(0),
-            IFN_LTns_prod_rate_d(IFN_LTns_prod_rate_),
-            IFN_LTbo_prod_rate_d(IFN_LTbo_prod_rate_),
-            IFN_LTbl_prod_rate_d(IFN_LTbl_prod_rate_),
-            TNF_LTns_prod_rate_d(TNF_LTns_prod_rate_),
-            TNF_LTbo_prod_rate_d(TNF_LTbo_prod_rate_),
-            TNF_LTbl_prod_rate_d(TNF_LTbl_prod_rate_),
+            IFN_LTns_prod_rate_d(sp.IFN_LTns_prod_rate_),
+            IFN_LTbo_prod_rate_d(sp.IFN_LTbo_prod_rate_),
+            IFN_LTbl_prod_rate_d(sp.IFN_LTbl_prod_rate_),
+            TNF_LTns_prod_rate_d(sp.TNF_LTns_prod_rate_),
+            TNF_LTbo_prod_rate_d(sp.TNF_LTbo_prod_rate_),
+            TNF_LTbl_prod_rate_d(sp.TNF_LTbl_prod_rate_),
 
-            percentage_IFN_LTns_prod_rate_d(percentage_IFN_LTns_prod_rate_),
-            percentage_IFN_LTbo_prod_rate_d(percentage_IFN_LTbo_prod_rate_),
-            percentage_IFN_LTbl_prod_rate_d(percentage_IFN_LTbl_prod_rate_),
+            percentage_IFN_LTns_prod_rate_d(sp.percentage_IFN_LTns_prod_rate_),
+            percentage_IFN_LTbo_prod_rate_d(sp.percentage_IFN_LTbo_prod_rate_),
+            percentage_IFN_LTbl_prod_rate_d(sp.percentage_IFN_LTbl_prod_rate_),
 
-            percentage_TNF_LTns_prod_rate_d(percentage_TNF_LTns_prod_rate_),
-            percentage_TNF_LTbo_prod_rate_d(percentage_TNF_LTbo_prod_rate_),
-            percentage_TNF_LTbl_prod_rate_d(percentage_TNF_LTbl_prod_rate_),
+            percentage_TNF_LTns_prod_rate_d(sp.percentage_TNF_LTns_prod_rate_),
+            percentage_TNF_LTbo_prod_rate_d(sp.percentage_TNF_LTbo_prod_rate_),
+            percentage_TNF_LTbl_prod_rate_d(sp.percentage_TNF_LTbl_prod_rate_),
 
-            LTns_proliferation_rate_d(LTns_proliferation_rate_),
-            LTbo_proliferation_rate_d(LTbo_proliferation_rate_),
-            LTbl_proliferation_rate_d(LTbl_proliferation_rate_),
+            LTns_proliferation_rate_d(sp.LTns_proliferation_rate_),
+            LTbo_proliferation_rate_d(sp.LTbo_proliferation_rate_),
+            LTbl_proliferation_rate_d(sp.LTbl_proliferation_rate_),
 
-            LTns_apop_rate_d(LTns_apop_rate_),
-            LTbo_apop_rate_d(LTbo_apop_rate_),
-            LTbl_apop_rate_d(LTbl_apop_rate_),
-            LTexh_apop_rate_d(LTexh_apop_rate_),
+            LTns_apop_rate_d(sp.LTns_apop_rate_),
+            LTbo_apop_rate_d(sp.LTbo_apop_rate_),
+            LTbl_apop_rate_d(sp.LTbl_apop_rate_),
+            LTexh_apop_rate_d(sp.LTexh_apop_rate_),
 
-            Ks_LT_m_TNF_d(Ks_LT_m_TNF_),
+            Ks_LT_m_TNF_d(sp.Ks_LT_m_TNF_),
 
-            LTns_expressing_receptor_d(LTns_expressing_receptor_),
+            LTns_expressing_receptor_d(sp.LTns_expressing_receptor_),
 
-            u_LT_TNF_d(u_LT_TNF_),
+            u_LT_TNF_d(sp.u_LT_TNF_),
 
-            LT_exh_rate_d (LT_exh_rate_),
+            LT_exh_rate_d (sp.LT_exh_rate_),
 
-            t_apop_meas_d (t_apop_meas_),
-            t_duration_apoptosis_d(t_duration_apoptosis_)
+            t_apop_meas_d (sp.t_apop_meas_),
+            t_duration_apoptosis_d(sp.t_duration_apoptosis_)
            {}
 
             LT_cells(){}

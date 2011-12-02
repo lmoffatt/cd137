@@ -372,7 +372,7 @@ void NK_cells::update(double time_step,const Media& m,const APC_cells& APC, cons
 
     if (m.TymidineTriteate()>0)
         NK_TymTr_incorporated_d+=(NK0_d*NK0_proliferation_rate_d+(NKa_d+NKbl_d)*NKa_proliferation_rate_d+
-                                 (NKbo_d+NKbo_Ab_d)*NKbo_proliferation_rate_d)*m.Prol_TymTr_d;
+                                  (NKbo_d+NKbo_Ab_d)*NKbo_proliferation_rate_d)*m.Prol_TymTr();
 
 }
 
@@ -529,6 +529,18 @@ const double& NK_cells::NKexh()const
     {
         return NKexh_d;
     }
+
+double& NK_cells::NK_TymTr_incorporated()
+{ return NK_TymTr_incorporated_d;}
+
+const double& NK_cells::NK_TymTr_incorporated()const
+ { return NK_TymTr_incorporated_d;}
+
+double& NK_cells::NKa_expressing_receptor()
+{ return NKa_expressing_receptor_d;}
+
+const double& NK_cells::NKa_expressing_receptor() const
+{ return NKa_expressing_receptor_d;}
 
 
 

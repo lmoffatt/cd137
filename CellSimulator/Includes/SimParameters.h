@@ -193,10 +193,11 @@ public:
        /*26*/ double t_apop_meas_;
        /*27*/ double t_duration_apoptosis_;
 
-
-   double max_num_cells_;
-   double TNF_deg;
-   double IFN_deg;
+   /// Media
+       /*1*/ double TNF_deg_;
+       /*2*/ double IFN_deg_;
+       /*3*/ double TymidineTriteate_;
+       /*4*/ double Prol_TymTr_;
 
    SimParameters(const SimParameters& other);
 

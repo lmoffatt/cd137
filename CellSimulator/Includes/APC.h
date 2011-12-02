@@ -76,7 +76,7 @@ class APC_cells
 
 /// 5) Percentage of activated cells expressing receptor
         double& APCa_expressing_receptor();
-        const double APCa_expressing_receptor () const;
+        const double& APCa_expressing_receptor () const;
 
 
 /// 6) Union rates of APC (5)

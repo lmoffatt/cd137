@@ -180,13 +180,14 @@ SimParameters::SimParameters():
 
    /// 12) apoptosis related parameters
        /*26*/ t_apop_meas_(120),
-    /*27*/ t_duration_apoptosis_(2),
+       /*27*/ t_duration_apoptosis_(2),
 
+    /// Media
+    /*1*/ TNF_deg_(0.5),
+    /*2*/ IFN_deg_(0.5),
+    /*3*/ TymidineTriteate_(0.5),
+    /*4*/ Prol_TymTr_(0.5)
 
-
-    max_num_cells_(2e6),
-    TNF_deg (0.5),
-    IFN_deg (0.5)
 {}
 
 std::vector<double> SimParameters::getParameters()const
@@ -370,11 +371,11 @@ std::vector<double> SimParameters::getParameters()const
        /*27*/ par.push_back(log(t_duration_apoptosis_));
 
 
-        par.push_back(log(max_num_cells_));
-        par.push_back(log(TNF_deg));
-        par.push_back(log(IFN_deg));
-
-
+        /// Media
+        /*1*/ par.push_back(log(TNF_deg_));
+        /*2*/ par.push_back(log(IFN_deg_));
+        /*3*/ par.push_back(log(TymidineTriteate_));
+        /*4*/ par.push_back(log(Prol_TymTr_));
     }
 
     else if (mode_=="PARTIAL")
@@ -555,8 +556,12 @@ std::vector<double> SimParameters::getParameters()const
       /*27*/ par.push_back(log(t_duration_apoptosis_));
 
 
-        par.push_back(log(max_num_cells_));
-        par.push_back(log(TNF_deg));
+
+        /// Media
+        /*1*/ par.push_back(log(TNF_deg_));
+        /*3*/ par.push_back(log(TymidineTriteate_));
+        /*4*/ par.push_back(log(Prol_TymTr_));
+
 
     }
 
@@ -742,10 +747,13 @@ SimParameters& SimParameters::applyParameters(const std::vector<double>& param)
        /*25*/ LT_exh_rate_=exp(param[i++]);
 
 
+/// Media
+        /*1*/ TNF_deg_=exp(param[i++]);
+        /*2*/ IFN_deg_=exp(param[i++]);
+        /*3*/ TymidineTriteate_=exp(param[i++]);
+        /*4*/ Prol_TymTr_=exp(param[i++]);
 
-        max_num_cells_=exp(param[i++]);
-        TNF_deg=exp(param[i++]);
-        IFN_deg=exp(param[i++]);
+
     }
     else if(mode_=="PARTIAL")
     {
@@ -921,10 +929,11 @@ SimParameters& SimParameters::applyParameters(const std::vector<double>& param)
         /*25*/ LT_exh_rate_=exp(param[i++]);
 
 
-        max_num_cells_=exp(param[i++]);
-        TNF_deg=exp(param[i++]);
-        IFN_deg=0.1;
-
+/// Media
+       /*1*/ TNF_deg_=exp(param[i++]);
+       /*2*/ IFN_deg_= TNF_deg_;
+       /*3*/ TymidineTriteate_=exp(param[i++]);
+       /*4*/ Prol_TymTr_=exp(param[i++]);
 
     }
     return *this;
@@ -970,7 +979,7 @@ SimParameters::SimParameters(const SimParameters& other):
     /*19*/  APCexh_apop_rate_ (other.APCexh_apop_rate_),
 
     /// 8) constant saturation of TNF for apoptosis
-    /*20*/  Ks_APC_m_TNF_ (other.Ks_APC_m_TNF_d),
+    /*20*/  Ks_APC_m_TNF_ (other.Ks_APC_m_TNF_),
 
     /// 9) conversion rates
     /*21*/  APC_Ag_ (other.APC_Ag_),
@@ -1108,9 +1117,12 @@ SimParameters::SimParameters(const SimParameters& other):
     /*26*/ t_apop_meas_(other.t_apop_meas_),
     /*27*/ t_duration_apoptosis_(other.t_duration_apoptosis_),
 
-    max_num_cells_(other.max_num_cells_),
-    TNF_deg (other.TNF_deg),
-    IFN_deg (other.IFN_deg)
+/// Media
+    /*1*/ TNF_deg_(other.TNF_deg_),
+    /*2*/ IFN_deg_(other.IFN_deg_),
+    /*3*/ TymidineTriteate_(other.TymidineTriteate_),
+    /*4*/ Prol_TymTr_(other.Prol_TymTr_)
+
 {}
 
 SimParameters&
@@ -1178,8 +1190,8 @@ void swap(SimParameters& one, SimParameters& other)
     /*28*/  std::swap(one.KsAPC_LT_ ,other.KsAPC_LT_);
 
     /// 11)Saturation constant of APC_LT interaction
-    /*29*/  std::swap(one.Ksi_ ,other.Ksi_);
-    /*30*/  std::swap(one.Kst_ ,other.Kst_);
+    /*29*/  std::swap(one.APC_Ksi_ ,other.APC_Ksi_);
+    /*30*/  std::swap(one.APC_Kst_ ,other.APC_Kst_);
 
     /// 12) Percentages of cell expressing receptor
     /*31*/  std::swap(one.APC0_expressing_receptor_ ,other.APC0_expressing_receptor_);
@@ -1297,12 +1309,14 @@ void swap(SimParameters& one, SimParameters& other)
     /*25*/ std::swap(one.LT_exh_rate_,other.LT_exh_rate_);
 
     /// 12) apoptosis related parameters
-    /*26*/ std::swap(one.t_apop_meas_,other.t_apop_meas_),
-    /*27*/ std::swap(one.t_duration_apoptosis_,other.t_duration_apoptosis_),
+    /*26*/ std::swap(one.t_apop_meas_,other.t_apop_meas_);
+    /*27*/ std::swap(one.t_duration_apoptosis_,other.t_duration_apoptosis_);
 
-    std::swap(one.max_num_cells_,other.max_num_cells_);
-    std::swap(one.TNF_deg,other.TNF_deg);
-    std::swap(one.IFN_deg,other.IFN_deg);
+/// Media
+    /*1*/  std::swap(one.TNF_deg_,other.TNF_deg_);
+    /*2*/  std::swap(one.IFN_deg_,other.IFN_deg_);
+    /*3*/  std::swap(one.TymidineTriteate_,other.TymidineTriteate_);
+    /*4*/  std::swap(one.Prol_TymTr_,other.Prol_TymTr_);
 }
 
 std::ostream& operator<<(std::ostream& s,SimParameters p)
@@ -1335,8 +1349,8 @@ std::ostream& operator<<(std::ostream& s,SimParameters p)
     /*26*/  s<<"\n APC_Ab_\t"<<p.APC_Ab_;
     /*27*/  s<<"\n  APC_exh_\t"<<p.APC_exh_;
     /*28*/  s<<"\n KsAPC_LT_\t"<<p.KsAPC_LT_;
-    /*29*/  s<<"\n Ksi_\t"<<p.Ksi_;
-    /*30*/  s<<"\n Kst_\t"<<p.Kst_;
+    /*29*/  s<<"\n Ksi_\t"<<p.APC_Ksi_;
+    /*30*/  s<<"\n Kst_\t"<<p.APC_Kst_;
     /*31*/  s<<"\n APC0_expressing_receptor_\t"<<p.APC0_expressing_receptor_;
     /*32*/  s<<"\n APCa_expressing_receptor_\t"<<p.APCa_expressing_receptor_;
     /*33*/  s<<"\n u_APC_TNF_\t"<<p.u_APC_TNF_;
@@ -1369,8 +1383,8 @@ std::ostream& operator<<(std::ostream& s,SimParameters p)
     /*25*/  s<<"\n NK_Ab\t"<<p.NK_Ab_;
     /*26*/  s<<"\n NK_exh_\t"<<p.NK_exh_;
     /*27*/  s<<"\n KsAPC_NK_\t"<<p.KsAPC_NK_;
-    /*28*/  s<<"\n Ksi_\t"<<p.Ksi_;
-    /*29*/  s<<"\n Kst_\t"<<p.Kst_;
+    /*28*/  s<<"\n Ksi_\t"<<p.NK_Ksi_;
+    /*29*/  s<<"\n Kst_\t"<<p.NK_Kst_;
     /*30*/  s<<"\n NK0_expressing_receptor_\t"<<p.NK0_expressing_receptor_;
     /*31*/  s<<"\n NKa_expressing_receptor_\t"<<p.NKa_expressing_receptor_;
     /*32*/  s<<"\n u_NK_TNF_\t " <<p.u_NK_TNF_;
@@ -1401,12 +1415,12 @@ std::ostream& operator<<(std::ostream& s,SimParameters p)
     /*24*/  s<<"\n u_LT_TNF_\t"<<p.LTexh_apop_rate_;
     /*25*/  s<<"\n LT_exh_rate_\t"<<p.LT_exh_rate_;
     /*26*/  s<<"\n t_apop_meas_\t"<<p.t_apop_meas_;
-    /*27*/  s<<"\n t_duration_apoptosis_\t"<<p.t_duration_apoptosis_,
-
-
-    s<<"\n max_num_cells_ \t"<<p.max_num_cells_;
-    s<<"\n TNF_deg \t"<<p.TNF_deg;
-    s<<"\n IFN_deg \t"<<p.IFN_deg;
+    /*27*/  s<<"\n t_duration_apoptosis_\t"<<p.t_duration_apoptosis_;
+    /// Media
+    /*1*/  s<<"\n TNF_deg_\t"<<p.TNF_deg_;
+    /*2*/  s<<"\n IFN_deg_\t"<<p.IFN_deg_;
+    /*3*/  s<<"\n TymidineTriteate_\t"<<p.TymidineTriteate_;
+    /*4*/  s<<"\n Prol_TymTr_\t"<<p.Prol_TymTr_;
 
     return s;
 
