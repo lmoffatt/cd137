@@ -149,9 +149,10 @@ class NK_cells
                    /// 13) Apoptosis rate for TNF
                    /*32*/ double u_NK_TNF_
                   );
-
+/*
         NK_cells (const SimParameters& sp,
                   const Treatment& tr);
+                  */
 
         NK_cells& operator=(const NK_cells& other);
 
@@ -161,7 +162,7 @@ class NK_cells
 
         NK_cells();
 
-        void reset(const SimParameters& sp,const Treatment& tr);
+     //   void reset(const SimParameters& sp,const Treatment& tr);
 
         /// main step for the NK cells
 

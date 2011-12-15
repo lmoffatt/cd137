@@ -3,24 +3,36 @@
 #include <iostream>
 #include <string>
 #include "Includes/SimParameters.h"
+#include "Includes/Parameters.h"
+
 #include "Includes/Media.h"
 #include "Includes/APC.h"
 #include "Includes/NK.h"
 #include "Includes/LT.h"
 #include "Includes/LevenbergMarquardt.h"
+#include "Includes/BayesIteration.h"
+
 
 #include "Experiment.h"
 
 class OptimizationResults;
-class Cell_simulator: public ABC_function
+class Cell_simulator: public ABC_model
 {
 public:
     ~Cell_simulator(){}
 //    void ask_parameters();
     void run();
 
+
+
     Cell_simulator& applyParameters(const SimParameters& sp,
 				    const Treatment& tr);
+
+
+    virtual Cell_simulator& setData(const ABC_data& conditions){};
+
+
+
     Cell_simulator(const SimParameters& sp,
                    const Experiment& E);
 
@@ -39,11 +51,56 @@ public:
 				 std::size_t numStarts);
 
 
+
+    // versions with Parameters instead of SimParameters
+
+    Cell_simulator& applyParameters(const Parameters& sp,
+                                    const Treatment& tr);
+
+
+
+
+
+    Cell_simulator(const Parameters& sp,
+                   const Experiment& E);
+
+    Results Simulate(const Parameters& simPar,
+                     const Treatment& protocol,
+                     const Results& results);
+
+    Experiment Simulate(const Parameters& simPar,
+                        const Experiment& exp);
+
+
+    OptimizationResults Optimize(const Parameters& priorPar,
+                                 const Parameters& simPar,
+                                 const Experiment& exp,
+                                 double range,
+                                 std::size_t numStarts);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     void update(double time_step);
 
 
 
    virtual std::vector<double> yfit (const std::vector<double>& param);
+
+    virtual std::vector<double> yfit (const Parameters& param);
+
 
     std::vector<double> difParam(const std::vector<double>& param);
 
@@ -59,7 +116,7 @@ public:
 
     Cell_simulator();
 
-    void reset(const SimParameters& sp,const Treatment& tr);
+  //  void reset(const SimParameters& sp,const Treatment& tr);
 
 private:
     Media   m;
@@ -77,6 +134,9 @@ private:
     Experiment fitExperiment_;
     SimParameters initialPar_;
     SimParameters fitPar_;
+
+    Parameters prior_;
+    Parameters current_;
 
 
 

@@ -11,7 +11,7 @@ Media::Media(double IFNgamma_init,
              double init_num_cells,
              double init_Ag,
              double init_Ab,
-             double TymidineTriteate_init,
+              double TymidineTriteate_init,
              double Prol_TymTr_init
                 ):
 
@@ -29,6 +29,8 @@ Media::Media(double IFNgamma_init,
 
    {}
 
+/*
+
 Media::Media(const SimParameters& sp,
              const Treatment& tr):
 
@@ -44,7 +46,7 @@ Media::Media(const SimParameters& sp,
     Prol_TymTr_d(sp.Prol_TymTr_)
 
 {}
-
+*/
 
 Media::Media(const Media& other):
     IFNgamma_d(other.IFNgamma_d),

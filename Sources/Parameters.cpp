@@ -5,11 +5,39 @@
 
 
 
+Parameters::Parameters(const Parameters& other):
+    name_(other.name_),
+    pMean_(other.pMean_),
+    pStd_(other.pStd_),
+    cov_(other.cov_){}
+
+
+
+Parameters& Parameters::operator=(const Parameters& other)
+{
+    if (this!=&other)
+    {
+        Parameters tmp(other);
+        swap(*this,tmp);
+    }
+    return *this;
+}
+
+void swap(Parameters& one, Parameters& other)
+{
+    std::swap(one.name_,other.name_);
+    std::swap(one.pMean_,other.pMean_);
+    std::swap(one.pStd_,other.pStd_);
+    std::swap(one.cov_,other.cov_);
+
+}
+
+
 double Parameters::mean(const std::string& name)const
 {
-    std::map<std::string,double>::const_iterator it=mean_.find(name);
-    if(it!=mean_.end())
-        return (*it).second;
+    std::map<std::string,std::size_t>::const_iterator it=name_.find(name);
+    if(it!=name_.end())
+        return pow(10,pMean_[(*it).second]);
     else
         return std::numeric_limits<double>::quiet_NaN();
 
@@ -20,20 +48,34 @@ double Parameters::pMean(const std::string& name)const{
     return std::log10(mean(name));
 }
 
-
+/// returns the standard deviation
 double Parameters::pStd(const std::string& name)const
 {
-    std::map<std::string,double>::const_iterator it=pStd_.find(name);
-    if(it!=mean_.end())
-        return (*it).second;
+    std::map<std::string,size_t>::const_iterator it=name_.find(name);
+    if((it!=name_.end())&& !pStd_.empty())
+        return pStd_[(*it).second];
     else
         return std::numeric_limits<double>::quiet_NaN();
 
 }
 
 
+
+/// returns the standard deviation in dB (deciBel)
+double Parameters::dBStd(const std::string& name)const
+{
+    std::map<std::string,size_t>::const_iterator it=name_.find(name);
+    if((it!=name_.end())&& !pStd_.empty())
+        return pStd_[(*it).second]*20;
+    else
+        return std::numeric_limits<double>::quiet_NaN();
+
+}
+
+
+
 double Parameters::pResidual(const std::string& name, double log10value)const{
-    return (log10value-pMean(name))/pStd(name);
+    return 20.0*(log10value-pMean(name))/pStd(name);
 }
 
 std::vector<double> Parameters::residuals(const std::vector<std::string> names,const std::vector<double> log10Values)
@@ -47,13 +89,20 @@ std::vector<double> Parameters::residuals(const std::vector<std::string> names,c
 
 }
 
+std::size_t Parameters::nameIndex(const std::string& name)const
+{
+    return (*name_.find(name)).second;
+
+}
+
+
 
 bool Parameters::setMeans(const std::vector<std::string> names,const std::vector<double> values)
 {
     for (std::size_t i=0;i<names.size();i++)
     {
         if (hasName(names[i]))
-            mean_[names[i] ]=values[i];
+            pMean_[nameIndex(names[i])]=log10(values[i]);
         else return false;
     }
     return true;
@@ -64,7 +113,7 @@ bool Parameters::setpMeans(const std::vector<std::string> names,const std::vecto
     for (std::size_t i=0;i<names.size();i++)
     {
         if (hasName(names[i]))
-            mean_[names[i]]=pow(10,log10values[i]);
+            pMean_[nameIndex(names[i])]=log10values[i];
         else return false;
     }
     return true;
@@ -77,7 +126,7 @@ bool Parameters::setpStd(const std::vector<std::string> names,const std::vector<
     for (std::size_t i=0;i<names.size();i++)
     {
         if (hasName(names[i]))
-            pStd_[names[i]]=values[i];
+            pStd_[nameIndex(names[i])]=values[i];
         else return false;
     }
     return true;
@@ -85,7 +134,7 @@ bool Parameters::setpStd(const std::vector<std::string> names,const std::vector<
 }
 
 
-std::vector<double> Parameters::means(const std::vector<std::string> names)
+std::vector<double> Parameters::means(const std::vector<std::string> names)const
 {
     std::vector<double> result(names.size());
     for (std::size_t i=0;i<names.size();i++)
@@ -97,7 +146,7 @@ std::vector<double> Parameters::means(const std::vector<std::string> names)
 
 }
 
-std::vector<double> Parameters::pMeans(const std::vector<std::string> names)
+std::vector<double> Parameters::pMeans(const std::vector<std::string> names)const
 {
     std::vector<double> result(names.size());
     for (std::size_t i=0;i<names.size();i++)
@@ -110,16 +159,37 @@ std::vector<double> Parameters::pMeans(const std::vector<std::string> names)
 
 void Parameters::push_back(const std::string& name,double meanValue,double pStdValue)
 {
-    mean_[name]=meanValue;
-    pStd_[name]=pStdValue;
+    name_[name]=pMean_.size();
+    pMean_.push_back(log10(meanValue));
+    pStd_.push_back(pStdValue);
+
 }
+
+void Parameters::push_back_1S(const std::string& name,double minValue_p34,double maxValue_p68)
+{
+    push_back(name,sqrt(minValue_p34*maxValue_p68),log10(maxValue_p68/minValue_p34)*10.0);
+}
+
+
+void Parameters::push_back_2S(const std::string& name,double minValue_p02,double maxValue_p98)
+{
+    push_back(name,sqrt(minValue_p02*maxValue_p98),log10(maxValue_p98/minValue_p02)*10.0/2.0);
+
+}
+
+void Parameters::push_back_3S(const std::string& name,double minValue_p001,double maxValue_p999)
+{
+    push_back(name,sqrt(minValue_p001*maxValue_p999),log10(maxValue_p999/minValue_p001)*10.0/3.0);
+
+}
+
 
 bool Parameters::setpMean(const std::string& name, double value)
 {
-    std::map<std::string,double>::iterator it=mean_.find(name);
-    if(it!=mean_.end())
+    std::map<std::string,std::size_t>::iterator it=name_.find(name);
+    if(it!=name_.end())
     {
-        (*it).second=pow(10,value);
+        pMean_[(*it).second]=value;
         return true;
     }
     else
@@ -129,10 +199,10 @@ bool Parameters::setpMean(const std::string& name, double value)
 
 bool Parameters::setpStd(const std::string& name, double value)
 {
-    std::map<std::string,double>::iterator it=pStd_.find(name);
-    if(it!=pStd_.end())
+    std::map<std::string,std::size_t>::iterator it=name_.find(name);
+    if(it!=name_.end())
     {
-        (*it).second=value;
+        pStd_[(*it).second]=value;
         return true;
     }
     else
@@ -141,18 +211,50 @@ bool Parameters::setpStd(const std::string& name, double value)
 }
 
 bool Parameters::hasName(const std::string& name)const{
-    return mean_.find(name)!=mean_.end();
+    return name_.find(name)!=name_.end();
 }
+
+
+std::vector<std::string> Parameters::names()const
+{
+    std::vector<std::string>  myNames;
+    for (std::map<std::string,std::size_t>::const_iterator it=name_.begin();
+         it!=name_.end();
+         ++it)
+    {
+        myNames.push_back(it->first);
+
+    }
+    return myNames;
+
+}
+
+std::vector<std::string> Parameters::commonNames(const Parameters& other)const
+{
+    std::vector<std::string>  myCommonNames;
+    for (std::map<std::string,std::size_t>::const_iterator it=name_.begin();
+         it!=name_.end();
+         ++it)
+    {
+        if (other.hasName(it->first))
+        myCommonNames.push_back(it->first);
+
+    }
+    return myCommonNames;
+
+}
+
 
 
 Parameters Parameters::randomSample()const
 {
     Parameters sample;
-    for (std::map<std::string,double>::const_iterator it=mean_.begin();
-         it!=mean_.end();
+    for (std::map<std::string,std::size_t>::const_iterator it=name_.begin();
+         it!=name_.end();
          ++it)
+
     {
-        double m=pow(10,randNormal(pMean(it->first),pStd(it->first)));
+        double m=pow(10,randNormal(pMean(it->first),pStd(it->first)/20.0));
         sample.push_back(it->first,m,0);
 
     }
@@ -162,6 +264,26 @@ Parameters Parameters::randomSample()const
 
 
 }
+
+
+
+std::size_t Parameters::size()const
+{
+    return name_.size();
+}
+
+
+std::vector<double> Parameters::residuals(const Parameters& prior)const
+{
+    std::vector<std::string> cnames=commonNames(prior);
+    std::vector<double> result(cnames.size());
+    for (std::size_t i=0;i<cnames.size();i++)
+    {
+        result[i]=prior.pResidual(cnames[i],pMean(cnames[i]));
+    }
+    return result;
+ }
+
 
 double randNormal(double mean,double stddev)
 {
@@ -179,5 +301,28 @@ double randNormal()
 
 }
 
+Parameters& Parameters::applyParameters(const Parameters& other)
+{
+    std::vector<std::string> cnames=commonNames(other);
+    setMeans(cnames,other.pMeans(cnames));
+}
 
 
+std::vector<double> Parameters::pMeans()const
+{
+    return pMean_;
+}
+
+std::vector<double> Parameters::pStds()const
+{
+    return pStd_;
+}
+
+
+const double& Parameters::operator[](std::size_t i)const
+{
+    return pMean_[i];
+}
+double& Parameters::operator[](std::size_t i){
+return pMean_[i];
+}

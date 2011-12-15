@@ -8,6 +8,7 @@ public:
 
     double Time()const;
     double Measure()const;
+    double StdError()const;
 
     void setMeasurement(double newMeasure);
 
@@ -26,6 +27,7 @@ public:
 private:
     double time_;
     double measure_;
+    double stdError_;
 };
 
 

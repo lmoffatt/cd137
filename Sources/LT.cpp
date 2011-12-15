@@ -262,7 +262,7 @@ void LT_cells::update(double time_step, double t_run, const Media& m,const APC_c
                                      LTexh_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d)))*time_step;
 }
 
-void LT_cells::reset(const SimParameters& sp,
+/*void LT_cells::reset(const SimParameters& sp,
                       const Treatment& tr)
     {
         LTns_d=sp.ratio_init_LTns_*tr.init_cells;
@@ -272,6 +272,7 @@ void LT_cells::reset(const SimParameters& sp,
         LTexh_d=0;
 
     }
+    */
 
 /// 1) Total number of LT
 double& LT_cells::num_LT()

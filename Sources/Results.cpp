@@ -122,7 +122,7 @@ Results::Results(std::string experimentName):
 /*23*/        LT_Apoptosis_.push_back(Measurement(119.0,20));
 /*24*/        Proliferation_.push_back(Measurement(119,100));
 /*24a*/       num_cells_.push_back(Measurement(24,2e6));
-/*24b*/       num_cells_.push_back(Measurement(120,2e6));
+/*24b*/       num_cells_.push_back(Measurement(119,2e6));
     }
     if (experimentName=="mtb")
     {
@@ -152,7 +152,7 @@ Results::Results(std::string experimentName):
 /*47*/        LT_Apoptosis_.push_back(Measurement(119.0,20));
 /*48*/        Proliferation_.push_back(Measurement(119,100));
 /*48a*/       num_cells_.push_back(Measurement(24,2e6));
-/*48b*/       num_cells_.push_back(Measurement(120,2e6));
+/*48b*/       num_cells_.push_back(Measurement(119,2e6));
 
     }
     if (experimentName=="block")
@@ -175,7 +175,7 @@ Results::Results(std::string experimentName):
 /*63*/        LT_Apoptosis_.push_back(Measurement(119.0,20));
 /*64*/        Proliferation_.push_back(Measurement(119,100));
 /*64a*/       num_cells_.push_back(Measurement(24,2e6));
-/*64b*/       num_cells_.push_back(Measurement(120,2e6));
+/*64b*/       num_cells_.push_back(Measurement(119,2e6));
 
         /*  APC_expression_.push_back(Measurement(0.0,3.2));
         APC_expression_.push_back(Measurement(16.0,11.4));
@@ -988,6 +988,56 @@ std::vector<double> Results::getData()const
      return data;
  }
 
+
+
+std::vector<double> Results::getDataStandardError()const
+{
+    std::vector<double> data;
+    for (std::size_t i=0; i<TNF_.size(); ++i)
+        data.push_back(TNF_[i].Measure());
+
+    for (std::size_t i=0; i<IFN_.size(); ++i)
+        data.push_back(IFN_[i].Measure());
+
+    for (std::size_t i=0; i<APC_expression_.size(); ++i)
+        data.push_back(APC_expression_[i].Measure());
+
+    for (std::size_t i=0; i<NK_expression_.size(); ++i)
+        data.push_back(NK_expression_[i].Measure());
+
+    for (std::size_t i=0; i<LT_expression_.size(); ++i)
+        data.push_back(LT_expression_[i].Measure());
+
+    for (std::size_t i=0; i<APC_IFNg_.size(); ++i)
+        data.push_back(APC_IFNg_[i].Measure());
+
+    for (std::size_t i=0; i<APC_TNFa_.size(); ++i)
+        data.push_back(APC_TNFa_[i].Measure());
+
+
+    for (std::size_t i=0; i<NK_IFNg_.size(); ++i)
+        data.push_back(NK_IFNg_[i].Measure());
+
+    for (std::size_t i=0; i<NK_TNFa_.size(); ++i)
+        data.push_back(NK_TNFa_[i].Measure());
+
+
+    for (std::size_t i=0; i<LT_IFNg_.size(); ++i)
+        data.push_back(LT_IFNg_[i].Measure());
+
+    for (std::size_t i=0; i<LT_TNFa_.size(); ++i)
+        data.push_back(LT_TNFa_[i].Measure());
+
+    for (std::size_t i=0; i<LT_Apoptosis_.size(); ++i)
+        data.push_back(LT_Apoptosis_[i].Measure());
+
+    for (std::size_t i=0; i<Proliferation_.size(); ++i)
+        data.push_back(Proliferation_[i].Measure());
+
+
+
+     return data;
+ }
 
 
 Results::Results(const Results& other):

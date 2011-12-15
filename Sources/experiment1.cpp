@@ -31,8 +31,8 @@ void Bayes()
     Results MtbRes("mtb");
     Results blockRes ("block");
     Experiment E;
-    E.push_back(Mtb,MtbRes);
     E.push_back(block,blockRes);
+    E.push_back(Mtb,MtbRes);
     E.push_back(med,MediaRes);
 
 
@@ -49,9 +49,9 @@ void Bayes()
 
 
     /// 3) TNF Poductions rates of each type of APC
-    /*5*/ sp.TNF_APC0_prod_rate_=1e-10;
-    /*6*/ sp.TNF_APCa_prod_rate_=1e-10;
-    /*7*/ sp.TNF_APCbo_prod_rate_=1e-10;
+    /*5*/ sp.TNF_APC0_prod_rate_=1e-2;
+    /*6*/ sp.TNF_APCa_prod_rate_=1e-2;
+    /*7*/ sp.TNF_APCbo_prod_rate_=1e-2;
 
 
     /// 4) Percentages of IFN productions of each type of APC
@@ -69,14 +69,14 @@ void Bayes()
     /*14*/ sp.APC_bound_proliferation_rate_=1e-6;
 
     /// 7) Apoptosis rates
-    /*15*/ sp.APC0_apop_rate_=1e-6;
-    /*16*/ sp.APCa_apop_rate_=1e-6;
-    /*17*/ sp.APCbo_apop_rate_=1e-6;
-    /*18*/ sp.APCbl_apop_rate_=1e-6;
-    /*19*/ sp.APCexh_apop_rate_=1e-6;
+    /*15*/ sp.APC0_apop_rate_=1e-16;
+    /*16*/ sp.APCa_apop_rate_=1e-16;
+    /*17*/ sp.APCbo_apop_rate_=1e-16;
+    /*18*/ sp.APCbl_apop_rate_=1e-16;
+    /*19*/ sp.APCexh_apop_rate_=1e-16;
 
     /// 8) constant saturation of TNF for apoptosis
-    /*20*/ sp.Ks_APC_m_TNF_=1e-6;
+    /*20*/ sp.Ks_APC_m_TNF_=10e10;
 
     /// 9) conversion rates
     /*21*/ sp.APC_Ag_=1e-6;
@@ -131,14 +131,14 @@ void Bayes()
     /*16*/  sp.NKbl_proliferation_rate_=1e-6;
 
     /// 7) Apoptosis rates
-    /*17*/  sp.NK0_apop_rate_=1e-6;
-    /*18*/  sp.NKa_apop_rate_=1e-6;
-    /*19*/  sp.NKbo_apop_rate_=1e-6;
-    /*20*/  sp.NKbl_apop_rate_=1e-6;
-    /*21*/  sp.NKexh_apop_rate_=1e-6;
+    /*17*/  sp.NK0_apop_rate_=1e-16;
+    /*18*/  sp.NKa_apop_rate_=1e-16;
+    /*19*/  sp.NKbo_apop_rate_=1e-16;
+    /*20*/  sp.NKbl_apop_rate_=1e-16;
+    /*21*/  sp.NKexh_apop_rate_=1e-16;
 
     /// 8) constant saturation of TNF for apoptosis
-    /*22*/  sp.Ks_NK_m_TNF_=1e-6;
+    /*22*/  sp.Ks_NK_m_TNF_=1e6;
 
     /// 9) conversion rates
     /*23*/  sp.KaNK_=1e-6;
@@ -158,7 +158,7 @@ void Bayes()
     /*31*/  sp.NKa_expressing_receptor_=0.01;
 
     /// 13) Apoptosis rate for TNF
-    /*32*/  sp.u_NK_TNF_=1e-6;
+    /*32*/  sp.u_NK_TNF_=1e-16;
 
     /// LT
     /// 1) Init number of LT
@@ -166,9 +166,9 @@ void Bayes()
        /*2*/  sp.ratio_initLTspecific_=1e2/1e6;
 
     /// 2) IFN Poductions rates of each type of LT
-       /*3*/  sp.IFN_LTns_prod_rate_=1e-10;
-       /*4*/  sp.IFN_LTbo_prod_rate_=1e-10;
-       /*5*/  sp.IFN_LTbl_prod_rate_=1e-10;
+       /*3*/  sp.IFN_LTns_prod_rate_=1e-2;
+       /*4*/  sp.IFN_LTbo_prod_rate_=1e-2;
+       /*5*/  sp.IFN_LTbl_prod_rate_=1e-2;
 
    /// 3) TNF Poductions rates of each type of LT
        /*6*/  sp.TNF_LTns_prod_rate_=1e-10;
@@ -187,15 +187,15 @@ void Bayes()
        /*14*/  sp.percentage_TNF_LTbl_prod_rate_=0.8;
 
    /// 6) Proliferation rates
-       /*15*/  sp.LTns_proliferation_rate_=1e-10;
-       /*16*/  sp.LTbo_proliferation_rate_=1e-10;
-       /*17*/  sp.LTbl_proliferation_rate_=1e-10;
+       /*15*/  sp.LTns_proliferation_rate_=1e-2;
+       /*16*/  sp.LTbo_proliferation_rate_=1e-2;
+       /*17*/  sp.LTbl_proliferation_rate_=1e-2;
 
    /// 7) Apoptosis rates
-       /*18*/  sp.LTns_apop_rate_=1e-10;
-       /*19*/  sp.LTbo_apop_rate_=1e-10;
-       /*20*/  sp.LTbl_apop_rate_=1e-10;
-       /*21*/  sp.LTexh_apop_rate_=1e-10;
+       /*18*/  sp.LTns_apop_rate_=1e-16;
+       /*19*/  sp.LTbo_apop_rate_=1e-16;
+       /*20*/  sp.LTbl_apop_rate_=1e-16;
+       /*21*/  sp.LTexh_apop_rate_=1e-16;
 
    /// 8) constant saturation of TNF for apoptosis
        /*22*/  sp.Ks_LT_m_TNF_=1e-10;
@@ -204,7 +204,7 @@ void Bayes()
        /*23*/  sp.LTns_expressing_receptor_=1e-10;
 
    /// 10) Apoptosis rate for TNF
-       /*24*/  sp.u_LT_TNF_=1e-10;
+       /*24*/  sp.u_LT_TNF_=1e-16;
 
    /// 11) LT exh rate
        /*25*/ sp.LT_exh_rate_=1e-10;
@@ -223,7 +223,7 @@ void Bayes()
 
 
     Cell_simulator cell(sp, E);
-    SimParameters perturbedPar=sp.applyParameters(sp.getRandomParameters(1));
+    SimParameters perturbedPar=sp.applyParameters(sp.getRandomParameters(0));
     Experiment simulExp=cell.Simulate(perturbedPar ,E);
 
     std::cout<<E.Result_i(0);
