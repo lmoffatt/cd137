@@ -972,7 +972,7 @@ Results Cell_simulator::Simulate(const SimParameters& simPar,
 
         if(trun_d+eps>=tTNFs)
         {
-            TNFs[iTNFs]=Measurement(tTNFs,m.TNF());
+            TNFs[iTNFs].setMeasurement(m.TNF());
             ++iTNFs;
             if (iTNFs<TNFs.size())
             {
@@ -986,7 +986,7 @@ Results Cell_simulator::Simulate(const SimParameters& simPar,
 
         if(trun_d+eps>=tIFNs)
         {
-            IFNs[iIFNs]=Measurement(tIFNs,m.IFNgamma());
+            IFNs[iIFNs].setMeasurement(m.IFNgamma());
             ++iIFNs;
             if (iIFNs<IFNs.size())
             {
@@ -1001,8 +1001,7 @@ Results Cell_simulator::Simulate(const SimParameters& simPar,
 
       if(trun_d+eps>=tAPC_exp)
         {
-	    Measurement xsim(tAPC_exp,APC.percentage_cell_expressing_receptor());
-	    APC_exp[iAPC_exp]=xsim;
+            APC_exp[iAPC_exp].setMeasurement(APC.percentage_cell_expressing_receptor());
             ++iAPC_exp;
             if (iAPC_exp<APC_exp.size())
             {
@@ -1180,7 +1179,7 @@ Results Cell_simulator::Simulate(const SimParameters& simPar,
 
           if(trun_d+eps>=t_num_cells)
           {
-              num_cellss[inum_cells]=Measurement(t_num_cells,m.TNF());
+              num_cellss[inum_cells].setMeasurement(m.TNF());
               ++inum_cells;
               if (inum_cells<num_cellss.size())
               {
@@ -1407,7 +1406,7 @@ Cell_simulator& Cell_simulator::applyParameters(const Parameters& sp,
                   /*31*/ sp.mean("APC0_expressing_receptor"),
                   /*32*/ sp.mean("APCa_expressing_receptor"),
                   /// 13) Apoptosis rate for TNF
-                  /*33*/ sp.mean("u_APC_TNF_"));
+                  /*33*/ sp.mean("u_APC_TNF"));
 
     NK=NK_cells  (sp.mean("init_ratio_APC")*tr.init_cells,
                  /// 2) IFN Poductions rates of each type of NK
@@ -1665,7 +1664,7 @@ Results Cell_simulator::Simulate(const Parameters& simPar,
 
         if(trun_d+eps>=tTNFs)
         {
-            TNFs[iTNFs]=Measurement(tTNFs,m.TNF());
+            TNFs[iTNFs].setMeasurement(m.TNF());
             ++iTNFs;
             if (iTNFs<TNFs.size())
             {
@@ -1679,7 +1678,7 @@ Results Cell_simulator::Simulate(const Parameters& simPar,
 
         if(trun_d+eps>=tIFNs)
         {
-            IFNs[iIFNs]=Measurement(tIFNs,m.IFNgamma());
+            IFNs[iIFNs].setMeasurement(m.IFNgamma());
             ++iIFNs;
             if (iIFNs<IFNs.size())
             {
@@ -1694,8 +1693,7 @@ Results Cell_simulator::Simulate(const Parameters& simPar,
 
       if(trun_d+eps>=tAPC_exp)
         {
-            Measurement xsim(tAPC_exp,APC.percentage_cell_expressing_receptor());
-            APC_exp[iAPC_exp]=xsim;
+            APC_exp[iAPC_exp].setMeasurement(APC.percentage_cell_expressing_receptor());
             ++iAPC_exp;
             if (iAPC_exp<APC_exp.size())
             {
@@ -1857,8 +1855,7 @@ Results Cell_simulator::Simulate(const Parameters& simPar,
 
           if(trun_d+eps>=t_Proliferation)
           {
-            Prols[i_Proliferation].setMeasurement (
-            m.Tymidine_incorporated());
+            Prols[i_Proliferation].setMeasurement (m.Tymidine_incorporated());
             ++i_Proliferation;
             if (i_Proliferation<Prols.size())
                {
@@ -1873,7 +1870,7 @@ Results Cell_simulator::Simulate(const Parameters& simPar,
 
           if(trun_d+eps>=t_num_cells)
           {
-              num_cellss[inum_cells]=Measurement(t_num_cells,m.TNF());
+              num_cellss[inum_cells].setMeasurement (m.TNF());
               ++inum_cells;
               if (inum_cells<num_cellss.size())
               {

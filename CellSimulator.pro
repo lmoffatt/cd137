@@ -37,7 +37,8 @@ SOURCES += \
     Sources/MatrixInverse.cpp \
     Sources/MatrixInverse_Test.cpp \
     Sources/OptimizationResults.cpp \
-    Sources/LevenbergMarquardt_Test.cpp
+    Sources/LevenbergMarquardt_Test.cpp \
+    Sources/BayesIteration.cpp
 
 HEADERS += \
     Includes/NK.h \

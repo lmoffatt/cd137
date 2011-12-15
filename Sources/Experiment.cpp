@@ -54,7 +54,7 @@ void SumSquareTXT(const Experiment& one, const Experiment& two)
 
 }
 
-std::vector<double> Experiment::getData()
+std::vector<double> Experiment::getData()const
 {
     std::vector<double> data;
     for (std::size_t i=0; i<results_.size(); i++)
@@ -65,6 +65,21 @@ std::vector<double> Experiment::getData()
      }
     return data;
 }
+
+std::vector<double> Experiment::getDataStandardError()const
+{
+    std::vector<double> data;
+    for (std::size_t i=0; i<results_.size(); i++)
+    {
+        std::vector<double> datai=Result_i(i).getDataStandardError();
+        for (std::size_t j=0;j<datai.size();++j)
+            data.push_back(datai[j]);
+     }
+    return data;
+}
+
+
+
 Experiment::Experiment(const Experiment& other):
     treatments_(other.treatments_),
     results_(other.results_)

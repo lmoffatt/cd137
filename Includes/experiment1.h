@@ -3,6 +3,8 @@
 
 void Bayes ();
 
+void BayesParameters ();
+
 
 
 #endif // EXPERIMENT1_H_INCLUDED

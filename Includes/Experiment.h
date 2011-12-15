@@ -5,7 +5,7 @@
 #include "Includes/Treatment.h"
 
 
-class Experiment
+class Experiment: public ABC_data
 {
 public:
     const Treatment& Treatment_i(std::size_t i)const;
@@ -17,7 +17,9 @@ public:
     void push_back(const Treatment& treatment,
                    const Results& result);
 
-    std::vector<double> getData();
+    std::vector<double> getData()const;
+
+    std::vector<double> getDataStandardError()const;
 
     Experiment(const Experiment& other);
     ~Experiment();

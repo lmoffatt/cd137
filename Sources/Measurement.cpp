@@ -17,9 +17,11 @@ double Measurement::StdError()const
 }
 
 
-Measurement::Measurement(double Time,double Measure):
+Measurement::Measurement(double Time,double Measure,double Std
+                         ):
     time_(Time),
-    measure_(Measure){}
+    measure_(Measure),
+    stdError_(Std){}
 
 Measurement::Measurement(double Time):
     time_(Time),
@@ -27,9 +29,10 @@ Measurement::Measurement(double Time):
 {}
 
 
-void Measurement::setMeasurement(double newMeasure)
+Measurement& Measurement::setMeasurement(double newMeasure)
 {
     measure_=newMeasure;
+    return *this;
 }
 
 Measurement::Measurement(const Measurement& other):
