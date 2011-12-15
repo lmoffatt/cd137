@@ -120,7 +120,7 @@ class LT_cells
                  /*27*/ double t_duration_apoptosis_
                  );
 
-
+/*
         LT_cells(const SimParameters& sp,
                  const Treatment& tr):
             LTns_d(sp.ratio_init_LTns_*tr.init_cells),
@@ -165,6 +165,7 @@ class LT_cells
             t_apop_meas_d (sp.t_apop_meas_),
             t_duration_apoptosis_d(sp.t_duration_apoptosis_)
            {}
+           */
 
             LT_cells(){}
 
@@ -176,7 +177,7 @@ class LT_cells
 	    friend std::ostream& operator<<(std::ostream& s, const LT_cells& c);
 
 
-            void reset(const SimParameters& sp,const Treatment& tr);
+         //   void reset(const SimParameters& sp,const Treatment& tr);
 
     private:
         /// Variables 6

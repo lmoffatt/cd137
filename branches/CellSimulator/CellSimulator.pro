@@ -19,6 +19,8 @@ INCLUDEPATH = $$PWD/Includes/
 DEPENDPATH = $$PWD/Includes/
 
 SOURCES += \
+    Sources/Parameters.cpp \
+    Sources/LevenbergMarquardtParameters.cpp \
     Sources/NK.cpp \
     Sources/Media.cpp \
     Sources/main.cpp \
@@ -35,8 +37,7 @@ SOURCES += \
     Sources/MatrixInverse.cpp \
     Sources/MatrixInverse_Test.cpp \
     Sources/OptimizationResults.cpp \
-    Sources/LevenbergMarquardt_Test.cpp \
-    Sources/Parameters.cpp
+    Sources/LevenbergMarquardt_Test.cpp
 
 HEADERS += \
     Includes/NK.h \
@@ -56,7 +57,9 @@ HEADERS += \
     Includes/MatrixInverse_Test.h \
     Includes/OptimizationResults.h \
     Includes/LevenbergMarquardt_Test.h \
-    Includes/Parameters.h
+    Includes/Parameters.h \
+    Includes/LevenbergMarquardtParameters.h \
+    Includes/BayesIteration.h
 
 
 LIBS += -L$$PWD/bin -lcygblas \

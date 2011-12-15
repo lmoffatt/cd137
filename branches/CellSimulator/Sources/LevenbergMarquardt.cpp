@@ -1,5 +1,6 @@
 #include <cmath>
 #include<limits>
+#include <sstream>
 #include "Includes/LevenbergMarquardt.h"
 #include "Includes/MatrixInverse.h"
 
@@ -176,6 +177,8 @@ LevenbergMarquardt& LevenbergMarquardt::optimize()
     initialize();
     while (!meetConvergenceCriteria())
             iterate();
+
+    std::cout<<report();
 
     optimParam_=currParam_;
     return *this;
@@ -390,4 +393,32 @@ double LevenbergMarquardt::SS()const
 std::vector<double> LevenbergMarquardt::Gradient()const
 {
     return G_;
+}
+
+std::string LevenbergMarquardt::report(){
+    std::stringstream output;
+
+    output<<"Convergence critera: \t";
+    if (surpassIter_)
+        output<<nIter_<<" surpass number of iterations="<<maxIter_<<"\t";
+    if (surpassFeval_)
+        output<<nFeval_<<" surpass number of function evaluations="<<maxFeval_<<"\t";
+    if (surpassLanda_)
+        output<<landa_<<" surpass maximum landa value="<<maxLanda_<<"\t";
+    if (smallParamChange_)
+        output<<ParamChange_<<" surpass minium parameter change value="<<minParamChange_<<"\t";
+    if (smallSSChange_)
+        output<<SSChange_<<" surpass minium SS change value="<<minSSChange_<<"\t";
+    if (smallGradient_)
+        output<<NormGrad_<<" surpass minium gradient norm value="<<minGradient_<<"\t";
+    if (currSS_!=currSS_)
+        output<<currSS_<<" invalid value of the square sum"<<"\t";
+
+
+
+
+    return output.str();
+
+
+
 }

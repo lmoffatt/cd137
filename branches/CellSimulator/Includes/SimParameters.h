@@ -210,7 +210,7 @@ public:
    SimParameters();
 
 
-   void reset(const SimParameters& sp);
+//   void reset(const SimParameters& sp);
    ~SimParameters(){}
 };
 

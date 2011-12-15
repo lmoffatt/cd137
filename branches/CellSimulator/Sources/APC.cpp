@@ -126,6 +126,7 @@ APC_cells::APC_cells(/// 1) init number of APC
           {}
 
 // not used yet
+/*
 APC_cells::APC_cells(const SimParameters& sp,
           const Treatment& tr):
 
@@ -183,7 +184,7 @@ APC_cells::APC_cells(const SimParameters& sp,
     u_APC_TNF_d (sp.u_APC_TNF_)
 
           {}
-
+*/
 APC_cells::APC_cells(){}
 
 APC_cells::APC_cells(const APC_cells& other):
@@ -260,15 +261,15 @@ void swap(APC_cells& one, APC_cells& other)
    std::swap(one.APC0_d,other.APC0_d);
    std::swap(one.APCa_d,other.APCa_d);
    std::swap(one.APCbo_d,other.APCbo_d);
-   std::swap(one.APCbo_Ab_d,other.APC_Ab_d);
+   std::swap(one.APCbo_Ab_d,other.APCbo_Ab_d);
    std::swap(one.APCbl_d ,other.APCbl_d);
-   std::swap(one.APCbo_Ab_d,other.APC_Ab_d);
    std::swap(one.APCexh_d,other.APCexh_d);
    std::swap (one.APC_TymTr_incorporated_d,other.APC_TymTr_incorporated_d);
 
    std::swap(one.IFN_APC0_prod_rate_d,other.IFN_APC0_prod_rate_d);
    std::swap(one.IFN_APCa_prod_rate_d,other.IFN_APCa_prod_rate_d);
    std::swap(one.IFN_APCbo_prod_rate_d,other.IFN_APCbo_prod_rate_d);
+
    std::swap(one.TNF_APC0_prod_rate_d,other.TNF_APC0_prod_rate_d);
    std::swap(one.TNF_APCa_prod_rate_d,other.TNF_APCa_prod_rate_d);
    std::swap(one.TNF_APCbo_prod_rate_d,other.TNF_APCbo_prod_rate_d);
@@ -338,7 +339,7 @@ void APC_cells::update(double time_step,const Media& m, const NK_cells& NK, cons
             APC_NK_d*APCa_d*APCa_expressing_receptor_d*NK.NKa()*NK.NKa_expressing_receptor()-
             APC_NK_d*APCa_d*APCa_expressing_receptor_d*NK.NKbo()-
             APC_LT_1_d*LT.LT0()*APCa_d*APCa_expressing_receptor_d/(APCa_d*APCa_expressing_receptor_d+KsAPC_LT_d)-
-            APC_Ab_d*m.Ab()*APCa_d-APCa_d*APC_exh_d)*time_step;
+            APC_Ab_d*APCa_d*APCa_expressing_receptor_d*m.Ab()*APCa_d-APCa_d*APC_exh_d)*time_step;
 
 
     /// the cells that have interacted with LT grow accordingly with the number of cells that have internalized the Ag and the
@@ -360,15 +361,15 @@ void APC_cells::update(double time_step,const Media& m, const NK_cells& NK, cons
     APCbo_Ab_d+= (APC_Ab_d*APCbo_d*m.Ab() +
                  APCbo_Ab_d*APC_bound_proliferation_rate_d-
                  APCbo_Ab_d*APCbo_apop_rate_d-
-                 u_APC_TNF_d*APCbo_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d))-
+                 u_APC_TNF_d*APCbo_Ab_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d))-
                  APCbo_Ab_d*APC_exh_d)*time_step;
 
 
 
     /// the cells that are blocked
     APCbl_d+= (APC_Ab_d*APCa_d*APCa_expressing_receptor_d*m.Ab()-
-              APCbo_apop_rate_d-
-              u_APC_TNF_d*APCbo_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d))-
+              APCbo_apop_rate_d*APCbl_d-
+              u_APC_TNF_d*APCbl_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d))-
               APCbl_d*APC_exh_d)*time_step;
 
     /// the cells that are exhausted
@@ -384,6 +385,7 @@ void APC_cells::update(double time_step,const Media& m, const NK_cells& NK, cons
 
 }
 /// Reset number of APC
+/*
 void APC_cells::reset(const SimParameters& sp,
                       const Treatment& tr)
 {
@@ -395,6 +397,7 @@ void APC_cells::reset(const SimParameters& sp,
     APCexh_d=0;
     APC_TymTr_incorporated_d=0;
  }
+ */
 /// 1) Total number of cells
 double& APC_cells::num_APC()
     {

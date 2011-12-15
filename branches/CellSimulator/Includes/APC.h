@@ -181,13 +181,13 @@ class APC_cells
 
         APC_cells& operator=(const APC_cells& other);
 
-        APC_cells(const SimParameters& sp,
-                  const Treatment& tr);
+  /*      APC_cells(const SimParameters& sp,
+                  const Treatment& tr);*/
 
         APC_cells();
         ~APC_cells(){};
 
-        void reset(const SimParameters& sp,const Treatment& tr);
+     //   void reset(const SimParameters& sp,const Treatment& tr);
 
         /// main step for the APC cells
 

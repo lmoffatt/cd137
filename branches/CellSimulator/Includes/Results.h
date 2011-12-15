@@ -6,7 +6,9 @@
 
 #include "Measurement.h"
 
-class Results
+#include "Includes/BayesIteration.h"
+
+class Results:public ABC_data
 {
 public:
     const std::vector<Measurement>& TNF()const;
@@ -42,7 +44,9 @@ public:
             const std::vector<Measurement>& mynum_cells,
             double duration);
 
-    std::vector<double> getData()const;
+    virtual std::vector<double> getData()const;
+    virtual std::vector<double> getDataStandardError()const;
+
 
 
 

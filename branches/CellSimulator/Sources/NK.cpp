@@ -134,6 +134,7 @@ NK_cells::NK_cells(/// 1) Init number of NK
           {}
 
 // not used yet
+/*
 NK_cells::NK_cells(const SimParameters& sp,
           const Treatment& tr):
 
@@ -201,6 +202,8 @@ NK_cells::NK_cells(const SimParameters& sp,
 
           {}
 
+*/
+
 NK_cells::NK_cells(){}
 
 
@@ -208,7 +211,16 @@ NK_cells::NK_cells(){}
 
 NK_cells::NK_cells(const NK_cells& other):
 
-     init_ratio_NK_d(other.init_ratio_NK_d),
+   NK0_d(other.NK0_d),
+   NKa_d(other.NKa_d),
+   NKbo_d(other.NKbo_d),
+   NKbo_Ab_d(other.NKbo_Ab_d),
+   NKbl_d (other.NKbl_d),
+   NKexh_d(other.NKexh_d),
+   NK_TymTr_incorporated_d(other.NK_TymTr_incorporated_d),
+   init_ratio_NK_d(other.init_ratio_NK_d),
+
+
 
 
      IFN_NK0_prod_rate_d(other.IFN_NK0_prod_rate_d),
@@ -271,6 +283,14 @@ NK_cells::operator=(const NK_cells& other)
 
  void swap(NK_cells& one, NK_cells& other)
 {
+
+     std::swap(one.NK0_d,other.NK0_d);
+     std::swap(one.NKa_d,other.NKa_d);
+     std::swap(one.NKbo_d,other.NKbo_d);
+     std::swap(one.NKbo_Ab_d,other.NKbo_Ab_d);
+     std::swap(one.NKbl_d ,other.NKbl_d);
+     std::swap(one.NKexh_d,other.NKexh_d);
+     std::swap (one.NK_TymTr_incorporated_d,other.NK_TymTr_incorporated_d);
      std::swap(one.init_ratio_NK_d,other.init_ratio_NK_d);
 
      std::swap(one.IFN_NK0_prod_rate_d,other.IFN_NK0_prod_rate_d);
@@ -335,15 +355,15 @@ void NK_cells::update(double time_step,const Media& m,const APC_cells& APC, cons
 
     /** activated NK cells dynamics*/
     NKa_d+=(NKa_proliferation_rate_d*NKa_d+
-            NK0_d*m.Ag()*KaNK_d*((APC.APCa()+(APC.APCbo_TNF_production_rate()/APC.APCa_TNF_production_rate())+APC.APCbl())/
-                                                               (APC.APCa()+(APC.APCbo_TNF_production_rate()/APC.APCa_TNF_production_rate())+APC.APCbl()+KsAPC_NK_d))-
+            NK0_d*m.Ag()*KaNK_d*(APC.APCa()+ APC.APCbl()+ APC.APCbo_Ab() + (APC.APCbo_TNF_production_rate()/APC.APCa_TNF_production_rate())*APC.APCbl())/
+            (APC.APCa()+ APC.APCbl()+ APC.APCbo_Ab() + (APC.APCbo_TNF_production_rate()/APC.APCa_TNF_production_rate())*APC.APCbl()+KsAPC_NK_d)-
            NK_NK_d*NKa_d*NKa_expressing_receptor_d*NKa_d*NKa_expressing_receptor_d-
            NK_NK_d*NKa_d*NKa_expressing_receptor_d*NKbo_d-
            APC.APC_NK()*NKa_d*NKa_expressing_receptor_d*APC.APCa()*APC.APCa_expressing_receptor()-
            APC.APC_NK()*NKa_d*NKa_expressing_receptor_d*APC.APCbo()-
            NK_Ab_d*NKa_d*NKa_expressing_receptor_d*m.Ab()-NKa_apop_rate_d*NKa_d-
            u_NK_TNF_d*NKa_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d))-NKa_d*NK_exh_d)*time_step;
-
+/// El porcentaje de células productoras de IL-12 está dentro de la constante
 
     /// the cells that have interacted with LT grow accordingly with the number of cells that have internalized the Ag and the
     /// number of LT cells, monocytes and NK expressing the receptor with the same affinity (Monocytes, NK or LT can
@@ -365,7 +385,7 @@ void NK_cells::update(double time_step,const Media& m,const APC_cells& APC, cons
 
     /// the cells that have interacted with LT get exhausted
     NKbl_d+=(NKbl_d*NKbl_proliferation_rate_d+NK_Ab_d*NKa_d*NKa_expressing_receptor_d*m.Ab()-
-            NKbl_apop_rate_d*NKbl_d-NKbl_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d))-NKbl_d*NK_exh_d)*time_step;
+            NKbl_apop_rate_d*NKbl_d-u_NK_TNF_d*NKbl_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d))-NKbl_d*NK_exh_d)*time_step;
 
     NKexh_d=(NKa_d*NK_exh_d+NKbo_d*NK_exh_d+NKbo_Ab_d*NK_exh_d+NKbl_d*NK_exh_d-
              NKexh_apop_rate_d*NKexh_d-u_NK_TNF_d*NKexh_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d)))*time_step;
@@ -375,6 +395,7 @@ void NK_cells::update(double time_step,const Media& m,const APC_cells& APC, cons
                                   (NKbo_d+NKbo_Ab_d)*NKbo_proliferation_rate_d)*m.Prol_TymTr();
 
 }
+/*
 
 void NK_cells::reset(const SimParameters& sp,
                       const Treatment& tr)
@@ -387,7 +408,7 @@ void NK_cells::reset(const SimParameters& sp,
     NKexh_d=0;
     NK_TymTr_incorporated_d=0;
  }
-
+*/
 double& NK_cells::num_NK()
     {
         double sum=NK0_d+NKa_d+NKbo_d+NKbo_Ab_d+NKbl_d+NKexh_d;

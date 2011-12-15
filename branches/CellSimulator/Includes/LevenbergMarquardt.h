@@ -1,12 +1,18 @@
 #ifndef LEVENBERGMARQUARDT_H
 #define LEVENBERGMARQUARDT_H
 #include <vector>
+#include "Parameters.h"
 
 class ABC_function
 {
 public:
     virtual std::vector<double> yfit(const std::vector<double>& parameters)=0;
+    virtual std::vector<double> yfit(const Parameters& parameters)=0;
+
+
 };
+
+
 
 
 class LevenbergMarquardt
@@ -42,11 +48,14 @@ public:
 
     ~LevenbergMarquardt(){}
 
+    std::string report();
+
    // void reset(const SimParameters& sp,const Treatment& tr);
 
 private:
     ABC_function* f_;
     std::vector<double> data_;
+
     std::vector<double> initialParam_;
 
     std::size_t nPar_;

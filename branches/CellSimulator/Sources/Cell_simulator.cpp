@@ -616,7 +616,8 @@ Cell_simulator::Cell_simulator(const SimParameters& sp,
 Cell_simulator& Cell_simulator::applyParameters(const SimParameters& sp,
 						const Treatment& tr)
 {
-    m=Media(0,0,0,sp.TNF_deg_,sp.IFN_deg_,tr.init_cells,tr.Ag,tr.Ab,sp.TymidineTriteate_,sp.Prol_TymTr_);
+    m=Media(0,
+            0,0,sp.TNF_deg_,sp.IFN_deg_,tr.init_cells,tr.Ag,tr.Ab,sp.TymidineTriteate_,sp.Prol_TymTr_);
 
 
     APC=APC_cells(sp.init_ratio_APC_*tr.init_cells,
@@ -1192,15 +1193,19 @@ Results Cell_simulator::Simulate(const SimParameters& simPar,
           };
 
 
-	//char ch;
+      //  char ch;
 
-//	std::cout<<"\n media\n"<<m<<"\nLT\n"<<APC<<"\nNK\n"<<NK<<"\nLT\n"<<LT;
-//	std::cout<<"\ntime \t"<<trun_d;
-//	std::cin>>ch;
+      //  std::cout<<"\n media\n"<<m<<"\nLT\n"<<APC<<"\nNK\n"<<NK<<"\nLT\n"<<LT;
+      //  std::cout<<"\ntime \t"<<trun_d;
+      //  std::cin>>ch;
 	APC.update(time_step_d,m,NK,LT);
         NK.update(time_step_d,m,APC,LT);
         LT.update(time_step_d,trun_d,m,APC,NK);
         m.update(time_step_d,trun_d, APC,NK,LT);
+
+
+
+
         trun_d+=time_step_d;
 
     }
@@ -1237,6 +1242,10 @@ OptimizationResults Cell_simulator::Optimize(const SimParameters& priorPar,
                            initPar.getParameters());
     LM0.optimize();
    runPar.applyParameters(LM0.OptimParameters());
+
+   std::cout<<Simulate(runPar,experiment);
+   char ch;
+   std::cin>>ch;
    std::size_t iEvals=LM0.numIter();
     while (iEvals<numEval)
     {
@@ -1268,6 +1277,7 @@ OptimizationResults Cell_simulator::Optimize(const SimParameters& priorPar,
 }
 
 
+
 std::vector<double> Cell_simulator::yfit (const std::vector<double>& param0)
 {
     SimParameters par(initialPar_);
@@ -1276,14 +1286,26 @@ std::vector<double> Cell_simulator::yfit (const std::vector<double>& param0)
 
 //param [i], modificar el peso de los parametros dividiendo
     std::vector<double> f=fitExperiment_.getData();
-     std::vector<double> param(param0);
-    for (std::size_t i=0; i<param.size();i++)
-	param[i]=param[i];
+    std::vector<double> param=param0;
 
+  f.insert(f.end(),param.begin(),param.end());
 
-   f.insert(f.end(),param.begin(),param.end());
     return f;
  }
+
+
+std::vector<double> Cell_simulator::yfit (const Parameters& param0)
+{
+    Parameters par(prior_);
+    par.applyParameters(param0);
+    fitExperiment_=Simulate(par,experiment_);
+
+//param [i], modificar el peso de los parametros dividiendo
+    std::vector<double> f=fitExperiment_.getData();
+     return f;
+ }
+
+
 
 
 std::vector<double> Cell_simulator::difParam(const std::vector<double>& param)
@@ -1312,3 +1334,593 @@ std::vector<double> Cell_simulator::getData(const std::vector<double>& param0)
 
 }
 
+
+Cell_simulator& Cell_simulator::applyParameters(const Parameters& sp,
+                                const Treatment& tr)
+{
+
+    m=Media(0,
+            0,
+            0,
+            sp.mean("TNF_deg"),
+            sp.mean("IFN_deg"),
+            tr.init_cells,
+            tr.Ag,
+            tr.Ab,
+            sp.mean("TymidineTriteate"),
+            sp.mean("Prol_TymTr"));
+
+
+    APC=APC_cells(sp.mean("init_ratio_APC") * tr.init_cells,
+                  /*2*/ sp.mean("IFN_APC0_prod_rate"),
+                  /*3*/ sp.mean("IFN_APCa_prod_rate"),
+                  /*4*/ sp.mean("IFN_APCbo_prod_rate"),
+
+
+                  /// 3) TNF Poductions rates of each type of APC
+                  /*5*/ sp.mean("TNF_APC0_prod_rate"),
+                  /*6*/ sp.mean("TNF_APCa_prod_rate"),
+                  /*7*/ sp.mean("TNF_APCbo_prod_rate"),
+
+
+                  /// 4) Percentages of IFN productions of each type of APC
+                  /*8*/ sp.mean("percentage_IFN_APC0_prod_rate"),
+                  /*9*/ sp.mean("percentage_IFN_APCa_prod_rate"),
+                  /*10*/ sp.mean("percentage_IFN_APCbo_prod_rate"),
+
+                  /// 5)Percentages of TNF productions of each type of APC
+                  /*11*/ sp.mean("percentage_TNF_APC0_prod_rate"),
+                  /*12*/ sp.mean("percentage_TNF_APCa_prod_rate"),
+                  /*13*/ sp.mean("percentage_TNF_APCbo_prod_rate"),
+
+
+                  /// 6) Proliferation rates
+                  /*14*/ sp.mean("APC_bound_proliferation_rate"),
+
+                  /// 7) Apoptosis rates
+                  /*15*/ sp.mean("APC0_apop_rate"),
+                  /*16*/ sp.mean("APCa_apop_rate"),
+                  /*17*/ sp.mean("APCbo_apop_rate"),
+                  /*18*/ sp.mean("APCbl_apop_rate"),
+                  /*19*/ sp.mean("APCexh_apop_rate"),
+
+                  /// 8) constant saturation of TNF for apoptosis
+                  /*20*/ sp.mean("Ks_APC_m_TNF"),
+
+                  /// 9) conversion rates
+                  /*21*/ sp.mean("APC_Ag"),
+                  /*22*/ sp.mean("APC_APC"),
+                  /*23*/ sp.mean("APC_NK"),
+                  /*24*/ sp.mean("APC_LT_1"),
+                  /*25*/ sp.mean("APC_LT_2"),
+                  /*26*/ sp.mean("APC_Ab"),
+                  /*27*/ sp.mean("APC_exh"),
+
+                  /// 10)Saturation constant of IFN and TNF for activation
+                  /*28*/ sp.mean("KsAPC_LT"),
+
+                  /// 11)Saturation constant of APC_LT interaction
+                  /*29*/ sp.mean("APC_Ksi"),
+                  /*30*/ sp.mean("APC_Kst"),
+
+                  /// 12) Percentages of cell expressing receptor
+                  /*31*/ sp.mean("APC0_expressing_receptor"),
+                  /*32*/ sp.mean("APCa_expressing_receptor"),
+                  /// 13) Apoptosis rate for TNF
+                  /*33*/ sp.mean("u_APC_TNF_"));
+
+    NK=NK_cells  (sp.mean("init_ratio_APC")*tr.init_cells,
+                 /// 2) IFN Poductions rates of each type of NK
+                 /*2*/ sp.mean("IFN_NK0_prod_rate"),
+                 /*3*/ sp.mean("IFN_NKa_prod_rate"),
+                 /*4*/ sp.mean("IFN_NKbo_prod_rate"),
+
+                 /// 3) TNF Poductions rates of each type of NK
+                 /*5*/ sp.mean("TNF_NK0_prod_rate"),
+                 /*6*/ sp.mean("TNF_NKa_prod_rate"),
+                 /*7*/ sp.mean("TNF_NKbo_prod_rate"),
+
+                 /// 4) Percentages of IFN productions of each type of NK
+                 /*8*/ sp.mean("percentage_IFN_NK0_prod_rate"),
+                 /*9*/ sp.mean("percentage_IFN_AgNKa_prod_rate"),
+                 /*10*/ sp.mean("percentage_IFN_NKbo_prod_rate"),
+
+                 /// 5)Percentages of TNF productions of each type of NK
+                 /*11*/ sp.mean("percentage_TNF_NK0_prod_rate"),
+                 /*12*/ sp.mean("percentage_TNF_NKa_prod_rate"),
+                 /*13*/ sp.mean("percentage_TNF_NKbo_prod_rate"),
+
+                 /// 6) Proliferation rates
+                 /*13.5*/ sp.mean("NK0_proliferation_rate"),
+                 /*14*/ sp.mean("NKa_proliferation_rate"),
+                 /*15*/ sp.mean("NKbo_proliferation_rate"),
+                 /*16*/ sp.mean("NKbl_proliferation_rate"),
+
+                 /// 7) Apoptosis rates
+                 /*17*/ sp.mean("NK0_apop_rate"),
+                 /*18*/ sp.mean("NKa_apop_rate"),
+                 /*19*/ sp.mean("NKbo_apop_rate"),
+                 /*20*/ sp.mean("NKbl_apop_rate"),
+                 /*21*/ sp.mean("NKexh_apop_rate"),
+
+                 /// 8) constant saturation of TNF for apoptosis
+                 /*22*/ sp.mean("Ks_NK_m_TNF"),
+
+                 /// 9) conversion rates
+                 /*23*/ sp.mean("KaNK"),
+                 /*24*/ sp.mean("NK_NK"),
+                 /*25*/ sp.mean("NK_Ab"),
+                 /*26*/ sp.mean("NK_exh"),
+
+                 /// 10)Saturation constant of NK interaction for activation
+                 /*27*/ sp.mean("KsAPC_NK"),
+
+                 /// 11)Saturation constant of NK_LT interaction
+                 /*28*/ sp.mean("NK_Ksi"),
+                 /*29*/ sp.mean("NK_Kst"),
+
+                 /// 12) Percentages of cell expressing receptor
+                 /*30*/ sp.mean("NK0_expressing_receptor"),
+                 /*31*/ sp.mean("NKa_expressing_receptor"),
+
+                 /// 13) Apoptosis rate for TNF
+                 /*32*/ sp.mean("u_NK_TNF_"));
+
+
+    LT=LT_cells  (sp.mean("ratio_init_LTns_")*tr.init_cells,
+                  sp.mean("ratio_initLTspecific_")*tr.init_cells,
+                  /// 2) IFN Poductions rates of each type of LT
+                     /*3*/ sp.mean("IFN_LTns_prod_rate"),
+                     /*4*/ sp.mean("IFN_LTbo_prod_rate"),
+                     /*5*/ sp.mean("IFN_LTbl_prod_rate"),
+
+                 /// 3) TNF Poductions rates of each type of LT
+                     /*6*/ sp.mean("TNF_LTns_prod_rate"),
+                     /*7*/ sp.mean("TNF_LTbo_prod_rate"),
+                     /*8*/ sp.mean("TNF_LTbl_prod_rate"),
+
+                 /// 4) Percentages of IFN productions of each type of LT
+                     /*9*/ sp.mean("percentage_IFN_LTns_prod_rate"),
+                     /*10*/ sp.mean("percentage_IFN_LTbo_prod_rate"),
+                     /*11*/ sp.mean("percentage_IFN_LTbl_prod_rate"),
+
+
+                 /// 5)Percentages of TNF productions of each type of LT
+                     /*12*/ sp.mean("percentage_TNF_LTns_prod_rate"),
+                     /*13*/ sp.mean("percentage_TNF_LTbo_prod_rate"),
+                     /*14*/ sp.mean("percentage_TNF_LTbl_prod_rate"),
+
+                 /// 6) Proliferation rates
+                     /*15*/ sp.mean("LTns_proliferation_rate"),
+                     /*16*/ sp.mean("LTbo_proliferation_rate"),
+                     /*17*/ sp.mean("LTbl_proliferation_rate"),
+
+                 /// 7) Apoptosis rates
+                     /*18*/ sp.mean("LTns_apop_rate"),
+                     /*19*/ sp.mean("LTbo_apop_rate"),
+                     /*20*/ sp.mean("LTbl_apop_rate"),
+                     /*21*/ sp.mean("LTexh_apop_rate"),
+
+                 /// 8) constant saturation of TNF for apoptosis
+                     /*22*/ sp.mean("Ks_LT_m_TNF"),
+
+                 /// 9) Percentages of cell expressing receptor
+                     /*23*/ sp.mean("LTns_expressing_receptor"),
+
+                 /// 10) Apoptosis rate for TNF
+                     /*24*/ sp.mean("u_LT_TNF"),
+
+                  /// 11) LT exh rate
+                      /*25*/ sp.mean("LT_exh_rate"),
+
+                  /// 12) apoptosis related parameters
+                      /*26*/ sp.mean("t_apop_meas"),
+                      /*27*/ sp.mean("t_duration_apoptosis")
+        );
+
+    time_step_d=tr.time_step_d;
+    sim_duration_d=tr.sim_duration_d;
+    trun_d=0;
+
+return *this;
+}
+
+Cell_simulator::Cell_simulator(const Parameters& sp,
+                               const Experiment& E):
+
+    m(),
+    APC(),
+    NK(),
+    LT(),
+
+    time_step_d(),
+    sim_duration_d(),
+    trun_d(),
+    filename(),
+
+
+    experiment_(E),
+    fitExperiment_(),
+    prior_(sp),
+    fitPar_()
+{}
+
+
+Results Cell_simulator::Simulate(const Parameters& simPar,
+                                 const Treatment& tr,
+                                 const Results& results)
+{
+    *this=applyParameters(simPar, tr);
+
+    double Duratione=results.Duration();
+
+
+    std::vector<Measurement> TNFs(results.TNF());
+    std::size_t iTNFs=0;
+
+    double tTNFs;
+    if (!TNFs.empty())
+        tTNFs=TNFs[iTNFs].Time();
+    else
+        tTNFs=Duratione+1;
+
+    std::vector<Measurement> IFNs=results.IFN();
+    std::size_t iIFNs=0;
+    double tIFNs;
+    if (!IFNs.empty())
+        tIFNs=IFNs[iIFNs].Time();
+    else
+        tIFNs=Duratione+1;
+
+    std::vector<Measurement> APC_exp=results.APC_expression();
+    std::size_t iAPC_exp=0;
+    double tAPC_exp;
+    if (!APC_exp.empty())
+        tAPC_exp=APC_exp[iAPC_exp].Time();
+    else
+        tAPC_exp=Duratione+1;
+
+    std::vector<Measurement> NK_exp=results.NK_expression();
+    std::size_t iNK_exp=0;
+    double tNK_exp;
+    if (!NK_exp.empty())
+        tNK_exp=NK_exp[iNK_exp].Time();
+    else
+        tNK_exp=Duratione+1;
+
+    std::vector<Measurement> LT_exp=results.LT_expression();
+    std::size_t iLT_exp=0;
+    double tLT_exp;
+    if (!LT_exp.empty())
+        tLT_exp=LT_exp[iLT_exp].Time();
+    else tLT_exp=Duratione+1;
+
+    std::vector<Measurement> APC_IFNs=results.APC_IFNg();
+    std::size_t iAPC_IFN=0;
+    double tAPC_IFN;
+    if (!APC_IFNs.empty())
+        tAPC_IFN=APC_IFNs[iAPC_IFN].Time();
+    else tAPC_IFN=Duratione+1;
+
+    std::vector<Measurement> APC_TNFs=results.APC_TNFa();
+    std::size_t iAPC_TNF=0;
+    double tAPC_TNF;
+    if (!APC_TNFs.empty())
+        tAPC_TNF=APC_TNFs[iAPC_TNF].Time();
+    else tAPC_TNF=Duratione+1;
+
+    std::vector<Measurement> NK_IFNs=results.NK_IFNg();
+    std::size_t iNK_IFN=0;
+    double tNK_IFN;
+    if (!NK_IFNs.empty())
+        tNK_IFN=NK_IFNs[iNK_IFN].Time();
+    else tNK_IFN=Duratione+1;
+
+    std::vector<Measurement> NK_TNFs=results.NK_TNFa();
+    std::size_t iNK_TNF=0;
+    double tNK_TNF;
+    if (!NK_TNFs.empty())
+        tNK_TNF=NK_TNFs[iNK_TNF].Time();
+    else tNK_TNF=Duratione+1;
+
+    std::vector<Measurement> LT_IFNs=results.LT_IFNg();
+    std::size_t iLT_IFN=0;
+    double tLT_IFN;
+    if (!LT_IFNs.empty())
+        tLT_IFN=LT_IFNs[iLT_IFN].Time();
+    else tLT_IFN=Duratione+1;
+
+    std::vector<Measurement> LT_TNFs=results.LT_TNFa();
+    std::size_t iLT_TNF=0;
+    double tLT_TNF;
+    if (!LT_TNFs.empty())
+        tLT_TNF=LT_TNFs[iLT_TNF].Time();
+    else tLT_TNF=Duratione+1;
+
+    std::vector<Measurement> LT_apops=results.LT_Apoptosis();
+    std::size_t iLT_Apoptosis=0;
+    double tLT_Apoptosis;
+    if (!LT_apops.empty())
+        tLT_Apoptosis=LT_apops[iLT_Apoptosis].Time();
+    else tLT_Apoptosis=Duratione+1;
+
+    std::vector<Measurement> Prols=results.Proliferation();
+    std::size_t i_Proliferation=0;
+    double t_Proliferation;
+    if (!Prols.empty())
+        t_Proliferation=Prols[i_Proliferation].Time();
+    else t_Proliferation=Duratione+1;
+
+    std::vector<Measurement> num_cellss=results.num_cells();
+    std::size_t inum_cells=0;
+    double t_num_cells;
+    if (!num_cellss.empty())
+        t_num_cells=num_cellss[inum_cells].Time();
+    else t_num_cells=Duratione+1;
+
+    double eps=1e-7;
+
+    while (trun_d+eps<=results.Duration())
+    {
+
+        if(trun_d+eps>=tTNFs)
+        {
+            TNFs[iTNFs]=Measurement(tTNFs,m.TNF());
+            ++iTNFs;
+            if (iTNFs<TNFs.size())
+            {
+                tTNFs=TNFs[iTNFs].Time();
+            }
+            else
+            {
+                tTNFs=results.Duration()+1;
+            }
+        };
+
+        if(trun_d+eps>=tIFNs)
+        {
+            IFNs[iIFNs]=Measurement(tIFNs,m.IFNgamma());
+            ++iIFNs;
+            if (iIFNs<IFNs.size())
+            {
+                tIFNs=IFNs[iIFNs].Time();
+            }
+            else
+            {
+                tIFNs=results.Duration()+1;
+            }
+        };
+
+
+      if(trun_d+eps>=tAPC_exp)
+        {
+            Measurement xsim(tAPC_exp,APC.percentage_cell_expressing_receptor());
+            APC_exp[iAPC_exp]=xsim;
+            ++iAPC_exp;
+            if (iAPC_exp<APC_exp.size())
+            {
+                tAPC_exp=APC_exp[iAPC_exp].Time();
+            }
+            else
+            {
+                tAPC_exp=results.Duration()+1;
+            }
+        };
+
+
+
+        if(trun_d+eps>=tNK_exp)
+        {
+            NK_exp[iNK_exp].setMeasurement (
+                        NK.percentage_NK_expressing_receptor());
+            ++iNK_exp;
+            if (iNK_exp<NK_exp.size())
+            {
+                tNK_exp=NK_exp[iNK_exp].Time();
+            }
+            else
+            {
+                tNK_exp=results.Duration()+1;
+            }
+        };
+
+
+        if(trun_d+eps>=tLT_exp)
+        {
+            LT_exp[iLT_exp].setMeasurement (
+                        LT.LT_percentage_cell_expressing_receptor());
+            ++iLT_exp;
+            if (iLT_exp<LT_exp.size())
+            {
+                tLT_exp=LT_exp[iLT_exp].Time();
+            }
+            else
+            {
+                tLT_exp=results.Duration()+1;
+            }
+
+
+
+        };
+
+        if(trun_d+eps>=tAPC_IFN)
+        {
+            APC_IFNs[iAPC_IFN].setMeasurement (
+                        APC.percentage_APC_producing_IFN());
+            ++iAPC_IFN;
+            if (iAPC_IFN<APC_IFNs.size())
+            {
+                tAPC_IFN=APC_IFNs[iAPC_IFN].Time();
+            }
+            else
+            {
+                tAPC_IFN=results.Duration()+1;
+            }
+
+          };
+
+        if(trun_d+eps>=tAPC_TNF)
+        {
+            APC_TNFs[iAPC_TNF].setMeasurement (
+                         APC.percentage_APC_producing_TNF());
+            ++iAPC_TNF;
+            if (iAPC_TNF<APC_TNFs.size())
+            {
+                tAPC_TNF=APC_TNFs[iAPC_TNF].Time();
+            }
+            else
+            {
+                tAPC_TNF=results.Duration()+1;
+            }
+
+             };
+
+        if(trun_d+eps>=tNK_IFN)
+        {
+          NK_IFNs[iNK_IFN].setMeasurement (
+          NK.percentage_NK_producing_IFN());
+          ++iNK_IFN;
+               if (iNK_IFN<NK_IFNs.size())
+                  {
+                    tNK_IFN=NK_IFNs[iNK_IFN].Time();
+                  }
+               else
+                  {
+                   tNK_IFN=results.Duration()+1;
+                  }
+
+                };
+
+        if(trun_d+eps>=tNK_TNF)
+        {
+         NK_TNFs[iNK_TNF].setMeasurement (
+         NK.percentage_NK_producing_TNF());
+         ++iNK_TNF;
+          if (iNK_TNF<NK_TNFs.size())
+          {
+           tNK_TNF=NK_TNFs[iNK_TNF].Time();
+          }
+          else
+          {
+          tNK_TNF=results.Duration()+1;
+          }
+
+         };
+
+        if(trun_d+eps>=tLT_IFN)
+        {
+         LT_IFNs[iLT_IFN].setMeasurement (
+         LT.percentage_LT_IFN_production());
+         ++iLT_IFN;
+         if (iLT_IFN<LT_IFNs.size())
+            {
+              tLT_IFN=LT_IFNs[iLT_IFN].Time();
+            }
+         else
+            {
+              tLT_IFN=results.Duration()+1;
+            }
+
+                    };
+
+         if(trun_d+eps>=tLT_TNF)
+         {
+           LT_TNFs[iLT_TNF].setMeasurement (
+           LT.percentage_LT_TNF_production());
+           ++iLT_TNF;
+           if (iLT_TNF<LT_TNFs.size())
+              {
+               tLT_TNF=LT_TNFs[iLT_TNF].Time();
+              }
+          else
+              {
+               tLT_TNF=results.Duration()+1;
+              }
+
+                    };
+
+         if(trun_d+eps>=tLT_Apoptosis)
+         {
+          LT_apops[iLT_Apoptosis].setMeasurement (
+          LT.percentage_apoptotic_LT_cells());
+          ++iLT_Apoptosis;
+          if (iLT_Apoptosis<LT_apops.size())
+             {
+               tLT_Apoptosis=LT_apops[iLT_Apoptosis].Time();
+             }
+          else
+             {
+               tLT_Apoptosis=results.Duration()+1;
+             }
+
+                     };
+
+          if(trun_d+eps>=t_Proliferation)
+          {
+            Prols[i_Proliferation].setMeasurement (
+            m.Tymidine_incorporated());
+            ++i_Proliferation;
+            if (i_Proliferation<Prols.size())
+               {
+                t_Proliferation=Prols[i_Proliferation].Time();
+               }
+           else
+               {
+                t_Proliferation=results.Duration()+1;
+               }
+
+                     };
+
+          if(trun_d+eps>=t_num_cells)
+          {
+              num_cellss[inum_cells]=Measurement(t_num_cells,m.TNF());
+              ++inum_cells;
+              if (inum_cells<num_cellss.size())
+              {
+                  t_num_cells=num_cellss[inum_cells].Time();
+              }
+              else
+              {
+                  t_num_cells=results.Duration()+1;
+              }
+          };
+
+
+        //char ch;
+
+//	std::cout<<"\n media\n"<<m<<"\nLT\n"<<APC<<"\nNK\n"<<NK<<"\nLT\n"<<LT;
+//	std::cout<<"\ntime \t"<<trun_d;
+//	std::cin>>ch;
+        APC.update(time_step_d,m,NK,LT);
+        NK.update(time_step_d,m,APC,LT);
+        LT.update(time_step_d,trun_d,m,APC,NK);
+        m.update(time_step_d,trun_d, APC,NK,LT);
+        trun_d+=time_step_d;
+
+    }
+
+    Results SimRes(TNFs,IFNs,APC_exp,NK_exp,LT_exp,APC_IFNs,APC_TNFs,NK_IFNs,NK_TNFs, LT_IFNs, LT_TNFs, LT_apops,Prols, num_cellss, Duratione);
+    return SimRes;
+}
+
+
+Experiment Cell_simulator::Simulate(const Parameters& simPar,
+                                    const Experiment& exp)
+{
+    Experiment sim;
+    for (std::size_t i=0; i<exp.size(); i++)
+    {
+        Results r=Simulate(simPar,exp.Treatment_i(i),exp.Result_i(i));
+        sim.push_back(exp.Treatment_i(i),
+                      r);
+    }
+
+    return sim;
+
+}
+
+OptimizationResults Cell_simulator::Optimize(const Parameters& priorPar,
+                                             const Parameters& initPar,
+                                             const Experiment& experiment,
+                                             double range,
+                                             std::size_t numEval){}

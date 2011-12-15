@@ -371,6 +371,7 @@ std::vector<double> SimParameters::getParameters()const
        /*27*/ par.push_back(log(t_duration_apoptosis_));
 
 
+
         /// Media
         /*1*/ par.push_back(log(TNF_deg_));
         /*2*/ par.push_back(log(IFN_deg_));
@@ -746,6 +747,9 @@ SimParameters& SimParameters::applyParameters(const std::vector<double>& param)
        /// 11) LT exh rate
        /*25*/ LT_exh_rate_=exp(param[i++]);
 
+        /// 12) apoptosis related parameters
+        /*26*/ t_apop_meas_=exp(param[i++]);
+        /*27*/ t_duration_apoptosis_=exp(param[i++]);
 
 /// Media
         /*1*/ TNF_deg_=exp(param[i++]);
@@ -1432,7 +1436,8 @@ std::vector<double> SimParameters::getRandomParameters(double range)const
 
     for (std::size_t i=0; i<result.size();++i)
     {
-        result[i]+=2*range*((1.0*rand())/RAND_MAX-0.5);
+       double x=2*range*((1.0*rand())/RAND_MAX-0.5);
+       result[i]+=x;
     }
     return result;
 }
