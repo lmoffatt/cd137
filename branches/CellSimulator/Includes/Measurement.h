@@ -10,9 +10,9 @@ public:
     double Measure()const;
     double StdError()const;
 
-    void setMeasurement(double newMeasure);
+    Measurement& setMeasurement(double newMeasure);
 
-    Measurement(double Time,double Measure);
+    Measurement(double Time,double Measure,double Std);
     Measurement(double Time);
     //copia
     Measurement(const Measurement& other);
