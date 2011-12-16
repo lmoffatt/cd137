@@ -21,6 +21,8 @@ struct Treatment
 
     double time_step_d;
 
+    double t_apop_meas_d;
+
 };
 
 inline std::ostream& operator<<(std::ostream& s, const Treatment& tr)

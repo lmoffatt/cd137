@@ -57,9 +57,6 @@ LT_cells::LT_cells(/// 1) Init number of LT
                    /*27*/ double t_duration_apoptosis_
 
                    ):
-
-
-
     LTns_d(ratio_init_LTns_),
     LT0_d(ratio_initLTspecific_),
     LTbo_d(0),
@@ -104,7 +101,9 @@ LT_cells::LT_cells(/// 1) Init number of LT
     t_apop_meas_d (t_apop_meas_),
     t_duration_apoptosis_d(t_duration_apoptosis_)
 
-    {}
+    {
+
+}
 
 
 
@@ -509,5 +508,90 @@ std::ostream& operator<<(std::ostream& s, const LT_cells& c)
 }
    return s;
 }
+
+
+LT_cells::LT_cells(const Parameters& p, const Treatment& t):
+    /// number of non Ag specific cells
+    LTns_d(
+        p.mean_ratio("init_K_ratio_LT")*
+        (1.0-p.mean_ratio("Kratio_initLTspecific"))*
+        t.init_cells),
+
+    /// number of naive Ag specific cells
+     LT0_d(
+        p.mean_ratio("init_K_ratio_LT")*
+        p.mean_ratio("Kratio_initLTspecific")*
+        t.init_cells
+        ),
+
+    /// number of Ag specific cells that have recieve receptor signaling during sinapsis
+     LTbo_d(0.0),
+
+    /// number of Ag specific cells that have not recieve receptor singaling during sinapsis
+     LTbl_d(0.0),
+
+    /// number of LT exhausted
+     LTexh_d(0.0),
+
+    /// Tymidine incorporated by APC cells
+     LT_TymTr_incorporated_d(0.0),
+
+    /// Total LT cell undergoing apoptosis
+     Total_cells_in_apoptosis_d(0.0),
+
+    /// Parameters 24
+    /// 1) Init number of LT
+        /*1*/  ratio_init_LTns_d(p.mean_ratio("Kratio_initLTspecific")),
+        /*2*/  ratio_initLTspecific_d(p.mean_ratio("Kratio_initLTspecific")),
+
+    /// 2) IFN Poductions rates of each type of LT
+        /*3*/  IFN_LTns_prod_rate_d(p.mean("IFN_LTns_prod_rate")),
+        /*4*/  IFN_LTbo_prod_rate_d(p.mean("IFN_LTbo_prod_rate")),
+        /*5*/  IFN_LTbl_prod_rate_d(p.mean("IFN_LTbl_prod_rate")),
+
+    /// 3) TNF Poductions rates of each type of LT
+        /*6*/  TNF_LTns_prod_rate_d(p.mean("TNF_LTns_prod_rate")),
+        /*7*/  TNF_LTbo_prod_rate_d(p.mean("TNF_LTbo_prod_rate")),
+        /*8*/  TNF_LTbl_prod_rate_d(p.mean("TNF_LTbl_prod_rate")),
+
+    /// 4) Percentages of IFN productions of each type of LT
+        /*9*/  percentage_IFN_LTns_prod_rate_d(p.mean_ratio("Kpercentage_IFN_LTns_prod_rate")),
+        /*10*/  percentage_IFN_LTbo_prod_rate_d(p.mean_ratio("Kpercentage_IFN_LTbo_prod_rate")),
+        /*11*/  percentage_IFN_LTbl_prod_rate_d(p.mean_ratio("Kpercentage_IFN_LTbl_prod_rate")),
+
+    /// 5)Percentages of TNF productions of each type of LT
+        /*12*/  percentage_TNF_LTns_prod_rate_d(p.mean_ratio("Kpercentage_TNF_LTns_prod_rate")),
+        /*13*/  percentage_TNF_LTbo_prod_rate_d(p.mean_ratio("Kpercentage_TNF_LTbo_prod_rate")),
+        /*14*/  percentage_TNF_LTbl_prod_rate_d(p.mean_ratio("Kpercentage_TNF_LTbl_prod_rate")),
+
+    /// 6) Proliferation rates
+        /*15*/  LTns_proliferation_rate_d(p.mean("LTns_proliferation_rate")),
+        /*16*/  LTbo_proliferation_rate_d(p.mean("LTbo_proliferation_rate")),
+        /*17*/  LTbl_proliferation_rate_d(p.mean("LTbl_proliferation_rate")),
+
+    /// 7) Apoptosis rates
+        /*18*/  LTns_apop_rate_d(p.mean("LTns_apop_rate")),
+        /*19*/  LTbo_apop_rate_d(p.mean("LTbo_apop_rate")),
+        /*20*/  LTbl_apop_rate_d(p.mean("LTbl_apop_rate")),
+        /*21*/  LTexh_apop_rate_d(p.mean("LTexh_apop_rate")),
+
+    /// 8) constant saturation of TNF for apoptosis
+        /*22*/  Ks_LT_m_TNF_d(p.mean("Ks_LT_m_TNF")),
+
+    /// 9) Percentages of cell expressing receptor
+        /*23*/  LTns_expressing_receptor_d(p.mean_ratio("LTns_Kratio_expressing_receptor")),
+
+    /// 10) Apoptosis rate for TNF
+        /*24*/  u_LT_TNF_d(p.mean("u_LT_TNF")),
+
+    /// 11) LT exh rate
+        /*25*/  LT_exh_rate_d(p.mean("LT_exh_rate")),
+
+    /// 12) apoptosis related parameters
+        /*27*/  t_duration_apoptosis_d(p.mean("t_duration_apoptosis"))
+
+
+{}
+
 
 

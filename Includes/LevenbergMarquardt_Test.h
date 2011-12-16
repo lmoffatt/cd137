@@ -8,7 +8,7 @@ class sampleFunction: public ABC_function
 {
 public:
     virtual std::vector<double> yfit(const std::vector<double>& parameters);
-    virtual std::vector<double> yfit(const Parameters& parameters){}
+    virtual std::vector<double> yfit(const Parameters& parameters)const{}
 
 
 };

@@ -32,13 +32,14 @@ Parameters BayesIteration::Posterior()const
     }
 
 
-    BayesIteration::BayesIteration(ABC_model* m,
+    BayesIteration::BayesIteration(const ABC_model* m,
                    Parameters prior,
-                   ABC_data* d):
+                   const ABC_data* d):
         m_(m),
         priors_(1,prior),
         data_(1,d),
-        posterior_()
+        posterior_(),
+        numSeeds_(20)
     {
         getPosterior();
     }
@@ -83,7 +84,7 @@ Parameters BayesIteration::Posterior()const
 
 
     std::vector<double> BayesIteration::yfit (const std::vector<double>& param){}
-    std::vector<double> BayesIteration::yfit(const Parameters& parameters)
+    std::vector<double> BayesIteration::yfit(const Parameters& parameters)const
     {
 
         std::vector<double> simulatedResults=m_->yfit(parameters);
@@ -94,7 +95,7 @@ Parameters BayesIteration::Posterior()const
     }
 
 
-    std::vector<double> BayesIteration::getData()
+    std::vector<double> BayesIteration::getData()const
     {
         std::vector<double>data =data_.back()->getData();
         std::vector<double> param=priors_.back().pMeans();
@@ -105,7 +106,7 @@ Parameters BayesIteration::Posterior()const
 
     }
 
-    std::vector<double> BayesIteration::getDataStandardError()
+    std::vector<double> BayesIteration::getDataStandardError()const
     {
 
         std::vector<double>se =data_.back()->getDataStandardError();
@@ -119,7 +120,7 @@ Parameters BayesIteration::Posterior()const
 
 
 
-    void BayesIteration::getPosterior()
+    BayesIteration& BayesIteration::getPosterior()
     {
         std::vector<double> data=getData();
         std::vector<double> w=getDataWeigth();
@@ -134,12 +135,12 @@ Parameters BayesIteration::Posterior()const
                                             data,
                                             initParam,
                                             w);
-            LM.OptimParameters();
+            LM.optimize();
             LMs.push_back(LM);
         }
 
 
-
+return *this;
 
 
 

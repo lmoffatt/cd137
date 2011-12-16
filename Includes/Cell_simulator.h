@@ -59,6 +59,8 @@ public:
 
 
 
+    static Parameters getStandardParameters();
+
 
 
     Cell_simulator(const Parameters& sp,
@@ -72,11 +74,8 @@ public:
                         const Experiment& exp);
 
 
-    OptimizationResults Optimize(const Parameters& priorPar,
-                                 const Parameters& simPar,
-                                 const Experiment& exp,
-                                 double range,
-                                 std::size_t numStarts);
+    void Optimize(const Parameters& priorPar,
+                                 const Experiment& exp);
 
 
 
@@ -99,7 +98,7 @@ public:
 
    virtual std::vector<double> yfit (const std::vector<double>& param);
 
-    virtual std::vector<double> yfit (const Parameters& param);
+    virtual std::vector<double> yfit (const Parameters& param)const;
 
 
     std::vector<double> difParam(const std::vector<double>& param);
@@ -131,7 +130,7 @@ private:
 
 
     Experiment experiment_;
-    Experiment fitExperiment_;
+     Experiment fitExperiment_;
     SimParameters initialPar_;
     SimParameters fitPar_;
 

@@ -15,7 +15,6 @@ Media::Media(double IFNgamma_init,
              double Prol_TymTr_init
                 ):
 
-
     IFNgamma_d(IFNgamma_init),
     TNF_d(TNF_init),
     Tymidine_incorporated_d (Tymidine_incorprated_init),
@@ -47,6 +46,19 @@ Media::Media(const SimParameters& sp,
 
 {}
 */
+Media::Media(const Parameters& p,
+             const Treatment& tr):
+
+    IFNgamma_d(0),
+    TNF_d(0),
+    Tymidine_incorporated_d(0),
+    TNF_deg_d(p.mean("TNF_deg")),
+    IFN_deg_d(p.mean("IFN_deg")),
+    num_cells_d(tr.init_cells),
+    Ag_d(tr.Ag),
+    Ab_d(tr.Ab),
+    TymidineTriteate_d(p.mean("TymidineTriteate")),
+    Prol_TymTr_d(p.mean("Prol_TymTr")){}
 
 Media::Media(const Media& other):
     IFNgamma_d(other.IFNgamma_d),

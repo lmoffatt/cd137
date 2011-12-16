@@ -631,3 +631,75 @@ const double& NK_cells::NKa_expressing_receptor() const
     }
     return s;
 }
+
+ NK_cells::NK_cells(const Parameters& p, const Treatment& t):
+ /// Variables
+     NK0_d(
+         (1.0-p.mean_ratio("init_K_ratio_LT"))*
+         (1.0-p.mean_ratio("init_K_ratio_APC_NK"))
+         *t.init_cells
+         ),
+     NKa_d(0.0),
+     NKbo_d(0.0),
+     NKbo_Ab_d(0.0),
+     NKbl_d (0.0),
+     NKexh_d(0.0),
+     NK_TymTr_incorporated_d(0.0),
+/// 2) IFN Poductions rates of each type of NK
+/*2*/ IFN_NK0_prod_rate_d (p.mean("IFN_NK0_prod_rate")),
+/*3*/ IFN_NKa_prod_rate_d (p.mean("IFN_NKa_prod_rate")),
+/*4*/ IFN_NKbo_prod_rate_d (p.mean("IFN_NKbo_prod_rate")),
+
+
+/// 3) TNF Poductions rates of each type of NK
+/*5*/ TNF_NK0_prod_rate_d (p.mean("TNF_NK0_prod_rate")),
+/*6*/ TNF_NKa_prod_rate_d(p.mean("TNF_NKa_prod_rate")),
+/*7*/ TNF_NKbo_prod_rate_d (p.mean("TNF_NKbo_prod_rate")),
+
+
+/// 4) Percentages of IFN productions of each type of NK
+/*8*/ percentage_IFN_NK0_prod_rate_d (p.mean_ratio("Kpercentage_IFN_NK0_prod_rate")),
+/*9*/ percentage_IFN_AgNKa_prod_rate_d (p.mean_ratio("Kpercentage_IFN_AgNKa_prod_rate")),
+/*10*/ percentage_IFN_NKbo_prod_rate_d (p.mean_ratio("Kpercentage_IFN_NKbo_prod_rate")),
+
+
+/// 5)Percentages of TNF productions of each type of NK
+/*11*/ percentage_TNF_NK0_prod_rate_d (p.mean_ratio("Kpercentage_TNF_NK0_prod_rate")),
+/*12*/ percentage_TNF_NKa_prod_rate_d (p.mean_ratio("Kpercentage_TNF_NKa_prod_rate")),
+/*13*/ percentage_TNF_NKbo_prod_rate_d (p.mean_ratio("Kpercentage_TNF_NKbo_prod_rate")),
+
+/// 6) Proliferation rates
+/*13.5*/ NK0_proliferation_rate_d (p.mean("NK0_proliferation_rate")),
+/*14*/ NKa_proliferation_rate_d (p.mean("NKa_proliferation_rate")),
+/*15*/ NKbo_proliferation_rate_d (p.mean("NKbo_proliferation_rate")),
+/*16*/ NKbl_proliferation_rate_d (p.mean("NKbl_proliferation_rate")),
+
+/// 7) Apoptosis rates
+/*17*/ NK0_apop_rate_d (p.mean("NK0_apop_rate")),
+/*18*/ NKa_apop_rate_d (p.mean("NKa_apop_rate")),
+/*19*/ NKbo_apop_rate_d (p.mean("NKbo_apop_rate")),
+/*20*/ NKbl_apop_rate_d (p.mean("NKbl_apop_rate")),
+/*21*/ NKexh_apop_rate_d (p.mean("NKexh_apop_rate")),
+
+/// 8) constant saturation of TNF for apoptosis
+/*22*/ Ks_NK_m_TNF_d (p.mean("Ks_NK_m_TNF")),
+
+/// 9) conversion rates
+/*23*/ KaNK_d (p.mean("KaNK")),
+/*24*/ NK_NK_d (p.mean("NK_NK")),
+/*25*/ NK_Ab_d (p.mean("NK_Ab")),
+/*26*/ NK_exh_d (p.mean("NK_exh")),
+
+/// 10)Saturation constant of NK interaction for activation
+/*27*/ KsAPC_NK_d (p.mean("KsAPC_NK")),
+
+/// 11)Saturation constant of NK_LT interaction
+/*28*/ Ksi_d (p.mean("NK_Ksi")),
+/*29*/ Kst_d (p.mean("NK_Kst")),
+
+/// 12) Percentages of cell expressing receptor
+/*30*/ NK0_expressing_receptor_d (p.mean_ratio("NK0_Kratio_expressing_receptor")),
+/*31*/ NKa_expressing_receptor_d (p.mean_ratio("NKa_Kratio_expressing_receptor")),
+/// 13) Apoptosis rate for TNF
+/*32*/ u_NK_TNF_d (p.mean("u_NK_TNF"))
+ {}

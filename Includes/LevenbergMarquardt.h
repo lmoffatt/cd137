@@ -7,7 +7,7 @@ class ABC_function
 {
 public:
     virtual std::vector<double> yfit(const std::vector<double>& parameters)=0;
-    virtual std::vector<double> yfit(const Parameters& parameters)=0;
+    virtual std::vector<double> yfit(const Parameters& parameters)const=0;
 
 
 };
