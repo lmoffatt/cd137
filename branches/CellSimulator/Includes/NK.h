@@ -84,6 +84,7 @@ class NK_cells
                  double& NK_TymTr_incorporated();
                  const double& NK_TymTr_incorporated()const;
 
+        NK_cells(const Parameters& p, const Treatment& t);
 
         void update(double time_step,const Media& m, const APC_cells& APC,const LT_cells& LT);
 

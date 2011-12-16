@@ -40,10 +40,19 @@ double Parameters::mean(const std::string& name)const
         return pow(10,pMean_[(*it).second]);
     else
         return std::numeric_limits<double>::quiet_NaN();
-
-
-
 }
+
+double Parameters::mean_ratio(const std::string& name)const
+{
+    std::map<std::string,std::size_t>::const_iterator it=name_.find(name);
+    if(it!=name_.end())
+        return mean(name)/(mean(name)+1.0);
+    else
+        return std::numeric_limits<double>::quiet_NaN();
+}
+
+
+
 double Parameters::pMean(const std::string& name)const{
     return std::log10(mean(name));
 }
@@ -157,31 +166,45 @@ std::vector<double> Parameters::pMeans(const std::vector<std::string> names)cons
 }
 
 
-void Parameters::push_back(const std::string& name,double meanValue,double pStdValue)
+void Parameters::push_back_dB(const std::string& name,double meanValue,double pStdValue)
 {
     name_[name]=pMean_.size();
     pMean_.push_back(log10(meanValue));
-    pStd_.push_back(pStdValue);
+    pStd_.push_back(pStdValue/10);
 
 }
 
 void Parameters::push_back_1S(const std::string& name,double minValue_p34,double maxValue_p68)
 {
-    push_back(name,sqrt(minValue_p34*maxValue_p68),log10(maxValue_p68/minValue_p34)*10.0);
+    push_back_dB(name,sqrt(minValue_p34*maxValue_p68),log10(maxValue_p68/minValue_p34)*20.0);
 }
 
 
 void Parameters::push_back_2S(const std::string& name,double minValue_p02,double maxValue_p98)
 {
-    push_back(name,sqrt(minValue_p02*maxValue_p98),log10(maxValue_p98/minValue_p02)*10.0/2.0);
+    push_back_dB(name,sqrt(minValue_p02*maxValue_p98),log10(maxValue_p98/minValue_p02)*10.0);
 
 }
 
 void Parameters::push_back_3S(const std::string& name,double minValue_p001,double maxValue_p999)
 {
-    push_back(name,sqrt(minValue_p001*maxValue_p999),log10(maxValue_p999/minValue_p001)*10.0/3.0);
+    push_back_dB(name,sqrt(minValue_p001*maxValue_p999),log10(maxValue_p999/minValue_p001)*20.0/3.0);
 
 }
+
+std::string Parameters::mode()const
+{
+    return mode_;
+}
+Parameters&
+Parameters::setMode(const std::string& modeString)
+{
+    mode_=modeString;
+    return *this;
+}
+
+
+
 
 
 bool Parameters::setpMean(const std::string& name, double value)
@@ -254,17 +277,28 @@ Parameters Parameters::randomSample()const
          ++it)
 
     {
-        double m=pow(10,randNormal(pMean(it->first),pStd(it->first)/20.0));
-        sample.push_back(it->first,m,0);
+        double m=pow(10,randNormal(pMean(it->first),pStd(it->first)));
+        sample.push_back_dB(it->first,m,0);
 
     }
     return sample;
 
-
-
-
 }
 
+Parameters Parameters::randomSample(double factor)const{
+    Parameters sample;
+    for (std::map<std::string,std::size_t>::const_iterator it=name_.begin();
+         it!=name_.end();
+         ++it)
+
+    {
+        double m=pow(10,randNormal(pMean(it->first),factor*pStd(it->first)));
+        sample.push_back_dB(it->first,m,0);
+
+    }
+    return sample;
+
+}
 
 
 std::size_t Parameters::size()const
@@ -304,8 +338,19 @@ double randNormal()
 Parameters& Parameters::applyParameters(const Parameters& other)
 {
     std::vector<std::string> cnames=commonNames(other);
-    setMeans(cnames,other.pMeans(cnames));
+    setpMeans(cnames,other.pMeans(cnames));
+    return *this;
 }
+
+Parameters& Parameters::scaleError(double factor)
+{
+    for (std::size_t i=0; i<pStd_.size(); i++)
+    {
+        pStd_[i]*=factor;
+    }
+    return *this;
+}
+
 
 
 std::vector<double> Parameters::pMeans()const

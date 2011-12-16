@@ -2,6 +2,7 @@
 #define LT_H_INCLUDED
 #include "Includes/SimParameters.h"
 #include "Includes/Treatment.h"
+#include "Includes/Parameters.h"
 
 class Media;
 class APC_cells;
@@ -67,8 +68,12 @@ class LT_cells
 
         void update(double time_step, double t_run, const Media& m, const APC_cells& a, const NK_cells& NK);
 
+
+        LT_cells(const Parameters& p, const Treatment& t);
+
+
         LT_cells(/// 1) Init number of LT
-                 /*1*/ double ratio_init_LTns_,
+                 /*1*/ double init_number_LTns_,
                  /*2*/ double ratio_initLTspecific_,
 
                  /// 2) IFN Poductions rates of each type of LT

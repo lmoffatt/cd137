@@ -701,7 +701,89 @@ const double& APC_cells::APCa_expressing_receptor () const
 
 }
 
+APC_cells::APC_cells(const Parameters& p, const Treatment& t):
+    /// Variables 7
+    /// number of native cells
+    APC0_d(
+            (1.0-p.mean_ratio("init_K_ratio_LT"))*
+            p.mean_ratio("init_K_ratio_APC_NK")*t.init_cells
+            ),
+    /// number of cells that have internalized the antigen (and therefore express the ligand and receptor)
+     APCa_d(0.0),
+    /// number of cells that have that have been signaled by receptor or ligand
+     APCbo_d(0.0),
+    /// number of cells that have that have been signaled by receptor or ligand and bound to the blocking Ab
+     APCbo_Ab_d(0.0),
+    /// number of cells that binds the blocking mAb
+     APCbl_d(0.0),
+    /// number of cells that are exhausted
+     APCexh_d(0.0),
+    /// Timidina incorporada
+     APC_TymTr_incorporated_d(0.0),
 
+    /// Parámetros 33
+    /// 1) Init ratio of cells
+    /*1*/  init_ratio_APC_d(p.mean_ratio("init_K_ratio_APC_NK")),
+
+    /// 2) IFN Poductions rates of each type of APC
+    /*2*/  IFN_APC0_prod_rate_d(p.mean("IFN_APC0_prod_rate")),
+    /*3*/  IFN_APCa_prod_rate_d(p.mean("IFN_APCa_prod_rate")),
+    /*4*/  IFN_APCbo_prod_rate_d(p.mean("IFN_APCbo_prod_rate")),
+
+
+    /// 3) TNF Poductions rates of each type of APC
+    /*5*/  TNF_APC0_prod_rate_d(p.mean("TNF_APC0_prod_rate")),
+    /*6*/  TNF_APCa_prod_rate_d(p.mean("TNF_APCa_prod_rate")),
+    /*7*/  TNF_APCbo_prod_rate_d(p.mean("TNF_APCbo_prod_rate")),
+
+
+    /// 4) Percentages of IFN productions of each type of APC
+    /*8*/  percentage_IFN_APC0_prod_rate_d(p.mean_ratio("Kpercentage_IFN_APC0_prod_rate")),
+    /*9*/  percentage_IFN_APCa_prod_rate_d(p.mean_ratio("Kpercentage_IFN_APCa_prod_rate")),
+    /*10*/  percentage_IFN_APCbo_prod_rate_d(p.mean_ratio("Kpercentage_IFN_APCbo_prod_rate")),
+
+    /// 5)Percentages of TNF productions of each type of APC
+    /*11*/  percentage_TNF_APC0_prod_rate_d(p.mean_ratio("Kpercentage_TNF_APC0_prod_rate")),
+    /*12*/  percentage_TNF_APCa_prod_rate_d(p.mean_ratio("Kpercentage_TNF_APCa_prod_rate")),
+    /*13*/  percentage_TNF_APCbo_prod_rate_d(p.mean("Kpercentage_TNF_APCbo_prod_rate")),
+
+
+    /// 6) Proliferation rates
+    /*14*/  APC_bound_proliferation_rate_d(p.mean("APC_bound_proliferation_rate")),
+
+    /// 7) Apoptosis rates
+    /*15*/  APC0_apop_rate_d(p.mean("APC0_apop_rate")),
+    /*16*/  APCa_apop_rate_d(p.mean("APCa_apop_rate")),
+    /*17*/  APCbo_apop_rate_d(p.mean("APCbo_apop_rate")),
+    /*18*/  APCbl_apop_rate_d(p.mean("APCbl_apop_rate")),
+    /*19*/  APCexh_apop_rate_d(p.mean("APCexh_apop_rate")),
+
+    /// 8) constant saturation of TNF for apoptosis
+    /*20*/  Ks_APC_m_TNF_d(p.mean("Ks_APC_m_TNF")),
+
+    /// 9) conversion rates
+    /*21*/  APC_Ag_d(p.mean("APC_Ag")),
+    /*22*/  APC_APC_d(p.mean("APC_APC")),
+    /*23*/  APC_NK_d(p.mean("APC_NK")),
+    /*24*/  APC_LT_1_d(p.mean("APC_LT_1")),
+    /*25*/  APC_LT_2_d(p.mean("APC_LT_2")),
+    /*26*/  APC_Ab_d(p.mean("APC_Ab")),
+    /*27*/  APC_exh_d(p.mean("APC_exh")),
+
+    /// 10)Saturation constant of IFN and TNF for activation
+    /*28*/  KsAPC_LT_d(p.mean("KsAPC_LT")),
+
+    /// 11)Saturation constant of APC_LT interaction
+    /*29*/  Ksi_d(p.mean("APC_Ksi")),
+    /*30*/  Kst_d(p.mean("APC_Kst")),
+
+    /// 12) Percentages of cell expressing receptor
+    /*31*/  APC0_expressing_receptor_d(p.mean("APC0_Kratio_expressing_receptor")),
+    /*32*/  APCa_expressing_receptor_d(p.mean("APCa_Kratio_expressing_receptor")),
+
+    /// 13) Apoptosis rate for TNF
+    /*33*/  u_APC_TNF_d(p.mean("u_APC_TNF"))
+{}
 
 
 

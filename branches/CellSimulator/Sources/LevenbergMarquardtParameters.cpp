@@ -279,7 +279,7 @@ void LevenbergMarquardtParameters::computeSearchDirection()
 void LevenbergMarquardtParameters::updateLanda()
 {
     std::size_t ifevalLoop=0;
-    if (newSS_>=currSS_)
+    if ((newSS_>=currSS_)||(newSS_!=newSS_))
     {
         while(((newSS_>=currSS_)&&(nFeval_<maxFeval_))||(newSS_!=newSS_))
         {

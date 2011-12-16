@@ -2,6 +2,7 @@
 #define MEDIA_H_INCLUDED
 #include "SimParameters.h"
 #include "Treatment.h"
+#include "Includes/Parameters.h"
 
 class APC_cells;
 class NK_cells;
@@ -68,7 +69,7 @@ class Media
               double Prol_TymTr_init
               );
 
-        Media(const SimParameters& sp,
+        Media(const Parameters& sp,
               const Treatment& tr);
 
         Media(const Media& other);

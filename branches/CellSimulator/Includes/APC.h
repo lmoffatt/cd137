@@ -2,6 +2,7 @@
 #define APC_H_INCLUDED
 #include "Includes/SimParameters.h"
 #include "Includes/Treatment.h"
+#include "Includes/Parameters.h"
 
 
 class Media;
@@ -109,6 +110,9 @@ class APC_cells
         const double& APC_TymTr_incorporated()const;
 
         void update(double time_step,const Media& m, const NK_cells& NK,const LT_cells& LT);
+
+
+        APC_cells(const Parameters& p, const Treatment& t);
 
         APC_cells(
         /// 1) Init number of APC

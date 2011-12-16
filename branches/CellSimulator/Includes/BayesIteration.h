@@ -17,6 +17,7 @@ public:
 class ABC_model:public ABC_function
 {
 public:
+
     virtual ABC_model& setData(const ABC_data& experimentalData)=0;
     virtual ~ABC_model();
 
@@ -34,9 +35,9 @@ public:
     Parameters Prior(std::size_t n=0)const;
 
 
-    BayesIteration(ABC_model* f,
+    BayesIteration(const ABC_model* f,
                    Parameters prior,
-                   ABC_data* d);
+                   const ABC_data* d);
 
 
     BayesIteration& addNewData(ABC_data* d);
@@ -44,10 +45,10 @@ public:
     virtual ~BayesIteration();
 
     virtual std::vector<double> yfit (const std::vector<double>& param);
-    virtual std::vector<double> yfit(const Parameters& parameters);
+    virtual std::vector<double> yfit(const Parameters& parameters)const;
 
-    virtual std::vector<double> getData();
-    virtual std::vector<double> getDataStandardError();
+    virtual std::vector<double> getData()const;
+    virtual std::vector<double> getDataStandardError()const;
 
     virtual ABC_model& setData(const ABC_data& experimentalData);
 
@@ -60,14 +61,14 @@ public:
 */
     BayesIteration();
 
+    BayesIteration& getPosterior();
 
 
 private:
-    void getPosterior();
 
-    ABC_model* m_;
+    const ABC_model* m_;
 
-    std::vector<ABC_data*> data_;
+    std::vector<const ABC_data*> data_;
 
     std::vector<Parameters> priors_;
 

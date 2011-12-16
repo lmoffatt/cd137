@@ -13,14 +13,22 @@ public:
     /// pMean("someParameter")=log10(mean("someParameter")
     double pMean(const std::string& name)const;
 
+    double mean_ratio(const std::string& name)const;
 
+
+
+    /// returns the standard deviation of the logartithm of the parameter
     double pStd(const std::string& name)const;
 
+    /// returns the standard deviation of the logartithm of the parameter in deciBels
     double dBStd(const std::string& name)const;
 
 
     double residual(const std::string& name, double value)const;
     double pResidual(const std::string& name, double log10value)const;
+
+    std::string mode()const;
+    Parameters& setMode(const std::string& mode_);
 
     std::vector<double> residuals(const std::vector<std::string> names,const std::vector<double> log10Values);
 
@@ -45,7 +53,7 @@ public:
 
 
 
-    void push_back(const std::string& name,double meanValue,double pStdValue);
+    void push_back_dB(const std::string& name,double meanValue,double dBStdValue);
 
     void push_back_1S(const std::string& name,double minValue_p34,double maxValue_p68);
 
@@ -77,8 +85,12 @@ public:
     //applies the commonNames mean values to *this
     Parameters& applyParameters(const Parameters& other);
 
+    Parameters& scaleError(double factor);
+
 
     Parameters randomSample()const;
+
+    Parameters randomSample(double factor)const;
 
     Parameters(const Parameters& other);
     Parameters(){}
@@ -93,8 +105,10 @@ public:
 private:
     std::map<std::string, std::size_t> name_;
     std::vector<double> pMean_;
-    std::vector<double> pStd_;
+    std::vector<double> pStd_;  // not in dB
     std::vector< std::vector <double> > cov_;
+
+    std::string mode_;
 
 
 };
