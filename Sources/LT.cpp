@@ -2,6 +2,7 @@
 #include "Includes/APC.h"
 #include "Includes/LT.h"
 #include "Includes/NK.h"
+#include <cmath>
 
 
 LT_cells::LT_cells(/// 1) Init number of LT
@@ -220,45 +221,55 @@ void swap(LT_cells& one, LT_cells& other)
 
 
 /// Main step for LT
-void LT_cells::update(double time_step, double t_run, const Media& m,const APC_cells& APC,const NK_cells& NK)
+void LT_cells::update(double& time_step, double t_run, const Media& m, const APC_cells& APC, const NK_cells& NK)
 
-{    
+
+{
     /// cells not sensitive to the Ag proliferate passively
-    LTns_d+=(-LTns_apop_rate_d*LTns_d+LTns_proliferation_rate_d*LTns_d)*time_step;
+   double LTns_delta=(-LTns_apop_rate_d*LTns_d+LTns_proliferation_rate_d*LTns_d)*time_step;
+   LTns_d+=LTns_delta;
 
 
     /// Ag specific cells proliferate and some of them interact with APC and get activated and express the receptor
-    LT0_d+=(-LTns_apop_rate_d*LT0_d+LTns_proliferation_rate_d*LT0_d-APC.APC_LT_1()*LT0_d*(APC.APCa()/(APC.APCa()+ APC.KsAPC_LT()))-
+   double LT0_delta=(-LTns_apop_rate_d*LT0_d+LTns_proliferation_rate_d*LT0_d-APC.APC_LT_1()*LT0_d*(APC.APCa()/(APC.APCa()+ APC.KsAPC_LT()))-
             APC.APC_LT_2()*LT0_d*(APC.APCbo()/(APC.APCbo()+ APC.KsAPC_LT()))-
             APC.APC_LT_2()*LT0_d*(APC.APCbo_Ab()/(APC.APCbo_Ab()+ APC.KsAPC_LT()))-
             APC.APC_LT_1()*LT0_d*(APC.APCbl()/(APC.APCbl()+ APC.KsAPC_LT())))*
             time_step;
-
+    LT0_d+=LT0_delta;
     /// Cells interact only once with APC and can recieve signaling by CD137 or not.
-    LTbo_d+=(APC.APC_LT_1()*LT0_d*(APC.APCa()/(APC.APCa()+ APC.KsAPC_LT()))+
+   double LTbo_delta=(APC.APC_LT_1()*LT0_d*(APC.APCa()/(APC.APCa()+ APC.KsAPC_LT()))+
             APC.APC_LT_2()*LT0_d*(APC.APCbo()/(APC.APCbo()+ APC.KsAPC_LT()))+
             LTbo_proliferation_rate_d*LTbo_d-LTbo_apop_rate_d*LTbo_d-
             LTbo_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))-LTbo_d*LT_exh_rate_d)*time_step;
 
-
-    LTbl_d+=(APC.APC_LT_2()*LT0_d*(APC.APCbo_Ab()/(APC.APCbo_Ab()+ APC.KsAPC_LT()))+
+    LTbo_d+=LTbo_delta;
+    double LTbl_delta=(APC.APC_LT_2()*LT0_d*(APC.APCbo_Ab()/(APC.APCbo_Ab()+ APC.KsAPC_LT()))+
              APC.APC_LT_1()*LT0_d*(APC.APCbl()/(APC.APCbl()+ APC.KsAPC_LT()))+
              LTbl_proliferation_rate_d*LTbl_d-LTbl_apop_rate_d*LTbl_d-
              LTbl_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))-LTbl_d*LT_exh_rate_d)*time_step;
+    LTbl_d+=LTbl_delta;
 
     /// LT get exhausted after a period of time
-    LTexh_d+=LTbo_d*LT_exh_rate_d+LTbl_d*LT_exh_rate_d-LTexh_d*LTexh_apop_rate_d-
+
+    double LTexh_delta=LTbo_d*LT_exh_rate_d+LTbl_d*LT_exh_rate_d-LTexh_d*LTexh_apop_rate_d-
              LTexh_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))*time_step;
+    LTexh_d+=LTexh_delta;
 
-    if (m.TymidineTriteate()>0)
-    LT_TymTr_incorporated_d+=(LTns_proliferation_rate_d*LTns_d+LTns_proliferation_rate_d*LT0_d+LTbo_proliferation_rate_d*LTbo_d+
-                              +LTbl_proliferation_rate_d*LTbl_d)*m.Prol_TymTr();
-
-    if ((t_run>t_apop_meas_d-t_duration_apoptosis_d)&&(t_run<=t_apop_meas_d))
-        Total_cells_in_apoptosis_d+=(LTns_apop_rate_d*LTns_d+LTns_apop_rate_d*LT0_d+
+   double LT_TymTr_incorporated_delta;
+   if (m.TymidineTriteate()>0){
+       LT_TymTr_incorporated_delta=((LTns_proliferation_rate_d*LTns_d+LTns_proliferation_rate_d*LT0_d+LTbo_proliferation_rate_d*LTbo_d+
+                                  +LTbl_proliferation_rate_d*LTbl_d)*m.Prol_TymTr())*time_step;
+       LT_TymTr_incorporated_d+=LT_TymTr_incorporated_delta;
+   }
+   double  Total_cells_in_apoptosis_delta;
+   if ((t_run>t_apop_meas_d-t_duration_apoptosis_d)&&(t_run<=t_apop_meas_d)){
+        Total_cells_in_apoptosis_delta=(LTns_apop_rate_d*LTns_d+LTns_apop_rate_d*LT0_d+
                                      LTbo_apop_rate_d*LTbo_d+LTbo_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))+
                                      LTbl_apop_rate_d*LTbl_d+LTbl_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))+
                                      LTexh_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d)))*time_step;
+        Total_cells_in_apoptosis_d+= Total_cells_in_apoptosis_delta;
+}
 }
 
 /*void LT_cells::reset(const SimParameters& sp,
@@ -274,17 +285,12 @@ void LT_cells::update(double time_step, double t_run, const Media& m,const APC_c
     */
 
 /// 1) Total number of LT
-double& LT_cells::num_LT()
+double LT_cells::num_LT() const
     {
       double sum=LTns_d+LT0_d+LTbo_d+LTbl_d+LTexh_d;
       return sum;
     }
 
-const double& LT_cells::num_LT() const
-    {
-      double sum=LTns_d+LT0_d+LTbo_d+LTbl_d+LTexh_d;
-      return sum;
-    }
 
 /// 2) números de células (5)
 double& LT_cells::LTns()
@@ -338,7 +344,7 @@ const double& LT_cells::LTexh() const
     }
 
 /// 3) Percentage of cells expressing
-double& LT_cells::LT_percentage_cell_expressing_receptor()
+double LT_cells::LT_percentage_cell_expressing_receptor() const
 {
     double sum=100*(percentage_IFN_LTns_prod_rate_d*(LTns_d+LT0_d)+
                percentage_IFN_LTbo_prod_rate_d*LTbo_d+
@@ -346,15 +352,9 @@ double& LT_cells::LT_percentage_cell_expressing_receptor()
     return sum;
 }
 
-const double& LT_cells::LT_percentage_cell_expressing_receptor() const
-{
-    double sum=100*(percentage_IFN_LTns_prod_rate_d*(LTns_d+LT0_d)+
-               percentage_IFN_LTbo_prod_rate_d*LTbo_d+
-                    percentage_IFN_LTbl_prod_rate_d*LTbl_d)/num_LT();
-    return sum;
-}
+
 /// 4) Total cytokines production
-double& LT_cells::LT_IFNgamma_production_rate()
+double LT_cells::LT_IFNgamma_production_rate() const
    {
       double sum=LTns_d*percentage_IFN_LTns_prod_rate_d*IFN_LTns_prod_rate_d+
                LT0_d*percentage_IFN_LTns_prod_rate_d*IFN_LTns_prod_rate_d+
@@ -364,16 +364,8 @@ double& LT_cells::LT_IFNgamma_production_rate()
   }
 
 
-const double& LT_cells::LT_IFNgamma_production_rate() const
-   {
-      double sum=LTns_d*percentage_IFN_LTns_prod_rate_d*IFN_LTns_prod_rate_d+
-               LT0_d*percentage_IFN_LTns_prod_rate_d*IFN_LTns_prod_rate_d+
-               LTbo_d*percentage_IFN_LTbo_prod_rate_d*IFN_LTbo_prod_rate_d+
-               LTbl_d*percentage_IFN_LTbl_prod_rate_d*IFN_LTbl_prod_rate_d;
-      return sum;
-  }
 
-double& LT_cells::percentage_LT_IFN_production()
+double LT_cells::percentage_LT_IFN_production() const
    {
       double sum=LTns_d*percentage_IFN_LTns_prod_rate_d+
                LT0_d*percentage_IFN_LTns_prod_rate_d+
@@ -382,16 +374,8 @@ double& LT_cells::percentage_LT_IFN_production()
       return sum;
   }
 
-const double& LT_cells::percentage_LT_IFN_production() const
-   {
-      double sum=LTns_d*percentage_IFN_LTns_prod_rate_d+
-               LT0_d*percentage_IFN_LTns_prod_rate_d+
-               LTbo_d*percentage_IFN_LTbo_prod_rate_d+
-               LTbl_d*percentage_IFN_LTbl_prod_rate_d;
-      return sum;
-  }
 
-double& LT_cells::TNF_production_rate()
+double LT_cells::TNF_production_rate() const
    {
       double sum=LTns_d*percentage_TNF_LTns_prod_rate_d*TNF_LTns_prod_rate_d+
                  LT0_d*percentage_TNF_LTns_prod_rate_d*TNF_LTns_prod_rate_d+
@@ -400,16 +384,8 @@ double& LT_cells::TNF_production_rate()
       return sum;
   }
 
-const double& LT_cells::TNF_production_rate() const
-   {
-      double sum=LTns_d*percentage_TNF_LTns_prod_rate_d*TNF_LTns_prod_rate_d+
-               LT0_d*percentage_TNF_LTns_prod_rate_d*TNF_LTns_prod_rate_d+
-               LTbo_d*percentage_TNF_LTbo_prod_rate_d*TNF_LTbo_prod_rate_d+
-               LTbl_d*percentage_TNF_LTbl_prod_rate_d*TNF_LTbl_prod_rate_d;
-      return sum;
-  }
 
-double& LT_cells::percentage_LT_TNF_production()
+double LT_cells::percentage_LT_TNF_production() const
    {
       double sum=LTns_d*percentage_TNF_LTns_prod_rate_d+
                LT0_d*percentage_TNF_LTns_prod_rate_d+
@@ -418,14 +394,7 @@ double& LT_cells::percentage_LT_TNF_production()
       return sum;
   }
 
-const double& LT_cells::percentage_LT_TNF_production() const
-   {
-      double sum=LTns_d*percentage_TNF_LTns_prod_rate_d+
-               LT0_d*percentage_TNF_LTns_prod_rate_d+
-               LTbo_d*percentage_TNF_LTbo_prod_rate_d+
-               LTbl_d*percentage_TNF_LTbl_prod_rate_d;
-      return sum;
-  }
+
 
 /// 5) Tymidine incorporated by LT cells
 double& LT_cells::LT_TymTr_incorporated()
@@ -440,15 +409,11 @@ double& LT_cells::LT_TymTr_incorporated()
 
 
 /// 6) Percentage of LT cells undergoing apoptosis
-       double& LT_cells::percentage_apoptotic_LT_cells()
+       double LT_cells::percentage_apoptotic_LT_cells() const
        { double sum=100.0*Total_cells_in_apoptosis_d/num_LT();
          return sum;
        }
 
-       const double& LT_cells::percentage_apoptotic_LT_cells() const
-       { double sum=100.0*Total_cells_in_apoptosis_d/num_LT();
-         return sum;
-       }
 
 
 
@@ -586,12 +551,13 @@ LT_cells::LT_cells(const Parameters& p, const Treatment& t):
 
     /// 11) LT exh rate
         /*25*/  LT_exh_rate_d(p.mean("LT_exh_rate")),
+       /*26*/  t_apop_meas_d(t.t_apop_meas_d),
+
 
     /// 12) apoptosis related parameters
         /*27*/  t_duration_apoptosis_d(p.mean("t_duration_apoptosis"))
 
 
 {}
-
 
 

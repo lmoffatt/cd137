@@ -14,8 +14,7 @@ class NK_cells
     public:
     ~NK_cells(){}
 /// 1) Total NK cells
-       double& num_NK();
-       const double& num_NK() const;
+       double num_NK() const;
 
 /// 2) number of cells (6)
        /// Number of native cells
@@ -43,25 +42,20 @@ class NK_cells
        const double& NKexh()const;
 
 /// 3) percentage of cells expressing receptor
-       double& percentage_NK_expressing_receptor ();
-       const double& percentage_NK_expressing_receptor () const;
+       double percentage_NK_expressing_receptor () const;
 
 /// 4) Cytokines production rate and producing cells (4)
         /// Total production of interpheron gamma
-        double& NK_IFNgamma_production_rate();
-        const double& NK_IFNgamma_production_rate() const;
+        double NK_IFNgamma_production_rate() const;
 
         /// Total production of Tumor Necrosis Factor
-        double& NK_TNF_production_rate();
-        const double& NK_TNF_production_rate() const;
+        double NK_TNF_production_rate() const;
 
         /// Percentage of cells producing IFN
-        double& percentage_NK_producing_IFN ();
-        const double& percentage_NK_producing_IFN () const;
+        double percentage_NK_producing_IFN () const;
 
         /// Percentage of cells producing TNF
-        double& percentage_NK_producing_TNF ();
-        const double& percentage_NK_producing_TNF () const;
+        double percentage_NK_producing_TNF () const;
 
         /// 5) Percentage of activated cells expressing receptor
                 double& NKa_expressing_receptor();
@@ -86,7 +80,8 @@ class NK_cells
 
         NK_cells(const Parameters& p, const Treatment& t);
 
-        void update(double time_step,const Media& m, const APC_cells& APC,const LT_cells& LT);
+        void update(double& time_step,const Media& m, const APC_cells& APC,const LT_cells& LT);
+
 
         NK_cells ( /// 1) Init number of NK
                    /*1*/ double init_NK_,

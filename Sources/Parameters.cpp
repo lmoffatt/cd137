@@ -271,17 +271,15 @@ std::vector<std::string> Parameters::commonNames(const Parameters& other)const
 
 Parameters Parameters::randomSample()const
 {
-    Parameters sample;
-    for (std::map<std::string,std::size_t>::const_iterator it=name_.begin();
-         it!=name_.end();
-         ++it)
+    Parameters sample(*this);
+    for (std::size_t i=0; i<pMean_.size();i++)
 
     {
-        double m=pow(10,randNormal(pMean(it->first),pStd(it->first)));
-        sample.push_back_dB(it->first,m,0);
-
+        sample.pMean_[i]=randNormal(pMean_[i],pStd_[i]);
+        sample.pStd_[i]=0;
     }
-    return sample;
+    Parameters s(sample);
+    return s;
 
 }
 

@@ -15,8 +15,7 @@ class LT_cells
 
     ~LT_cells(){}
 /// 1) Total LT cells
-        double& num_LT();
-        const double& num_LT()const;
+        double num_LT() const;
 
 /// 2) números de células (6)
        /// Number of LT non Ag specific
@@ -40,33 +39,33 @@ class LT_cells
            const double& LTexh()const;
 
 /// 3) Percentage of cell expressing the receptor
-       double& LT_percentage_cell_expressing_receptor ();
-       const double& LT_percentage_cell_expressing_receptor() const;
+       double LT_percentage_cell_expressing_receptor () const;
+
 
 /// 4) Cytokines production rate and producing cells (6)
     /// Total production of interpheron gamma by LT
-        double& LT_IFNgamma_production_rate();
-        const double& LT_IFNgamma_production_rate() const;
+        double LT_IFNgamma_production_rate() const;
+
     /// Total production of Tumor Necrosis alpha
-        double& TNF_production_rate();
-        const double& TNF_production_rate() const;
+        double TNF_production_rate() const;
+
     /// percentage of LT cells that produce TNF
-        double& percentage_LT_IFN_production();
-        const double& percentage_LT_IFN_production() const;
+        double percentage_LT_IFN_production() const;
+
     /// percentage of LT cells that produce TNF
-        double& percentage_LT_TNF_production();
-        const double& percentage_LT_TNF_production() const;
+        double percentage_LT_TNF_production() const;
+
 
 /// 5) Tymidine incorporated by LT cells
        double& LT_TymTr_incorporated();
        const double& LT_TymTr_incorporated()const;
 
 /// 6) Percentage of LT cells undergoing apoptosis
-       double& percentage_apoptotic_LT_cells ();
-       const double& percentage_apoptotic_LT_cells() const;
+       double percentage_apoptotic_LT_cells () const;
 
 
-        void update(double time_step, double t_run, const Media& m, const APC_cells& a, const NK_cells& NK);
+
+        void update(double& time_step, double t_run, const Media& m, const APC_cells& APC, const NK_cells& NK);
 
 
         LT_cells(const Parameters& p, const Treatment& t);

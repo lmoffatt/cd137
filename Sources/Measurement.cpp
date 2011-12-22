@@ -13,7 +13,7 @@ double Measurement::Measure()const
 
 double Measurement::StdError()const
 {
-    return measure_;
+    return stdError_;
 }
 
 
@@ -37,7 +37,8 @@ Measurement& Measurement::setMeasurement(double newMeasure)
 
 Measurement::Measurement(const Measurement& other):
     time_(other.time_),
-    measure_(other.measure_){}
+    measure_(other.measure_),
+    stdError_(other.stdError_){}
 
 Measurement& Measurement::operator=(const Measurement& other)
 {
@@ -51,11 +52,13 @@ Measurement& Measurement::operator=(const Measurement& other)
 
 Measurement::Measurement():
     time_(),
-    measure_(){}
+    measure_(),
+    stdError_(){}
 
 void  swap(Measurement& one, Measurement& two)
 {
    std::swap(one.time_,two.time_);
    std::swap(one.measure_,two.measure_);
+   std::swap(one.stdError_,two.stdError_);
 }
 

@@ -74,7 +74,7 @@ private:
 
 
     double currSS_;
-    double newSS_;
+    double newSSW_;
     double newSS0_;
     Parameters currParam_;
     Parameters newParam_;
@@ -86,8 +86,8 @@ private:
 
     std::vector< std::vector< double> > J_;
     std::vector<double> G_;
-    std::vector< std::vector<double> > JTJ_;
-    std::vector< std::vector<double> > JTJinv_;
+    std::vector< std::vector<double> > JTWJ_;
+    std::vector< std::vector<double> > JTWJinv_;
 
     std::vector<double> d_;
 

@@ -2,6 +2,7 @@
 #include "Includes/APC.h"
 #include "Includes/NK.h"
 #include "Includes/LT.h"
+#include <cmath>
 
 NK_cells::NK_cells(/// 1) Init number of NK
                    /*1*/ double init_NK_,
@@ -343,18 +344,18 @@ NK_cells::operator=(const NK_cells& other)
 
 
 /// main step for the NK cells(NK cell dynamics)
-void NK_cells::update(double time_step,const Media& m,const APC_cells& APC, const LT_cells& LT)
+void NK_cells::update(double& time_step,const Media& m, const APC_cells& APC,const LT_cells& LT)
 {
-
     /// we update each subpopulation of cells independently and we take into account the transition from one state to the other
 
     /// the number of free cells (no Ag) they proliferate according and some of them are "lost" since they activate
-    NK0_d+=(NK0_d*NK0_proliferation_rate_d-NK0_d*NK0_apop_rate_d-
+
+    double NK0_delta=(NK0_d*NK0_proliferation_rate_d-NK0_d*NK0_apop_rate_d-
             NK0_d*m.Ag()*KaNK_d*((APC.APCa()+(APC.APCbo_TNF_production_rate()/APC.APCa_TNF_production_rate())+APC.APCbl())/
                                 (APC.APCa()+(APC.APCbo_TNF_production_rate()/APC.APCa_TNF_production_rate())+APC.APCbl()+KsAPC_NK_d)))*time_step;
-
+    NK0_d+=NK0_delta;
     /** activated NK cells dynamics*/
-    NKa_d+=(NKa_proliferation_rate_d*NKa_d+
+    double NKa_delta=(NKa_proliferation_rate_d*NKa_d+
             NK0_d*m.Ag()*KaNK_d*(APC.APCa()+ APC.APCbl()+ APC.APCbo_Ab() + (APC.APCbo_TNF_production_rate()/APC.APCa_TNF_production_rate())*APC.APCbl())/
             (APC.APCa()+ APC.APCbl()+ APC.APCbo_Ab() + (APC.APCbo_TNF_production_rate()/APC.APCa_TNF_production_rate())*APC.APCbl()+KsAPC_NK_d)-
            NK_NK_d*NKa_d*NKa_expressing_receptor_d*NKa_d*NKa_expressing_receptor_d-
@@ -363,12 +364,13 @@ void NK_cells::update(double time_step,const Media& m,const APC_cells& APC, cons
            APC.APC_NK()*NKa_d*NKa_expressing_receptor_d*APC.APCbo()-
            NK_Ab_d*NKa_d*NKa_expressing_receptor_d*m.Ab()-NKa_apop_rate_d*NKa_d-
            u_NK_TNF_d*NKa_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d))-NKa_d*NK_exh_d)*time_step;
+    NKa_d+=NKa_delta;
 /// El porcentaje de células productoras de IL-12 está dentro de la constante
 
     /// the cells that have interacted with LT grow accordingly with the number of cells that have internalized the Ag and the
     /// number of LT cells, monocytes and NK expressing the receptor with the same affinity (Monocytes, NK or LT can
     /// interact only with one cell). We are supposing that all activated cells express receptor and ligand.
-    NKbo_d+= (NKbo_d*NKbo_proliferation_rate_d+
+    double NKbo_delta= (NKbo_d*NKbo_proliferation_rate_d+
             NK_NK_d*NKa_d*NKa_expressing_receptor_d*NKa_d*NKa_expressing_receptor_d+
             NK_NK_d*NKa_d*NKa_expressing_receptor_d*NKbo_d+
             APC.APC_NK()*NKa_d*NKa_expressing_receptor_d*APC.APCa()*APC.APCa_expressing_receptor()+
@@ -376,23 +378,28 @@ void NK_cells::update(double time_step,const Media& m,const APC_cells& APC, cons
             NKbo_apop_rate_d*NKbo_d-u_NK_TNF_d*NKbo_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d))-
             NKbo_d*NK_Ab_d*m.Ab()-NKbo_d*NK_exh_d)*time_step;
 
-
+     NKbo_d+=NKbo_delta;
 
     /// NK cells can interact with other cells or with the blocking mAb
-    NKbo_Ab_d+=(NKbo_Ab_d*NKbo_proliferation_rate_d+NKbo_d*NK_Ab_d*m.Ab()-
+
+    double NKbo_Ab_delta=(NKbo_Ab_d*NKbo_proliferation_rate_d+NKbo_d*NK_Ab_d*m.Ab()-
             NKbo_apop_rate_d*NKbo_Ab_d-u_NK_TNF_d*NKbo_Ab_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d))-
             NKbo_Ab_d*NK_exh_d)*time_step;
-
+    NKbo_Ab_d+=NKbo_Ab_delta;
     /// the cells that have interacted with LT get exhausted
-    NKbl_d+=(NKbl_d*NKbl_proliferation_rate_d+NK_Ab_d*NKa_d*NKa_expressing_receptor_d*m.Ab()-
+    double NKbl_delta=(NKbl_d*NKbl_proliferation_rate_d+NK_Ab_d*NKa_d*NKa_expressing_receptor_d*m.Ab()-
             NKbl_apop_rate_d*NKbl_d-u_NK_TNF_d*NKbl_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d))-NKbl_d*NK_exh_d)*time_step;
 
-    NKexh_d=(NKa_d*NK_exh_d+NKbo_d*NK_exh_d+NKbo_Ab_d*NK_exh_d+NKbl_d*NK_exh_d-
+   NKbl_d+=NKbl_delta;
+   double  NKexh_delta=(NKa_d*NK_exh_d+NKbo_d*NK_exh_d+NKbo_Ab_d*NK_exh_d+NKbl_d*NK_exh_d-
              NKexh_apop_rate_d*NKexh_d-u_NK_TNF_d*NKexh_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d)))*time_step;
-
-    if (m.TymidineTriteate()>0)
-        NK_TymTr_incorporated_d+=(NK0_d*NK0_proliferation_rate_d+(NKa_d+NKbl_d)*NKa_proliferation_rate_d+
-                                  (NKbo_d+NKbo_Ab_d)*NKbo_proliferation_rate_d)*m.Prol_TymTr();
+    NKexh_d+=NKexh_delta;
+    double NK_TymTr_incorporated_delta;
+    if (m.TymidineTriteate()>0){
+        NK_TymTr_incorporated_delta=((NK0_d*NK0_proliferation_rate_d+(NKa_d+NKbl_d)*NKa_proliferation_rate_d+
+                                  (NKbo_d+NKbo_Ab_d)*NKbo_proliferation_rate_d)*m.Prol_TymTr())*time_step;
+        NK_TymTr_incorporated_d+=NK_TymTr_incorporated_delta;
+    }
 
 }
 /*
@@ -409,20 +416,14 @@ void NK_cells::reset(const SimParameters& sp,
     NK_TymTr_incorporated_d=0;
  }
 */
-double& NK_cells::num_NK()
-    {
-        double sum=NK0_d+NKa_d+NKbo_d+NKbo_Ab_d+NKbl_d+NKexh_d;
-        return sum;
-    }
-
-const double& NK_cells::num_NK() const
+double NK_cells::num_NK() const
     {
         double sum=NK0_d+NKa_d+NKbo_d+NKbo_Ab_d+NKbl_d+NKexh_d;
         return sum;
     }
 
 
-double& NK_cells::NK_IFNgamma_production_rate()
+double NK_cells::NK_IFNgamma_production_rate() const
     {
         double sum=IFN_NK0_prod_rate_d*NK0_d*percentage_IFN_NK0_prod_rate_d+
                    IFN_NKa_prod_rate_d*(NKa_d+NKbl_d)*percentage_IFN_AgNKa_prod_rate_d+
@@ -430,15 +431,9 @@ double& NK_cells::NK_IFNgamma_production_rate()
         return sum;
     }
 
-const double& NK_cells::NK_IFNgamma_production_rate() const
-    {
-        double sum=IFN_NK0_prod_rate_d*NK0_d*percentage_IFN_NK0_prod_rate_d+
-                   IFN_NKa_prod_rate_d*(NKa_d+NKbl_d)*percentage_IFN_AgNKa_prod_rate_d+
-                   IFN_NKbo_prod_rate_d*(NKbo_d+NKbo_Ab_d)*percentage_IFN_NKbo_prod_rate_d;
-        return sum;
-    }
 
-double& NK_cells::NK_TNF_production_rate()
+
+double NK_cells::NK_TNF_production_rate() const
     {
         double sum=TNF_NK0_prod_rate_d*NK0_d*percentage_TNF_NK0_prod_rate_d+
                    TNF_NKa_prod_rate_d*(NKa_d+NKbl_d)*percentage_TNF_NKa_prod_rate_d+
@@ -446,48 +441,29 @@ double& NK_cells::NK_TNF_production_rate()
         return sum;
     }
 
-const double& NK_cells::NK_TNF_production_rate() const
-    {
-        double sum=TNF_NK0_prod_rate_d*NK0_d*percentage_TNF_NK0_prod_rate_d+
-                   TNF_NKa_prod_rate_d*(NKa_d+NKbl_d)*percentage_TNF_NKa_prod_rate_d+
-                   TNF_NKbo_prod_rate_d*(NKbo_d+NKbo_Ab_d)*percentage_TNF_NKbo_prod_rate_d;
-        return sum;
-    }
 
-double& NK_cells::percentage_NK_expressing_receptor()
-    {
-    double sum=(NK0_expressing_receptor_d*NK0_d+NKa_expressing_receptor_d+NKbo_d+NKbo_Ab_d+NKbl_d)*100/num_NK();
-    return sum;
-    }
-const double& NK_cells::percentage_NK_expressing_receptor() const
+
+double NK_cells::percentage_NK_expressing_receptor() const
     {
     double sum=(NK0_expressing_receptor_d*NK0_d+NKa_expressing_receptor_d+NKbo_d+NKbo_Ab_d+NKbl_d)*100/num_NK();
     return sum;
     }
 
-double& NK_cells::percentage_NK_producing_IFN()
+
+double NK_cells::percentage_NK_producing_IFN() const
    {
     double sum=100*(percentage_IFN_NK0_prod_rate_d*NK0_d+percentage_IFN_AgNKa_prod_rate_d*(NKa_d+NKbl_d)+percentage_IFN_NKbo_prod_rate_d*(NKbo_d+NKbl_d))/num_NK();
     return sum;
    }
 
-const double& NK_cells::percentage_NK_producing_IFN() const
-   {
-    double sum=100*(percentage_IFN_NK0_prod_rate_d*NK0_d+percentage_IFN_AgNKa_prod_rate_d*(NKa_d+NKbl_d)+percentage_IFN_NKbo_prod_rate_d*(NKbo_d+NKbl_d))/num_NK();
-    return sum;
-   }
 
-double& NK_cells::percentage_NK_producing_TNF()
+
+double NK_cells::percentage_NK_producing_TNF() const
    {
     double sum=100*(percentage_TNF_NK0_prod_rate_d*NK0_d+percentage_TNF_NKa_prod_rate_d*(NKa_d+NKbl_d)+percentage_TNF_NKbo_prod_rate_d*(NKbo_d+NKbl_d))/num_NK();
     return sum;
    }
 
-const double& NK_cells::percentage_NK_producing_TNF() const
-   {
-    double sum=100*(percentage_TNF_NK0_prod_rate_d*NK0_d+percentage_TNF_NKa_prod_rate_d*(NKa_d+NKbl_d)+percentage_TNF_NKbo_prod_rate_d*(NKbo_d+NKbl_d))/num_NK();
-    return sum;
-   }
 
 double& NK_cells::NK0()
     {
@@ -702,4 +678,6 @@ const double& NK_cells::NKa_expressing_receptor() const
 /*31*/ NKa_expressing_receptor_d (p.mean_ratio("NKa_Kratio_expressing_receptor")),
 /// 13) Apoptosis rate for TNF
 /*32*/ u_NK_TNF_d (p.mean("u_NK_TNF"))
- {}
+ {
+
+ }

@@ -68,14 +68,18 @@ std::vector<double> Experiment::getData()const
 
 std::vector<double> Experiment::getDataStandardError()const
 {
-    std::vector<double> data;
+    std::vector<double> dataout;
     for (std::size_t i=0; i<results_.size(); i++)
     {
         std::vector<double> datai=Result_i(i).getDataStandardError();
         for (std::size_t j=0;j<datai.size();++j)
-            data.push_back(datai[j]);
-     }
-    return data;
+        {
+            dataout.push_back(datai[j]);
+        }
+     };
+    std::vector<double> d;
+    d=dataout;
+    return d;
 }
 
 

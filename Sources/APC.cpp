@@ -2,6 +2,7 @@
 #include "Includes/APC.h"
 #include "Includes/LT.h"
 #include "Includes/NK.h"
+#include <cmath>
 
 
 APC_cells::APC_cells(/// 1) init number of APC
@@ -317,21 +318,25 @@ void swap(APC_cells& one, APC_cells& other)
 
 
 /// Main step for APC (APC dynamics)
-void APC_cells::update(double time_step,const Media& m, const NK_cells& NK, const LT_cells& LT)
+void APC_cells::update(double& time_step,const Media& m, const NK_cells& NK, const LT_cells& LT)
 {
-        /// we update each subpopulation of cells independently and we take into account the transition from one state to the other
+    /// we update each subpopulation of cells independently and we take into account the transition from one state to the other
 
     /// the number of free cells (no Ag) they proliferate according to the cell concentration (factor proliferation ratio)
     /// and some of them are "lost" since they internalize the Ag
-    APC0_d+=(-APC0_apop_rate_d*APC0_d-
+
+    double APC0_delta=(-APC0_apop_rate_d*APC0_d-
              APC0_d*APC_Ag_d*(m.IFNgamma()/(m.IFNgamma()+ Ksi_d))*(m.TNF()/(m.TNF()+Kst_d))*m.Ag()-
              APC_Ag_d*m.Ag()*APC0_d)*time_step;
 
+    APC0_d+=APC0_delta;
     /** the cells that have internalize the Ag proliferate in the same way than the free
     they grow also by the free cells that internalize the Ag
     they shrink by the cells that interact with the LT cells*/
-    APCa_d+=(APC0_d*APC_Ag_d*(m.IFNgamma()/(m.IFNgamma()+ Ksi_d))*(m.TNF()/(m.TNF()+Kst_d))*m.Ag() +
-            APC_Ag_d*m.Ag()*APC0_d -
+
+    double APCa_delta_pos=(APC0_d*APC_Ag_d*(m.IFNgamma()/(m.IFNgamma()+ Ksi_d))*(m.TNF()/(m.TNF()+Kst_d))*m.Ag()+
+                            APC_Ag_d*m.Ag()*APC0_d )*time_step;
+    double APCa_delta_neg= (
             APCa_apop_rate_d*APCa_d -
             u_APC_TNF_d*APCa_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d))-
             APC_APC_d*APCa_d*APCa_expressing_receptor_d*APCa_d*APCa_expressing_receptor_d-
@@ -341,12 +346,13 @@ void APC_cells::update(double time_step,const Media& m, const NK_cells& NK, cons
             APC_LT_1_d*LT.LT0()*APCa_d*APCa_expressing_receptor_d/(APCa_d*APCa_expressing_receptor_d+KsAPC_LT_d)-
             APC_Ab_d*APCa_d*APCa_expressing_receptor_d*m.Ab()*APCa_d-APCa_d*APC_exh_d)*time_step;
 
-
+    APCa_d+=APCa_delta_pos+APCa_delta_neg;
     /// the cells that have interacted with LT grow accordingly with the number of cells that have internalized the Ag and the
     /// number of APC cells expressing the ligand and receptor and bound with monocytes, NK or LT cells with the same rate (Monocytes, NK or LT can
     /// interact only with one cell). We are supposing that all activated cells express receptor and ligand. We are supposing that probabiliities of
     /// interactionts between cells are similar.
-    APCbo_d+=(APC_APC_d*APCa_d*APCa_expressing_receptor_d*APCa_d*APCa_expressing_receptor_d+
+
+    double APCbo_delta=(APC_APC_d*APCa_d*APCa_expressing_receptor_d*APCa_d*APCa_expressing_receptor_d+
             APC_APC_d*APCa_d*APCa_expressing_receptor_d*APCbo_d+
             APC_NK_d*APCa_d*APCa_expressing_receptor_d*NK.NKa()*NK.NKa_expressing_receptor()+
             APC_NK_d*APCa_d*APCa_expressing_receptor_d*NK.NKbo()+
@@ -356,32 +362,41 @@ void APC_cells::update(double time_step,const Media& m, const NK_cells& NK, cons
             u_APC_TNF_d*APCbo_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d))-
             APCbo_d*APC_exh_d - APC_Ab_d*APCbo_d*m.Ab())*time_step;
 
-
+    APCbo_d+=APCbo_delta;
     /// the cells that were signalizeb by receptor and binds the Ab
-    APCbo_Ab_d+= (APC_Ab_d*APCbo_d*m.Ab() +
+
+
+    double APCbo_Ab_delta= (APC_Ab_d*APCbo_d*m.Ab() +
                  APCbo_Ab_d*APC_bound_proliferation_rate_d-
                  APCbo_Ab_d*APCbo_apop_rate_d-
                  u_APC_TNF_d*APCbo_Ab_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d))-
                  APCbo_Ab_d*APC_exh_d)*time_step;
 
 
-
+    APCbo_Ab_d+=APCbo_Ab_delta;
     /// the cells that are blocked
-    APCbl_d+= (APC_Ab_d*APCa_d*APCa_expressing_receptor_d*m.Ab()-
+
+    double APCbl_delta= (APC_Ab_d*APCa_d*APCa_expressing_receptor_d*m.Ab()-
               APCbo_apop_rate_d*APCbl_d-
               u_APC_TNF_d*APCbl_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d))-
               APCbl_d*APC_exh_d)*time_step;
-
+    APCbl_d+=APCbl_delta;
     /// the cells that are exhausted
-    APCexh_d+= (APCa_d*APC_exh_d +
+
+    double APCexh_delta= (APCa_d*APC_exh_d +
                 APCbo_d*APC_exh_d +
                 APCbo_Ab_d*APC_exh_d +
                 APCbl_d*APC_exh_d -
-                APCexh_apop_rate_d-
-                u_APC_TNF_d*APCbo_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d)))*time_step;
-    if (m.TymidineTriteate()>0)
-        APC_TymTr_incorporated_d+=(APCbo_d+APCbo_Ab_d)*APC_bound_proliferation_rate_d*m.Prol_TymTr();
+                APCexh_apop_rate_d*APCexh_d-
+                u_APC_TNF_d*APCexh_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d)))*time_step;
 
+    APCexh_d+=APCexh_delta;
+double APC_TymTr_incorporated_delta;
+    if (m.TymidineTriteate()>0)
+    {
+       APC_TymTr_incorporated_delta=((APCbo_d+APCbo_Ab_d)*APC_bound_proliferation_rate_d*m.Prol_TymTr())*time_step;
+       APC_TymTr_incorporated_d+=APC_TymTr_incorporated_delta;
+    }
 
 }
 /// Reset number of APC
@@ -399,17 +414,13 @@ void APC_cells::reset(const SimParameters& sp,
  }
  */
 /// 1) Total number of cells
-double& APC_cells::num_APC()
+double APC_cells::num_APC() const
     {
         double sum=APC0_d+APCa_d+APCbo_d+APCbo_Ab_d+APCbl_d+APCexh_d;
         return sum;
     }
 
-const double& APC_cells::num_APC() const
-    {
-        double sum=APC0_d+APCa_d+APCbo_d+APCbo_Ab_d+APCbl_d+APCexh_d;
-        return sum;
-    }
+
 /// 2) number of cells (6)
 double& APC_cells::APC0()
     {
@@ -443,7 +454,7 @@ const double& APC_cells::APCbo()const
 
 double& APC_cells::APCbo_Ab()
     {
-        return APCbo_d;
+        return APCbo_Ab_d;
     }
 
 const double& APC_cells::APCbo_Ab()const
@@ -475,12 +486,7 @@ const double& APC_cells::APCexh() const
 
 
 /// 3) Percentage of cells expressing receptor
-double& APC_cells::percentage_cell_expressing_receptor()
-    {
-       double sum=100*(APC0_d*APC0_expressing_receptor_d+APCa_d*APCa_expressing_receptor_d+APCbo_d+APCbo_Ab_d+APCbl_d)/num_APC();
-       return sum;
-    }
-const double& APC_cells::percentage_cell_expressing_receptor()const
+double APC_cells::percentage_cell_expressing_receptor() const
     {
        double sum=100*(APC0_d*APC0_expressing_receptor_d+APCa_d*APCa_expressing_receptor_d+APCbo_d+APCbo_Ab_d+APCbl_d)/num_APC();
        return sum;
@@ -488,30 +494,15 @@ const double& APC_cells::percentage_cell_expressing_receptor()const
 
 /// 4) Cytokines production rate and producing cells (6)
 
-double& APC_cells::APC_IFNgamma_production_rate()
+double APC_cells::APC_IFNgamma_production_rate() const
 {
         double sum=APC0_d*IFN_APC0_prod_rate_d*percentage_IFN_APC0_prod_rate_d+
                   (APCa_d+APCbl_d)*IFN_APCa_prod_rate_d*percentage_IFN_APCa_prod_rate_d+
                   (APCbo_d+APCbo_Ab_d)*IFN_APCbo_prod_rate_d*percentage_IFN_APCbo_prod_rate_d;
         return sum;
     }
-const double& APC_cells::APC_IFNgamma_production_rate() const
-    {
-        double sum=APC0_d*IFN_APC0_prod_rate_d*percentage_IFN_APC0_prod_rate_d+
-                  (APCa_d+APCbl_d)*IFN_APCa_prod_rate_d*percentage_IFN_APCa_prod_rate_d+
-                  (APCbo_d+APCbo_Ab_d)*IFN_APCbo_prod_rate_d*percentage_IFN_APCbo_prod_rate_d;
-        return sum;
-    }
 
-double& APC_cells::APC_TNF_production_rate()
-    {
-        double sum=APC0_d*TNF_APC0_prod_rate_d*percentage_TNF_APC0_prod_rate_d+
-                  (APCa_d+APCbl_d)*TNF_APCa_prod_rate_d*percentage_TNF_APCa_prod_rate_d+
-                  (APCbo_d+APCbo_Ab_d)*TNF_APCbo_prod_rate_d*percentage_TNF_APCbo_prod_rate_d;
-        return sum;
-    }
-
-const double& APC_cells::APC_TNF_production_rate() const
+double APC_cells::APC_TNF_production_rate() const
     {
         double sum=APC0_d*TNF_APC0_prod_rate_d*percentage_TNF_APC0_prod_rate_d+
                   (APCa_d+APCbl_d)*TNF_APCa_prod_rate_d*percentage_TNF_APCa_prod_rate_d+
@@ -520,27 +511,19 @@ const double& APC_cells::APC_TNF_production_rate() const
     }
 
 
-double& APC_cells::percentage_APC_producing_IFN()
-    {
-       double sum=100*(percentage_IFN_APC0_prod_rate_d*APC0_d+percentage_IFN_APCa_prod_rate_d*(APCa_d+APCbl_d)+percentage_IFN_APCbo_prod_rate_d*(APCbo_d+APCbo_Ab_d))/num_APC();
-       return sum;
-    }
-const double& APC_cells::percentage_APC_producing_IFN() const
+double APC_cells::percentage_APC_producing_IFN() const
     {
        double sum=100*(percentage_IFN_APC0_prod_rate_d*APC0_d+percentage_IFN_APCa_prod_rate_d*(APCa_d+APCbl_d)+percentage_IFN_APCbo_prod_rate_d*(APCbo_d+APCbo_Ab_d))/num_APC();
        return sum;
     }
 
-double& APC_cells::percentage_APC_producing_TNF()
+
+double APC_cells::percentage_APC_producing_TNF() const
     {
        double sum=100*(percentage_TNF_APC0_prod_rate_d*APC0_d+percentage_TNF_APCa_prod_rate_d*(APCa_d+APCbl_d)+percentage_TNF_APCbo_prod_rate_d*(APCbo_d+APCbo_Ab_d))/num_APC();
        return sum;
     }
-const double& APC_cells::percentage_APC_producing_TNF() const
-    {
-       double sum=100*(percentage_TNF_APC0_prod_rate_d*APC0_d+percentage_TNF_APCa_prod_rate_d*(APCa_d+APCbl_d)+percentage_TNF_APCbo_prod_rate_d*(APCbo_d+APCbo_Ab_d))/num_APC();
-       return sum;
-    }
+
 
 /// APCa TNF production rate
 double& APC_cells::APCa_TNF_production_rate()
@@ -745,7 +728,7 @@ APC_cells::APC_cells(const Parameters& p, const Treatment& t):
     /// 5)Percentages of TNF productions of each type of APC
     /*11*/  percentage_TNF_APC0_prod_rate_d(p.mean_ratio("Kpercentage_TNF_APC0_prod_rate")),
     /*12*/  percentage_TNF_APCa_prod_rate_d(p.mean_ratio("Kpercentage_TNF_APCa_prod_rate")),
-    /*13*/  percentage_TNF_APCbo_prod_rate_d(p.mean("Kpercentage_TNF_APCbo_prod_rate")),
+    /*13*/  percentage_TNF_APCbo_prod_rate_d(p.mean_ratio("Kpercentage_TNF_APCbo_prod_rate")),
 
 
     /// 6) Proliferation rates
@@ -778,8 +761,8 @@ APC_cells::APC_cells(const Parameters& p, const Treatment& t):
     /*30*/  Kst_d(p.mean("APC_Kst")),
 
     /// 12) Percentages of cell expressing receptor
-    /*31*/  APC0_expressing_receptor_d(p.mean("APC0_Kratio_expressing_receptor")),
-    /*32*/  APCa_expressing_receptor_d(p.mean("APCa_Kratio_expressing_receptor")),
+    /*31*/  APC0_expressing_receptor_d(p.mean_ratio("APC0_Kratio_expressing_receptor")),
+    /*32*/  APCa_expressing_receptor_d(p.mean_ratio("APCa_Kratio_expressing_receptor")),
 
     /// 13) Apoptosis rate for TNF
     /*33*/  u_APC_TNF_d(p.mean("u_APC_TNF"))

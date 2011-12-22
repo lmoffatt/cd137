@@ -64,18 +64,24 @@ public:
 private:
     std::vector<Measurement> TNF_;
     std::vector<Measurement> IFN_;
+
     std::vector<Measurement> APC_expression_;
     std::vector<Measurement> NK_expression_;
     std::vector<Measurement> LT_expression_;
+
     std::vector<Measurement> APC_IFNg_;
     std::vector<Measurement> APC_TNFa_;
+
     std::vector<Measurement> NK_IFNg_;
     std::vector<Measurement> NK_TNFa_;
+
     std::vector<Measurement> LT_IFNg_;
     std::vector<Measurement> LT_TNFa_;
     std::vector<Measurement> LT_Apoptosis_;
+
     std::vector<Measurement> Proliferation_;
     std::vector<Measurement> num_cells_;
+
     double duration_;
 
 
