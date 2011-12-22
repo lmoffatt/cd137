@@ -51,11 +51,7 @@ class Media
              const double& Tymidine_incorporated()const;
 
 
-        void update(double time_step,
-                    double t_run,
-                    const APC_cells& APC_ ,
-                    const NK_cells& NK,
-                    const LT_cells& LT_);
+        void update(double& time_step,double t_run,const APC_cells& APC ,const NK_cells& NK,const LT_cells& LT);
 
         Media(double IFNgamma_init,
               double TNF_init,
@@ -65,8 +61,7 @@ class Media
               double init_num_cells,
               double init_Ag,
               double init_Ab,
-              double TymidineTriteate_init,
-              double Prol_TymTr_init
+             double Prol_TymTr_init
               );
 
         Media(const Parameters& sp,

@@ -216,7 +216,6 @@ void Bayes()
     /// Media
     /*1*/ sp.TNF_deg_=0.5;
     /*2*/ sp.IFN_deg_=0.5;
-    /*3*/ sp.TymidineTriteate_=0.5;
     /*4*/ sp.Prol_TymTr_=0.5;
 
 
@@ -269,21 +268,24 @@ void BayesParameters()
     med.Ab=0.0;
     med.sim_duration_d=120;
     med.time_step_d=1.0/120;
-    med.init_cells=1e6;
+    med.init_cells=1.0e6;
+    med.t_apop_meas_d=119;
 
     Treatment Mtb;
     Mtb.Ag=10.0;
     Mtb.Ab=0.0;
     Mtb.sim_duration_d=120;
     Mtb.time_step_d=1.0/120;
-    Mtb.init_cells=1e6;
+    Mtb.init_cells=1.0e6;
+    Mtb.t_apop_meas_d=119;
 
     Treatment block;
     block.Ag=10.0;
     block.Ab=10.0;
     block.sim_duration_d=120;
-    block.time_step_d=1.0/12;
-    block.init_cells=1e6;
+    block.time_step_d=1.0/120;
+    block.init_cells=1.0e6;
+    block.t_apop_meas_d=119;
 
     Results MediaRes ("media");
     Results MtbRes("mtb");
@@ -293,26 +295,48 @@ void BayesParameters()
     E.push_back(Mtb,MtbRes);
     E.push_back(med,MediaRes);
 
+    std::cout<<E;
+    char ch;
+  //  std::cin>>ch;
+
     Parameters sp=Cell_simulator::getStandardParameters();
 
 
     Cell_simulator cell(sp, E);
     Parameters perturbedPar(sp);
     perturbedPar.applyParameters(sp.randomSample(0.0001));
-    perturbedPar.scaleError(0.00001);
+    perturbedPar.scaleError(0.001);
 
     Experiment simulExp=cell.Simulate(perturbedPar ,E);
+
+    cell.applyParameters(sp,E.Treatment_i(0));
+    cell.run();
+    cell.applyParameters(sp,E.Treatment_i(1));
+    cell.run();
+    cell.applyParameters(sp,E.Treatment_i(2));
+    cell.run();
+    std::string filename="experiment.txt";
+    std::ofstream f;
+    f.open(filename.c_str(),std::ios_base::app);
+
+
     Experiment sim=cell.Simulate(sp,E);
+    f<<sim;
+    f.close();
 
-
-
-    std::cout<<E.Result_i(0);
-
+    for (std::size_t i=0; i<simulExp.size();i++)
+    {
+        std::cout<<E.Result_i(i);
+    std::cout<<simulExp.Result_i(i);
+    std::cout<<sim.Result_i(i);
+    char c;
+   // std::cin >>c;
+}
      //Modificar num iteracines
     //simulExp: simulado  E:experimental
     //OptimizationResults O=cell.Optimize(sp,sp,simulExp,1,500);
 
-     cell.Optimize(perturbedPar,sim);
+     cell.Optimize(sp,E);
 
 
 
@@ -325,13 +349,8 @@ void BayesParameters()
 */
 
 
-    std::ofstream f;
-    f.open("resultssim.txt");
 
-    f.close();
 }
-
-
 
 
 

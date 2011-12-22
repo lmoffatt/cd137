@@ -1,3 +1,4 @@
+#include <vector>
 #include "BayesIteration.h"
 
  std::vector<double> ABC_data::getDataWeigth()
@@ -7,7 +8,8 @@
     {
         w[i]=1.0/w[i]/w[i];
     }
-    return w;
+    std::vector<double> wW(w);
+    return wW;
 }
 
 ABC_data::~ABC_data(){
@@ -101,7 +103,8 @@ Parameters BayesIteration::Posterior()const
         std::vector<double> param=priors_.back().pMeans();
 
       data.insert(data.end(),param.begin(),param.end());
-       return data;
+      std::vector<double> d(data);
+       return d;
 
 
     }
@@ -113,7 +116,8 @@ Parameters BayesIteration::Posterior()const
         std::vector<double> param=priors_.back().pStds();
 
        se.insert(se.end(),param.begin(),param.end());
-       return se;
+       std::vector<double> o(se);
+       return o;
 
     }
 
@@ -129,6 +133,7 @@ Parameters BayesIteration::Posterior()const
 
         for (std::size_t i=0; i<numSeeds_; i++)
         {
+            Parameters p=priors_.back();
             Parameters initParam=priors_.back().randomSample();
 
             LevenbergMarquardtParameters LM(this,

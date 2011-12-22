@@ -2,6 +2,7 @@
 #include "Includes/APC.h"
 #include "Includes/LT.h"
 #include "Includes/NK.h"
+#include <cmath>
 
 Media::Media(double IFNgamma_init,
              double TNF_init,
@@ -11,7 +12,6 @@ Media::Media(double IFNgamma_init,
              double init_num_cells,
              double init_Ag,
              double init_Ab,
-              double TymidineTriteate_init,
              double Prol_TymTr_init
                 ):
 
@@ -23,7 +23,7 @@ Media::Media(double IFNgamma_init,
     num_cells_d(init_num_cells),
     Ag_d(init_Ag),
     Ab_d(init_Ab),
-    TymidineTriteate_d(TymidineTriteate_init),
+    TymidineTriteate_d(0),
     Prol_TymTr_d(Prol_TymTr_init)
 
    {}
@@ -57,7 +57,7 @@ Media::Media(const Parameters& p,
     num_cells_d(tr.init_cells),
     Ag_d(tr.Ag),
     Ab_d(tr.Ab),
-    TymidineTriteate_d(p.mean("TymidineTriteate")),
+    TymidineTriteate_d(0),
     Prol_TymTr_d(p.mean("Prol_TymTr")){}
 
 Media::Media(const Media& other):
@@ -202,28 +202,36 @@ const double& Media::Tymidine_incorporated()const
 
 /// Media Main step of the simulation
 /// it updates the state of the media and the cells populations for a given time period
-void Media::update(double time_step,double t_run,const APC_cells& APC, const NK_cells& NK, const LT_cells& LT)
+void Media::update(double& time_step,double t_run,const APC_cells& APC ,const NK_cells& NK,const LT_cells& LT)
 {
+
     /// IFN is increased by the production rate of each population;
-    IFNgamma_d+=APC.APC_IFNgamma_production_rate()*time_step+
-                NK.NK_IFNgamma_production_rate()*time_step +
-                LT.LT_IFNgamma_production_rate()*time_step -
-                IFNgamma_d*time_step*IFN_degradation();
+
+    double IFNgamma_delta=(APC.APC_IFNgamma_production_rate()+
+                NK.NK_IFNgamma_production_rate()+
+                LT.LT_IFNgamma_production_rate()-
+                IFNgamma_d*IFN_degradation())*time_step;
+    IFNgamma_d+=IFNgamma_delta;
     /// TNF is increased by the production rate of each population;
-    TNF_d+=APC.APC_TNF_production_rate()*time_step+
-           NK.NK_TNF_production_rate()*time_step +
-           LT.TNF_production_rate()*time_step -
-           TNF_d*time_step*TNF_degradation();
+
+    double TNF_delta=(APC.APC_TNF_production_rate()+
+           NK.NK_TNF_production_rate()+
+           LT.TNF_production_rate()-
+           TNF_d*TNF_degradation())*time_step;
+    TNF_d+=TNF_delta;
     /// The total number of cells is the adittion of APC + NK + LT
     num_cells_d=APC.num_APC()+NK.num_NK()+LT.num_LT();
-
     /// Tymidine Pulse at 114
-     if (t_run<114)
+
+    double Tymidine_incorporated_delta;
+
+    if (t_run<104)
      {TymidineTriteate_d=0;}
-     else {TymidineTriteate_d=1;}
+      else
+    {TymidineTriteate_d=1;}
 
-     Tymidine_incorporated_d=APC.APC_TymTr_incorporated()+NK.NK_TymTr_incorporated()+LT.LT_TymTr_incorporated();
-
+     Tymidine_incorporated_delta=APC.APC_TymTr_incorporated()+NK.NK_TymTr_incorporated()+LT.LT_TymTr_incorporated();
+    Tymidine_incorporated_d+=Tymidine_incorporated_delta;
 }
 
 

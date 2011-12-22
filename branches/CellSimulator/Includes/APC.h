@@ -16,8 +16,8 @@ class APC_cells
 {
     public:
  /// 1) Total APC cells
-        double& num_APC();
-        const double& num_APC()const;
+        double num_APC() const;
+
 
 
 /// 2) números de células (6)
@@ -46,25 +46,20 @@ class APC_cells
         const double& APCexh()const;
 
 /// 3) Percentage of cells exprssing receptor
-        double& percentage_cell_expressing_receptor ();
-        const double& percentage_cell_expressing_receptor() const;
+        double percentage_cell_expressing_receptor () const;
 
 /// 4) Cytokines production rate and producing cells (6)
         /// Total production of interpheron gamma
-        double& APC_IFNgamma_production_rate();
-        const double& APC_IFNgamma_production_rate()  const;
+        double APC_IFNgamma_production_rate() const;
 
         /// Total production of Tumor Necrosis Factor
-        double& APC_TNF_production_rate();
-        const double& APC_TNF_production_rate()const;
+        double APC_TNF_production_rate() const;
 
         /// Percentage of cells producing IFN
-        double& percentage_APC_producing_IFN();
-        const double& percentage_APC_producing_IFN() const;
+        double percentage_APC_producing_IFN() const;
 
         /// Percentage of cells producing TNF
-        double& percentage_APC_producing_TNF ();
-        const double& percentage_APC_producing_TNF() const;
+        double percentage_APC_producing_TNF () const;
 
         /// APCa TNF production rate
         double& APCa_TNF_production_rate ();
@@ -78,6 +73,11 @@ class APC_cells
 /// 5) Percentage of activated cells expressing receptor
         double& APCa_expressing_receptor();
         const double& APCa_expressing_receptor () const;
+
+
+        bool withinThreshold(const APC_cells& other,double threshold)const;
+
+
 
 
 /// 6) Union rates of APC (5)
@@ -109,7 +109,7 @@ class APC_cells
         double& APC_TymTr_incorporated();
         const double& APC_TymTr_incorporated()const;
 
-        void update(double time_step,const Media& m, const NK_cells& NK,const LT_cells& LT);
+        void update(double& time_step,const Media& m, const NK_cells& NK,const LT_cells& LT);
 
 
         APC_cells(const Parameters& p, const Treatment& t);

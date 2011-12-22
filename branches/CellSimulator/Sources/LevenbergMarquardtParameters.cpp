@@ -39,8 +39,8 @@ LevenbergMarquardtParameters::LevenbergMarquardtParameters(
     newYfit0_(currYfit_),
     J_(std::vector< std::vector< double> >(nData_,std::vector<double>(nPar_))),
     G_(currParam_.size()),
-    JTJ_(std::vector< std::vector<double> > (nPar_,std::vector<double>(nPar_))),
-    JTJinv_(JTJ_),
+    JTWJ_(std::vector< std::vector<double> > (nPar_,std::vector<double>(nPar_))),
+    JTWJinv_(JTWJ_),
     d_(currParam_.size()),
     optimParam_(currParam_),
     surpassIter_(false),
@@ -88,8 +88,8 @@ LevenbergMarquardtParameters::LevenbergMarquardtParameters (const LevenbergMarqu
 
             J_(other.J_),
             G_(other.G_),
-            JTJ_(other.JTJ_),
-            JTJinv_(other.JTJinv_),
+            JTWJ_(other.JTWJ_),
+            JTWJinv_(other.JTWJinv_),
 
             d_(other.d_),
 
@@ -156,8 +156,8 @@ void swap(LevenbergMarquardtParameters& one, LevenbergMarquardtParameters& other
     std::swap(one.newYfit_,other.newYfit_);
 std::swap(one.J_,other.J_);
     std::swap(one.G_,other.G_);
-    std::swap(one.JTJ_,other.JTJ_);
-    std::swap(one.JTJinv_,other.JTJinv_);
+    std::swap(one.JTWJ_,other.JTWJ_);
+    std::swap(one.JTWJinv_,other.JTWJinv_);
 
     std::swap(one.d_,other.d_);
 
@@ -214,7 +214,8 @@ void LevenbergMarquardtParameters::computeJacobian()
         //std::cout<<nFeval_++<<" ";
         for (std::size_t n=0;n<nData_;++n)
         {
-            J_[n][i]=(yfit[n]-currYfit_[n])/dx_;
+            double jj=(yfit[n]-currYfit_[n])/dx_;
+            J_[n][i]=jj;
         }
     }
 }
@@ -225,10 +226,10 @@ void LevenbergMarquardtParameters::computeSearchDirection()
     for (std::size_t i=0; i<nPar_; ++i)
         for (std::size_t j=0; j<nPar_; ++j)
         {
-            JTJ_[i][j]=0;
+            JTWJ_[i][j]=0;
             for (std::size_t n=0; n<nData_; ++n)
             {
-                JTJ_[i][j]+=J_[n][i]*J_[n][j];
+                JTWJ_[i][j]+=J_[n][i]*J_[n][j]*w_[n];
             }
         }
 
@@ -236,10 +237,10 @@ void LevenbergMarquardtParameters::computeSearchDirection()
 
     for (std::size_t i=0; i<nPar_; ++i)
     {
-        JTJ_[i][i]*=1+landa_;
+        JTWJ_[i][i]*=1+landa_;
     }
 
-    JTJinv_=inv(JTJ_);
+    JTWJinv_=inv(JTWJ_);
 
 
 
@@ -257,7 +258,7 @@ void LevenbergMarquardtParameters::computeSearchDirection()
         d_[i]=0;
         for (std::size_t j=0; j<nPar_;++j)
         {
-            d_[i]+=JTJinv_[i][j]*G_[j];
+            d_[i]+=JTWJinv_[i][j]*G_[j];
         }
 
     }
@@ -268,10 +269,10 @@ void LevenbergMarquardtParameters::computeSearchDirection()
     newYfit_=f_->yfit(newParam_);
     nFeval_++;
 
-    newSS_=0;
+    newSSW_=0;
     for (std::size_t n=0; n<nData_; n++)
     {
-        newSS_+=(newYfit_[n]-data_[n])*(newYfit_[n]-data_[n])*w_[n];
+        newSSW_+=(newYfit_[n]-data_[n])*(newYfit_[n]-data_[n])*w_[n];
     }
 }
 
@@ -279,14 +280,14 @@ void LevenbergMarquardtParameters::computeSearchDirection()
 void LevenbergMarquardtParameters::updateLanda()
 {
     std::size_t ifevalLoop=0;
-    if ((newSS_>=currSS_)||(newSS_!=newSS_))
+    if ((newSSW_>=currSS_)||(newSSW_!=newSSW_))
     {
-        while(((newSS_>=currSS_)&&(nFeval_<maxFeval_))||(newSS_!=newSS_))
+        while(((newSSW_>=currSS_)&&(nFeval_<maxFeval_))||(newSSW_!=newSSW_))
         {
             if (landa_*v_>=maxLanda_) break;
             landa0_=landa_;
             landa_=landa0_*v_;
-            newSS0_=newSS_;
+            newSS0_=newSSW_;
             newParam0_=newParam_;
             computeSearchDirection();
             ifevalLoop++;
@@ -298,20 +299,20 @@ void LevenbergMarquardtParameters::updateLanda()
     {
         landa0_=landa_;
         landa_=landa_/v_;
-        newSS0_=newSS_;
+        newSS0_=newSSW_;
         newParam0_=newParam_;
         newYfit0_=newYfit_;
         computeSearchDirection();
         ifevalLoop++;
-        if (newSS_>=newSS0_)
+        if (newSSW_>=newSS0_)
         {
             landa_=landa0_;
             newParam_=newParam0_;
-            newSS_=newSS0_;
+            newSSW_=newSS0_;
             newYfit_=newYfit0_;
         }
     }
-    if (newSS_>=currSS_)
+    if (newSSW_>=currSS_)
     {
         ParamChange_=0;
         SSChange_=0;
@@ -323,9 +324,9 @@ void LevenbergMarquardtParameters::updateLanda()
         for (std::size_t i=0; i<nPar_; ++i)
             ParamChange_+=(currParam_[i]-newParam_[i])*(currParam_[i]-newParam_[i]);
         ParamChange_=sqrt(ParamChange_);
-        SSChange_=currSS_-newSS_;
+        SSChange_=currSS_-newSSW_;
         currParam_=newParam_;
-        currSS_=newSS_;
+        currSS_=newSSW_;
         currYfit_=newYfit_;
     }
     NormGrad_=0;
@@ -366,10 +367,16 @@ void LevenbergMarquardtParameters::initialize()
     currYfit_=f_->yfit(currParam_);
     nFeval_++;
     currSS_=0;
+    std::vector<double> ss(nData_);
     for (std::size_t n=0; n<nData_; ++n)
     {
-        currSS_+=(currYfit_[n]-data_[n])*(currYfit_[n]-data_[n])*w_[n];
+       ss[n]=(currYfit_[n]-data_[n])*(currYfit_[n]-data_[n])*w_[n];
+        currSS_+=ss[n];
     }
+    nFeval_++;
+    nFeval_--;
+
+
 
 
 }
