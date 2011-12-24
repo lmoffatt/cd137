@@ -305,7 +305,8 @@ void BayesParameters()
     Cell_simulator cell(sp, E);
     Parameters perturbedPar(sp);
     perturbedPar.applyParameters(sp.randomSample(0.0001));
-    perturbedPar.scaleError(0.001);
+    perturbedPar.scaleError(0.01);
+
 
     Experiment simulExp=cell.Simulate(perturbedPar ,E);
 
@@ -336,7 +337,8 @@ void BayesParameters()
     //simulExp: simulado  E:experimental
     //OptimizationResults O=cell.Optimize(sp,sp,simulExp,1,500);
 
-     cell.Optimize(sp,E);
+    sp.scaleError(0.1);
+    cell.Optimize(sp,E);
 
 
 

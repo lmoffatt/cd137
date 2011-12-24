@@ -226,34 +226,51 @@ void LT_cells::update(double& time_step, double t_run, const Media& m, const APC
 
 {
     /// cells not sensitive to the Ag proliferate passively
-   double LTns_delta=(-LTns_apop_rate_d*LTns_d+LTns_proliferation_rate_d*LTns_d)*time_step;
+   double LTns_delta=(
+               -LTns_apop_rate_d*LTns_d+
+               LTns_proliferation_rate_d*LTns_d
+               )*time_step;
    LTns_d+=LTns_delta;
 
 
     /// Ag specific cells proliferate and some of them interact with APC and get activated and express the receptor
-   double LT0_delta=(-LTns_apop_rate_d*LT0_d+LTns_proliferation_rate_d*LT0_d-APC.APC_LT_1()*LT0_d*(APC.APCa()/(APC.APCa()+ APC.KsAPC_LT()))-
-            APC.APC_LT_2()*LT0_d*(APC.APCbo()/(APC.APCbo()+ APC.KsAPC_LT()))-
-            APC.APC_LT_2()*LT0_d*(APC.APCbo_Ab()/(APC.APCbo_Ab()+ APC.KsAPC_LT()))-
-            APC.APC_LT_1()*LT0_d*(APC.APCbl()/(APC.APCbl()+ APC.KsAPC_LT())))*
-            time_step;
-    LT0_d+=LT0_delta;
+   double LT0_delta=(
+               -LTns_apop_rate_d*LT0_d
+               +LTns_proliferation_rate_d*LT0_d
+               -APC.APC_LT_1()*LT0_d*(APC.APCa()/(APC.APCa()+ APC.KsAPC_LT()))
+               -APC.APC_LT_2()*LT0_d*(APC.APCbo()/(APC.APCbo()+ APC.KsAPC_LT()))
+               -APC.APC_LT_2()*LT0_d*(APC.APCbo_Ab()/(APC.APCbo_Ab()+ APC.KsAPC_LT()))
+               -APC.APC_LT_1()*LT0_d*(APC.APCbl()/(APC.APCbl()+ APC.KsAPC_LT()))
+               )*time_step;
+   LT0_d+=LT0_delta;
     /// Cells interact only once with APC and can recieve signaling by CD137 or not.
-   double LTbo_delta=(APC.APC_LT_1()*LT0_d*(APC.APCa()/(APC.APCa()+ APC.KsAPC_LT()))+
-            APC.APC_LT_2()*LT0_d*(APC.APCbo()/(APC.APCbo()+ APC.KsAPC_LT()))+
-            LTbo_proliferation_rate_d*LTbo_d-LTbo_apop_rate_d*LTbo_d-
-            LTbo_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))-LTbo_d*LT_exh_rate_d)*time_step;
+   double LTbo_delta=(
+               APC.APC_LT_1()*LT0_d*(APC.APCa()/(APC.APCa()+ APC.KsAPC_LT()))
+               +APC.APC_LT_2()*LT0_d*(APC.APCbo()/(APC.APCbo()+ APC.KsAPC_LT()))
+               +LTbo_proliferation_rate_d*LTbo_d-LTbo_apop_rate_d*LTbo_d
+               -LTbo_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))
+               -LTbo_d*LT_exh_rate_d
+               )*time_step;
 
     LTbo_d+=LTbo_delta;
-    double LTbl_delta=(APC.APC_LT_2()*LT0_d*(APC.APCbo_Ab()/(APC.APCbo_Ab()+ APC.KsAPC_LT()))+
-             APC.APC_LT_1()*LT0_d*(APC.APCbl()/(APC.APCbl()+ APC.KsAPC_LT()))+
-             LTbl_proliferation_rate_d*LTbl_d-LTbl_apop_rate_d*LTbl_d-
-             LTbl_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))-LTbl_d*LT_exh_rate_d)*time_step;
+    double LTbl_delta=(
+                APC.APC_LT_2()*LT0_d*(APC.APCbo_Ab()/(APC.APCbo_Ab()+ APC.KsAPC_LT()))
+                +APC.APC_LT_1()*LT0_d*(APC.APCbl()/(APC.APCbl()+ APC.KsAPC_LT()))
+                +LTbl_proliferation_rate_d*LTbl_d
+                -LTbl_apop_rate_d*LTbl_d
+                -LTbl_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))
+                -LTbl_d*LT_exh_rate_d
+                )*time_step;
     LTbl_d+=LTbl_delta;
 
     /// LT get exhausted after a period of time
 
-    double LTexh_delta=LTbo_d*LT_exh_rate_d+LTbl_d*LT_exh_rate_d-LTexh_d*LTexh_apop_rate_d-
-             LTexh_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))*time_step;
+    double LTexh_delta=(
+                LTbo_d*LT_exh_rate_d
+                +LTbl_d*LT_exh_rate_d
+                -LTexh_d*LTexh_apop_rate_d
+                -LTexh_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))
+                )*time_step;
     LTexh_d+=LTexh_delta;
 
    double LT_TymTr_incorporated_delta;
