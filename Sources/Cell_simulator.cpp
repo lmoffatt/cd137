@@ -1939,7 +1939,7 @@ void Cell_simulator::Optimize(const Parameters& priorPar,
         /*18*/  sp.push_back_dB("LTns_apop_rate",1.0/120.0,10);
         /*19*/  sp.push_back_dB("LTbo_apop_rate",1.0/3.0,10);
         /*20*/  sp.push_back_dB("LTbl_apop_rate",1.0/6.0,10);
-        /*21*/  sp.push_back_dB("LTexh_apop_rate",1.0/2,10);
+        /*21*/  sp.push_back_dB("LTexh_apop_rate",1.0/2.0,10);
 
     /// 8) constant saturation of TNF for apoptosis
         /*22*/  sp.push_back_dB("Ks_LT_m_TNF",0.5,10);

@@ -34,6 +34,7 @@ public:
     LevenbergMarquardtParameters();
 
     ~LevenbergMarquardtParameters(){}
+    std::string report()const;
 
    // void reset(const SimParameters& sp,const Treatment& tr);
 
@@ -75,7 +76,7 @@ private:
 
     double currSS_;
     double newSSW_;
-    double newSS0_;
+    double newSSW0_;
     Parameters currParam_;
     Parameters newParam_;
     Parameters newParam0_;

@@ -1,5 +1,6 @@
 #include <cmath>
 #include<limits>
+#include <sstream>
 #include "Includes/LevenbergMarquardt.h"
 #include "Includes/MatrixInverse.h"
 #include "LevenbergMarquardtParameters.h"
@@ -30,7 +31,7 @@ LevenbergMarquardtParameters::LevenbergMarquardtParameters(
     nIter_(0),
     nFeval_(0),
     currSS_(std::numeric_limits<double>::infinity()),
-    newSS0_(std::numeric_limits<double>::infinity()),
+    newSSW0_(std::numeric_limits<double>::infinity()),
     currParam_(initialParam_),
     newParam_(currParam_),
     newParam0_(currParam_),
@@ -78,7 +79,7 @@ LevenbergMarquardtParameters::LevenbergMarquardtParameters (const LevenbergMarqu
 
 
     currSS_(other.currSS_),
-    newSS0_ (other.newSS0_),
+    newSSW0_ (other.newSSW0_),
     currParam_ (other.currParam_),
     newParam_ (other.newParam_),
     newParam0_ (other.newParam0_),
@@ -147,7 +148,7 @@ void swap(LevenbergMarquardtParameters& one, LevenbergMarquardtParameters& other
 
 
     std::swap(one.currSS_,other.currSS_);
-    std::swap(one.newSS0_,other.newSS0_);
+    std::swap(one.newSSW0_,other.newSSW0_);
     std::swap(one.currParam_,other.currParam_);
     std::swap(one.newParam_,other.newParam_);
     std::swap(one.newParam0_,other.newParam0_);
@@ -185,6 +186,8 @@ LevenbergMarquardtParameters& LevenbergMarquardtParameters::optimize()
     initialize();
     while (!meetConvergenceCriteria())
             iterate();
+
+    std::cout<<report();
 
     optimParam_=currParam_;
     return *this;
@@ -287,11 +290,11 @@ void LevenbergMarquardtParameters::updateLanda()
             if (landa_*v_>=maxLanda_) break;
             landa0_=landa_;
             landa_=landa0_*v_;
-            newSS0_=newSSW_;
+            newSSW0_=newSSW_;
             newParam0_=newParam_;
             computeSearchDirection();
             ifevalLoop++;
-            std::cerr<<landa_<<" ";
+         //   std::cerr<<landa_<<" ";
         }
 
     }
@@ -299,16 +302,16 @@ void LevenbergMarquardtParameters::updateLanda()
     {
         landa0_=landa_;
         landa_=landa_/v_;
-        newSS0_=newSSW_;
+        newSSW0_=newSSW_;
         newParam0_=newParam_;
         newYfit0_=newYfit_;
         computeSearchDirection();
         ifevalLoop++;
-        if (newSSW_>=newSS0_)
+        if ((newSSW_>=newSSW0_)||(newSSW_!=newSSW_))
         {
             landa_=landa0_;
             newParam_=newParam0_;
-            newSSW_=newSS0_;
+            newSSW_=newSSW0_;
             newYfit_=newYfit0_;
         }
     }
@@ -402,4 +405,31 @@ double LevenbergMarquardtParameters::SS()const
 std::vector<double> LevenbergMarquardtParameters::Gradient()const
 {
     return G_;
+}
+std::string LevenbergMarquardtParameters::report()const{
+    std::stringstream output;
+
+    output<<"Convergence critera: \t";
+    if (surpassIter_)
+        output<<nIter_<<" surpass number of iterations="<<maxIter_<<"\t";
+    if (surpassFeval_)
+        output<<nFeval_<<" surpass number of function evaluations="<<maxFeval_<<"\t";
+    if (surpassLanda_)
+        output<<landa_<<" surpass maximum landa value="<<maxLanda_<<"\t";
+    if (smallParamChange_)
+        output<<ParamChange_<<" surpass minium parameter change value="<<minParamChange_<<"\t";
+    if (smallSSChange_)
+        output<<SSChange_<<" surpass minium SS change value="<<minSSChange_<<"\t";
+    if (smallGradient_)
+        output<<NormGrad_<<" surpass minium gradient norm value="<<minGradient_<<"\t";
+    if (currSS_!=currSS_)
+        output<<currSS_<<" invalid value of the square sum"<<"\t";
+
+
+
+
+    return output.str();
+
+
+
 }

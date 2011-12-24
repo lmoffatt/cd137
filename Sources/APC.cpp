@@ -352,15 +352,18 @@ void APC_cells::update(double& time_step,const Media& m, const NK_cells& NK, con
     /// interact only with one cell). We are supposing that all activated cells express receptor and ligand. We are supposing that probabiliities of
     /// interactionts between cells are similar.
 
-    double APCbo_delta=(APC_APC_d*APCa_d*APCa_expressing_receptor_d*APCa_d*APCa_expressing_receptor_d+
-            APC_APC_d*APCa_d*APCa_expressing_receptor_d*APCbo_d+
-            APC_NK_d*APCa_d*APCa_expressing_receptor_d*NK.NKa()*NK.NKa_expressing_receptor()+
-            APC_NK_d*APCa_d*APCa_expressing_receptor_d*NK.NKbo()+
-            APC_LT_1_d*LT.LT0()*APCa_d*APCa_expressing_receptor_d/(APCa_d*APCa_expressing_receptor_d+KsAPC_LT_d)+
-            APCbo_d*APC_bound_proliferation_rate_d-
-            APCbo_d*APCbo_apop_rate_d-
-            u_APC_TNF_d*APCbo_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d))-
-            APCbo_d*APC_exh_d - APC_Ab_d*APCbo_d*m.Ab())*time_step;
+    double APCbo_delta=(
+                APC_APC_d*APCa_d*APCa_expressing_receptor_d*APCa_d*APCa_expressing_receptor_d+
+                APC_APC_d*APCa_d*APCa_expressing_receptor_d*APCbo_d+
+                APC_NK_d*APCa_d*APCa_expressing_receptor_d*NK.NKa()*NK.NKa_expressing_receptor()+
+                APC_NK_d*APCa_d*APCa_expressing_receptor_d*NK.NKbo()+
+                APC_LT_1_d*LT.LT0()*APCa_d*APCa_expressing_receptor_d/(APCa_d*APCa_expressing_receptor_d+KsAPC_LT_d)+
+                APCbo_d*APC_bound_proliferation_rate_d-
+                APCbo_d*APCbo_apop_rate_d-
+                u_APC_TNF_d*APCbo_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d))-
+                APCbo_d*APC_exh_d -
+                APC_Ab_d*APCbo_d*m.Ab()
+                )*time_step;
 
     APCbo_d+=APCbo_delta;
     /// the cells that were signalizeb by receptor and binds the Ab
