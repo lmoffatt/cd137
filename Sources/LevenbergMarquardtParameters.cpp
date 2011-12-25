@@ -20,7 +20,7 @@ LevenbergMarquardtParameters::LevenbergMarquardtParameters(
     nPar_(initialParam_.size()),
     nData_(data.size()),
     dx_(1e-9),
-    maxIter_(30),
+    maxIter_(300),
     maxFeval_(10000),
     minParamChange_(1e-12),
     minSSChange_(1e-12),
