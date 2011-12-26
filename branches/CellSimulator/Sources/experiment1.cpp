@@ -258,7 +258,27 @@ void Bayes()
 }
 
 
+void TestParametersIO()
+{
+    Parameters sp=Cell_simulator::getStandardParameters();
+    std::string filename="parameters.txt";
+    std::ofstream f;
+    f.open(filename.c_str(),std::ios_base::app);
+    f<<sp;
+    f.close();
 
+
+    std::ifstream fi;
+    fi.open(filename.c_str(),std::ios_base::in);
+
+    Parameters sp2;
+    fi>>sp2;
+    fi.close();
+    std::cout<<sp2;
+
+
+
+}
 
 
 

@@ -5,6 +5,8 @@ void Bayes ();
 
 void BayesParameters ();
 
+void TestParametersIO();
+
 
 
 #endif // EXPERIMENT1_H_INCLUDED

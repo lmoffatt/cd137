@@ -3,7 +3,8 @@
 #include <cmath>
 #include <cstdlib>
 #include <istream>
-
+#include <sstream>
+#include <iostream>
 
 Parameters::Parameters(const Parameters& other):
     name_(other.name_),
@@ -238,17 +239,16 @@ bool Parameters::hasName(const std::string& name)const{
 }
 
 
-std::vector<std::string> Parameters::names()const
+std::string Parameters::indexToName(std::size_t i)const
 {
-    std::vector<std::string>  myNames;
     for (std::map<std::string,std::size_t>::const_iterator it=name_.begin();
          it!=name_.end();
          ++it)
     {
-        myNames.push_back(it->first);
-
+        if (i==it->second)
+            return it->first;
     }
-    return myNames;
+         return "";
 
 }
 
@@ -378,21 +378,21 @@ std::ostream& operator<<(std::ostream& s, const Parameters& p){
 
     for (std::size_t i=0; i<p.size(); i++)
     {
-        s<<p.name_[i]<<"\t"<<pow(10,p.pMean_[i])<<"\t"<<p.pStd_[i]*10<<"\t dB\n";
+        s<<p.indexToName(i)<<"\t"<<pow(10,p.pMean_[i])<<"\t"<<p.pStd_[i]*10<<"\t dB\n";
     }
-    s<<"End";
+    s<<"End\n";
     return s;
    }
 
-friend std::istream& operator>>(std::itream& s, Parameters& p)
+ std::istream& operator>>(std::istream& s, Parameters& p)
 {
      std::string line;
      std::getline(s,line);
-     if (line.compare("Parameters"))
+     if (line.compare("Parameters")==0)
      {
          std::getline(s,line);
          std::getline(s,line);
-         while (!line.empty()|| line.compare("End"))
+         while (!line.empty()&& line.compare("End")!=0)
          {
             std::string name;
             double mean,dBstd;
@@ -402,9 +402,21 @@ friend std::istream& operator>>(std::itream& s, Parameters& p)
             ss>>dBstd;
             p.push_back_dB(name,mean,dBstd);
             std::getline(s,line);
+            if (line.compare("End")==0)
+                std::cout<<"here";
 
          }
 
      }
       return s;
 }
+
+
+ Parameters::Parameters():
+     name_(std::map<std::string, std::size_t> ()),
+     pMean_(std::vector<double>()),
+     pStd_(std::vector<double> ()),  // not in dB
+     cov_(std::vector< std::vector <double> > ()),
+       mode_("")
+
+ {}
