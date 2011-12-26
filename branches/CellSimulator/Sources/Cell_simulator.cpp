@@ -1965,4 +1965,18 @@ void Cell_simulator::Optimize(const Parameters& priorPar,
    return sp;
  }
 
+ std::ostream& Cell_simulator::put(std::ostream &s,const Parameters& param0) const
+ {
+     Parameters par(prior_);
+     par.applyParameters(param0);
+     Cell_simulator tmp(*this);
+
+
+     Experiment f=tmp.Simulate(par,experiment_);
+     s<<param0;
+
+     s<<f;
+
+      return s;
+ }
 

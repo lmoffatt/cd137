@@ -349,6 +349,20 @@ Parameters& Parameters::scaleError(double factor)
     return *this;
 }
 
+void Parameters::setCovariance(const std::vector< std::vector <double> >& cov)
+{
+    if (cov.size()==size())
+    {
+        cov_=cov;
+        for (std::size_t i=0; i<cov.size(); i++)
+        {
+            pStd_[i]=sqrt(cov_[i][i]);
+        }
+    }
+}
+
+
+
 
 
 std::vector<double> Parameters::pMeans()const

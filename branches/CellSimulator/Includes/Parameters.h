@@ -87,6 +87,7 @@ public:
 
     Parameters& scaleError(double factor);
 
+    void setCovariance(const std::vector< std::vector <double> >& cov);
 
     Parameters randomSample()const;
 

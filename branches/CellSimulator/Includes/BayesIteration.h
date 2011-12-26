@@ -63,6 +63,9 @@ public:
 
     BayesIteration& getPosterior();
 
+    virtual std::ostream& put(std::ostream& s,const Parameters& parameters)const;
+
+
 
 private:
 
