@@ -147,7 +147,9 @@ BayesIteration& BayesIteration::getPosterior()
     std::string filename="parametersOptimal.txt";
     std::ofstream f;
     f.open(filename.c_str(),std::ios_base::app);
+    f<<LM;
     put(f,Ps.back());
+    f.close();
 
 
 
@@ -162,10 +164,13 @@ BayesIteration& BayesIteration::getPosterior()
         LM.optimize();
         LMs.push_back(LM);
         Ps.push_back(LM.OptimParameters());
+        f.open(filename.c_str(),std::ios_base::app);
+        f<<LM;
         put(f,Ps.back());
+        f.close();
+
     }
 
-    f.close();
 
     return *this;
 }
