@@ -24,6 +24,9 @@ public:
     void run();
 
 
+    std::ostream& run(std::ostream& f);
+    std::ostream& run(std::ostream& s, const Parameters& par)const;
+
 
     Cell_simulator& applyParameters(const SimParameters& sp,
 				    const Treatment& tr);
