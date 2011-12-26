@@ -439,3 +439,20 @@ std::string LevenbergMarquardtParameters::report()const{
 
 
 }
+
+
+ std::ostream& operator<<(std::ostream& s, LevenbergMarquardtParameters& LM)
+{
+    s<<"LevenbergMarquardtParameters\n";
+    s<<"Number of iterations \t"<<LM.numIter()<<"\t";
+    s<<"Sum of squares"<<LM.currSS_<<"\n";
+    s<<"Report \t"<<LM.report()<<"\n";
+    s<<"Landa value \t"<<LM.landa_<<"\t";
+    s<<"Parameter change \t"<<LM.minParamChange_<<"\t";
+    s<<"SS change \t"<<LM.minSSChange_<<"\t";
+    s<<"Gradient norm \t"<<LM.NormGrad_<<"\n";
+    s<<"End\n";
+
+}
+
+

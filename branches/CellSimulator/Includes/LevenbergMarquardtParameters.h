@@ -2,7 +2,7 @@
 #define LevenbergMarquardtParametersPARAMETERS_H
 #include <vector>
 #include "LevenbergMarquardt.h"
-
+#include <iostream>
 
 class LevenbergMarquardtParameters
 {
@@ -37,6 +37,9 @@ public:
     std::string report()const;
 
    // void reset(const SimParameters& sp,const Treatment& tr);
+
+
+    friend std::ostream& operator<<(std::ostream& s, LevenbergMarquardtParameters& LM);
 
 private:
     void calculateCovariance();
