@@ -388,7 +388,7 @@ double LT_cells::percentage_LT_IFN_production() const
                LT0_d*percentage_IFN_LTns_prod_rate_d+
                LTbo_d*percentage_IFN_LTbo_prod_rate_d+
                LTbl_d*percentage_IFN_LTbl_prod_rate_d;
-      return sum;
+      return sum/num_LT();
   }
 
 
@@ -408,7 +408,7 @@ double LT_cells::percentage_LT_TNF_production() const
                LT0_d*percentage_TNF_LTns_prod_rate_d+
                LTbo_d*percentage_TNF_LTbo_prod_rate_d+
                LTbl_d*percentage_TNF_LTbl_prod_rate_d;
-      return sum;
+      return sum/num_LT();
   }
 
 
