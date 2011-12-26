@@ -130,11 +130,21 @@ Parameters BayesIteration::Posterior()const
         std::vector<double> w=getDataWeigth();
         std::vector<LevenbergMarquardtParameters> LMs;
 
+        Parameters p=priors_.back();
+
+        p.scaleError(0.01);
+
+        LevenbergMarquardtParameters LM(this,
+                                        data,
+                                        p,
+                                        w);
+        LM.optimize();
+        LMs.push_back(LM);
+
 
         for (std::size_t i=0; i<numSeeds_; i++)
         {
-            Parameters p=priors_.back();
-            Parameters initParam=priors_.back().randomSample();
+            Parameters initParam=p.randomSample();
 
             LevenbergMarquardtParameters LM(this,
                                             data,
