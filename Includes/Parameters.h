@@ -100,6 +100,11 @@ public:
 
     void friend swap(Parameters& one, Parameters& other);
 
+    friend std::ostream& operator<<(std::ostream& s, const Parameters& p);
+    friend std::istream& operator>>(std::itream& s, Parameters& p);
+
+
+
 
 
 private:
