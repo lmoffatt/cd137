@@ -190,6 +190,18 @@ LevenbergMarquardtParameters& LevenbergMarquardtParameters::optimize()
     std::cout<<report();
 
     optimParam_=currParam_;
+    for (std::size_t i=0; i<nPar_; ++i)
+        for (std::size_t j=0; j<nPar_; ++j)
+        {
+            JTWJ_[i][j]=0;
+            for (std::size_t n=0; n<nData_; ++n)
+            {
+                JTWJ_[i][j]+=J_[n][i]*J_[n][j]*w_[n];
+            }
+        }
+
+    JTWJinv_=inv(JTWJ_);
+
     optimParam_.setCovariance(JTWJinv_);
     return *this;
 }

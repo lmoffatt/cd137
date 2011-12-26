@@ -443,6 +443,155 @@
                 );
 
 }*/
+
+std::ostream& Cell_simulator::run(std::ostream& f)
+{
+    f<<"Experiment run \n";
+    trun_d=0;
+    /*1*/    f<<"round"<<" , ";
+
+    /*2*/    f<<"IFNamma[]"<<" , ";
+    /*3*/    f<<"TNF[]"<<" , ";
+
+    /*4*/    f<<"Total APC"<<" , ";
+    /*5*/    f<<"Total NK"<<" , ";
+    /*6*/    f<<"Total LT"<<" , ";
+
+    /*7*/    f<<"APC0"<<" , ";
+    /*8*/    f<<"APCa "<<" , ";
+    /*9*/    f<<"APCbo"<<" , ";
+    /*10*/    f<<"APCbo_bl"<<" , ";
+    /*11*/    f<<"APC_bl"<<" , ";
+    /*12*/    f<<"APC exh"<<" , ";
+
+    /*13*/    f<<"%APC expresing receptor"<<" , ";
+    /*14*/    f<<"APC.IFNgamma_production_rate"<<" , ";
+    /*15*/    f<<"APC.percentage of IFN producing cells"<<" , ";
+    /*16*/    f<<"APC.TNF_production_rate"<<" , ";
+    /*17*/    f<<"APC.percentage of TNF producing cells"<<" , ";
+
+    /*18*/    f<<"NK0"<<" , ";
+    /*19*/    f<<"NKa"<<" , ";
+    /*20*/    f<<"NKbo"<<" , ";
+    /*21*/    f<<"NKbo_bl"<<" , ";
+    /*22*/    f<<"NKbl"<<" , ";
+    /*23*/    f<<"NK exh"<<" , ";
+
+    /*24*/    f<<"%NK expresing receptor"<<" , ";
+    /*25*/    f<<"NK.IFNgamma_production_rate"<<" , ";
+    /*26*/    f<<"NK.percentage of IFN producing cell"<<" , ";
+    /*27*/    f<<"NK.TNF_production_rate"<<" , ";
+    /*28*/    f<<"NK.percentage of TNF producing cell"<<" , ";
+
+    /*29*/    f<<"LT no Agsp"<<" , ";
+    /*30*/    f<<"LT0"<<" , ";
+    /*31*/    f<<"LTbo"<<" , ";
+    /*32*/    f<<"LTbl"<<" , ";
+    /*33*/    f<<"LTexh"<<" , ";
+
+    /*34*/    f<<"%LT expresing receptor"<<" , ";
+    /*35*/    f<<"LT.IFNgamma_production_rate"<<" , ";
+    /*36*/    f<<"LT.percentage of IFN producing cell"<<" , ";
+    /*37*/    f<<"LT.TNF_production_rate"<<" , ";
+    /*38*/    f<<"LT.percentage of TNF producing cell"<<" , ";
+    /*39*/    f<<"LT undergoing apoptosis"<<" , ";
+
+    /*40*/    f<<"Tymidine incorporated"<<" , ";
+    /*41*/    f<<"Ag"<<" , ";
+    /*42*/    f<<"Ab"<<" , ";
+    f<<"\n";
+
+    double eps=1e-7;
+    while (trun_d<this->sim_duration_d)
+    {
+
+        if (trun_d+eps-floor(trun_d+eps)<time_step_d)
+        {
+
+            /*1*/            f<<trun_d<<" , ";
+            /*2*/            f<<m.IFNgamma()<<" , ";
+            /*3*/            f<<m.TNF()<<" , ";
+
+            /*4*/            f<<APC.num_APC()<<" , ";
+            /*5*/            f<<NK.num_NK()<<" , ";
+            /*6*/            f<<LT.num_LT()<<" , ";
+
+            /*7*/            f<<APC.APC0()<<" , ";
+            /*8*/            f<<APC.APCa()<<" , ";
+            /*9*/            f<<APC.APCbo()<<" , ";
+            /*10*/           f<<APC.APCbo_Ab()<<" , ";
+            /*11*/           f<<APC.APCbl()<<" , ";
+            /*12*/           f<<APC.APCexh()<<" , ";
+
+
+            /*13*/           f<<APC.percentage_cell_expressing_receptor()<<" , ";
+            /*14*/           f<<APC.APC_IFNgamma_production_rate()<<" , ";
+            /*15*/           f<<APC.percentage_APC_producing_IFN()<<" , ";
+            /*16*/           f<<APC.APC_TNF_production_rate()<<" , ";
+            /*17*/           f<<APC.percentage_APC_producing_TNF()<<" , ";
+
+
+            /*18*/           f<<NK.NK0()<<" , ";
+            /*19*/           f<<NK.NKa()<<" , ";
+            /*20*/           f<<NK.NKbo()<<" , ";
+            /*21*/           f<<NK.NKbo_Ab()<<" , ";
+            /*22*/           f<<NK.NKbl()<<" , ";
+            /*23*/           f<<NK.NKexh()<<" , ";
+
+            /*24*/           f<<NK.percentage_NK_expressing_receptor()<<" , ";
+            /*25*/           f<<NK.NK_IFNgamma_production_rate()<<" , ";
+            /*26*/           f<<NK.percentage_NK_producing_IFN()<<" , ";
+            /*27*/           f<<NK.NK_TNF_production_rate()<<" , ";
+            /*28*/           f<<NK.percentage_NK_producing_TNF()<<" , ";
+
+            /*29*/    f<<LT.LTns()<<" , ";
+            /*30*/    f<<LT.LT0()<<" , ";
+            /*31*/    f<<LT.LTbo()<<" , ";
+            /*32*/    f<<LT.LTbl()<<" , ";
+            /*33*/    f<<LT.LTexh()<<" , ";
+
+            /*34*/    f<<LT.LT_percentage_cell_expressing_receptor()<<" , ";
+            /*35*/    f<<LT.LT_IFNgamma_production_rate()<<" , ";
+            /*36*/    f<<LT.percentage_LT_IFN_production()<<" , ";
+            /*37*/    f<<LT.TNF_production_rate()<<" , ";
+            /*38*/    f<<LT.percentage_LT_TNF_production()<<" , ";
+
+            /*39*/    f<<LT.percentage_apoptotic_LT_cells()<<" , ";
+
+            /*40*/    f<<m.Tymidine_incorporated()<<" , ";
+            /*41*/    f<<m.Ag()<<" , ";
+            /*42*/    f<<m.Ab()<<"\n";
+
+        };
+
+
+        APC.update(time_step_d,m,NK,LT);
+        NK.update(time_step_d,m,APC,LT);
+        LT.update(time_step_d,trun_d,m,APC,NK);
+        m.update(time_step_d,trun_d,APC,NK,LT);
+        trun_d+=time_step_d;
+
+
+
+
+    }
+}
+
+
+
+
+std::ostream& Cell_simulator::run(std::ostream& s, const Parameters& par) const
+{
+    Cell_simulator cell(*this);
+
+    for (std::size_t i=0; i<this->experiment_.size(); i++)
+    {
+        cell.applyParameters(par,this->experiment_.Treatment_i(i));
+        cell.run(s);
+    }
+    return s;
+}
+
 void Cell_simulator::run()
 {
 filename="out.txt";
@@ -1973,9 +2122,13 @@ void Cell_simulator::Optimize(const Parameters& priorPar,
 
 
      Experiment f=tmp.Simulate(par,experiment_);
+
      s<<param0;
 
      s<<f;
+
+     run(s,param0);
+
 
       return s;
  }

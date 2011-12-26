@@ -323,41 +323,11 @@ void BayesParameters()
 
 
     Cell_simulator cell(sp, E);
-    Parameters perturbedPar(sp);
-    perturbedPar.applyParameters(sp.randomSample(0.0001));
-    perturbedPar.scaleError(0.01);
 
-
-    Experiment simulExp=cell.Simulate(perturbedPar ,E);
-
-    cell.applyParameters(sp,E.Treatment_i(0));
-    cell.run();
-    cell.applyParameters(sp,E.Treatment_i(1));
-    cell.run();
-    cell.applyParameters(sp,E.Treatment_i(2));
-    cell.run();
-    std::string filename="experiment.txt";
-    std::ofstream f;
-    f.open(filename.c_str(),std::ios_base::app);
-
-
-    Experiment sim=cell.Simulate(sp,E);
-    f<<sim;
-    f.close();
-
-    for (std::size_t i=0; i<simulExp.size();i++)
-    {
-        std::cout<<E.Result_i(i);
-    std::cout<<simulExp.Result_i(i);
-    std::cout<<sim.Result_i(i);
-    char c;
-   // std::cin >>c;
-}
      //Modificar num iteracines
     //simulExp: simulado  E:experimental
     //OptimizationResults O=cell.Optimize(sp,sp,simulExp,1,500);
 
-    sp.scaleError(0.1);
     cell.Optimize(sp,E);
 
 
