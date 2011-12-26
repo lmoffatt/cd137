@@ -39,6 +39,7 @@ public:
    // void reset(const SimParameters& sp,const Treatment& tr);
 
 private:
+    void calculateCovariance();
     ABC_function* f_;
     std::vector<double> data_;
 

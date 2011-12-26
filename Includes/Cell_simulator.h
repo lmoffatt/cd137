@@ -79,7 +79,7 @@ public:
 
 
 
-
+    virtual std::ostream& put(std::ostream &s,const Parameters& parameters) const;
 
 
 

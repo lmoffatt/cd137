@@ -190,9 +190,15 @@ LevenbergMarquardtParameters& LevenbergMarquardtParameters::optimize()
     std::cout<<report();
 
     optimParam_=currParam_;
+    optimParam_.setCovariance(JTWJinv_);
     return *this;
 }
 
+
+void LevenbergMarquardtParameters::calculateCovariance()
+{
+
+}
 
 void LevenbergMarquardtParameters::iterate()
 {
@@ -387,7 +393,7 @@ void LevenbergMarquardtParameters::initialize()
 
 Parameters LevenbergMarquardtParameters::OptimParameters()const
 {
-    return currParam_;
+    return optimParam_;
 }
 
 std::size_t LevenbergMarquardtParameters::numEval()const
