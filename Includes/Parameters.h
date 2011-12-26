@@ -68,7 +68,7 @@ public:
 
     bool hasName(const std::string& name)const;
 
-    std::vector<std::string> names()const;
+    std::string indexToName(std::size_t i)const;
 
     std::size_t nameIndex(const std::string& name)const;
 
@@ -93,7 +93,7 @@ public:
     Parameters randomSample(double factor)const;
 
     Parameters(const Parameters& other);
-    Parameters(){}
+    Parameters();
     ~Parameters(){}
 
     Parameters& operator=(const Parameters& other);
@@ -101,7 +101,7 @@ public:
     void friend swap(Parameters& one, Parameters& other);
 
     friend std::ostream& operator<<(std::ostream& s, const Parameters& p);
-    friend std::istream& operator>>(std::itream& s, Parameters& p);
+    friend std::istream& operator>>(std::istream& s, Parameters& p);
 
 
 
@@ -117,6 +117,10 @@ private:
 
 
 };
+
+std::ostream& operator<<(std::ostream& s, const Parameters& p);
+std::istream& operator>>(std::istream& s, Parameters& p);
+
 
 double randNormal(double mean,double stddev);
 double randNormal();
