@@ -2,7 +2,7 @@
 #include <limits>
 #include <cmath>
 #include <cstdlib>
-
+#include <istream>
 
 
 Parameters::Parameters(const Parameters& other):
@@ -368,4 +368,43 @@ const double& Parameters::operator[](std::size_t i)const
 }
 double& Parameters::operator[](std::size_t i){
 return pMean_[i];
+}
+
+
+std::ostream& operator<<(std::ostream& s, const Parameters& p){
+
+    s<<"Parameters\n";
+    s<<"Begin\n";
+
+    for (std::size_t i=0; i<p.size(); i++)
+    {
+        s<<p.name_[i]<<"\t"<<pow(10,p.pMean_[i])<<"\t"<<p.pStd_[i]*10<<"\t dB\n";
+    }
+    s<<"End";
+    return s;
+   }
+
+friend std::istream& operator>>(std::itream& s, Parameters& p)
+{
+     std::string line;
+     std::getline(s,line);
+     if (line.compare("Parameters"))
+     {
+         std::getline(s,line);
+         std::getline(s,line);
+         while (!line.empty()|| line.compare("End"))
+         {
+            std::string name;
+            double mean,dBstd;
+            std::stringstream ss(line);
+            ss>>name;
+            ss>>mean;
+            ss>>dBstd;
+            p.push_back_dB(name,mean,dBstd);
+            std::getline(s,line);
+
+         }
+
+     }
+      return s;
 }
