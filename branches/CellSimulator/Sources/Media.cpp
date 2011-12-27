@@ -228,9 +228,13 @@ void Media::update(double& time_step,double t_run,const APC_cells& APC ,const NK
     if (t_run<104)
      {TymidineTriteate_d=0;}
       else
-    {TymidineTriteate_d=1;}
+    {
+        TymidineTriteate_d=1;
+    }
 
-     Tymidine_incorporated_delta=APC.APC_TymTr_incorporated()+NK.NK_TymTr_incorporated()+LT.LT_TymTr_incorporated();
+     Tymidine_incorporated_delta=APC.APC_TymTr_incorporated()
+             +NK.NK_TymTr_incorporated()
+             +LT.LT_TymTr_incorporated();
     Tymidine_incorporated_d+=Tymidine_incorporated_delta;
 }
 
