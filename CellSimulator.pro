@@ -38,7 +38,8 @@ SOURCES += \
     Sources/MatrixInverse_Test.cpp \
     Sources/OptimizationResults.cpp \
     Sources/LevenbergMarquardt_Test.cpp \
-    Sources/BayesIteration.cpp
+    Sources/BayesIteration.cpp \
+    Sources/RungeKutta4.cpp
 
 HEADERS += \
     Includes/NK.h \
@@ -60,7 +61,8 @@ HEADERS += \
     Includes/LevenbergMarquardt_Test.h \
     Includes/Parameters.h \
     Includes/LevenbergMarquardtParameters.h \
-    Includes/BayesIteration.h
+    Includes/BayesIteration.h \
+    Includes/RungeKutta4.h
 
 
 LIBS += -L$$PWD/bin -lcygblas \

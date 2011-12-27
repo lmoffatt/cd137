@@ -257,5 +257,76 @@ void Media::update(double& time_step,double t_run,const APC_cells& APC ,const NK
   return s;
 }
 
+  std::vector<double> Media::Derivative(const APC_cells& APC ,const NK_cells& NK,const LT_cells& LT)
+ {
+
+     std::vector<double> D;
+     /// IFN is increased by the production rate of each population;
+
+     double IFNgamma_delta=(APC.APC_IFNgamma_production_rate()+
+                 NK.NK_IFNgamma_production_rate()+
+                 LT.LT_IFNgamma_production_rate()-
+                 IFNgamma_d*IFN_degradation());
+
+     D.push_back(IFNgamma_delta);
+
+     /// TNF is increased by the production rate of each population;
+
+     double TNF_delta=(APC.APC_TNF_production_rate()+
+            NK.NK_TNF_production_rate()+
+            LT.TNF_production_rate()-
+            TNF_d*TNF_degradation());
+
+     D.push_back(TNF_delta);
+
+     return D;
+  }
+
+  std::vector<double> Media::getState()const
+  {
+      std::vector<double> S;
+      /// IFN is increased by the production rate of each population;
+
+
+      S.push_back(IFNgamma_d);
+
+      /// TNF is increased by the production rate of each population;
+
+
+      S.push_back(TNF_d);
+
+      return S;
+
+  }
+
+  void Media::setState(std::vector<double> y,double t_run,const APC_cells& APC ,const NK_cells& NK,const LT_cells& LT)
+  {
+
+      /// IFN is increased by the production rate of each population;
+
+      IFNgamma_d=y[0];
+      /// TNF is increased by the production rate of each population;
+
+      TNF_d=y[1];
+      /// The total number of cells is the adittion of APC + NK + LT
+      num_cells_d=APC.num_APC()+NK.num_NK()+LT.num_LT();
+      /// Tymidine Pulse at 114
+
+      double Tymidine_incorporated_delta;
+
+      if (t_run<104)
+       {TymidineTriteate_d=0;}
+        else
+      {
+          TymidineTriteate_d=1;
+      }
+
+       Tymidine_incorporated_delta=APC.APC_TymTr_incorporated()
+               +NK.NK_TymTr_incorporated()
+               +LT.LT_TymTr_incorporated();
+      Tymidine_incorporated_d+=Tymidine_incorporated_delta;
+  }
+
+
 
 

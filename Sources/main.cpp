@@ -8,7 +8,7 @@
 int main()
 {
  //   TestParametersIO();
-   BayesParameters();
+   BayesParametersTest();
 
 }
 

@@ -578,3 +578,120 @@ LT_cells::LT_cells(const Parameters& p, const Treatment& t):
 {}
 
 
+std::vector<double> LT_cells::Derivative(double t_run, const Media& m, const APC_cells& APC)const
+{
+    std::vector<double> D;
+
+    /// cells not sensitive to the Ag proliferate passively
+   double LTns_delta=(
+               -LTns_apop_rate_d*LTns_d+
+               LTns_proliferation_rate_d*LTns_d
+               );
+
+   D.push_back(LTns_delta);
+
+
+    /// Ag specific cells proliferate and some of them interact with APC and get activated and express the receptor
+   double LT0_delta=(
+               -LTns_apop_rate_d*LT0_d
+               +LTns_proliferation_rate_d*LT0_d
+               -APC.APC_LT_1()*LT0_d*(APC.APCa()/(APC.APCa()+ APC.KsAPC_LT()))
+               -APC.APC_LT_2()*LT0_d*(APC.APCbo()/(APC.APCbo()+ APC.KsAPC_LT()))
+               -APC.APC_LT_2()*LT0_d*(APC.APCbo_Ab()/(APC.APCbo_Ab()+ APC.KsAPC_LT()))
+               -APC.APC_LT_1()*LT0_d*(APC.APCbl()/(APC.APCbl()+ APC.KsAPC_LT()))
+               );
+   D.push_back(LT0_delta);
+    /// Cells interact only once with APC and can recieve signaling by CD137 or not.
+   double LTbo_delta=(
+               APC.APC_LT_1()*LT0_d*(APC.APCa()/(APC.APCa()+ APC.KsAPC_LT()))
+               +APC.APC_LT_2()*LT0_d*(APC.APCbo()/(APC.APCbo()+ APC.KsAPC_LT()))
+               +LTbo_proliferation_rate_d*LTbo_d-LTbo_apop_rate_d*LTbo_d
+               -LTbo_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))
+               -LTbo_d*LT_exh_rate_d
+               );
+
+    D.push_back(LTbo_delta);
+    double LTbl_delta=(
+                APC.APC_LT_2()*LT0_d*(APC.APCbo_Ab()/(APC.APCbo_Ab()+ APC.KsAPC_LT()))
+                +APC.APC_LT_1()*LT0_d*(APC.APCbl()/(APC.APCbl()+ APC.KsAPC_LT()))
+                +LTbl_proliferation_rate_d*LTbl_d
+                -LTbl_apop_rate_d*LTbl_d
+                -LTbl_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))
+                -LTbl_d*LT_exh_rate_d
+                );
+    D.push_back(LTbl_delta);
+
+    /// LT get exhausted after a period of time
+
+    double LTexh_delta=(
+                LTbo_d*LT_exh_rate_d
+                +LTbl_d*LT_exh_rate_d
+                -LTexh_d*LTexh_apop_rate_d
+                -LTexh_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))
+                );
+    D.push_back(LTexh_delta);
+
+   double LT_TymTr_incorporated_delta;
+   if (m.TymidineTriteate()>0){
+       LT_TymTr_incorporated_delta=((LTns_proliferation_rate_d*LTns_d+LTns_proliferation_rate_d*LT0_d+LTbo_proliferation_rate_d*LTbo_d+
+                                  +LTbl_proliferation_rate_d*LTbl_d)*m.Prol_TymTr());
+       }
+   else
+       LT_TymTr_incorporated_delta=0;
+
+   D.push_back(LT_TymTr_incorporated_delta);
+   double  Total_cells_in_apoptosis_delta;
+   if ((t_run>t_apop_meas_d-t_duration_apoptosis_d)&&(t_run<=t_apop_meas_d)){
+       Total_cells_in_apoptosis_delta=(LTns_apop_rate_d*LTns_d+LTns_apop_rate_d*LT0_d+
+                                       LTbo_apop_rate_d*LTbo_d+LTbo_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))+
+                                       LTbl_apop_rate_d*LTbl_d+LTbl_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))+
+                                       LTexh_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d)));
+       }
+   else
+       Total_cells_in_apoptosis_delta=0;
+   D.push_back(Total_cells_in_apoptosis_delta);
+
+
+   return D;
+}
+
+
+std::vector<double> LT_cells::getState()const
+{
+
+    std::vector<double> S;
+    /// cells not sensitive to the Ag proliferate passively
+   S.push_back(LTns_d);
+
+
+    /// Ag specific cells proliferate and some of them interact with APC and get activated and express the receptor
+   S.push_back(LT0_d);
+
+    S.push_back(LTbo_d);
+    S.push_back(LTbl_d);
+
+    /// LT get exhausted after a period of time
+
+    S.push_back(LTexh_d);
+
+    S.push_back(LT_TymTr_incorporated_d);
+    S.push_back(Total_cells_in_apoptosis_d);
+        return S;
+
+}
+void LT_cells::setState(const std::vector<double>& y)
+{
+    /// cells not sensitive to the Ag proliferate passively
+   LTns_d=y[0];
+   LT0_d=y[1];
+    /// Cells interact only once with APC and can recieve signaling by CD137 or not.
+    LTbo_d=y[2];
+    LTbl_d=y[3];
+
+    /// LT get exhausted after a period of time
+
+    LTexh_d=y[4];
+
+    LT_TymTr_incorporated_d=y[5];
+    Total_cells_in_apoptosis_d=y[6];
+}

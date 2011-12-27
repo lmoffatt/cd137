@@ -134,7 +134,7 @@ Results::Results(std::string experimentName):
 /*28*/        IFN_.push_back(Measurement(16.0,8.1,0.81));
 /*29*/        IFN_.push_back(Measurement(48.0,12.0,0.12));
 /*30*/        IFN_.push_back(Measurement(119.0,28.3,0.283));
-/*31*/        APC_expression_.push_back(Measurement(0.0,3.0,0.6));//
+/*31*/        APC_expression_.push_back(Measurement(0.0,3.0,0.6));//  //:means true error
 /*32*/        APC_expression_.push_back(Measurement(16.0,16.5,1.0));//
 /*33*/        APC_expression_.push_back(Measurement(119.0,6.1,3.6));//
 /*34*/        NK_expression_.push_back (Measurement (24.0, 11.32,1.36));//
@@ -144,14 +144,14 @@ Results::Results(std::string experimentName):
 /*38*/        LT_expression_.push_back(Measurement (119.0,29.7, 7.77));//
 /*39*/        APC_IFNg_.push_back(Measurement (16.0,7.7,0.77));
 /*40*/        APC_IFNg_.push_back (Measurement (119.0,4.8,0.48));
-/*41*/        APC_TNFa_.push_back(Measurement (16.0,13.0,0.13));
+/*41*/        APC_TNFa_.push_back(Measurement (16.0,13.0,1.3));
 /*42*/        APC_TNFa_.push_back (Measurement (119.0,8.1,0.81));
 /*43*/        NK_IFNg_.push_back(Measurement (24.0,5.93,0.593));
 /*44*/        NK_TNFa_.push_back (Measurement (24.0,4.1,0.41));
 /*45*/        LT_IFNg_.push_back (Measurement (119.0,2.1,0.21));
 /*46*/        LT_TNFa_.push_back(Measurement (16.0,5.93,0.593));
 /*47*/        LT_Apoptosis_.push_back(Measurement(119.0,20,2));
-/*48*/        Proliferation_.push_back(Measurement(119,100,10.0));
+/*48*/        Proliferation_.push_back(Measurement(119,8000,800.0));
 /*48a*/       num_cells_.push_back(Measurement(24,2e6,2.0e5));
 /*48b*/       num_cells_.push_back(Measurement(119,2e6,2.0e5));
 
@@ -174,7 +174,7 @@ Results::Results(std::string experimentName):
 /*62*/        LT_IFNg_.push_back (Measurement (119.0,2.1,0.21));
 /*62*/        LT_TNFa_.push_back(Measurement (16.0,5.93,0.593));
 /*63*/        LT_Apoptosis_.push_back(Measurement(119.0,20.0,2));
-/*64*/        Proliferation_.push_back(Measurement(119,100,10.0));
+/*64*/        Proliferation_.push_back(Measurement(119,5000,500.0));
 /*64a*/       num_cells_.push_back(Measurement(24,2e6,1.0e5));
 /*64b*/       num_cells_.push_back(Measurement(119,2e6,1.0e5));
 
