@@ -3,7 +3,7 @@
 #include "SimParameters.h"
 #include "Treatment.h"
 #include "Includes/Parameters.h"
-
+#include "RungeKutta4.h"
 class APC_cells;
 class NK_cells;
 class LT_cells;
@@ -77,6 +77,14 @@ class Media
         friend void swap(Media& one, Media& other);
 
 	friend std::ostream& operator<<(std::ostream& s, const Media& c);
+
+
+    std::vector<double> Derivative(const APC_cells& APC ,const NK_cells& NK,const LT_cells& LT);
+
+     std::vector<double> getState() const;
+
+     void setState(std::vector<double> y,double t_run,const APC_cells& APC ,const NK_cells& NK,const LT_cells& LT);
+
 
     private:
         double IFNgamma_d;

@@ -325,6 +325,7 @@ void APC_cells::update(double& time_step,const Media& m, const NK_cells& NK, con
     /// the number of free cells (no Ag) they proliferate according to the cell concentration (factor proliferation ratio)
     /// and some of them are "lost" since they internalize the Ag
 
+
     double APC0_delta=(-APC0_apop_rate_d*APC0_d-
              APC0_d*APC_Ag_d*(m.IFNgamma()/(m.IFNgamma()+ Ksi_d))*(m.TNF()/(m.TNF()+Kst_d))*m.Ag()-
              APC_Ag_d*m.Ag()*APC0_d)*time_step;
@@ -333,6 +334,7 @@ void APC_cells::update(double& time_step,const Media& m, const NK_cells& NK, con
     /** the cells that have internalize the Ag proliferate in the same way than the free
     they grow also by the free cells that internalize the Ag
     they shrink by the cells that interact with the LT cells*/
+
 
     double APCa_delta_pos=(APC0_d*APC_Ag_d*(m.IFNgamma()/(m.IFNgamma()+ Ksi_d))*(m.TNF()/(m.TNF()+Kst_d))*m.Ag()+
                             APC_Ag_d*m.Ag()*APC0_d )*time_step;
@@ -769,8 +771,195 @@ APC_cells::APC_cells(const Parameters& p, const Treatment& t):
 
     /// 13) Apoptosis rate for TNF
     /*33*/  u_APC_TNF_d(p.mean("u_APC_TNF"))
-{}
+{
+    if (p.mode()=="minimal")
+    {
+        IFN_APC0_prod_rate_d=p.mean("IFN_APC_prod_rate");
+        IFN_APCa_prod_rate_d=p.mean("IFN_APC_prod_rate");
+        IFN_APCbo_prod_rate_d=p.mean("IFN_APC_prod_rate");
 
+    }
+
+
+}
+
+std::vector<double> APC_cells::Derivative(const Media& m, const NK_cells& NK, const LT_cells& LT)
+{
+    std::vector<double> D;
+    /// we update each subpopulation of cells independently and we take into account the transition from one state to the other
+
+    /// the number of free cells (no Ag) they proliferate according to the cell concentration (factor proliferation ratio)
+    /// and some of them are "lost" since they internalize the Ag
+
+
+    double APC0_delta=(-APC0_apop_rate_d*APC0_d-
+             APC0_d*APC_Ag_d*(m.IFNgamma()/(m.IFNgamma()+ Ksi_d))*(m.TNF()/(m.TNF()+Kst_d))*m.Ag()-
+             APC_Ag_d*m.Ag()*APC0_d);
+
+    D.push_back(APC0_delta);
+
+    /** the cells that have internalize the Ag proliferate in the same way than the free
+    they grow also by the free cells that internalize the Ag
+    they shrink by the cells that interact with the LT cells*/
+
+
+    double APCa_delta_pos=(APC0_d*APC_Ag_d*(m.IFNgamma()/(m.IFNgamma()+ Ksi_d))*(m.TNF()/(m.TNF()+Kst_d))*m.Ag()+
+                            APC_Ag_d*m.Ag()*APC0_d );
+    double APCa_delta_neg= (
+            -APCa_apop_rate_d*APCa_d -
+            u_APC_TNF_d*APCa_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d))-
+            APC_APC_d*APCa_d*APCa_expressing_receptor_d*APCa_d*APCa_expressing_receptor_d-
+            APC_APC_d*APCa_d*APCa_expressing_receptor_d*APCbo_d-
+            APC_NK_d*APCa_d*APCa_expressing_receptor_d*NK.NKa()*NK.NKa_expressing_receptor()-
+            APC_NK_d*APCa_d*APCa_expressing_receptor_d*NK.NKbo()-
+            APC_LT_1_d*LT.LT0()*APCa_d*APCa_expressing_receptor_d/(APCa_d*APCa_expressing_receptor_d+KsAPC_LT_d)-
+            APC_Ab_d*APCa_d*APCa_expressing_receptor_d*m.Ab()*APCa_d-APCa_d*APC_exh_d);
+
+    D.push_back(APCa_delta_neg+APCa_delta_pos);
+
+    /// the cells that have interacted with LT grow accordingly with the number of cells that have internalized the Ag and the
+    /// number of APC cells expressing the ligand and receptor and bound with monocytes, NK or LT cells with the same rate (Monocytes, NK or LT can
+    /// interact only with one cell). We are supposing that all activated cells express receptor and ligand. We are supposing that probabiliities of
+    /// interactionts between cells are similar.
+
+    double APCbo_delta=(
+                APC_APC_d*APCa_d*APCa_expressing_receptor_d*APCa_d*APCa_expressing_receptor_d+
+                APC_APC_d*APCa_d*APCa_expressing_receptor_d*APCbo_d+
+                APC_NK_d*APCa_d*APCa_expressing_receptor_d*NK.NKa()*NK.NKa_expressing_receptor()+
+                APC_NK_d*APCa_d*APCa_expressing_receptor_d*NK.NKbo()+
+                APC_LT_1_d*LT.LT0()*APCa_d*APCa_expressing_receptor_d/(APCa_d*APCa_expressing_receptor_d+KsAPC_LT_d)+
+                APCbo_d*APC_bound_proliferation_rate_d-
+                APCbo_d*APCbo_apop_rate_d-
+                u_APC_TNF_d*APCbo_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d))-
+                APCbo_d*APC_exh_d -
+                APC_Ab_d*APCbo_d*m.Ab()
+                );
+
+    D.push_back(APCbo_delta);
+
+    /// the cells that were signalizeb by receptor and binds the Ab
+
+
+    double APCbo_Ab_delta= (APC_Ab_d*APCbo_d*m.Ab() +
+                 APCbo_Ab_d*APC_bound_proliferation_rate_d-
+                 APCbo_Ab_d*APCbo_apop_rate_d-
+                 u_APC_TNF_d*APCbo_Ab_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d))-
+                 APCbo_Ab_d*APC_exh_d);
+
+
+    D.push_back(APCbo_Ab_delta);
+    /// the cells that are blocked
+
+    double APCbl_delta= (APC_Ab_d*APCa_d*APCa_expressing_receptor_d*m.Ab()-
+              APCbo_apop_rate_d*APCbl_d-
+              u_APC_TNF_d*APCbl_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d))-
+              APCbl_d*APC_exh_d);
+    D.push_back(APCbl_delta);
+    /// the cells that are exhausted
+
+    double APCexh_delta= (APCa_d*APC_exh_d +
+                APCbo_d*APC_exh_d +
+                APCbo_Ab_d*APC_exh_d +
+                APCbl_d*APC_exh_d -
+                APCexh_apop_rate_d*APCexh_d-
+                u_APC_TNF_d*APCexh_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d)));
+
+    D.push_back(APCexh_delta);
+double APC_TymTr_incorporated_delta;
+    if (m.TymidineTriteate()>0)
+    {
+       APC_TymTr_incorporated_delta=
+               ((APCbo_d+APCbo_Ab_d)*APC_bound_proliferation_rate_d*m.Prol_TymTr());
+       }
+    else
+        APC_TymTr_incorporated_delta=0;
+    D.push_back(APC_TymTr_incorporated_delta);
+
+    return D;
+
+}
+
+std::vector<double> APC_cells::getState()const
+{
+    std::vector<double> S;
+    /// we update each subpopulation of cells independently and we take into account the transition from one state to the other
+
+    /// the number of free cells (no Ag) they proliferate according to the cell concentration (factor proliferation ratio)
+    /// and some of them are "lost" since they internalize the Ag
+
+
+    S.push_back(APC0_d);
+    /** the cells that have internalize the Ag proliferate in the same way than the free
+    they grow also by the free cells that internalize the Ag
+    they shrink by the cells that interact with the LT cells*/
+
+
+
+    S.push_back(APCa_d);
+    /// the cells that have interacted with LT grow accordingly with the number of cells that have internalized the Ag and the
+    /// number of APC cells expressing the ligand and receptor and bound with monocytes, NK or LT cells with the same rate (Monocytes, NK or LT can
+    /// interact only with one cell). We are supposing that all activated cells express receptor and ligand. We are supposing that probabiliities of
+    /// interactionts between cells are similar.
+
+
+    S.push_back(APCbo_d);
+    /// the cells that were signalizeb by receptor and binds the Ab
+
+
+
+    S.push_back(APCbo_Ab_d);
+    /// the cells that are blocked
+
+    S.push_back(APCbl_d);
+    /// the cells that are exhausted
+
+
+    S.push_back(APCexh_d);
+
+    S.push_back( APC_TymTr_incorporated_d);
+
+    return S;
+
+}
+
+void APC_cells::setState(const std::vector<double>& y)
+{
+    /// we update each subpopulation of cells independently and we take into account the transition from one state to the other
+
+    /// the number of free cells (no Ag) they proliferate according to the cell concentration (factor proliferation ratio)
+    /// and some of them are "lost" since they internalize the Ag
+
+
+
+    APC0_d=y[0];
+    /** the cells that have internalize the Ag proliferate in the same way than the free
+    they grow also by the free cells that internalize the Ag
+    they shrink by the cells that interact with the LT cells*/
+
+
+    APCa_d=y[1];
+    /// the cells that have interacted with LT grow accordingly with the number of cells that have internalized the Ag and the
+    /// number of APC cells expressing the ligand and receptor and bound with monocytes, NK or LT cells with the same rate (Monocytes, NK or LT can
+    /// interact only with one cell). We are supposing that all activated cells express receptor and ligand. We are supposing that probabiliities of
+    /// interactionts between cells are similar.
+
+
+    APCbo_d=y[2];
+    /// the cells that were signalizeb by receptor and binds the Ab
+
+
+
+
+    APCbo_Ab_d=y[3];
+    /// the cells that are blocked
+
+    APCbl_d+=y[4];
+    /// the cells that are exhausted
+
+    APCexh_d=y[5];
+    APC_TymTr_incorporated_d=y[6];
+
+}
 
 
 

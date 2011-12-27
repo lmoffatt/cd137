@@ -1,6 +1,8 @@
 #ifndef BAYESITERATION_H
 #define BAYESITERATION_H
 #include <vector>
+#include <string>
+#include <map>
 #include "LevenbergMarquardtParameters.h"
 
 
@@ -37,12 +39,21 @@ public:
 
     BayesIteration(const ABC_model* f,
                    Parameters prior,
-                   const ABC_data* d);
+                   const ABC_data* d,
+                   const std::string &filename);
+
+
+    std::map<double,Parameters> getRandomParameters(std::size_t num);
+
+    double SumWeighedSquare(const Parameters& p);
+
 
 
     BayesIteration& addNewData(ABC_data* d);
 
     virtual ~BayesIteration();
+
+    virtual void setFilename(const std::string filename);
 
     virtual std::vector<double> yfit (const std::vector<double>& param);
     virtual std::vector<double> yfit(const Parameters& parameters)const;
@@ -79,6 +90,8 @@ private:
     std::size_t numSeeds_;
 
     std::vector<LevenbergMarquardtParameters> LM_;
+
+    std::string filename_;
 
 
     };

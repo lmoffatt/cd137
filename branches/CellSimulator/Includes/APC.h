@@ -197,6 +197,14 @@ class APC_cells
 
 	friend std::ostream& operator<<(std::ostream& s, const APC_cells& c);
 
+
+    std::vector<double> Derivative(const Media& m, const NK_cells& NK, const LT_cells& LT);
+
+    std::vector<double> getState()const;
+    void setState(const std::vector<double>& y);
+
+
+
     private:
 
 

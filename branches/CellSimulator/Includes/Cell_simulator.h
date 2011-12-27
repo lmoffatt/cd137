@@ -2,6 +2,8 @@
 #define CELL_SIMULATOR_H_INCLUDED
 #include <iostream>
 #include <string>
+#include <vector>
+
 #include "Includes/SimParameters.h"
 #include "Includes/Parameters.h"
 
@@ -11,16 +13,17 @@
 #include "Includes/LT.h"
 #include "Includes/LevenbergMarquardt.h"
 #include "Includes/BayesIteration.h"
-
+#include "RungeKutta4.h"
 
 #include "Experiment.h"
 
 class OptimizationResults;
-class Cell_simulator: public ABC_model
+class Cell_simulator: public ABC_model, public ABC_ODE
 {
 public:
     ~Cell_simulator(){}
 //    void ask_parameters();
+
     void run();
 
 
@@ -63,6 +66,7 @@ public:
 
 
     static Parameters getStandardParameters();
+    static Parameters getMinimalParameters();
 
 
 
@@ -78,17 +82,20 @@ public:
 
 
     void Optimize(const Parameters& priorPar,
-                                 const Experiment& exp);
+                                 const Experiment& exp,
+                  const std::string& filename);
 
 
 
     virtual std::ostream& put(std::ostream &s,const Parameters& parameters) const;
 
 
+    virtual std::vector<double> Derivative(double t, std::vector<double> y);
 
 
+    std::vector<double> getState() const;
 
-
+    void setState(const std::vector<double>& y);
 
 
 

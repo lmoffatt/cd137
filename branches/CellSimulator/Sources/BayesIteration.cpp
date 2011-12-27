@@ -1,5 +1,6 @@
 #include <vector>
 #include <fstream>
+#include <cmath>
 #include "BayesIteration.h"
 
 std::vector<double> ABC_data::getDataWeigth()
@@ -37,14 +38,16 @@ Parameters BayesIteration::Prior(std::size_t n)const
 
 BayesIteration::BayesIteration(const ABC_model* m,
                                Parameters prior,
-                               const ABC_data* d):
+                               const ABC_data* d,
+                               const std::string& filename):
     m_(m),
     priors_(1,prior),
     data_(1,d),
     posterior_(),
-    numSeeds_(20)
+    numSeeds_(20),
+    filename_(filename)
 {
-    getPosterior();
+    //getPosterior();
 }
 
 
@@ -133,9 +136,16 @@ BayesIteration& BayesIteration::getPosterior()
     std::vector<Parameters> Ps;
 
 
+
+
+
     Parameters p=priors_.back();
 
     p.scaleError(0.2);
+
+    std::size_t factor=100;
+    std::map<double,Parameters> seeds=getRandomParameters(numSeeds_*factor);
+
 
     LevenbergMarquardtParameters LM(this,
                                     data,
@@ -144,25 +154,25 @@ BayesIteration& BayesIteration::getPosterior()
     LM.optimize();
     LMs.push_back(LM);
     Ps.push_back(LM.OptimParameters());
-    std::string filename="parametersOptimal.txt";
     std::ofstream f;
 
+    f.open(filename_.c_str(),std::ios_base::app);
     f<<"--------------------------------------------------"
        "---------------------------------------------------\n";
     f<<"----------Start from the center-------------------\n";
     f<<"--------------------------------------------------"
        "---------------------------------------------------\n";
-    f.open(filename.c_str(),std::ios_base::app);
     f<<LM;
     put(f,Ps.back());
     f.close();
 
 
+    std::map<double,Parameters>::iterator it=seeds.begin();
 
     for (std::size_t i=0; i<numSeeds_; i++)
     {
-        Parameters initParam=p.randomSample();
-
+        Parameters initParam=(*it).second;
+        ++it;
         LevenbergMarquardtParameters LM(this,
                                         data,
                                         initParam,
@@ -170,7 +180,7 @@ BayesIteration& BayesIteration::getPosterior()
         LM.optimize();
         LMs.push_back(LM);
         Ps.push_back(LM.OptimParameters());
-        f.open(filename.c_str(),std::ios_base::app);
+        f.open(filename_.c_str(),std::ios_base::app);
         f<<"--------------------------------------------------"
            "---------------------------------------------------\n";
         f<<"----------Start from the perisphery-------------------\n";
@@ -192,3 +202,39 @@ std::ostream& BayesIteration::put(std::ostream& s,const Parameters& parameters)c
     m_->put(s,parameters);
     return s;
 }
+
+
+ void BayesIteration::setFilename(const std::string filename)
+{
+    filename_=filename;
+}
+
+ double BayesIteration::SumWeighedSquare(const Parameters& p)
+ {
+     std::vector<double> d=this->getData();
+     std::vector<double> w=this->getDataWeigth();
+
+     std::vector<double> y=this->yfit(p);
+     double SSW=0;
+     for (std::size_t i=0;i<d.size();i++)
+     {
+         SSW+=pow(y[i]-d[i],2)*w[i];
+     };
+     return SSW;
+ }
+
+
+ std::map<double,Parameters> BayesIteration::getRandomParameters(std::size_t num)
+ {
+     std::map<double,Parameters> myMap;
+     for (std::size_t i=0; i<num; i++)
+     {
+         Parameters p=priors_.back().randomSample(0.001);
+         double ss=SumWeighedSquare(p);
+
+         std::cout<<ss<<"\n";
+     //    std::cout<<p;
+         myMap[ss]=p;
+     }
+     return myMap;
+ }

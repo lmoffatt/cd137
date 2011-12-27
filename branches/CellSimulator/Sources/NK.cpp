@@ -685,3 +685,129 @@ const double& NK_cells::NKa_expressing_receptor() const
  {
 
  }
+
+
+
+
+ std::vector<double> NK_cells::Derivative(const Media& m, const APC_cells& APC)const
+ {
+
+std::vector<double> D;
+     /// we update each subpopulation of cells independently and we take into account the transition from one state to the other
+
+     /// the number of free cells (no Ag) they proliferate according and some of them are "lost" since they activate
+
+     double NK0_delta=(NK0_d*NK0_proliferation_rate_d-NK0_d*NK0_apop_rate_d-
+             NK0_d*m.Ag()*KaNK_d*((APC.APCa()+(APC.APCbo_TNF_production_rate()/APC.APCa_TNF_production_rate())+APC.APCbl())/
+                                 (APC.APCa()+(APC.APCbo_TNF_production_rate()/APC.APCa_TNF_production_rate())+APC.APCbl()+KsAPC_NK_d)));
+     D.push_back(NK0_delta);
+     /** activated NK cells dynamics*/
+     double NKa_delta=(NKa_proliferation_rate_d*NKa_d+
+             NK0_d*m.Ag()*KaNK_d*(APC.APCa()+ APC.APCbl()+ APC.APCbo_Ab() + (APC.APCbo_TNF_production_rate()/APC.APCa_TNF_production_rate())*APC.APCbl())/
+             (APC.APCa()+ APC.APCbl()+ APC.APCbo_Ab() + (APC.APCbo_TNF_production_rate()/APC.APCa_TNF_production_rate())*APC.APCbl()+KsAPC_NK_d)-
+            NK_NK_d*NKa_d*NKa_expressing_receptor_d*NKa_d*NKa_expressing_receptor_d-
+            NK_NK_d*NKa_d*NKa_expressing_receptor_d*NKbo_d-
+            APC.APC_NK()*NKa_d*NKa_expressing_receptor_d*APC.APCa()*APC.APCa_expressing_receptor()-
+            APC.APC_NK()*NKa_d*NKa_expressing_receptor_d*APC.APCbo()-
+            NK_Ab_d*NKa_d*NKa_expressing_receptor_d*m.Ab()-NKa_apop_rate_d*NKa_d-
+            u_NK_TNF_d*NKa_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d))-NKa_d*NK_exh_d);
+     D.push_back(NKa_delta);
+ /// El porcentaje de células productoras de IL-12 está dentro de la constante
+
+     /// the cells that have interacted with LT grow accordingly with the number of cells that have internalized the Ag and the
+     /// number of LT cells, monocytes and NK expressing the receptor with the same affinity (Monocytes, NK or LT can
+     /// interact only with one cell). We are supposing that all activated cells express receptor and ligand.
+     double NKbo_delta= (NKbo_d*NKbo_proliferation_rate_d+
+             NK_NK_d*NKa_d*NKa_expressing_receptor_d*NKa_d*NKa_expressing_receptor_d+
+             NK_NK_d*NKa_d*NKa_expressing_receptor_d*NKbo_d+
+             APC.APC_NK()*NKa_d*NKa_expressing_receptor_d*APC.APCa()*APC.APCa_expressing_receptor()+
+             APC.APC_NK()*NKa_d*NKa_expressing_receptor_d*APC.APCbo()-
+             NKbo_apop_rate_d*NKbo_d-u_NK_TNF_d*NKbo_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d))-
+             NKbo_d*NK_Ab_d*m.Ab()-NKbo_d*NK_exh_d);
+
+      D.push_back(NKbo_delta);
+
+     /// NK cells can interact with other cells or with the blocking mAb
+
+     double NKbo_Ab_delta=(NKbo_Ab_d*NKbo_proliferation_rate_d+NKbo_d*NK_Ab_d*m.Ab()-
+             NKbo_apop_rate_d*NKbo_Ab_d-u_NK_TNF_d*NKbo_Ab_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d))-
+             NKbo_Ab_d*NK_exh_d);
+     D.push_back(NKbo_Ab_delta);
+     /// the cells that have interacted with LT get exhausted
+     double NKbl_delta=(NKbl_d*NKbl_proliferation_rate_d+NK_Ab_d*NKa_d*NKa_expressing_receptor_d*m.Ab()-
+             NKbl_apop_rate_d*NKbl_d-u_NK_TNF_d*NKbl_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d))-NKbl_d*NK_exh_d);
+
+    D.push_back(NKbl_delta);
+    double  NKexh_delta=(NKa_d*NK_exh_d+NKbo_d*NK_exh_d+NKbo_Ab_d*NK_exh_d+NKbl_d*NK_exh_d-
+              NKexh_apop_rate_d*NKexh_d-u_NK_TNF_d*NKexh_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d)));
+     D.push_back(NKexh_delta);
+     double NK_TymTr_incorporated_delta=0;
+     if (m.TymidineTriteate()>0){
+         NK_TymTr_incorporated_delta=((NK0_d*NK0_proliferation_rate_d+(NKa_d+NKbl_d)*NKa_proliferation_rate_d+
+                                   (NKbo_d+NKbo_Ab_d)*NKbo_proliferation_rate_d)*m.Prol_TymTr());
+     }
+     D.push_back(NK_TymTr_incorporated_delta);
+
+     return D;
+ }
+
+
+
+ std::vector<double> NK_cells::getState()const
+  {
+     std::vector<double> S;
+     /// we update each subpopulation of cells independently and we take into account the transition from one state to the other
+
+     /// the number of free cells (no Ag) they proliferate according and some of them are "lost" since they activate
+
+     S.push_back(NK0_d);
+     /** activated NK cells dynamics*/
+     S.push_back(NKa_d);
+ /// El porcentaje de células productoras de IL-12 está dentro de la constante
+
+     /// the cells that have interacted with LT grow accordingly with the number of cells that have internalized the Ag and the
+     /// number of LT cells, monocytes and NK expressing the receptor with the same affinity (Monocytes, NK or LT can
+     /// interact only with one cell). We are supposing that all activated cells express receptor and ligand.
+
+      S.push_back(NKbo_d);
+
+     /// NK cells can interact with other cells or with the blocking mAb
+
+     S.push_back(NKbo_Ab_d);
+     /// the cells that have interacted with LT get exhausted
+
+    S.push_back(NKbl_d);
+     S.push_back(NKexh_d);
+     S.push_back(NK_TymTr_incorporated_d);
+
+     return S;
+
+ }
+
+
+
+
+ void NK_cells::setState(std::vector<double> y)
+ {
+     /// we update each subpopulation of cells independently and we take into account the transition from one state to the other
+
+     /// the number of free cells (no Ag) they proliferate according and some of them are "lost" since they activate
+
+     NK0_d=y[0];
+     /** activated NK cells dynamics*/
+     NKa_d=y[1];
+ /// El porcentaje de células productoras de IL-12 está dentro de la constante
+
+     /// the cells that have interacted with LT grow accordingly with the number of cells that have internalized the Ag and the
+     /// number of LT cells, monocytes and NK expressing the receptor with the same affinity (Monocytes, NK or LT can
+     /// interact only with one cell). We are supposing that all activated cells express receptor and ligand.
+      NKbo_d=y[2];
+
+     /// NK cells can interact with other cells or with the blocking mAb
+
+     NKbo_Ab_d=y[3];
+     /// the cells that have interacted with LT get exhausted
+     NKbl_d=y[4];
+     NKexh_d=y[5];
+     NK_TymTr_incorporated_d=y[6];
+  }

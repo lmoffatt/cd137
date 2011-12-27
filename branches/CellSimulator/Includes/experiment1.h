@@ -5,6 +5,9 @@ void Bayes ();
 
 void BayesParameters ();
 
+void BayesParametersTest ();
+
+
 void TestParametersIO();
 
 

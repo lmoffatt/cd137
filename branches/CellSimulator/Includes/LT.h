@@ -183,6 +183,15 @@ class LT_cells
 
          //   void reset(const SimParameters& sp,const Treatment& tr);
 
+
+        std::vector<double> Derivative(double t_run, const Media& m, const APC_cells& APC)const;
+
+        std::vector<double> getState()const;
+        void setState(const std::vector<double>& y);
+
+
+
+
     private:
         /// Variables 6
         /// number of non Ag specific cells

@@ -165,6 +165,12 @@ class NK_cells
 
 	friend std::ostream& operator<<(std::ostream& s, const NK_cells& c);
 
+    std::vector<double> Derivative(const Media& m, const APC_cells& APC)const;
+    std::vector<double> getState()const;
+
+    void setState(std::vector<double> y);
+
+
 
     private:
       /// Variables 7
