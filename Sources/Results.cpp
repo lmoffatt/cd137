@@ -146,11 +146,11 @@ Results::Results(std::string experimentName):
 /*40*/        APC_IFNg_.push_back (Measurement (119.0,4.8,0.48));
 /*41*/        APC_TNFa_.push_back(Measurement (16.0,13.0,0.13));
 /*42*/        APC_TNFa_.push_back (Measurement (119.0,8.1,0.81));
-/*43*/        NK_IFNg_.push_back(Measurement (24.0,5.93,5.93));
+/*43*/        NK_IFNg_.push_back(Measurement (24.0,5.93,0.593));
 /*44*/        NK_TNFa_.push_back (Measurement (24.0,4.1,0.41));
 /*45*/        LT_IFNg_.push_back (Measurement (119.0,2.1,0.21));
 /*46*/        LT_TNFa_.push_back(Measurement (16.0,5.93,0.593));
-/*47*/        LT_Apoptosis_.push_back(Measurement(119.0,20,0.02));
+/*47*/        LT_Apoptosis_.push_back(Measurement(119.0,20,2));
 /*48*/        Proliferation_.push_back(Measurement(119,100,10.0));
 /*48a*/       num_cells_.push_back(Measurement(24,2e6,2.0e5));
 /*48b*/       num_cells_.push_back(Measurement(119,2e6,2.0e5));
@@ -173,7 +173,7 @@ Results::Results(std::string experimentName):
 /*61*/        NK_TNFa_.push_back (Measurement (24.0,4.1,0.41));
 /*62*/        LT_IFNg_.push_back (Measurement (119.0,2.1,0.21));
 /*62*/        LT_TNFa_.push_back(Measurement (16.0,5.93,0.593));
-/*63*/        LT_Apoptosis_.push_back(Measurement(119.0,20.0,0.02));
+/*63*/        LT_Apoptosis_.push_back(Measurement(119.0,20.0,2));
 /*64*/        Proliferation_.push_back(Measurement(119,100,10.0));
 /*64a*/       num_cells_.push_back(Measurement(24,2e6,1.0e5));
 /*64b*/       num_cells_.push_back(Measurement(119,2e6,1.0e5));
@@ -1009,7 +1009,8 @@ std::vector<double> Results::getData()const
     for (std::size_t i=0; i<num_cells_.size(); ++i)
         data.push_back(num_cells_[i].Measure());
 
-     return data;
+    std::vector<double> o(data);
+     return o;
  }
 
 

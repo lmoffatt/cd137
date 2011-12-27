@@ -452,7 +452,9 @@ double NK_cells::percentage_NK_expressing_receptor() const
 
 double NK_cells::percentage_NK_producing_IFN() const
    {
-    double sum=100*(percentage_IFN_NK0_prod_rate_d*NK0_d+percentage_IFN_AgNKa_prod_rate_d*(NKa_d+NKbl_d)+percentage_IFN_NKbo_prod_rate_d*(NKbo_d+NKbl_d))/num_NK();
+    double sum=100*(percentage_IFN_NK0_prod_rate_d*NK0_d
+                    +percentage_IFN_AgNKa_prod_rate_d*(NKa_d+NKbl_d)
+                    +percentage_IFN_NKbo_prod_rate_d*(NKbo_d+NKbl_d))/num_NK();
     return sum;
    }
 
@@ -460,7 +462,9 @@ double NK_cells::percentage_NK_producing_IFN() const
 
 double NK_cells::percentage_NK_producing_TNF() const
    {
-    double sum=100*(percentage_TNF_NK0_prod_rate_d*NK0_d+percentage_TNF_NKa_prod_rate_d*(NKa_d+NKbl_d)+percentage_TNF_NKbo_prod_rate_d*(NKbo_d+NKbl_d))/num_NK();
+    double sum=100*(percentage_TNF_NK0_prod_rate_d*NK0_d
+                    +percentage_TNF_NKa_prod_rate_d*(NKa_d+NKbl_d)
+                    +percentage_TNF_NKbo_prod_rate_d*(NKbo_d+NKbl_d))/num_NK();
     return sum;
    }
 

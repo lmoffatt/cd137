@@ -363,7 +363,7 @@ const double& LT_cells::LTexh() const
 /// 3) Percentage of cells expressing
 double LT_cells::LT_percentage_cell_expressing_receptor() const
 {
-    double sum=100*(percentage_IFN_LTns_prod_rate_d*(LTns_d+LT0_d)+
+    double sum=100.0*(percentage_IFN_LTns_prod_rate_d*(LTns_d+LT0_d)+
                percentage_IFN_LTbo_prod_rate_d*LTbo_d+
                     percentage_IFN_LTbl_prod_rate_d*LTbl_d)/num_LT();
     return sum;
@@ -388,7 +388,7 @@ double LT_cells::percentage_LT_IFN_production() const
                LT0_d*percentage_IFN_LTns_prod_rate_d+
                LTbo_d*percentage_IFN_LTbo_prod_rate_d+
                LTbl_d*percentage_IFN_LTbl_prod_rate_d;
-      return sum/num_LT();
+      return 100.0*sum/num_LT();
   }
 
 
@@ -408,7 +408,7 @@ double LT_cells::percentage_LT_TNF_production() const
                LT0_d*percentage_TNF_LTns_prod_rate_d+
                LTbo_d*percentage_TNF_LTbo_prod_rate_d+
                LTbl_d*percentage_TNF_LTbl_prod_rate_d;
-      return sum/num_LT();
+      return 100.0*sum/num_LT();
   }
 
 

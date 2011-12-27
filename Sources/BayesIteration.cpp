@@ -135,7 +135,7 @@ BayesIteration& BayesIteration::getPosterior()
 
     Parameters p=priors_.back();
 
-    p.scaleError(0.01);
+    p.scaleError(0.2);
 
     LevenbergMarquardtParameters LM(this,
                                     data,

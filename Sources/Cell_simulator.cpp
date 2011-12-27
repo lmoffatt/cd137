@@ -975,6 +975,9 @@ Cell_simulator::Cell_simulator(const Cell_simulator& other):
     fitPar_(other.fitPar_),
     prior_(other.prior_),
     current_(other.current_)
+
+
+
     {}
 
 
