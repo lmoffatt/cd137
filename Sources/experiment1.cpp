@@ -287,7 +287,7 @@ void BayesParameters()
     med.Ag=0.0;
     med.Ab=0.0;
     med.sim_duration_d=120;
-    med.time_step_d=1.0/1200;
+    med.time_step_d=1.0/120;
     med.init_cells=1.0e6;
     med.t_apop_meas_d=119;
 
@@ -295,7 +295,7 @@ void BayesParameters()
     Mtb.Ag=10.0;
     Mtb.Ab=0.0;
     Mtb.sim_duration_d=120;
-    Mtb.time_step_d=1.0/1200;
+    Mtb.time_step_d=1.0/120;
     Mtb.init_cells=1.0e6;
     Mtb.t_apop_meas_d=119;
 
@@ -303,7 +303,7 @@ void BayesParameters()
     block.Ag=10.0;
     block.Ab=10.0;
     block.sim_duration_d=120;
-    block.time_step_d=1.0/1200;
+    block.time_step_d=1.0/120;
     block.init_cells=1.0e6;
     block.t_apop_meas_d=119;
 
@@ -328,7 +328,7 @@ void BayesParameters()
     //simulExp: simulado  E:experimental
     //OptimizationResults O=cell.Optimize(sp,sp,simulExp,1,500);
 
-    cell.Optimize(sp,E,"optimParam.txt");
+    cell.Optimize(sp,E,"optimParam2.txt");
 
 
 
