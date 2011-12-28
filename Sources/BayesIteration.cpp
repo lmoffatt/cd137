@@ -197,7 +197,7 @@ BayesIteration& BayesIteration::getPosterior()
         f.close();
 
     }
-    double errorFactor=0.3;
+    double errorFactor=0.2;
     double errorShrinkFactor=3;
 
     std::size_t numCycle=3;
