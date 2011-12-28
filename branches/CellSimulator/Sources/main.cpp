@@ -8,7 +8,8 @@
 int main()
 {
  //   TestParametersIO();
-   BayesParametersTest();
+  // BayesParametersTest();
+   BayesParameters();
 
    // compareTimeStep();
 
