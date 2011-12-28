@@ -281,6 +281,140 @@ void TestParametersIO()
 }
 
 
+void compareTimeStep()
+{   Treatment  med;
+    med.Ag=0.0;
+    med.Ab=0.0;
+    med.sim_duration_d=120;
+    med.time_step_d=1.0/120*4.0;
+    med.init_cells=1.0e6;
+    med.t_apop_meas_d=119;
+
+    Treatment Mtb;
+    Mtb.Ag=10.0;
+    Mtb.Ab=0.0;
+    Mtb.sim_duration_d=120;
+    Mtb.time_step_d=1.0/120*4.0;
+    Mtb.init_cells=1.0e6;
+    Mtb.t_apop_meas_d=119;
+
+    Treatment block;
+    block.Ag=10.0;
+    block.Ab=10.0;
+    block.sim_duration_d=120;
+    block.time_step_d=1.0/120*4.0;
+    block.init_cells=1.0e6;
+    block.t_apop_meas_d=119;
+
+    Results MediaRes ("media");
+    Results MtbRes("mtb");
+    Results blockRes ("block");
+    Experiment E;
+    E.push_back(block,blockRes);
+    E.push_back(Mtb,MtbRes);
+    E.push_back(med,MediaRes);
+
+    Parameters sp=Cell_simulator::getStandardParameters();
+
+
+    Cell_simulator cell(sp, E);
+
+    std::string filename="comparetimestep.txt";
+    std::ofstream f;
+    f.open(filename.c_str(),std::ios_base::app);
+
+    cell.run(f,sp);
+    f.close();
+
+
+
+     //Modificar num iteracines
+    //simulExp: simulado  E:experimental
+    //OptimizationResults O=cell.Optimize(sp,sp,simulExp,1,500);
+
+    cell.Optimize(sp,E,"testOptimization.txt");
+
+
+
+
+
+
+}
+
+
+
+void loadModel()
+{   Treatment  med;
+    med.Ag=0.0;
+    med.Ab=0.0;
+    med.sim_duration_d=120;
+    med.time_step_d=1.0/120;
+    med.init_cells=1.0e6;
+    med.t_apop_meas_d=119;
+
+    Treatment Mtb;
+    Mtb.Ag=10.0;
+    Mtb.Ab=0.0;
+    Mtb.sim_duration_d=120;
+    Mtb.time_step_d=1.0/120;
+    Mtb.init_cells=1.0e6;
+    Mtb.t_apop_meas_d=119;
+
+    Treatment block;
+    block.Ag=10.0;
+    block.Ab=10.0;
+    block.sim_duration_d=120;
+    block.time_step_d=1.0/120;
+    block.init_cells=1.0e6;
+    block.t_apop_meas_d=119;
+
+    Results MediaRes ("media");
+    Results MtbRes("mtb");
+    Results blockRes ("block");
+    Experiment E;
+    E.push_back(block,blockRes);
+    E.push_back(Mtb,MtbRes);
+    E.push_back(med,MediaRes);
+
+
+    std::string filename="MODEL.txt";
+    std::ifstream f;
+    f.open(filename.c_str());
+
+    Parameters sp;
+    f>>sp;
+
+    std::cout<<sp;
+    f.close();
+    Cell_simulator cell(sp, E);
+
+
+
+     //Modificar num iteracines
+    //simulExp: simulado  E:experimental
+    //OptimizationResults O=cell.Optimize(sp,sp,simulExp,1,500);
+
+    if (1)
+    cell.Optimize(sp,E,"MODELOptimization.txt");
+else
+    {
+        std::string filename="MODEL_Run.txt";
+        std::ofstream f;
+        f.open(filename.c_str());
+
+        cell.run(f,sp);
+        f.close();
+
+      }
+
+
+
+
+}
+
+
+
+
 
 void BayesParameters()
 {   Treatment  med;

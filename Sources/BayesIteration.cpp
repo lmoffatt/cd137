@@ -221,9 +221,9 @@ BayesIteration& BayesIteration::getPosterior()
             {
                 ++it;
                 initParam=(*it).second;
-                initParam=initParam.randomSample(errorFactor);
                 j=0;
             }
+            initParam=initParam.randomSample(errorFactor);
 
             LevenbergMarquardtParameters LM(this,
                                             data,
