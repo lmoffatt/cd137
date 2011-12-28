@@ -399,7 +399,9 @@ void APC_cells::update(double& time_step,const Media& m, const NK_cells& NK, con
 double APC_TymTr_incorporated_delta;
     if (m.TymidineTriteate()>0)
     {
-       APC_TymTr_incorporated_delta=((APCbo_d+APCbo_Ab_d)*APC_bound_proliferation_rate_d*m.Prol_TymTr())*time_step;
+       APC_TymTr_incorporated_delta=(
+                   (APCbo_d+APCbo_Ab_d)*APC_bound_proliferation_rate_d*m.Prol_TymTr()
+                   )*time_step;
        APC_TymTr_incorporated_d+=APC_TymTr_incorporated_delta;
     }
 

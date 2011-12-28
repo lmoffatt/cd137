@@ -1890,9 +1890,9 @@ Results Cell_simulator::Simulate(const Parameters& simPar,
 //	std::cout<<"\ntime \t"<<trun_d;
 //	std::cout<<"\n media\n"<<m<<"\nLT\n"<<APC<<"\nNK\n"<<NK<<"\nLT\n"<<LT;
 //	std::cin>>ch;
-          if (1)
+          if (0)
           {
-          std::vector<double> y=RK.next(time_step_d/8);
+          std::vector<double> y=RK.next(time_step_d);
         setState(y);
 }
           else

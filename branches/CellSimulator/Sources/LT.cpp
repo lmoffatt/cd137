@@ -275,8 +275,10 @@ void LT_cells::update(double& time_step, double t_run, const Media& m, const APC
 
    double LT_TymTr_incorporated_delta;
    if (m.TymidineTriteate()>0){
-       LT_TymTr_incorporated_delta=((LTns_proliferation_rate_d*LTns_d+LTns_proliferation_rate_d*LT0_d+LTbo_proliferation_rate_d*LTbo_d+
-                                  +LTbl_proliferation_rate_d*LTbl_d)*m.Prol_TymTr())*time_step;
+       LT_TymTr_incorporated_delta=(
+                   (LTns_proliferation_rate_d*LTns_d+LTns_proliferation_rate_d*LT0_d+LTbo_proliferation_rate_d*LTbo_d+
+                                  +LTbl_proliferation_rate_d*LTbl_d)*m.Prol_TymTr()
+                   )*time_step;
        LT_TymTr_incorporated_d+=LT_TymTr_incorporated_delta;
    }
    double  Total_cells_in_apoptosis_delta;

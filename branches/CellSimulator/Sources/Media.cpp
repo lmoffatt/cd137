@@ -223,7 +223,7 @@ void Media::update(double& time_step,double t_run,const APC_cells& APC ,const NK
     num_cells_d=APC.num_APC()+NK.num_NK()+LT.num_LT();
     /// Tymidine Pulse at 114
 
-    double Tymidine_incorporated_delta;
+    double Tymidine_incorporated_;
 
     if (t_run<104)
      {TymidineTriteate_d=0;}
@@ -232,10 +232,10 @@ void Media::update(double& time_step,double t_run,const APC_cells& APC ,const NK
         TymidineTriteate_d=1;
     }
 
-     Tymidine_incorporated_delta=APC.APC_TymTr_incorporated()
+     Tymidine_incorporated_=APC.APC_TymTr_incorporated()
              +NK.NK_TymTr_incorporated()
              +LT.LT_TymTr_incorporated();
-    Tymidine_incorporated_d+=Tymidine_incorporated_delta;
+    Tymidine_incorporated_d=Tymidine_incorporated_;
 }
 
 
@@ -312,7 +312,7 @@ void Media::update(double& time_step,double t_run,const APC_cells& APC ,const NK
       num_cells_d=APC.num_APC()+NK.num_NK()+LT.num_LT();
       /// Tymidine Pulse at 114
 
-      double Tymidine_incorporated_delta;
+      double Tymidine_incorporated;
 
       if (t_run<104)
        {TymidineTriteate_d=0;}
@@ -321,10 +321,10 @@ void Media::update(double& time_step,double t_run,const APC_cells& APC ,const NK
           TymidineTriteate_d=1;
       }
 
-       Tymidine_incorporated_delta=APC.APC_TymTr_incorporated()
+       Tymidine_incorporated=APC.APC_TymTr_incorporated()
                +NK.NK_TymTr_incorporated()
                +LT.LT_TymTr_incorporated();
-      Tymidine_incorporated_d+=Tymidine_incorporated_delta;
+      Tymidine_incorporated_d=Tymidine_incorporated;
   }
 
 

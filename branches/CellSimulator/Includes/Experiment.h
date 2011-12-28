@@ -10,6 +10,8 @@ class Experiment: public ABC_data
 public:
     const Treatment& Treatment_i(std::size_t i)const;
 
+    Treatment& Treatment_i(std::size_t i);
+
     const Results& Result_i(std::size_t i)const;
 
     std::size_t size()const;
