@@ -10,6 +10,7 @@ void BayesParametersTest ();
 
 void TestParametersIO();
 
+void compareTimeStep();
 
 
 #endif // EXPERIMENT1_H_INCLUDED

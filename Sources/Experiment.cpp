@@ -12,6 +12,11 @@ const Treatment& Experiment::Treatment_i(std::size_t i)const
     return treatments_[i];
 }
 
+ Treatment& Experiment::Treatment_i(std::size_t i)
+{
+    return treatments_[i];
+}
+
 const Results& Experiment::Result_i(std::size_t i)const{
     return results_[i];
 }

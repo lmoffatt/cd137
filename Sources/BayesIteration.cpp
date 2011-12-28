@@ -136,14 +136,11 @@ BayesIteration& BayesIteration::getPosterior()
     std::vector<Parameters> Ps;
 
 
-
-
-
     Parameters p=priors_.back();
 
-    p.scaleError(0.2);
+    p.scaleError(1);
 
-    std::size_t factor=100;
+    std::size_t factor=10;
     std::map<double,Parameters> seeds=getRandomParameters(numSeeds_*factor);
 
 
@@ -172,6 +169,7 @@ BayesIteration& BayesIteration::getPosterior()
     for (std::size_t i=0; i<numSeeds_; i++)
     {
         Parameters initParam=(*it).second;
+        double ss=(*it).first;
         ++it;
         LevenbergMarquardtParameters LM(this,
                                         data,
@@ -229,12 +227,23 @@ std::ostream& BayesIteration::put(std::ostream& s,const Parameters& parameters)c
      std::map<double,Parameters> myMap;
      for (std::size_t i=0; i<num; i++)
      {
-         Parameters p=priors_.back().randomSample(0.001);
+         Parameters p=priors_.back().randomSample(0.5);
          double ss=SumWeighedSquare(p);
 
          std::cout<<ss<<"\n";
      //    std::cout<<p;
-         myMap[ss]=p;
+         if (!(ss!=ss))
+             myMap[ss]=p;
      }
+
+
+     for (std::map<double,Parameters>::iterator it=myMap.begin();it!=myMap.end();++it)
+     {
+         double ss=(*it).first;
+         std::cout<<(*it).first<<"\n";
+
+     }
+
+
      return myMap;
  }

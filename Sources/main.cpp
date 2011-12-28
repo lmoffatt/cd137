@@ -10,5 +10,7 @@ int main()
  //   TestParametersIO();
    BayesParametersTest();
 
+   // compareTimeStep();
+
 }
 

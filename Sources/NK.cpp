@@ -396,8 +396,10 @@ void NK_cells::update(double& time_step,const Media& m, const APC_cells& APC,con
     NKexh_d+=NKexh_delta;
     double NK_TymTr_incorporated_delta;
     if (m.TymidineTriteate()>0){
-        NK_TymTr_incorporated_delta=((NK0_d*NK0_proliferation_rate_d+(NKa_d+NKbl_d)*NKa_proliferation_rate_d+
-                                  (NKbo_d+NKbo_Ab_d)*NKbo_proliferation_rate_d)*m.Prol_TymTr())*time_step;
+        NK_TymTr_incorporated_delta=
+                ((NK0_d*NK0_proliferation_rate_d+(NKa_d+NKbl_d)*NKa_proliferation_rate_d+
+                                  (NKbo_d+NKbo_Ab_d)*NKbo_proliferation_rate_d)*m.Prol_TymTr()
+                 )*time_step;
         NK_TymTr_incorporated_d+=NK_TymTr_incorporated_delta;
     }
 
