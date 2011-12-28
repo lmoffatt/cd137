@@ -12,5 +12,6 @@ void TestParametersIO();
 
 void compareTimeStep();
 
+void loadModel();
 
 #endif // EXPERIMENT1_H_INCLUDED

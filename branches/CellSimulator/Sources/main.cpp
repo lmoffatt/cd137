@@ -9,8 +9,8 @@ int main()
 {
  //   TestParametersIO();
   // BayesParametersTest();
-   BayesParameters();
-
+  // BayesParameters();
+   loadModel();
    // compareTimeStep();
 
 }
