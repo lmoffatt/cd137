@@ -22,7 +22,8 @@ public:
     LevenbergMarquardtParameters(ABC_function* f,
                        const std::vector<double>& data,
                        const Parameters& initialParam,
-                       const std::vector<double>& weigth);
+                       const std::vector<double>& weigth,
+                                 std::size_t numIterations);
 
 
     LevenbergMarquardtParameters(const LevenbergMarquardtParameters& other);

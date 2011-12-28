@@ -138,19 +138,24 @@ BayesIteration& BayesIteration::getPosterior()
 
     Parameters p=priors_.back();
 
-    p.scaleError(1);
 
-    std::size_t factor=10;
-    std::map<double,Parameters> seeds=getRandomParameters(numSeeds_*factor);
+    std::size_t factor=20;
+    std::size_t numIterations=40;
+    std::size_t numSeeds=5;
+    std::map<double,Parameters> seeds=getRandomParameters(numSeeds*factor,0.5);
 
+    std::map<double,Parameters> friuts;
 
     LevenbergMarquardtParameters LM(this,
                                     data,
                                     p,
-                                    w);
+                                    w,
+                                    numIterations);
     LM.optimize();
     LMs.push_back(LM);
     Ps.push_back(LM.OptimParameters());
+
+    friuts[LM.SS()]=LM.OptimParameters();
     std::ofstream f;
 
     f.open(filename_.c_str(),std::ios_base::app);
@@ -166,7 +171,7 @@ BayesIteration& BayesIteration::getPosterior()
 
     std::map<double,Parameters>::iterator it=seeds.begin();
 
-    for (std::size_t i=0; i<numSeeds_; i++)
+    for (std::size_t i=0; i<numSeeds; i++)
     {
         Parameters initParam=(*it).second;
         double ss=(*it).first;
@@ -174,8 +179,11 @@ BayesIteration& BayesIteration::getPosterior()
         LevenbergMarquardtParameters LM(this,
                                         data,
                                         initParam,
-                                        w);
+                                        w,
+                                        numIterations);
         LM.optimize();
+        friuts[LM.SS()]=LM.OptimParameters();
+
         LMs.push_back(LM);
         Ps.push_back(LM.OptimParameters());
         f.open(filename_.c_str(),std::ios_base::app);
@@ -189,7 +197,58 @@ BayesIteration& BayesIteration::getPosterior()
         f.close();
 
     }
+    double errorFactor=0.3;
+    double errorShrinkFactor=3;
 
+    std::size_t numCycle=3;
+    for (size_t iCycle=0;
+         iCycle<numCycle;
+         iCycle++)
+    {
+        seeds=friuts;
+        it=seeds.begin();
+        size_t j=0;
+        size_t jfactor=5;
+        Parameters initParam=(*it).second;
+        errorFactor/=errorShrinkFactor;
+
+
+
+        for (std::size_t i=0; i<numSeeds; i++)
+        {
+            ++j;
+            if(j==jfactor)
+            {
+                ++it;
+                initParam=(*it).second;
+                initParam=initParam.randomSample(errorFactor);
+                j=0;
+            }
+
+            LevenbergMarquardtParameters LM(this,
+                                            data,
+                                            initParam,
+                                            w,
+                                            numIterations);
+            LM.optimize();
+            friuts[LM.SS()]=LM.OptimParameters();
+
+            LMs.push_back(LM);
+            Ps.push_back(LM.OptimParameters());
+            f.open(filename_.c_str(),std::ios_base::app);
+            f<<"--------------------------------------------------"
+               "---------------------------------------------------\n";
+            f<<"----------Start from the perisphery-------------------\n";
+            f<<"--------------------------------------------------"
+               "---------------------------------------------------\n";
+            f<<LM;
+            put(f,Ps.back());
+            f.close();
+
+        }
+
+
+    }
 
     return *this;
 }
@@ -222,12 +281,15 @@ std::ostream& BayesIteration::put(std::ostream& s,const Parameters& parameters)c
  }
 
 
- std::map<double,Parameters> BayesIteration::getRandomParameters(std::size_t num)
+
+ std::map<double,Parameters> BayesIteration::getRandomParameters(const Parameters& per,
+                                                                 std::size_t num,
+                                                                 double factor)
  {
      std::map<double,Parameters> myMap;
      for (std::size_t i=0; i<num; i++)
      {
-         Parameters p=priors_.back().randomSample(0.5);
+         Parameters p=per.randomSample(factor);
          double ss=SumWeighedSquare(p);
 
          std::cout<<ss<<"\n";
@@ -247,3 +309,31 @@ std::ostream& BayesIteration::put(std::ostream& s,const Parameters& parameters)c
 
      return myMap;
  }
+
+ std::map<double,Parameters> BayesIteration::getRandomParameters(std::size_t num,
+                                                                 double factor)
+ {
+     std::map<double,Parameters> myMap;
+     for (std::size_t i=0; i<num; i++)
+     {
+         Parameters p=priors_.back().randomSample(factor);
+         double ss=SumWeighedSquare(p);
+
+         std::cout<<ss<<"\n";
+     //    std::cout<<p;
+         if (!(ss!=ss))
+             myMap[ss]=p;
+     }
+
+
+     for (std::map<double,Parameters>::iterator it=myMap.begin();it!=myMap.end();++it)
+     {
+         double ss=(*it).first;
+         std::cout<<(*it).first<<"\n";
+
+     }
+
+
+     return myMap;
+ }
+

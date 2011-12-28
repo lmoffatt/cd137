@@ -12,7 +12,7 @@ LevenbergMarquardtParameters::LevenbergMarquardtParameters(
     ABC_function* f,
     const std::vector<double>& data,
     const Parameters& initialParam,
-    const std::vector<double>& weigth):
+    const std::vector<double>& weigth, std::size_t numIterations):
     f_(f),
     data_(data),
     w_(weigth),
@@ -20,7 +20,7 @@ LevenbergMarquardtParameters::LevenbergMarquardtParameters(
     nPar_(initialParam_.size()),
     nData_(data.size()),
     dx_(1e-9),
-    maxIter_(300),
+    maxIter_(numIterations),
     maxFeval_(10000),
     minParamChange_(1e-12),
     minSSChange_(1e-12),

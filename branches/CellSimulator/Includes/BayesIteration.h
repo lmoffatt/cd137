@@ -43,7 +43,10 @@ public:
                    const std::string &filename);
 
 
-    std::map<double,Parameters> getRandomParameters(std::size_t num);
+    std::map<double,Parameters> getRandomParameters(std::size_t num,double factor);
+
+    std::map<double,Parameters> getRandomParameters(const Parameters& per,std::size_t num, double factor);
+
 
     double SumWeighedSquare(const Parameters& p);
 
