@@ -98,16 +98,18 @@ Results::Results(std::string experimentName):
     if (experimentName=="media")
     {
         duration_=120.0;
-/*1*/        TNF_.push_back(Measurement(16.0,0.056,0.015));//
-/*2*/        TNF_.push_back(Measurement(48.0,0.055,0.015));//
-/*3*/        TNF_.push_back(Measurement(119.0,0.056,0.015));//
+/*1*/        TNF_.push_back(Measurement(16.0,2.402,0.722));//
+/*2*/        TNF_.push_back(Measurement(48.0,0.738,0.446));//
+/*3*/        TNF_.push_back(Measurement(119.0,0.176,0.113));//
 /*4*/        IFN_.push_back(Measurement(16.0,0.034,0.034));//
-/*5*/        IFN_.push_back(Measurement(48.0,0.293,0.034));//
-/*6*/        IFN_.push_back(Measurement(119.0,0.301,0.034));//
+/*5*/        IFN_.push_back(Measurement(48.0,0.219,0.149));//
+/*6*/        IFN_.push_back(Measurement(119.0,0.146,0.094));//
 /*7*/        APC_expression_.push_back(Measurement(0.0,3.0,0.6));//
 /*8*/        APC_expression_.push_back(Measurement(16.0,3.5,0.34));//
-/*9*/        APC_expression_.push_back(Measurement(119.0,5.0,1.1));//
-/*10*/        NK_expression_.push_back (Measurement (24.0, 1.68,0.70));//
+/*9*/        APC_expression_.push_back(Measurement(119.0,4.0,1.5));//
+              NK_expression_.push_back(Measurement(0.0,1.54,0.67));
+/*10*/        NK_expression_.push_back (Measurement (24.0,1.68,0.70));//
+
 /*11*/        LT_expression_.push_back (Measurement (0.0,2.0,1.1));//
 /*12*/        LT_expression_.push_back (Measurement (16.0,1.6,0.7));//
 /*13*/        LT_expression_.push_back(Measurement (24.0, 3.1, 1.8));//
@@ -119,64 +121,65 @@ Results::Results(std::string experimentName):
 /*19*/        NK_IFNg_.push_back(Measurement (16.0,3.55,1.43));//
 /*20*/        NK_TNFa_.push_back (Measurement (16.0,3.06,1.44));//
 /*21*/        LT_IFNg_.push_back (Measurement (119.0,3.4,1.1));//
-/*22*/        LT_TNFa_.push_back(Measurement (119.0,3.14,1.33));//
+/*22*/        LT_TNFa_.push_back(Measurement (119.0,1.54,1.33));//
 /*23*/        LT_Apoptosis_.push_back(Measurement(119.0,16.55,4.10));//
-/*24*/        Proliferation_.push_back(Measurement(119,3516,935));//
-/*25*/       num_cells_.push_back(Measurement(24,2e6,5e5));//
-/*26*/       num_cells_.push_back(Measurement(119,2e6,5e5));//
+/*24*/        Proliferation_.push_back(Measurement(119,3516.0,935));//
+/*25*/        num_cells_.push_back(Measurement(24.0,2.0e6,5.0e5));//
+/*26*/        num_cells_.push_back(Measurement(119.0,2.0e6,5.0e5));//
     }
     if (experimentName=="mtb")
     {
         duration_=120.0;
-/*27*/        TNF_.push_back(Measurement(16.0,50.03,8.82));
-/*28*/        TNF_.push_back(Measurement(48.0,44.67,7.403));
-/*29*/        TNF_.push_back(Measurement(119.0,34.70,6.302));
-/*28*/        IFN_.push_back(Measurement(16.0,8.1,0.81));
-/*29*/        IFN_.push_back(Measurement(48.0,12.0,0.12));
-/*30*/        IFN_.push_back(Measurement(119.0,28.3,0.283));
-/*31*/        APC_expression_.push_back(Measurement(0.0,3.0,0.6));//  //:means true error
-/*32*/        APC_expression_.push_back(Measurement(16.0,16.5,1.0));//
-/*33*/        APC_expression_.push_back(Measurement(119.0,6.1,3.6));//
-/*34*/        NK_expression_.push_back (Measurement (24.0, 11.32,1.36));//
-/*35*/        LT_expression_.push_back (Measurement (0.0,2.0,1.1));//
-/*36*/        LT_expression_.push_back (Measurement (16.0,2.2,0.7));//
-/*37*/        LT_expression_.push_back(Measurement (24.0, 4.1, 2.3));//
-/*38*/        LT_expression_.push_back(Measurement (119.0,29.7, 7.77));//
-/*39*/        APC_IFNg_.push_back(Measurement (16.0,7.7,0.77));
-/*40*/        APC_IFNg_.push_back (Measurement (119.0,4.8,0.48));
-/*41*/        APC_TNFa_.push_back(Measurement (16.0,13.0,1.3));
-/*42*/        APC_TNFa_.push_back (Measurement (119.0,8.1,0.81));
-/*43*/        NK_IFNg_.push_back(Measurement (24.0,5.93,0.593));
-/*44*/        NK_TNFa_.push_back (Measurement (24.0,4.1,0.41));
-/*45*/        LT_IFNg_.push_back (Measurement (119.0,2.1,0.21));
-/*46*/        LT_TNFa_.push_back(Measurement (16.0,5.93,0.593));
-/*47*/        LT_Apoptosis_.push_back(Measurement(119.0,20,2));
-/*48*/        Proliferation_.push_back(Measurement(119,8000,800.0));
-/*48a*/       num_cells_.push_back(Measurement(24,2e6,2.0e5));
-/*48b*/       num_cells_.push_back(Measurement(119,2e6,2.0e5));
+        /*27*/        TNF_.push_back(Measurement(16.0,50.29,8.82));//
+        /*28*/        TNF_.push_back(Measurement(48.0,42.00,7.737));//
+        /*29*/        TNF_.push_back(Measurement(119.0,28.309,5.613));//
+        /*28*/        IFN_.push_back(Measurement(16.0,4.794,0.89));//
+        /*29*/        IFN_.push_back(Measurement(48.0,11.29,1.873));//
+        /*30*/        IFN_.push_back(Measurement(119.0,28.209,5.584));//
+        /*31*/        APC_expression_.push_back(Measurement(0.0,3.0,0.6));//  //:means true error
+        /*32*/        APC_expression_.push_back(Measurement(16.0,15.5,2.0));//
+        /*33*/        APC_expression_.push_back(Measurement(119.0,6.1,3.6));//
+                      NK_expression_.push_back(Measurement(0.0,1.54,0.67));//
+        /*34*/        NK_expression_.push_back (Measurement (24.0, 11.32,1.36));//
+        /*35*/        LT_expression_.push_back (Measurement (0.0,2.0,1.1));//
+        /*36*/        LT_expression_.push_back (Measurement (16.0,2.2,0.7));//
+        /*37*/        LT_expression_.push_back(Measurement (24.0, 4.1, 2.3));//
+        /*38*/        LT_expression_.push_back(Measurement (119.0,29.7, 7.77));//
+        /*39*/        APC_IFNg_.push_back(Measurement (16.0,7.66,2.20));//
+        /*40*/        APC_IFNg_.push_back (Measurement (119.0,4.8,1.48));//
+        /*41*/        APC_TNFa_.push_back(Measurement (16.0,13.96,2.52));//
+        /*42*/        APC_TNFa_.push_back (Measurement (119.0,8.05,12.03));//
+        /*43*/        NK_IFNg_.push_back(Measurement (24.0,27.18,5.32));//
+        /*44*/        NK_TNFa_.push_back (Measurement (24.0,5.81,0.97));//
+        /*45*/        LT_IFNg_.push_back (Measurement (119.0,9.4,1.5));//
+        /*46*/        LT_TNFa_.push_back(Measurement (16.0,4.27,0.59));//
+        /*47*/        LT_Apoptosis_.push_back(Measurement(119.0,27,61));//
+        /*48*/        Proliferation_.push_back(Measurement(119,14173.0,4240.0));//
+        /*48a*/       num_cells_.push_back(Measurement(24.0,2.0e6,5.0e5));//
+        /*48b*/       num_cells_.push_back(Measurement(119.0,2.0e6,5.0e5));//
 
     }
     if (experimentName=="block")
     {
         duration_=120.0;
-/*49*/        TNF_.push_back(Measurement(16.0,63.7,6.37));
-/*51*/        TNF_.push_back(Measurement(48.0,58.6,5.86));
-/*52*/        TNF_.push_back(Measurement(119.0,52.4,5.24));
-/*53*/        IFN_.push_back(Measurement(16.0,10.3,1.3));
-/*54*/        IFN_.push_back(Measurement(48.0,8.1,0.81));
-/*55*/        IFN_.push_back(Measurement(119.0,12.4,1.24));
-/*56*/        APC_IFNg_.push_back(Measurement (16.0,14.1,1.41));
-/*57*/        APC_IFNg_.push_back (Measurement (119.0,4.8,0.48));
-/*58*/        APC_TNFa_.push_back(Measurement (16.0,12.7,1.27));
-/*59*/        APC_TNFa_.push_back (Measurement (119.0,41.3,4.13));
-/*60*/        NK_IFNg_.push_back(Measurement (24.0,5.93,0.593));
-/*61*/        NK_TNFa_.push_back (Measurement (24.0,4.1,0.41));
-/*62*/        LT_IFNg_.push_back (Measurement (119.0,2.1,0.21));
-/*62*/        LT_TNFa_.push_back(Measurement (16.0,5.93,0.593));
-/*63*/        LT_Apoptosis_.push_back(Measurement(119.0,20.0,2));
-/*64*/        Proliferation_.push_back(Measurement(119,5000,500.0));
-/*64a*/       num_cells_.push_back(Measurement(24,2e6,1.0e5));
-/*64b*/       num_cells_.push_back(Measurement(119,2e6,1.0e5));
+/*49*/        TNF_.push_back(Measurement(16.0,61.503,8.527));//
+/*51*/        TNF_.push_back(Measurement(48.0,54.45,8.102));//
+/*52*/        TNF_.push_back(Measurement(119.0,38.86,6.632));//
+/*53*/        IFN_.push_back(Measurement(16.0,8.2280,1.251));//
+/*54*/        IFN_.push_back(Measurement(48.0,7.911,1.208));//
+/*55*/        IFN_.push_back(Measurement(119.0,13.091,2.24));//
+/*56*/        APC_IFNg_.push_back(Measurement (16.0,14.11,4.02));//
+/*57*/        APC_IFNg_.push_back (Measurement (119.0,6.78,2.48));//
+/*58*/        APC_TNFa_.push_back(Measurement (16.0,41.7,6.99));//
+/*59*/        APC_TNFa_.push_back (Measurement (119.0,12.03,2.13));//
+/*60*/        NK_IFNg_.push_back(Measurement (24.0,36.11,8.2));//
+/*61*/        NK_TNFa_.push_back (Measurement (24.0,8.66,1.48));//
+/*62*/        LT_IFNg_.push_back (Measurement (119.0,3.1,1.21));//
+/*62*/        LT_TNFa_.push_back(Measurement (16.0,1.93,0.893));//
+/*63*/        LT_Apoptosis_.push_back(Measurement(119.0,43.13,7.86));//
+/*64*/        Proliferation_.push_back(Measurement(119.0,5740.0,4326.0));//
+/*64a*/       num_cells_.push_back(Measurement(24.0,2.0e6,5.0e5));//
+/*64b*/       num_cells_.push_back(Measurement(119.0,2.0e6,5.0e5));//
 
         /*  APC_expression_.push_back(Measurement(0.0,3.2));
         APC_expression_.push_back(Measurement(16.0,11.4));
