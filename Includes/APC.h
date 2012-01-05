@@ -41,9 +41,9 @@ class APC_cells
         double& APCbl();
         const double& APCbl()const;
 
-        /// Number of cells that are exhausted
-        double& APCexh ();
-        const double& APCexh()const;
+//        /// Number of cells that are exhausted
+//        double& APCexh ();
+//        const double& APCexh()const;
 
 /// 3) Percentage of cells exprssing receptor
         double percentage_cell_expressing_receptor () const;
@@ -149,7 +149,7 @@ class APC_cells
         /*16*/ double APCa_apop_rate_,
         /*17*/ double APCbo_apop_rate_,
         /*18*/ double APCbl_apop_rate_,
-        /*19*/ double APCexh_apop_rate_,
+//        /*19*/ double APCexh_apop_rate_,
 
         /// 8) constant saturation of TNF for apoptosis
         /*20*/ double Ks_APC_m_TNF_,
@@ -161,7 +161,7 @@ class APC_cells
         /*24*/ double APC_LT_1_,
         /*25*/ double APC_LT_2_,
         /*26*/ double APC_Ab_,
-        /*27*/ double APC_exh_,
+//        /*27*/ double APC_exh_,
 
         /// 10)Saturation constant of IFN and TNF for activation
         /*28*/ double KsAPC_LT_,
@@ -271,7 +271,7 @@ class APC_cells
         /*24*/ double APC_LT_1_d;
         /*25*/ double APC_LT_2_d;
         /*26*/ double APC_Ab_d;
-        /*27*/ double APC_exh_d;
+//        /*27*/ double APC_exh_d;
 
         /// 10)Saturation constant of IFN and TNF for activation
         /*28*/ double KsAPC_LT_d;
