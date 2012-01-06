@@ -73,7 +73,7 @@ void Bayes()
     /*16*/ sp.APCa_apop_rate_=1e-16;
     /*17*/ sp.APCbo_apop_rate_=1e-16;
     /*18*/ sp.APCbl_apop_rate_=1e-16;
-//    /*19*/ sp.APCexh_apop_rate_=1e-16;
+    /*19*/ sp.APCexh_apop_rate_=1e-16;
 
     /// 8) constant saturation of TNF for apoptosis
     /*20*/ sp.Ks_APC_m_TNF_=10.0e10;
@@ -85,7 +85,7 @@ void Bayes()
     /*24*/ sp.APC_LT_1_=1e-6;
     /*25*/ sp.APC_LT_2_=1e-6;
     /*26*/ sp.APC_Ab_=1e-6;
-//    /*27*/ sp.APC_exh_=1e-6;
+    /*27*/ sp.APC_exh_=1e-6;
 
     /// 10)Saturation constant of IFN and TNF for activation
     /*28*/ sp.KsAPC_LT_=1e-6;
@@ -135,7 +135,7 @@ void Bayes()
     /*18*/  sp.NKa_apop_rate_=1e-16;
     /*19*/  sp.NKbo_apop_rate_=1e-16;
     /*20*/  sp.NKbl_apop_rate_=1e-16;
-//    /*21*/  sp.NKexh_apop_rate_=1e-16;
+    /*21*/  sp.NKexh_apop_rate_=1e-16;
 
     /// 8) constant saturation of TNF for apoptosis
     /*22*/  sp.Ks_NK_m_TNF_=1e6;
@@ -144,7 +144,7 @@ void Bayes()
     /*23*/  sp.KaNK_=1e-6;
     /*24*/  sp.NK_NK_=1e-6;
     /*25*/  sp.NK_Ab_=1e-6;
-//    /*26*/  sp.NK_exh_=1e-6;
+    /*26*/  sp.NK_exh_=1e-6;
 
     /// 10)Saturation constant of APC NK interaction for activation
     /*27*/  sp.KsAPC_NK_=1e-6;
@@ -195,7 +195,7 @@ void Bayes()
        /*18*/  sp.LTns_apop_rate_=1e-16;
        /*19*/  sp.LTbo_apop_rate_=1e-16;
        /*20*/  sp.LTbl_apop_rate_=1e-16;
-//       /*21*/  sp.LTexh_apop_rate_=1e-16;
+       /*21*/  sp.LTexh_apop_rate_=1e-16;
 
    /// 8) constant saturation of TNF for apoptosis
        /*22*/  sp.Ks_LT_m_TNF_=1e-10;
@@ -206,8 +206,8 @@ void Bayes()
    /// 10) Apoptosis rate for TNF
        /*24*/  sp.u_LT_TNF_=1e-16;
 
-//   /// 11) LT exh rate
-//       /*25*/ sp.LT_exh_rate_=1e-10;
+   /// 11) LT exh rate
+       /*25*/ sp.LT_exh_rate_=1e-10;
 
    /// 12) apoptosis related parameters
        /*26*/ sp.t_apop_meas_=120;
@@ -216,7 +216,6 @@ void Bayes()
     /// Media
     /*1*/ sp.TNF_deg_=0.5;
     /*2*/ sp.IFN_deg_=0.5;
-          sp.Ag_deg_=0.5;
     /*4*/ sp.Prol_TymTr_=0.5;
 
 

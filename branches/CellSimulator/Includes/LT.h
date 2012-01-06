@@ -34,9 +34,9 @@ class LT_cells
            double& LTbl();
            const double& LTbl()const;
 
-//       /// Number of LT cells that are exhausted
-//           double& LTexh ();
-//           const double& LTexh()const;
+       /// Number of LT cells that are exhausted
+           double& LTexh ();
+           const double& LTexh()const;
 
 /// 3) Percentage of cell expressing the receptor
        double LT_percentage_cell_expressing_receptor () const;
@@ -105,7 +105,7 @@ class LT_cells
                  /*18*/ double LTns_apop_rate_,
                  /*19*/ double LTbo_apop_rate_,
                  /*20*/ double LTbl_apop_rate_,
-//                 /*21*/ double LTexh_apop_rate_,
+                 /*21*/ double LTexh_apop_rate_,
 
                  /// 8) constant saturation of TNF for apoptosis
                  /*22*/ double Ks_LT_m_TNF_,
@@ -117,7 +117,7 @@ class LT_cells
                  /*24*/ double u_LT_TNF_,
 
                  /// 11) LT exh rate
-//                 /*25*/ double LT_exh_rate_,
+                 /*25*/ double LT_exh_rate_,
 
                  /// 12) apoptosis related parameters
                  /*26*/ double t_apop_meas_,
@@ -206,8 +206,8 @@ class LT_cells
         /// number of Ag specific cells that have not recieve receptor singaling during sinapsis
         double LTbl_d;
 
-//        /// number of LT exhausted
-//        double LTexh_d;
+        /// number of LT exhausted
+        double LTexh_d;
 
         /// Tymidine incorporated by APC cells
         double LT_TymTr_incorporated_d;
@@ -249,7 +249,7 @@ class LT_cells
             /*18*/ double LTns_apop_rate_d;
             /*19*/ double LTbo_apop_rate_d;
             /*20*/ double LTbl_apop_rate_d;
-//            /*21*/ double LTexh_apop_rate_d;
+            /*21*/ double LTexh_apop_rate_d;
 
         /// 8) constant saturation of TNF for apoptosis
             /*22*/ double Ks_LT_m_TNF_d;
@@ -260,8 +260,8 @@ class LT_cells
         /// 10) Apoptosis rate for TNF
             /*24*/ double u_LT_TNF_d;
 
-//        /// 11) LT exh rate
-//            /*25*/ double LT_exh_rate_d;
+        /// 11) LT exh rate
+            /*25*/ double LT_exh_rate_d;
 
         /// 12) apoptosis related parameters
             /*26*/ double t_apop_meas_d;

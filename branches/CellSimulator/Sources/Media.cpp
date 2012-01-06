@@ -9,7 +9,6 @@ Media::Media(double IFNgamma_init,
              double Tymidine_incorprated_init,
              double TNF_deg_init,
              double IFN_deg_init,
-             double Ag_deg_init,
              double init_num_cells,
              double init_Ag,
              double init_Ab,
@@ -21,7 +20,6 @@ Media::Media(double IFNgamma_init,
     Tymidine_incorporated_d (Tymidine_incorprated_init),
     TNF_deg_d(TNF_deg_init),
     IFN_deg_d(IFN_deg_init),
-    Ag_deg_d(Ag_deg_init),
     num_cells_d(init_num_cells),
     Ag_d(init_Ag),
     Ab_d(init_Ab),
@@ -56,7 +54,6 @@ Media::Media(const Parameters& p,
     Tymidine_incorporated_d(0),
     TNF_deg_d(p.mean("TNF_deg")),
     IFN_deg_d(p.mean("IFN_deg")),
-    Ag_deg_d(p.mean("Ag_deg")),
     num_cells_d(tr.init_cells),
     Ag_d(tr.Ag),
     Ab_d(tr.Ab),
@@ -69,7 +66,6 @@ Media::Media(const Media& other):
     Tymidine_incorporated_d(other.Tymidine_incorporated_d),
     TNF_deg_d(other.TNF_deg_d),
     IFN_deg_d(other.IFN_deg_d),
-    Ag_deg_d(other.Ag_deg_d),
     num_cells_d(other.num_cells_d),
     Ag_d(other.Ag_d),
     Ab_d(other.Ab_d),
@@ -97,7 +93,6 @@ void swap(Media& one, Media& other)
     std::swap(one.Tymidine_incorporated_d,other.Tymidine_incorporated_d),
     std::swap(one.TNF_deg_d,other.TNF_deg_d);
     std::swap(one.IFN_deg_d, other.IFN_deg_d);
-    std::swap(one.Ag_deg_d, other.Ag_deg_d);
     std::swap(one.num_cells_d,other.num_cells_d);
     std::swap(one.Ag_d,other.Ag_d);
     std::swap(one.Ab_d,other.Ab_d);
@@ -142,23 +137,11 @@ double& Media::IFN_degradation ()
    return IFN_deg_d;
    }
 
-
 const double& Media::IFN_degradation () const
    {
    return IFN_deg_d;
    }
 
-
-double& Media::Ag_degradation ()
-   {
-   return Ag_deg_d;
-   }
-
-
-const double& Media::Ag_degradation () const
-   {
-   return Ag_deg_d;
-   }
 
 
 double& Media::num_cells()
@@ -236,11 +219,6 @@ void Media::update(double& time_step,double t_run,const APC_cells& APC ,const NK
            LT.TNF_production_rate()-
            TNF_d*TNF_degradation())*time_step;
     TNF_d+=TNF_delta;
-
-    /// Ag concentration
-    double Ag_delta=(-Ag_d*Ag_deg_d)*time_step;
-            Ag_d+=Ag_delta;
-
     /// The total number of cells is the adittion of APC + NK + LT
     num_cells_d=APC.num_APC()+NK.num_NK()+LT.num_LT();
     /// Tymidine Pulse at 114
@@ -272,7 +250,6 @@ void Media::update(double& time_step,double t_run,const APC_cells& APC ,const NK
     s<<"\n Ab_d \t"<<c.Ab_d;
     s<<"\n TNF deg \t"<<c.TNF_deg_d;
     s<<"\n IFN deg \t"<<c.IFN_deg_d;
-    s<<"\n Ag deg \t"<<c.Ag_deg_d;
     s<<"\n TymidineTriteate_d \t"<<c.TymidineTriteate_d;
     s<<"\n Prol_TymTr_d \t"<<c.Prol_TymTr_d;
 
@@ -300,14 +277,7 @@ void Media::update(double& time_step,double t_run,const APC_cells& APC ,const NK
             LT.TNF_production_rate()-
             TNF_d*TNF_degradation());
 
-     /// Ag concentration
-     double Ag_delta=Ag_d*Ag_deg_d;
-
-     D.push_back(IFNgamma_delta);
-
      D.push_back(TNF_delta);
-
-     D.push_back(Ag_delta);
 
      return D;
   }
