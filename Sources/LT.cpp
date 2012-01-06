@@ -39,7 +39,7 @@ LT_cells::LT_cells(/// 1) Init number of LT
                    /*18*/ double LTns_apop_rate_,
                    /*19*/ double LTbo_apop_rate_,
                    /*20*/ double LTbl_apop_rate_,
-//                   /*21*/ double LTexh_apop_rate_,
+                   /*21*/ double LTexh_apop_rate_,
 
                    /// 8) constant saturation of TNF for apoptosis
                    /*22*/ double Ks_LT_m_TNF_,
@@ -50,8 +50,8 @@ LT_cells::LT_cells(/// 1) Init number of LT
                    /// 10) Apoptosis rate for TNF
                    /*24*/ double u_LT_TNF_,
 
-//                   /// 11) LT exh rate
-//                   /*25*/ double LT_exh_rate_,
+                   /// 11) LT exh rate
+                   /*25*/ double LT_exh_rate_,
 
                    /// 12) apoptosis related parameters
                    /*26*/ double t_apop_meas_,
@@ -62,7 +62,7 @@ LT_cells::LT_cells(/// 1) Init number of LT
     LT0_d(ratio_initLTspecific_),
     LTbo_d(0),
     LTbl_d(0),
-//    LTexh_d(0),
+    LTexh_d(0),
     LT_TymTr_incorporated_d(0),
     Total_cells_in_apoptosis_d(0),
 
@@ -89,7 +89,7 @@ LT_cells::LT_cells(/// 1) Init number of LT
     LTns_apop_rate_d(LTns_apop_rate_),
     LTbo_apop_rate_d(LTbo_apop_rate_),
     LTbl_apop_rate_d(LTbl_apop_rate_),
-//    LTexh_apop_rate_d(LTexh_apop_rate_),
+    LTexh_apop_rate_d(LTexh_apop_rate_),
 
     Ks_LT_m_TNF_d(Ks_LT_m_TNF_),
 
@@ -97,7 +97,7 @@ LT_cells::LT_cells(/// 1) Init number of LT
 
     u_LT_TNF_d(u_LT_TNF_),
 
-//    LT_exh_rate_d(LT_exh_rate_),
+    LT_exh_rate_d(LT_exh_rate_),
 
     t_apop_meas_d (t_apop_meas_),
     t_duration_apoptosis_d(t_duration_apoptosis_)
@@ -114,7 +114,7 @@ LT_cells::LT_cells(const LT_cells& other):
     LT0_d(other.LT0_d),
     LTbo_d(other.LTbo_d),
     LTbl_d(other.LTbl_d),
-//    LTexh_d(other.LTexh_d),
+    LTexh_d(other.LTexh_d),
     LT_TymTr_incorporated_d(other.LT_TymTr_incorporated_d),
     Total_cells_in_apoptosis_d(other.Total_cells_in_apoptosis_d),
 
@@ -141,7 +141,7 @@ LT_cells::LT_cells(const LT_cells& other):
     LTns_apop_rate_d(other.LTns_apop_rate_d),
     LTbo_apop_rate_d(other.LTbo_apop_rate_d),
     LTbl_apop_rate_d(other.LTbl_apop_rate_d),
-//    LTexh_apop_rate_d(other.LTexh_apop_rate_d),
+    LTexh_apop_rate_d(other.LTexh_apop_rate_d),
 
     Ks_LT_m_TNF_d(other.Ks_LT_m_TNF_d),
 
@@ -149,7 +149,7 @@ LT_cells::LT_cells(const LT_cells& other):
 
     u_LT_TNF_d(other.u_LT_TNF_d),
 
-//    LT_exh_rate_d(other.LT_exh_rate_d),
+    LT_exh_rate_d(other.LT_exh_rate_d),
     t_apop_meas_d (other.t_apop_meas_d),
     t_duration_apoptosis_d(other.t_duration_apoptosis_d)
 
@@ -173,7 +173,7 @@ void swap(LT_cells& one, LT_cells& other)
     std::swap(one.LT0_d,other.LT0_d);
     std::swap(one.LTbo_d,other.LTbo_d);
     std::swap(one.LTbl_d,other.LTbl_d);
-//    std::swap(one.LTexh_d,other.LTexh_d);
+    std::swap(one.LTexh_d,other.LTexh_d);
     std::swap(one.LT_TymTr_incorporated_d,other.LT_TymTr_incorporated_d);
     std::swap(one.Total_cells_in_apoptosis_d,other.Total_cells_in_apoptosis_d);
 
@@ -200,7 +200,7 @@ void swap(LT_cells& one, LT_cells& other)
     std::swap(one.LTns_apop_rate_d,other.LTns_apop_rate_d);
     std::swap(one.LTbo_apop_rate_d,other.LTbo_apop_rate_d);
     std::swap(one.LTbl_apop_rate_d,other.LTbl_apop_rate_d);
-//    std::swap(one.LTexh_apop_rate_d,other.LTexh_apop_rate_d);
+    std::swap(one.LTexh_apop_rate_d,other.LTexh_apop_rate_d);
 
     std::swap(one.Ks_LT_m_TNF_d,other.Ks_LT_m_TNF_d);
 
@@ -208,7 +208,7 @@ void swap(LT_cells& one, LT_cells& other)
 
     std::swap(one.u_LT_TNF_d,other.u_LT_TNF_d);
 
-//    std::swap(one.LT_exh_rate_d,other.LT_exh_rate_d);
+    std::swap(one.LT_exh_rate_d,other.LT_exh_rate_d);
 
     std::swap(one.t_apop_meas_d ,other.t_apop_meas_d);
     std::swap(one.t_duration_apoptosis_d,other.t_duration_apoptosis_d);
@@ -249,7 +249,7 @@ void LT_cells::update(double& time_step, double t_run, const Media& m, const APC
                +APC.APC_LT_2()*LT0_d*(APC.APCbo()/(APC.APCbo()+ APC.KsAPC_LT()))
                +LTbo_proliferation_rate_d*LTbo_d-LTbo_apop_rate_d*LTbo_d
                -LTbo_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))
-//               -LTbo_d*LT_exh_rate_d
+               -LTbo_d*LT_exh_rate_d
                )*time_step;
 
     LTbo_d+=LTbo_delta;
@@ -259,19 +259,19 @@ void LT_cells::update(double& time_step, double t_run, const Media& m, const APC
                 +LTbl_proliferation_rate_d*LTbl_d
                 -LTbl_apop_rate_d*LTbl_d
                 -LTbl_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))
-//                -LTbl_d*LT_exh_rate_d
+                -LTbl_d*LT_exh_rate_d
                 )*time_step;
     LTbl_d+=LTbl_delta;
 
     /// LT get exhausted after a period of time
 
-//    double LTexh_delta=(
-//                LTbo_d*LT_exh_rate_d
-//                +LTbl_d*LT_exh_rate_d
-//                -LTexh_d*LTexh_apop_rate_d
-//                -LTexh_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))
-//                )*time_step;
-//    LTexh_d+=LTexh_delta;
+    double LTexh_delta=(
+                LTbo_d*LT_exh_rate_d
+                +LTbl_d*LT_exh_rate_d
+                -LTexh_d*LTexh_apop_rate_d
+                -LTexh_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))
+                )*time_step;
+    LTexh_d+=LTexh_delta;
 
    double LT_TymTr_incorporated_delta;
    if (m.TymidineTriteate()>0){
@@ -285,8 +285,8 @@ void LT_cells::update(double& time_step, double t_run, const Media& m, const APC
    if ((t_run>t_apop_meas_d-t_duration_apoptosis_d)&&(t_run<=t_apop_meas_d)){
         Total_cells_in_apoptosis_delta=(LTns_apop_rate_d*LTns_d+LTns_apop_rate_d*LT0_d+
                                      LTbo_apop_rate_d*LTbo_d+LTbo_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))+
-                                     LTbl_apop_rate_d*LTbl_d+LTbl_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))/*+
-                                     LTexh_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))*/)*time_step;
+                                     LTbl_apop_rate_d*LTbl_d+LTbl_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))+
+                                     LTexh_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d)))*time_step;
         Total_cells_in_apoptosis_d+= Total_cells_in_apoptosis_delta;
 }
 }
@@ -306,7 +306,7 @@ void LT_cells::update(double& time_step, double t_run, const Media& m, const APC
 /// 1) Total number of LT
 double LT_cells::num_LT() const
     {
-      double sum=LTns_d+LT0_d+LTbo_d+LTbl_d;
+      double sum=LTns_d+LT0_d+LTbo_d+LTbl_d+LTexh_d;
       return sum;
     }
 
@@ -352,15 +352,15 @@ const double& LT_cells::LTbl() const
         return LTbl_d;
     }
 
-//double& LT_cells::LTexh()
-//    {
-//        return LTexh_d;
-//    }
+double& LT_cells::LTexh()
+    {
+        return LTexh_d;
+    }
 
-//const double& LT_cells::LTexh() const
-//    {
-//        return LTexh_d;
-//    }
+const double& LT_cells::LTexh() const
+    {
+        return LTexh_d;
+    }
 
 /// 3) Percentage of cells expressing
 double LT_cells::LT_percentage_cell_expressing_receptor() const
@@ -443,7 +443,7 @@ std::ostream& operator<<(std::ostream& s, const LT_cells& c)
    s<<"\n LT 0 \t"<<c.LT0_d;
    s<<"\n LT bound \t"<<c.LTbo_d;
    s<<"\n LT blocked \t"<<c.LTbl_d;
-//   s<<"\n LT exhausted \t"<<c.LTexh_d;
+   s<<"\n LT exhausted \t"<<c.LTexh_d;
    s<<"\n Tym incorporated by LT \t"<<c.LT_TymTr_incorporated_d;
    s<<"\n Total cells in apoptosis \t"<<c.Total_cells_in_apoptosis_d;
    if (0)
@@ -474,7 +474,7 @@ std::ostream& operator<<(std::ostream& s, const LT_cells& c)
    s<<"\n LTns_apop_rate_d \t"<<c.LTns_apop_rate_d;
    s<<"\n LTbo_apop_rate_d \t"<<c.LTbo_apop_rate_d;
    s<<"\n LTbl_apop_rate_d \t"<<c.LTbl_apop_rate_d;
-//   s<<"\n LTexh_apop_rate_d \t"<<c.LTexh_apop_rate_d;
+   s<<"\n LTexh_apop_rate_d \t"<<c.LTexh_apop_rate_d;
 
    s<<"\n Ks_LT_m_TNF_d \t"<<c.Ks_LT_m_TNF_d;
 
@@ -482,7 +482,7 @@ std::ostream& operator<<(std::ostream& s, const LT_cells& c)
 
    s<<"\n u_LT_TNF_d \t"<<c.u_LT_TNF_d;
 
-//   s<<"\n LT_exh_rate_d \t"<<c.LT_exh_rate_d;
+   s<<"\n LT_exh_rate_d \t"<<c.LT_exh_rate_d;
 
    s<<"\n LT apoptosis measure \t"<<c.t_apop_meas_d;
    s<<"\n LT apoptosis duration \t"<<c.t_duration_apoptosis_d;
@@ -514,8 +514,8 @@ LT_cells::LT_cells(const Parameters& p, const Treatment& t):
     /// number of Ag specific cells that have not recieve receptor singaling during sinapsis
      LTbl_d(0.0),
 
-//    /// number of LT exhausted
-//     LTexh_d(0.0),
+    /// number of LT exhausted
+     LTexh_d(0.0),
 
     /// Tymidine incorporated by APC cells
      LT_TymTr_incorporated_d(0.0),
@@ -557,7 +557,7 @@ LT_cells::LT_cells(const Parameters& p, const Treatment& t):
         /*18*/  LTns_apop_rate_d(p.mean("LTns_apop_rate")),
         /*19*/  LTbo_apop_rate_d(p.mean("LTbo_apop_rate")),
         /*20*/  LTbl_apop_rate_d(p.mean("LTbl_apop_rate")),
-//        /*21*/  LTexh_apop_rate_d(p.mean("LTexh_apop_rate")),
+        /*21*/  LTexh_apop_rate_d(p.mean("LTexh_apop_rate")),
 
     /// 8) constant saturation of TNF for apoptosis
         /*22*/  Ks_LT_m_TNF_d(p.mean("Ks_LT_m_TNF")),
@@ -569,7 +569,7 @@ LT_cells::LT_cells(const Parameters& p, const Treatment& t):
         /*24*/  u_LT_TNF_d(p.mean("u_LT_TNF")),
 
     /// 11) LT exh rate
-//        /*25*/  LT_exh_rate_d(p.mean("LT_exh_rate")),
+        /*25*/  LT_exh_rate_d(p.mean("LT_exh_rate")),
        /*26*/  t_apop_meas_d(t.t_apop_meas_d),
 
 
@@ -609,7 +609,7 @@ std::vector<double> LT_cells::Derivative(double t_run, const Media& m, const APC
                +APC.APC_LT_2()*LT0_d*(APC.APCbo()/(APC.APCbo()+ APC.KsAPC_LT()))
                +LTbo_proliferation_rate_d*LTbo_d-LTbo_apop_rate_d*LTbo_d
                -LTbo_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))
-//               -LTbo_d*LT_exh_rate_d
+               -LTbo_d*LT_exh_rate_d
                );
 
     D.push_back(LTbo_delta);
@@ -619,19 +619,19 @@ std::vector<double> LT_cells::Derivative(double t_run, const Media& m, const APC
                 +LTbl_proliferation_rate_d*LTbl_d
                 -LTbl_apop_rate_d*LTbl_d
                 -LTbl_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))
-//                -LTbl_d*LT_exh_rate_d
+                -LTbl_d*LT_exh_rate_d
                 );
     D.push_back(LTbl_delta);
 
     /// LT get exhausted after a period of time
 
-//    double LTexh_delta=(
-//                LTbo_d*LT_exh_rate_d
-//                +LTbl_d*LT_exh_rate_d
-//                -LTexh_d*LTexh_apop_rate_d
-//                -LTexh_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))
-//                );
-//    D.push_back(LTexh_delta);
+    double LTexh_delta=(
+                LTbo_d*LT_exh_rate_d
+                +LTbl_d*LT_exh_rate_d
+                -LTexh_d*LTexh_apop_rate_d
+                -LTexh_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))
+                );
+    D.push_back(LTexh_delta);
 
    double LT_TymTr_incorporated_delta;
    if (m.TymidineTriteate()>0){
@@ -646,8 +646,8 @@ std::vector<double> LT_cells::Derivative(double t_run, const Media& m, const APC
    if ((t_run>t_apop_meas_d-t_duration_apoptosis_d)&&(t_run<=t_apop_meas_d)){
        Total_cells_in_apoptosis_delta=(LTns_apop_rate_d*LTns_d+LTns_apop_rate_d*LT0_d+
                                        LTbo_apop_rate_d*LTbo_d+LTbo_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))+
-                                       LTbl_apop_rate_d*LTbl_d+LTbl_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))/*+
-                                       LTexh_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))*/);
+                                       LTbl_apop_rate_d*LTbl_d+LTbl_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))+
+                                       LTexh_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d)));
        }
    else
        Total_cells_in_apoptosis_delta=0;
@@ -674,7 +674,7 @@ std::vector<double> LT_cells::getState()const
 
     /// LT get exhausted after a period of time
 
-//    S.push_back(LTexh_d);
+    S.push_back(LTexh_d);
 
     S.push_back(LT_TymTr_incorporated_d);
     S.push_back(Total_cells_in_apoptosis_d);
@@ -692,7 +692,7 @@ void LT_cells::setState(const std::vector<double>& y)
 
     /// LT get exhausted after a period of time
 
-//    LTexh_d=y[4];
+    LTexh_d=y[4];
 
     LT_TymTr_incorporated_d=y[5];
     Total_cells_in_apoptosis_d=y[6];

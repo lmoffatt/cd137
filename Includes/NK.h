@@ -37,9 +37,9 @@ class NK_cells
        double& NKbl();
        const double& NKbl()const;
 
-//       /// Number of cells that are exhausted
-//       double& NKexh ();
-//       const double& NKexh()const;
+       /// Number of cells that are exhausted
+       double& NKexh ();
+       const double& NKexh()const;
 
 /// 3) percentage of cells expressing receptor
        double percentage_NK_expressing_receptor () const;
@@ -120,7 +120,7 @@ class NK_cells
                    /*18*/ double NKa_apop_rate_,
                    /*19*/ double NKbo_apop_rate_,
                    /*20*/ double NKbl_apop_rate_,
-//                   /*21*/ double NKexh_apop_rate_,
+                   /*21*/ double NKexh_apop_rate_,
 
                    /// 8) constant saturation of TNF for apoptosis
                    /*22*/ double Ks_NK_m_TNF_,
@@ -129,7 +129,7 @@ class NK_cells
                    /*23*/ double KaNK_,
                    /*24*/ double NK_NK_,
                    /*25*/ double NK_Ab_,
-//                   /*26*/ double NK_exh_,
+                   /*26*/ double NK_exh_,
 
                    /// 10)Saturation constant of NK interaction for activation
                    /*27*/ double KsAPC_NK_,
@@ -184,8 +184,8 @@ class NK_cells
              double NKbo_Ab_d;
          /// number of cells that binds the blocking mAb
              double NKbl_d;
-//         /// number of cells that are exhausted
-//             double NKexh_d;
+         /// number of cells that are exhausted
+             double NKexh_d;
          /// Timidina incorporada
              double NK_TymTr_incorporated_d;
 
@@ -223,7 +223,7 @@ class NK_cells
         /*18*/ double NKa_apop_rate_d;
         /*19*/ double NKbo_apop_rate_d;
         /*20*/ double NKbl_apop_rate_d;
-//        /*21*/ double NKexh_apop_rate_d;
+        /*21*/ double NKexh_apop_rate_d;
 
         /// 8) constant saturation of TNF for apoptosis
         /*22*/ double Ks_NK_m_TNF_d;
@@ -232,7 +232,7 @@ class NK_cells
         /*23*/ double KaNK_d;
         /*24*/ double NK_NK_d;
         /*25*/ double NK_Ab_d;
-//        /*26*/ double NK_exh_d;
+        /*26*/ double NK_exh_d;
 
         /// 10)Saturation constant of NK interaction for activation
         /*27*/ double KsAPC_NK_d;

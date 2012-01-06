@@ -41,7 +41,7 @@ NK_cells::NK_cells(/// 1) Init number of NK
                    /*18*/ double NKa_apop_rate_,
                    /*19*/ double NKbo_apop_rate_,
                    /*20*/ double NKbl_apop_rate_,
-//                   /*21*/ double NKexh_apop_rate_,
+                   /*21*/ double NKexh_apop_rate_,
 
                    /// 8) constant saturation of TNF for apoptosis
                    /*22*/ double Ks_NK_m_TNF_,
@@ -50,7 +50,7 @@ NK_cells::NK_cells(/// 1) Init number of NK
                    /*23*/ double KaNK_,
                    /*24*/ double NK_NK_,
                    /*25*/ double NK_Ab_,
-//                   /*26*/ double NK_exh_,
+                   /*26*/ double NK_exh_,
 
                    /// 10)Saturation constant of APC interaction for activation
                    /*27*/ double KsAPC_NK_,
@@ -72,7 +72,7 @@ NK_cells::NK_cells(/// 1) Init number of NK
           NKbo_d(0),
           NKbo_Ab_d(0),
           NKbl_d (0),
-//          NKexh_d(0),
+          NKexh_d(0),
           NK_TymTr_incorporated_d(0),
     /// 2) IFN Poductions rates of each type of NK
     /*2*/ IFN_NK0_prod_rate_d (IFN_NK0_prod_rate_),
@@ -108,7 +108,7 @@ NK_cells::NK_cells(/// 1) Init number of NK
     /*18*/ NKa_apop_rate_d (NKa_apop_rate_),
     /*19*/ NKbo_apop_rate_d (NKbo_apop_rate_),
     /*20*/ NKbl_apop_rate_d (NKbl_apop_rate_),
-//    /*21*/ NKexh_apop_rate_d (NKexh_apop_rate_),
+    /*21*/ NKexh_apop_rate_d (NKexh_apop_rate_),
 
     /// 8) constant saturation of TNF for apoptosis
     /*22*/ Ks_NK_m_TNF_d (Ks_NK_m_TNF_),
@@ -117,7 +117,7 @@ NK_cells::NK_cells(/// 1) Init number of NK
     /*23*/ KaNK_d (KaNK_),
     /*24*/ NK_NK_d (NK_NK_),
     /*25*/ NK_Ab_d (NK_Ab_),
-//    /*26*/ NK_exh_d (NK_exh_),
+    /*26*/ NK_exh_d (NK_exh_),
 
     /// 10)Saturation constant of NK interaction for activation
     /*27*/ KsAPC_NK_d (KsAPC_NK_),
@@ -217,7 +217,7 @@ NK_cells::NK_cells(const NK_cells& other):
    NKbo_d(other.NKbo_d),
    NKbo_Ab_d(other.NKbo_Ab_d),
    NKbl_d (other.NKbl_d),
-//   NKexh_d(other.NKexh_d),
+   NKexh_d(other.NKexh_d),
    NK_TymTr_incorporated_d(other.NK_TymTr_incorporated_d),
    init_ratio_NK_d(other.init_ratio_NK_d),
 
@@ -249,14 +249,14 @@ NK_cells::NK_cells(const NK_cells& other):
      NKa_apop_rate_d(other.NKa_apop_rate_d),
      NKbo_apop_rate_d(other.NKbo_apop_rate_d),
      NKbl_apop_rate_d(other.NKbl_apop_rate_d),
-//     NKexh_apop_rate_d(other.NKexh_apop_rate_d),
+     NKexh_apop_rate_d(other.NKexh_apop_rate_d),
 
      Ks_NK_m_TNF_d(other.Ks_NK_m_TNF_d),
 
      KaNK_d(other.KaNK_d),
      NK_NK_d(other.NK_NK_d),
      NK_Ab_d(other.NK_Ab_d),
-//     NK_exh_d(other.NK_exh_d),
+     NK_exh_d(other.NK_exh_d),
 
      KsAPC_NK_d(other.KsAPC_NK_d),
 
@@ -290,7 +290,7 @@ NK_cells::operator=(const NK_cells& other)
      std::swap(one.NKbo_d,other.NKbo_d);
      std::swap(one.NKbo_Ab_d,other.NKbo_Ab_d);
      std::swap(one.NKbl_d ,other.NKbl_d);
-//     std::swap(one.NKexh_d,other.NKexh_d);
+     std::swap(one.NKexh_d,other.NKexh_d);
      std::swap (one.NK_TymTr_incorporated_d,other.NK_TymTr_incorporated_d);
      std::swap(one.init_ratio_NK_d,other.init_ratio_NK_d);
 
@@ -319,14 +319,14 @@ NK_cells::operator=(const NK_cells& other)
      std::swap(one.NKa_apop_rate_d,other.NKa_apop_rate_d);
      std::swap(one.NKbo_apop_rate_d,other.NKbo_apop_rate_d);
      std::swap(one.NKbl_apop_rate_d,other.NKbl_apop_rate_d);
-//     std::swap(one.NKexh_apop_rate_d,other.NKexh_apop_rate_d);
+     std::swap(one.NKexh_apop_rate_d,other.NKexh_apop_rate_d);
 
      std::swap(one.Ks_NK_m_TNF_d,other.Ks_NK_m_TNF_d);
 
      std::swap(one.KaNK_d,other.KaNK_d);
      std::swap(one.NK_NK_d,other.NK_NK_d);
      std::swap(one.NK_Ab_d,other.NK_Ab_d);
-//     std::swap(one.NK_exh_d,other.NK_exh_d);
+     std::swap(one.NK_exh_d,other.NK_exh_d);
 
 
      std::swap(one.KsAPC_NK_d,other.KsAPC_NK_d);
@@ -363,7 +363,7 @@ void NK_cells::update(double& time_step,const Media& m, const APC_cells& APC,con
            APC.APC_NK()*NKa_d*NKa_expressing_receptor_d*APC.APCa()*APC.APCa_expressing_receptor()-
            APC.APC_NK()*NKa_d*NKa_expressing_receptor_d*APC.APCbo()-
            NK_Ab_d*NKa_d*NKa_expressing_receptor_d*m.Ab()-NKa_apop_rate_d*NKa_d-
-           u_NK_TNF_d*NKa_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d))/*-NKa_d*NK_exh_d*/)*time_step;
+           u_NK_TNF_d*NKa_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d))-NKa_d*NK_exh_d)*time_step;
     NKa_d+=NKa_delta;
 /// El porcentaje de células productoras de IL-12 está dentro de la constante
 
@@ -376,24 +376,24 @@ void NK_cells::update(double& time_step,const Media& m, const APC_cells& APC,con
             APC.APC_NK()*NKa_d*NKa_expressing_receptor_d*APC.APCa()*APC.APCa_expressing_receptor()+
             APC.APC_NK()*NKa_d*NKa_expressing_receptor_d*APC.APCbo()-
             NKbo_apop_rate_d*NKbo_d-u_NK_TNF_d*NKbo_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d))-
-            NKbo_d*NK_Ab_d*m.Ab()/*-NKbo_d*NK_exh_d*/)*time_step;
+            NKbo_d*NK_Ab_d*m.Ab()-NKbo_d*NK_exh_d)*time_step;
 
      NKbo_d+=NKbo_delta;
 
     /// NK cells can interact with other cells or with the blocking mAb
 
     double NKbo_Ab_delta=(NKbo_Ab_d*NKbo_proliferation_rate_d+NKbo_d*NK_Ab_d*m.Ab()-
-            NKbo_apop_rate_d*NKbo_Ab_d-u_NK_TNF_d*NKbo_Ab_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d))/*-
-            NKbo_Ab_d*NK_exh_d*/)*time_step;
+            NKbo_apop_rate_d*NKbo_Ab_d-u_NK_TNF_d*NKbo_Ab_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d))-
+            NKbo_Ab_d*NK_exh_d)*time_step;
     NKbo_Ab_d+=NKbo_Ab_delta;
     /// the cells that have interacted with LT get exhausted
     double NKbl_delta=(NKbl_d*NKbl_proliferation_rate_d+NK_Ab_d*NKa_d*NKa_expressing_receptor_d*m.Ab()-
-            NKbl_apop_rate_d*NKbl_d-u_NK_TNF_d*NKbl_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d))/*-NKbl_d*NK_exh_d*/)*time_step;
+            NKbl_apop_rate_d*NKbl_d-u_NK_TNF_d*NKbl_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d))-NKbl_d*NK_exh_d)*time_step;
 
    NKbl_d+=NKbl_delta;
-//   double  NKexh_delta=(NKa_d*NK_exh_d+NKbo_d*NK_exh_d+NKbo_Ab_d*NK_exh_d+NKbl_d*NK_exh_d-
-//             NKexh_apop_rate_d*NKexh_d-u_NK_TNF_d*NKexh_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d)))*time_step;
-//    NKexh_d+=NKexh_delta;
+   double  NKexh_delta=(NKa_d*NK_exh_d+NKbo_d*NK_exh_d+NKbo_Ab_d*NK_exh_d+NKbl_d*NK_exh_d-
+             NKexh_apop_rate_d*NKexh_d-u_NK_TNF_d*NKexh_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d)))*time_step;
+    NKexh_d+=NKexh_delta;
     double NK_TymTr_incorporated_delta;
     if (m.TymidineTriteate()>0){
         NK_TymTr_incorporated_delta=
@@ -420,7 +420,7 @@ void NK_cells::reset(const SimParameters& sp,
 */
 double NK_cells::num_NK() const
     {
-        double sum=NK0_d+NKa_d+NKbo_d+NKbo_Ab_d+NKbl_d;
+        double sum=NK0_d+NKa_d+NKbo_d+NKbo_Ab_d+NKbl_d+NKexh_d;
         return sum;
     }
 
@@ -523,15 +523,15 @@ const double& NK_cells::NKbl() const
         return NKbl_d;
     }
 
-//double& NK_cells::NKexh()
-//    {
-//        return NKexh_d;
-//    }
+double& NK_cells::NKexh()
+    {
+        return NKexh_d;
+    }
 
-//const double& NK_cells::NKexh()const
-//    {
-//        return NKexh_d;
-//    }
+const double& NK_cells::NKexh()const
+    {
+        return NKexh_d;
+    }
 
 double& NK_cells::NK_TymTr_incorporated()
 { return NK_TymTr_incorporated_d;}
@@ -555,7 +555,7 @@ const double& NK_cells::NKa_expressing_receptor() const
     s<<"\n NKbo_d \t"<<c.NKbo_d;
     s<<"\n NKbo_Ab \t"<<c.NKbo_Ab_d;
     s<<"\n NKbl \t"<<c.NKbl_d;
-//    s<<"\n NKexh \t"<<c.NKexh_d;
+    s<<"\n NKexh \t"<<c.NKexh_d;
     s<<"\n NK tymTR incorporate \t"<<c.NK_TymTr_incorporated_d;
 
 
@@ -590,14 +590,14 @@ const double& NK_cells::NKa_expressing_receptor() const
        s<<"\n NKa_apop_rate_ \t"<<c.NKa_apop_rate_d;
        s<<"\n NKbo_apop_rate_ \t"<<c.NKbo_apop_rate_d;
        s<<"\n NKbl_apop_rate_ \t"<<c.NKbl_apop_rate_d;
-//       s<<"\n NKexh_apop_rate_ \t"<<c.NKexh_apop_rate_d;
+       s<<"\n NKexh_apop_rate_ \t"<<c.NKexh_apop_rate_d;
 
        s<<"\n Ks_NK_m_TNF_ \t"<<c.Ks_NK_m_TNF_d;
 
        s<<"\n KaNK_ \t"<<c.KaNK_d;
        s<<"\n NK_NK_ \t"<<c.NK_NK_d;
        s<<"\n NK_Ab_ \t"<<c.NK_Ab_d;
-//       s<<"\n NK_exh_ \t"<<c.NK_exh_d;
+       s<<"\n NK_exh_ \t"<<c.NK_exh_d;
 
        s<<"\n KsAPC_NK_ \t"<<c.KsAPC_NK_d;
 
@@ -625,7 +625,7 @@ const double& NK_cells::NKa_expressing_receptor() const
      NKbo_d(0.0),
      NKbo_Ab_d(0.0),
      NKbl_d (0.0),
-//     NKexh_d(0.0),
+     NKexh_d(0.0),
      NK_TymTr_incorporated_d(0.0),
 /// 2) IFN Poductions rates of each type of NK
 /*2*/ IFN_NK0_prod_rate_d (p.mean("IFN_NK0_prod_rate")),
@@ -661,7 +661,7 @@ const double& NK_cells::NKa_expressing_receptor() const
 /*18*/ NKa_apop_rate_d (p.mean("NKa_apop_rate")),
 /*19*/ NKbo_apop_rate_d (p.mean("NKbo_apop_rate")),
 /*20*/ NKbl_apop_rate_d (p.mean("NKbl_apop_rate")),
-///*21*/ NKexh_apop_rate_d (p.mean("NKexh_apop_rate")),
+/*21*/ NKexh_apop_rate_d (p.mean("NKexh_apop_rate")),
 
 /// 8) constant saturation of TNF for apoptosis
 /*22*/ Ks_NK_m_TNF_d (p.mean("Ks_NK_m_TNF")),
@@ -670,7 +670,7 @@ const double& NK_cells::NKa_expressing_receptor() const
 /*23*/ KaNK_d (p.mean("KaNK")),
 /*24*/ NK_NK_d (p.mean("NK_NK")),
 /*25*/ NK_Ab_d (p.mean("NK_Ab")),
-///*26*/ NK_exh_d (p.mean("NK_exh")),
+/*26*/ NK_exh_d (p.mean("NK_exh")),
 
 /// 10)Saturation constant of NK interaction for activation
 /*27*/ KsAPC_NK_d (p.mean("KsAPC_NK")),
@@ -712,7 +712,7 @@ std::vector<double> D;
             APC.APC_NK()*NKa_d*NKa_expressing_receptor_d*APC.APCa()*APC.APCa_expressing_receptor()-
             APC.APC_NK()*NKa_d*NKa_expressing_receptor_d*APC.APCbo()-
             NK_Ab_d*NKa_d*NKa_expressing_receptor_d*m.Ab()-NKa_apop_rate_d*NKa_d-
-            u_NK_TNF_d*NKa_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d))/*-NKa_d*NK_exh_d*/);
+            u_NK_TNF_d*NKa_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d))-NKa_d*NK_exh_d);
      D.push_back(NKa_delta);
  /// El porcentaje de células productoras de IL-12 está dentro de la constante
 
@@ -725,24 +725,24 @@ std::vector<double> D;
              APC.APC_NK()*NKa_d*NKa_expressing_receptor_d*APC.APCa()*APC.APCa_expressing_receptor()+
              APC.APC_NK()*NKa_d*NKa_expressing_receptor_d*APC.APCbo()-
              NKbo_apop_rate_d*NKbo_d-u_NK_TNF_d*NKbo_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d))-
-             NKbo_d*NK_Ab_d*m.Ab()/*-NKbo_d*NK_exh_d*/);
+             NKbo_d*NK_Ab_d*m.Ab()-NKbo_d*NK_exh_d);
 
       D.push_back(NKbo_delta);
 
      /// NK cells can interact with other cells or with the blocking mAb
 
      double NKbo_Ab_delta=(NKbo_Ab_d*NKbo_proliferation_rate_d+NKbo_d*NK_Ab_d*m.Ab()-
-             NKbo_apop_rate_d*NKbo_Ab_d-u_NK_TNF_d*NKbo_Ab_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d))/*-
-             NKbo_Ab_d*NK_exh_d*/);
+             NKbo_apop_rate_d*NKbo_Ab_d-u_NK_TNF_d*NKbo_Ab_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d))-
+             NKbo_Ab_d*NK_exh_d);
      D.push_back(NKbo_Ab_delta);
      /// the cells that have interacted with LT get exhausted
      double NKbl_delta=(NKbl_d*NKbl_proliferation_rate_d+NK_Ab_d*NKa_d*NKa_expressing_receptor_d*m.Ab()-
-             NKbl_apop_rate_d*NKbl_d-u_NK_TNF_d*NKbl_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d))/*-NKbl_d*NK_exh_d*/);
+             NKbl_apop_rate_d*NKbl_d-u_NK_TNF_d*NKbl_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d))-NKbl_d*NK_exh_d);
 
     D.push_back(NKbl_delta);
-//    double  NKexh_delta=(NKa_d*NK_exh_d+NKbo_d*NK_exh_d+NKbo_Ab_d*NK_exh_d+NKbl_d*NK_exh_d-
-//              NKexh_apop_rate_d*NKexh_d-u_NK_TNF_d*NKexh_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d)));
-//     D.push_back(NKexh_delta);
+    double  NKexh_delta=(NKa_d*NK_exh_d+NKbo_d*NK_exh_d+NKbo_Ab_d*NK_exh_d+NKbl_d*NK_exh_d-
+              NKexh_apop_rate_d*NKexh_d-u_NK_TNF_d*NKexh_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d)));
+     D.push_back(NKexh_delta);
      double NK_TymTr_incorporated_delta=0;
      if (m.TymidineTriteate()>0){
          NK_TymTr_incorporated_delta=((NK0_d*NK0_proliferation_rate_d+(NKa_d+NKbl_d)*NKa_proliferation_rate_d+
@@ -779,7 +779,7 @@ std::vector<double> D;
      /// the cells that have interacted with LT get exhausted
 
     S.push_back(NKbl_d);
-//     S.push_back(NKexh_d);
+     S.push_back(NKexh_d);
      S.push_back(NK_TymTr_incorporated_d);
 
      return S;
@@ -810,6 +810,6 @@ std::vector<double> D;
      NKbo_Ab_d=y[3];
      /// the cells that have interacted with LT get exhausted
      NKbl_d=y[4];
-//     NKexh_d=y[5];
+     NKexh_d=y[5];
      NK_TymTr_incorporated_d=y[6];
   }

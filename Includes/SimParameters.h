@@ -51,7 +51,7 @@ public:
    /*16*/ double APCa_apop_rate_;
    /*17*/ double APCbo_apop_rate_;
    /*18*/ double APCbl_apop_rate_;
-//   /*19*/ double APCexh_apop_rate_;
+   /*19*/ double APCexh_apop_rate_;
 
    /// 8) constant saturation of TNF for apoptosis
    /*20*/ double Ks_APC_m_TNF_;
@@ -63,7 +63,7 @@ public:
    /*24*/ double APC_LT_1_;
    /*25*/ double APC_LT_2_;
    /*26*/ double APC_Ab_;
-//   /*27*/ double APC_exh_;
+   /*27*/ double APC_exh_;
 
    /// 10)Saturation constant of IFN and TNF for activation
    /*28*/ double KsAPC_LT_;
@@ -116,7 +116,7 @@ public:
    /*18*/ double NKa_apop_rate_;
    /*19*/ double NKbo_apop_rate_;
    /*20*/ double NKbl_apop_rate_;
-//   /*21*/ double NKexh_apop_rate_;
+   /*21*/ double NKexh_apop_rate_;
 
    /// 8) constant saturation of TNF for apoptosis
    /*22*/ double Ks_NK_m_TNF_;
@@ -125,7 +125,7 @@ public:
    /*23*/ double KaNK_;
    /*24*/ double NK_NK_;
    /*25*/ double NK_Ab_;
-//   /*26*/ double NK_exh_;
+   /*26*/ double NK_exh_;
 
    /// 10)Saturation constant of NK interaction for activation
    /*27*/ double KsAPC_NK_;
@@ -175,7 +175,7 @@ public:
       /*18*/ double LTns_apop_rate_;
       /*19*/ double LTbo_apop_rate_;
       /*20*/ double LTbl_apop_rate_;
-//      /*21*/ double LTexh_apop_rate_;
+      /*21*/ double LTexh_apop_rate_;
 
   /// 8) constant saturation of TNF for apoptosis
       /*22*/ double Ks_LT_m_TNF_;
@@ -186,8 +186,8 @@ public:
   /// 10) Apoptosis rate for TNF
       /*24*/ double u_LT_TNF_;
 
-//   /// 11) LT exh rate
-//       /*25*/ double LT_exh_rate_;
+   /// 11) LT exh rate
+       /*25*/ double LT_exh_rate_;
 
    /// 12) apoptosis related parameters
        /*26*/ double t_apop_meas_;
@@ -196,7 +196,6 @@ public:
    /// Media
        /*1*/ double TNF_deg_;
        /*2*/ double IFN_deg_;
-             double Ag_deg_;
        /*3*/ double TymidineTriteate_;
        /*4*/ double Prol_TymTr_;
 

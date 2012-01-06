@@ -42,7 +42,7 @@ SimParameters::SimParameters():
     /*16*/ APCa_apop_rate_(1e-6),
     /*17*/ APCbo_apop_rate_(1e-6),
     /*18*/ APCbl_apop_rate_(1e-6),
-//    /*19*/ APCexh_apop_rate_(1e-6),
+    /*19*/ APCexh_apop_rate_(1e-6),
 
     /// 8) constant saturation of TNF for apoptosis
     /*20*/ Ks_APC_m_TNF_(1e-6),
@@ -54,7 +54,7 @@ SimParameters::SimParameters():
     /*24*/ APC_LT_1_(1e-6),
     /*25*/ APC_LT_2_(1e-6),
     /*26*/ APC_Ab_(1e-6),
-//    /*27*/ APC_exh_(1e-6),
+    /*27*/ APC_exh_(1e-6),
 
     /// 10)Saturation constant of IFN and TNF for activation
     /*28*/ KsAPC_LT_(1e-6),
@@ -104,7 +104,7 @@ SimParameters::SimParameters():
     /*18*/  NKa_apop_rate_(1e-6),
     /*19*/  NKbo_apop_rate_(1e-6),
     /*20*/  NKbl_apop_rate_(1e-6),
-//    /*21*/  NKexh_apop_rate_(1e-6),
+    /*21*/  NKexh_apop_rate_(1e-6),
 
     /// 8) constant saturation of TNF for apoptosis
     /*22*/  Ks_NK_m_TNF_(1e-6),
@@ -113,7 +113,7 @@ SimParameters::SimParameters():
     /*23*/  KaNK_(1e-6),
     /*24*/  NK_NK_(1e-6),
     /*25*/  NK_Ab_(1e-6),
-//    /*26*/  NK_exh_(1e-6),
+    /*26*/  NK_exh_(1e-6),
 
     /// 10)Saturation constant of APC NK interaction for activation
     /*27*/  KsAPC_NK_(1e-6),
@@ -164,7 +164,7 @@ SimParameters::SimParameters():
        /*18*/  LTns_apop_rate_(1e-10),
        /*19*/  LTbo_apop_rate_(1e-10),
        /*20*/  LTbl_apop_rate_(1e-10),
-//       /*21*/  LTexh_apop_rate_(1e-10),
+       /*21*/  LTexh_apop_rate_(1e-10),
 
    /// 8) constant saturation of TNF for apoptosis
        /*22*/  Ks_LT_m_TNF_(1e-10),
@@ -175,8 +175,8 @@ SimParameters::SimParameters():
    /// 10) Apoptosis rate for TNF
        /*24*/  u_LT_TNF_(1e-10),
 
-//   /// 11) LT exh rate
-//       /*25*/ LT_exh_rate_(1e-10),
+   /// 11) LT exh rate
+       /*25*/ LT_exh_rate_(1e-10),
 
    /// 12) apoptosis related parameters
        /*26*/ t_apop_meas_(120),
@@ -185,7 +185,6 @@ SimParameters::SimParameters():
     /// Media
     /*1*/ TNF_deg_(0.5),
     /*2*/ IFN_deg_(0.5),
-    /*2.5*/ Ag_deg_(0.5),
     /*3*/ TymidineTriteate_(0.5),
     /*4*/ Prol_TymTr_(0.5)
 
@@ -232,7 +231,7 @@ std::vector<double> SimParameters::getParameters()const
         /*16*/ par.push_back(log(APCa_apop_rate_));
         /*17*/ par.push_back(log(APCbo_apop_rate_));
         /*18*/ par.push_back(log(APCbl_apop_rate_));
-//        /*19*/ par.push_back(log(APCexh_apop_rate_));
+        /*19*/ par.push_back(log(APCexh_apop_rate_));
 
         /// 8) constant saturation of TNF for apoptosis
         /*20*/ par.push_back(log(Ks_APC_m_TNF_));
@@ -244,7 +243,7 @@ std::vector<double> SimParameters::getParameters()const
         /*24*/ par.push_back(log(APC_LT_1_));
         /*25*/ par.push_back(log(APC_LT_2_));
         /*26*/ par.push_back(log(APC_Ab_));
-//        /*27*/ par.push_back(log(APC_exh_));
+        /*27*/ par.push_back(log(APC_exh_));
 
         /// 10)Saturation constant of IFN and TNF for activation
         /*28*/ par.push_back(log(KsAPC_LT_));
@@ -294,7 +293,7 @@ std::vector<double> SimParameters::getParameters()const
         /*18*/  par.push_back(log(NKa_apop_rate_));
         /*19*/  par.push_back(log(NKbo_apop_rate_));
         /*20*/  par.push_back(log(NKbl_apop_rate_));
-//        /*21*/  par.push_back(log(NKexh_apop_rate_));
+        /*21*/  par.push_back(log(NKexh_apop_rate_));
 
         /// 8) constant saturation of TNF for apoptosis
         /*22*/  par.push_back(log(Ks_NK_m_TNF_));
@@ -303,7 +302,7 @@ std::vector<double> SimParameters::getParameters()const
         /*23*/  par.push_back(log(KaNK_));
         /*24*/  par.push_back(log(NK_NK_));
         /*25*/  par.push_back(log(NK_Ab_));
-//        /*26*/  par.push_back(log(NK_exh_));
+        /*26*/  par.push_back(log(NK_exh_));
 
         /// 10)Saturation constant of NK interaction for activation
         /*27*/  par.push_back(log(KsAPC_NK_));
@@ -353,7 +352,7 @@ std::vector<double> SimParameters::getParameters()const
        /*18*/  par.push_back(log(LTns_apop_rate_));
        /*19*/  par.push_back(log(LTbo_apop_rate_));
        /*20*/  par.push_back(log(LTbl_apop_rate_));
-//       /*21*/  par.push_back(log(LTexh_apop_rate_));
+       /*21*/  par.push_back(log(LTexh_apop_rate_));
 
        /// 8) constant saturation of TNF for apoptosis
        /*22*/  par.push_back(log(Ks_LT_m_TNF_));
@@ -364,8 +363,8 @@ std::vector<double> SimParameters::getParameters()const
        /// 10) Apoptosis rate for TNF
        /*24*/  par.push_back(log(u_LT_TNF_));
 
-//       /// 11) LT exh rate
-//       /*25*/ par.push_back(log(LT_exh_rate_));
+       /// 11) LT exh rate
+       /*25*/ par.push_back(log(LT_exh_rate_));
 
        /// 12) apoptosis related parameters
        /*26*/ par.push_back(log(t_apop_meas_));
@@ -376,7 +375,6 @@ std::vector<double> SimParameters::getParameters()const
         /// Media
         /*1*/ par.push_back(log(TNF_deg_));
         /*2*/ par.push_back(log(IFN_deg_));
-        /*2.5*/ par.push_back(log(Ag_deg_));
         /*3*/ par.push_back(log(TymidineTriteate_));
         /*4*/ par.push_back(log(Prol_TymTr_));
     }
@@ -419,7 +417,7 @@ std::vector<double> SimParameters::getParameters()const
         /*16*/ par.push_back(log(APCa_apop_rate_));
         /*17*/ par.push_back(log(APCbo_apop_rate_));
         /*18*/ par.push_back(log(APCbl_apop_rate_));
-//        /*19*/ par.push_back(log(APCexh_apop_rate_));
+        /*19*/ par.push_back(log(APCexh_apop_rate_));
 
         /// 8) constant saturation of TNF for apoptosis
         /*20*/ par.push_back(log(Ks_APC_m_TNF_));
@@ -431,7 +429,7 @@ std::vector<double> SimParameters::getParameters()const
         /*24*/ par.push_back(log(APC_LT_1_));
         /*25*/ par.push_back(log(APC_LT_2_));
         /*26*/ par.push_back(log(APC_Ab_));
-//        /*27*/ par.push_back(log(APC_exh_));
+        /*27*/ par.push_back(log(APC_exh_));
 
         /// 10)Saturation constant of IFN and TNF for activation
         /*28*/ par.push_back(log(KsAPC_LT_));
@@ -481,7 +479,7 @@ std::vector<double> SimParameters::getParameters()const
        /*18*/  par.push_back(log(NKa_apop_rate_));
        /*19*/  par.push_back(log(NKbo_apop_rate_));
        /*20*/  par.push_back(log(NKbl_apop_rate_));
-//       /*21*/  par.push_back(log(NKexh_apop_rate_));
+       /*21*/  par.push_back(log(NKexh_apop_rate_));
 
        /// 8) constant saturation of TNF for apoptosis
        /*22*/  par.push_back(log(Ks_NK_m_TNF_));
@@ -490,7 +488,7 @@ std::vector<double> SimParameters::getParameters()const
        /*23*/  par.push_back(log(KaNK_));
        /*24*/  par.push_back(log(NK_NK_));
        /*25*/  par.push_back(log(NK_Ab_));
-//       /*26*/  par.push_back(log(NK_exh_));
+       /*26*/  par.push_back(log(NK_exh_));
 
        /// 10)Saturation constant of NK interaction for activation
        /*27*/  par.push_back(log(KsAPC_NK_));
@@ -540,7 +538,7 @@ std::vector<double> SimParameters::getParameters()const
       /*18*/  par.push_back(log(LTns_apop_rate_));
       /*19*/  par.push_back(log(LTbo_apop_rate_));
       /*20*/  par.push_back(log(LTbl_apop_rate_));
-//      /*21*/  par.push_back(log(LTexh_apop_rate_));
+      /*21*/  par.push_back(log(LTexh_apop_rate_));
 
       /// 8) constant saturation of TNF for apoptosis
       /*22*/  par.push_back(log(Ks_LT_m_TNF_));
@@ -551,8 +549,8 @@ std::vector<double> SimParameters::getParameters()const
       /// 10) Apoptosis rate for TNF
       /*24*/  par.push_back(log(u_LT_TNF_));
 
-//      /// 11) LT exh rate
-//      /*25*/ par.push_back(log(LT_exh_rate_));
+      /// 11) LT exh rate
+      /*25*/ par.push_back(log(LT_exh_rate_));
 
       /// 12) apoptosis related parameters
       /*26*/ par.push_back(log(t_apop_meas_));
@@ -613,7 +611,7 @@ SimParameters& SimParameters::applyParameters(const std::vector<double>& param)
         /*16*/  APCa_apop_rate_ = exp(param[i++]);
         /*17*/  APCbo_apop_rate_ = exp(param[i++]);
         /*18*/  APCbl_apop_rate_ = exp(param[i++]);
-//        /*19*/  APCexh_apop_rate_ = exp(param[i++]);
+        /*19*/  APCexh_apop_rate_ = exp(param[i++]);
 
         /// 8) constant saturation of TNF for apoptosis
         /*20*/  Ks_APC_m_TNF_ = exp(param[i++]);
@@ -625,7 +623,7 @@ SimParameters& SimParameters::applyParameters(const std::vector<double>& param)
         /*24*/  APC_LT_1_ = exp(param[i++]);
         /*25*/  APC_LT_2_ = exp(param[i++]);
         /*26*/  APC_Ab_ = exp(param[i++]);
-//        /*27*/  APC_exh_ = exp(param[i++]);
+        /*27*/  APC_exh_ = exp(param[i++]);
 
         /// 10)Saturation constant of IFN and TNF for activation
         /*28*/  KsAPC_LT_ = exp(param[i++]);
@@ -675,7 +673,7 @@ SimParameters& SimParameters::applyParameters(const std::vector<double>& param)
         /*18*/ NKa_apop_rate_= exp(param[i++]);
         /*19*/ NKbo_apop_rate_= exp(param[i++]);
         /*20*/ NKbl_apop_rate_= exp(param[i++]);
-//        /*21*/ NKexh_apop_rate_= exp(param[i++]);
+        /*21*/ NKexh_apop_rate_= exp(param[i++]);
 
         /// 8) constant saturation of TNF for apoptosis
         /*22*/ Ks_NK_m_TNF_= exp(param[i++]);
@@ -684,7 +682,7 @@ SimParameters& SimParameters::applyParameters(const std::vector<double>& param)
         /*23*/ KaNK_= exp(param[i++]);
         /*24*/ NK_NK_= exp(param[i++]);
         /*25*/ NK_Ab_= exp(param[i++]);
-//        /*26*/ NK_exh_= exp(param[i++]);
+        /*26*/ NK_exh_= exp(param[i++]);
 
         /// 10)Saturation constant of NK interaction for activation
         /*27*/ KsAPC_NK_= exp(param[i++]);
@@ -735,7 +733,7 @@ SimParameters& SimParameters::applyParameters(const std::vector<double>& param)
        /*18*/  LTns_apop_rate_=exp(param[i++]);
        /*19*/  LTbo_apop_rate_=exp(param[i++]);
        /*20*/  LTbl_apop_rate_=exp(param[i++]);
-//       /*21*/  LTexh_apop_rate_=exp(param[i++]);
+       /*21*/  LTexh_apop_rate_=exp(param[i++]);
 
        /// 8) constant saturation of TNF for apoptosis
        /*22*/  Ks_LT_m_TNF_=exp(param[i++]);
@@ -746,8 +744,8 @@ SimParameters& SimParameters::applyParameters(const std::vector<double>& param)
        /// 10) Apoptosis rate for TNF
        /*24*/  u_LT_TNF_=exp(param[i++]);
 
-//       /// 11) LT exh rate
-//       /*25*/ LT_exh_rate_=exp(param[i++]);
+       /// 11) LT exh rate
+       /*25*/ LT_exh_rate_=exp(param[i++]);
 
         /// 12) apoptosis related parameters
         /*26*/ t_apop_meas_=exp(param[i++]);
@@ -756,7 +754,6 @@ SimParameters& SimParameters::applyParameters(const std::vector<double>& param)
 /// Media
         /*1*/ TNF_deg_=exp(param[i++]);
         /*2*/ IFN_deg_=exp(param[i++]);
-         /*2.5*/ Ag_deg_=exp(param[i++]);
         /*3*/ TymidineTriteate_=exp(param[i++]);
         /*4*/ Prol_TymTr_=exp(param[i++]);
 
@@ -799,7 +796,7 @@ SimParameters& SimParameters::applyParameters(const std::vector<double>& param)
         /*16*/  APCa_apop_rate_ = exp(param[i++]);
         /*17*/  APCbo_apop_rate_ = exp(param[i++]);
         /*18*/  APCbl_apop_rate_ = exp(param[i++]);
-//        /*19*/  APCexh_apop_rate_ = exp(param[i++]);
+        /*19*/  APCexh_apop_rate_ = exp(param[i++]);
 
         /// 8) constant saturation of TNF for apoptosis
         /*20*/  Ks_APC_m_TNF_ = exp(param[i++]);
@@ -811,7 +808,7 @@ SimParameters& SimParameters::applyParameters(const std::vector<double>& param)
         /*24*/  APC_LT_1_ = exp(param[i++]);
         /*25*/  APC_LT_2_ = exp(param[i++]);
         /*26*/  APC_Ab_ = exp(param[i++]);
-//        /*27*/  APC_exh_ = exp(param[i++]);
+        /*27*/  APC_exh_ = exp(param[i++]);
 
         /// 10)Saturation constant of IFN and TNF for activation
         /*28*/  KsAPC_LT_ = exp(param[i++]);
@@ -861,7 +858,7 @@ SimParameters& SimParameters::applyParameters(const std::vector<double>& param)
         /*18*/ NKa_apop_rate_= exp(param[i++]);
         /*19*/ NKbo_apop_rate_= exp(param[i++]);
         /*20*/ NKbl_apop_rate_= exp(param[i++]);
-//        /*21*/ NKexh_apop_rate_= exp(param[i++]);
+        /*21*/ NKexh_apop_rate_= exp(param[i++]);
 
         /// 8) constant saturation of TNF for apoptosis
         /*22*/ Ks_NK_m_TNF_= exp(param[i++]);
@@ -870,7 +867,7 @@ SimParameters& SimParameters::applyParameters(const std::vector<double>& param)
         /*23*/ KaNK_= exp(param[i++]);
         /*24*/ NK_NK_= exp(param[i++]);
         /*25*/ NK_Ab_= exp(param[i++]);
-//        /*26*/ NK_exh_= exp(param[i++]);
+        /*26*/ NK_exh_= exp(param[i++]);
 
         /// 10)Saturation constant of NK interaction for activation
         /*27*/ KsAPC_NK_= exp(param[i++]);
@@ -921,7 +918,7 @@ SimParameters& SimParameters::applyParameters(const std::vector<double>& param)
         /*18*/  LTns_apop_rate_=exp(param[i++]);
         /*19*/  LTbo_apop_rate_=exp(param[i++]);
         /*20*/  LTbl_apop_rate_=exp(param[i++]);
-//        /*21*/  LTexh_apop_rate_=exp(param[i++]);
+        /*21*/  LTexh_apop_rate_=exp(param[i++]);
 
         /// 8) constant saturation of TNF for apoptosis
         /*22*/  Ks_LT_m_TNF_=exp(param[i++]);
@@ -932,14 +929,13 @@ SimParameters& SimParameters::applyParameters(const std::vector<double>& param)
         /// 10) Apoptosis rate for TNF
         /*24*/  u_LT_TNF_=exp(param[i++]);
 
-//        /// 11) LT exh rate
-//        /*25*/ LT_exh_rate_=exp(param[i++]);
+        /// 11) LT exh rate
+        /*25*/ LT_exh_rate_=exp(param[i++]);
 
 
 /// Media
        /*1*/ TNF_deg_=exp(param[i++]);
        /*2*/ IFN_deg_= TNF_deg_;
-       /*2.5*/ Ag_deg_=exp(param[i++]);
        /*3*/ TymidineTriteate_=exp(param[i++]);
        /*4*/ Prol_TymTr_=exp(param[i++]);
 
@@ -984,7 +980,7 @@ SimParameters::SimParameters(const SimParameters& other):
     /*16*/  APCa_apop_rate_ (other.APCa_apop_rate_),
     /*17*/  APCbo_apop_rate_ (other.APCbo_apop_rate_),
     /*18*/  APCbl_apop_rate_ (other.APCbl_apop_rate_),
-//    /*19*/  APCexh_apop_rate_ (other.APCexh_apop_rate_),
+    /*19*/  APCexh_apop_rate_ (other.APCexh_apop_rate_),
 
     /// 8) constant saturation of TNF for apoptosis
     /*20*/  Ks_APC_m_TNF_ (other.Ks_APC_m_TNF_),
@@ -996,7 +992,7 @@ SimParameters::SimParameters(const SimParameters& other):
     /*24*/  APC_LT_1_ (other.APC_LT_1_),
     /*25*/  APC_LT_2_ (other.APC_LT_2_),
     /*26*/  APC_Ab_ (other.APC_Ab_),
-//    /*27*/  APC_exh_ (other.APC_exh_),
+    /*27*/  APC_exh_ (other.APC_exh_),
 
     /// 10)Saturation constant of IFN and TNF for activation
     /*28*/  KsAPC_LT_ (other.KsAPC_LT_),
@@ -1046,7 +1042,7 @@ SimParameters::SimParameters(const SimParameters& other):
     /*18*/ NKa_apop_rate_(other.NKa_apop_rate_),
     /*19*/ NKbo_apop_rate_(other.NKbo_apop_rate_),
     /*20*/ NKbl_apop_rate_(other.NKbl_apop_rate_),
-//    /*21*/ NKexh_apop_rate_(other.NKexh_apop_rate_),
+    /*21*/ NKexh_apop_rate_(other.NKexh_apop_rate_),
 
     /// 8) constant saturation of TNF for apoptosis
     /*22*/ Ks_NK_m_TNF_(other.Ks_NK_m_TNF_),
@@ -1055,7 +1051,7 @@ SimParameters::SimParameters(const SimParameters& other):
     /*23*/ KaNK_(other.KaNK_),
     /*24*/ NK_NK_(other.NK_NK_),
     /*25*/ NK_Ab_(other.NK_Ab_),
-//    /*26*/ NK_exh_(other.NK_exh_),
+    /*26*/ NK_exh_(other.NK_exh_),
 
     /// 10)Saturation constant of NK interaction for activation
     /*27*/ KsAPC_NK_(other.KsAPC_NK_),
@@ -1107,19 +1103,19 @@ SimParameters::SimParameters(const SimParameters& other):
     /*18*/  LTns_apop_rate_(other.LTns_apop_rate_),
     /*19*/  LTbo_apop_rate_(other.LTbo_apop_rate_),
     /*20*/  LTbl_apop_rate_(other.LTbl_apop_rate_),
-//    /*21*/  LTexh_apop_rate_(other.LTexh_apop_rate_),
+    /*21*/  LTexh_apop_rate_(other.LTexh_apop_rate_),
 
     /// 8) constant saturation of TNF for apoptosis
-//    /*22*/  Ks_LT_m_TNF_(other.LTexh_apop_rate_),
+    /*22*/  Ks_LT_m_TNF_(other.LTexh_apop_rate_),
 
     /// 9) Percentages of cell expressing receptor
-    /*23*/  LTns_expressing_receptor_(other.LTns_expressing_receptor_),
+    /*23*/  LTns_expressing_receptor_(other.LTexh_apop_rate_),
 
     /// 10) Apoptosis rate for TNF
-    /*24*/  u_LT_TNF_(other.u_LT_TNF_),
+    /*24*/  u_LT_TNF_(other.LTexh_apop_rate_),
 
-//    /// 11) LT exh rate
-//    /*25*/ LT_exh_rate_(other.LT_exh_rate_),
+    /// 11) LT exh rate
+    /*25*/ LT_exh_rate_(other.LT_exh_rate_),
 
     /// 12) apoptosis related parameters
     /*26*/ t_apop_meas_(other.t_apop_meas_),
@@ -1128,7 +1124,6 @@ SimParameters::SimParameters(const SimParameters& other):
 /// Media
     /*1*/ TNF_deg_(other.TNF_deg_),
     /*2*/ IFN_deg_(other.IFN_deg_),
-     /*2.5*/ Ag_deg_(other.Ag_deg_),
     /*3*/ TymidineTriteate_(other.TymidineTriteate_),
     /*4*/ Prol_TymTr_(other.Prol_TymTr_)
 
@@ -1181,7 +1176,7 @@ void swap(SimParameters& one, SimParameters& other)
     /*16*/  std::swap(one.APCa_apop_rate_ ,other.APCa_apop_rate_);
     /*17*/  std::swap(one.APCbo_apop_rate_ ,other.APCbo_apop_rate_);
     /*18*/  std::swap(one.APCbl_apop_rate_ ,other.APCbl_apop_rate_);
-//    /*19*/  std::swap(one.APCexh_apop_rate_ ,other.APCexh_apop_rate_);
+    /*19*/  std::swap(one.APCexh_apop_rate_ ,other.APCexh_apop_rate_);
 
     /// 8) constant saturation of TNF for apoptosis
     /*20*/  std::swap(one.Ks_APC_m_TNF_ ,other.Ks_APC_m_TNF_);
@@ -1193,7 +1188,7 @@ void swap(SimParameters& one, SimParameters& other)
     /*24*/  std::swap(one.APC_LT_1_ ,other.APC_LT_1_);
     /*25*/  std::swap(one.APC_LT_2_ ,other.APC_LT_2_);
     /*26*/  std::swap(one.APC_Ab_ ,other.APC_Ab_);
-//    /*27*/  std::swap(one.APC_exh_ ,other.APC_exh_);
+    /*27*/  std::swap(one.APC_exh_ ,other.APC_exh_);
 
     /// 10)Saturation constant of IFN and TNF for activation
     /*28*/  std::swap(one.KsAPC_LT_ ,other.KsAPC_LT_);
@@ -1243,7 +1238,7 @@ void swap(SimParameters& one, SimParameters& other)
     /*18*/ std::swap(one.NKa_apop_rate_,other.NKa_apop_rate_);
     /*19*/ std::swap(one.NKbo_apop_rate_,other.NKbo_apop_rate_);
     /*20*/ std::swap(one.NKbl_apop_rate_,other.NKbl_apop_rate_);
-//    /*21*/ std::swap(one.NKexh_apop_rate_,other.NKexh_apop_rate_);
+    /*21*/ std::swap(one.NKexh_apop_rate_,other.NKexh_apop_rate_);
 
     /// 8) constant saturation of TNF for apoptosis
     /*22*/ std::swap(one.Ks_NK_m_TNF_,other.Ks_NK_m_TNF_);
@@ -1252,7 +1247,7 @@ void swap(SimParameters& one, SimParameters& other)
     /*23*/ std::swap(one.KaNK_,other.KaNK_);
     /*24*/ std::swap(one.NK_NK_,other.NK_NK_);
     /*25*/ std::swap(one.NK_Ab_,other.NK_Ab_);
-//    /*26*/ std::swap(one.NK_exh_,other.NK_exh_);
+    /*26*/ std::swap(one.NK_exh_,other.NK_exh_);
 
     /// 10)Saturation constant of NK interaction for activation
     /*27*/ std::swap(one.KsAPC_NK_,other.KsAPC_NK_);
@@ -1303,19 +1298,19 @@ void swap(SimParameters& one, SimParameters& other)
     /*18*/   std::swap(one.LTns_apop_rate_,other.LTns_apop_rate_);
     /*19*/   std::swap(one.LTbo_apop_rate_,other.LTbo_apop_rate_);
     /*20*/   std::swap(one.LTbl_apop_rate_,other.LTbl_apop_rate_);
-//    /*21*/   std::swap(one.LTexh_apop_rate_,other.LTexh_apop_rate_);
+    /*21*/   std::swap(one.LTexh_apop_rate_,other.LTexh_apop_rate_);
 
     /// 8) constant saturation of TNF for apoptosis
-    /*22*/   std::swap(one.Ks_LT_m_TNF_,other.Ks_LT_m_TNF_);
+    /*22*/   std::swap(one.Ks_LT_m_TNF_,other.LTexh_apop_rate_);
 
     /// 9) Percentages of cell expressing receptor
-    /*23*/   std::swap(one.LTns_expressing_receptor_,other.LTns_expressing_receptor_);
+    /*23*/   std::swap(one.LTns_expressing_receptor_,other.LTexh_apop_rate_);
 
     /// 10) Apoptosis rate for TNF
-    /*24*/  std::swap(one.u_LT_TNF_,other.u_LT_TNF_);
+    /*24*/  std::swap(one.u_LT_TNF_,other.LTexh_apop_rate_);
 
-//    /// 11) LT exh rate
-//    /*25*/ std::swap(one.LT_exh_rate_,other.LT_exh_rate_);
+    /// 11) LT exh rate
+    /*25*/ std::swap(one.LT_exh_rate_,other.LT_exh_rate_);
 
     /// 12) apoptosis related parameters
     /*26*/ std::swap(one.t_apop_meas_,other.t_apop_meas_);
@@ -1324,7 +1319,6 @@ void swap(SimParameters& one, SimParameters& other)
 /// Media
     /*1*/  std::swap(one.TNF_deg_,other.TNF_deg_);
     /*2*/  std::swap(one.IFN_deg_,other.IFN_deg_);
-       /*2.5*/  std::swap(one.Ag_deg_,other.Ag_deg_);
     /*3*/  std::swap(one.TymidineTriteate_,other.TymidineTriteate_);
     /*4*/  std::swap(one.Prol_TymTr_,other.Prol_TymTr_);
 }
@@ -1349,7 +1343,7 @@ std::ostream& operator<<(std::ostream& s,SimParameters p)
     /*16*/  s<<"\n APCa_apop_rate_\t"<<p.APCa_apop_rate_;
     /*17*/  s<<"\n APCbo_apop_rate_\t"<<p.APCbo_apop_rate_;
     /*18*/  s<<"\n APCbl_apop_rate_\t"<<p.APCbl_apop_rate_;
-//    /*19*/  s<<"\n APCexh_apop_rate_\t"<<p.APCexh_apop_rate_;
+    /*19*/  s<<"\n APCexh_apop_rate_\t"<<p.APCexh_apop_rate_;
     /*20*/  s<<"\n Ks_APC_m_TNF_d\t"<<p.Ks_APC_m_TNF_;
     /*21*/  s<<"\n APC_Ag_\t"<<p.APC_Ag_;
     /*22*/  s<<"\n APC_APC_\t"<<p.APC_APC_;
@@ -1357,7 +1351,7 @@ std::ostream& operator<<(std::ostream& s,SimParameters p)
     /*24*/  s<<"\n APC_LT_1_\t"<<p.APC_LT_1_;
     /*25*/  s<<"\n APC_LT_2_\t"<<p.APC_LT_2_;
     /*26*/  s<<"\n APC_Ab_\t"<<p.APC_Ab_;
-//    /*27*/  s<<"\n  APC_exh_\t"<<p.APC_exh_;
+    /*27*/  s<<"\n  APC_exh_\t"<<p.APC_exh_;
     /*28*/  s<<"\n KsAPC_LT_\t"<<p.KsAPC_LT_;
     /*29*/  s<<"\n Ksi_\t"<<p.APC_Ksi_;
     /*30*/  s<<"\n Kst_\t"<<p.APC_Kst_;
@@ -1386,12 +1380,12 @@ std::ostream& operator<<(std::ostream& s,SimParameters p)
     /*18*/  s<<"\n NKa_apop_rate_\t"<<p.NKa_apop_rate_;
     /*19*/  s<<"\n NKbo_apop_rate_\t"<<p.NKbo_apop_rate_;
     /*20*/  s<<"\n NKbl_apop_rate_t"<<p.NKbl_apop_rate_;
-//    /*21*/  s<<"\n NKexh_apop_rate_\t"<<p.NKexh_apop_rate_;
+    /*21*/  s<<"\n NKexh_apop_rate_\t"<<p.NKexh_apop_rate_;
     /*22*/  s<<"\n Ks_NK_m_TNF_\t"<<p.Ks_NK_m_TNF_;
     /*23*/  s<<"\n KaNK_\t"<<p.KaNK_;
     /*24*/  s<<"\n NK_NK_\t"<<p.NK_NK_;
     /*25*/  s<<"\n NK_Ab\t"<<p.NK_Ab_;
-//    /*26*/  s<<"\n NK_exh_\t"<<p.NK_exh_;
+    /*26*/  s<<"\n NK_exh_\t"<<p.NK_exh_;
     /*27*/  s<<"\n KsAPC_NK_\t"<<p.KsAPC_NK_;
     /*28*/  s<<"\n Ksi_\t"<<p.NK_Ksi_;
     /*29*/  s<<"\n Kst_\t"<<p.NK_Kst_;
@@ -1419,17 +1413,16 @@ std::ostream& operator<<(std::ostream& s,SimParameters p)
     /*18*/  s<<"\n LTns_apop_rate_\t"<<p. LTns_apop_rate_;
     /*19*/  s<<"\n LTbo_apop_rate_\t"<<p. LTbo_apop_rate_;
     /*20*/  s<<"\n LTbl_apop_rate_\t"<<p. LTbl_apop_rate_;
-//    /*21*/  s<<"\n LTexh_apop_rate_\t"<<p. LTexh_apop_rate_;
-    /*22*/  s<<"\n Ks_LT_m_TNF_\t"<<p. Ks_LT_m_TNF_;
-    /*23*/  s<<"\n LTns_expressing_receptor_\t"<<p. LTns_expressing_receptor_;
-    /*24*/  s<<"\n u_LT_TNF_\t"<<p.u_LT_TNF_;
-//    /*25*/  s<<"\n LT_exh_rate_\t"<<p.LT_exh_rate_;
+    /*21*/  s<<"\n LTexh_apop_rate_\t"<<p. LTexh_apop_rate_;
+    /*22*/  s<<"\n Ks_LT_m_TNF_\t"<<p. LTexh_apop_rate_;
+    /*23*/  s<<"\n LTns_expressing_receptor_\t"<<p. LTexh_apop_rate_;
+    /*24*/  s<<"\n u_LT_TNF_\t"<<p.LTexh_apop_rate_;
+    /*25*/  s<<"\n LT_exh_rate_\t"<<p.LT_exh_rate_;
     /*26*/  s<<"\n t_apop_meas_\t"<<p.t_apop_meas_;
     /*27*/  s<<"\n t_duration_apoptosis_\t"<<p.t_duration_apoptosis_;
     /// Media
     /*1*/  s<<"\n TNF_deg_\t"<<p.TNF_deg_;
     /*2*/  s<<"\n IFN_deg_\t"<<p.IFN_deg_;
-           s<<"n\ Ag_deg_\t"<<p.Ag_deg_;
     /*3*/  s<<"\n TymidineTriteate_\t"<<p.TymidineTriteate_;
     /*4*/  s<<"\n Prol_TymTr_\t"<<p.Prol_TymTr_;
 
