@@ -29,6 +29,11 @@ class Media
     /*4*/    double& IFN_degradation ();
              const double& IFN_degradation () const;
 
+       ///   Ag degradation
+    /*4.5*/    double& Ag_degradation ();
+             const double& Ag_degradation () const;
+
+
         /// Number of cells contained by the media
     /*5*/    double& num_cells();
              const double& num_cells() const;
@@ -58,6 +63,7 @@ class Media
               double Tymidine_incorprated_init,
               double TNF_deg_init,
               double IFN_deg_init,
+              double Ag_deg_init,
               double init_num_cells,
               double init_Ag,
               double init_Ab,
@@ -91,6 +97,7 @@ class Media
         double TNF_d;
         double TNF_deg_d;
         double IFN_deg_d;
+        double Ag_deg_d;
         double num_cells_d;
         double Ag_d;
         double Ab_d;
