@@ -15,490 +15,52 @@
 #include "Includes/OptimizationResults.h"
 #include "Includes/BayesIteration.h"
 
-
-/*void Cell_simulator::ask_parameters()
-{
-    double max_num_cells_;
-    double init_num_APC_cells;
-    double init_num_NK_cells;
-    double init_num_LT_cells;
-    double LT_num_specific;
-    double Ag;
-    double Ab;
-    //  double Ag_internalization_rate;
-    double APC_free_proliferation_rate_;
-    double APC_Ag_proliferation_rate_;
-    double APC_bound_proliferation_rate_;
-    double APC_blocked_proliferation_rate_;
-    double APC_exh_proliferation_rate_;
-    double APC_free_apop_rate_;
-    double APC_Ag_apop_rate_;
-    double APC_bound_apop_rate_;
-    double APC_blocked_apop_rate_;
-    double APC_exh_apop_rate_;
-    double NK_max_proliferation_rate_;
-    double LT_max_no_receptor_prol_rate_;
-    double LT_max_free_prol_rate_;
-    double LT_max_bound_prol_rate_;
-    double LT_max_blocked_prol_rate_;
-    double APC_no_to_free_rate_per_Ag_;
-    double APC_free_to_bound_rate_per_LT_;
-    double APC_Ab_binding_rate_;
-    double APC_exh_rate;
-    double NK_no_to_free_rate_per_Ag_;
-    double NK_free_to_bound_rate_per_LT_;
-    double NK_Ab_binding_rate;
-    double NK_exh_rate;
-    double LT_no_to_free_rate_per_APC_;
-    double LT_free_to_bound_rate_per_APC_;
-    double LT_mAb_binding_rate_;
-    double LT_IFN_no_rec_prod_rate_;
-    double LT_IFN_free_prod_rate_;
-    double LT_IFN_bound_prod_rate_;
-    double LT_IFN_blocked_prod_rate_;
-    double LT_TNF_no_rec_prod_rate_;
-    double LT_TNF_free_prod_rate_;
-    double LT_TNF_bound_prod_rate_;
-    double LT_TNF_blocked_prod_rate_;
-    double APC_IFN_free_prod_rate_;
-    double APC_IFN_Ag_prod_rate_;
-    double APC_IFN_bound_prod_rate_;
-    double APC_IFN_blocked_prod_rate_;
-    double APC_IFN_exh_prod_rate_;
-    double percentage_APC_IFN_free_prod_rate_;
-    double percentage_APC_IFN_Ag_prod_rate_;
-    double percentage_APC_IFN_bound_prod_rate_;
-    double percentage_APC_IFN_blocked_prod_rate_;
-    double percentage_APC_IFN_exh_prod_rate_;
-
-    double APC_TNF_free_prod_rate_;
-    double APC_TNF_Ag_prod_rate_;
-    double APC_TNF_bound_prod_rate_;
-    double APC_TNF_blocked_prod_rate_;
-    double percentage_APC_TNF_free_prod_rate_;
-    double percentage_APC_TNF_Ag_prod_rate_;
-    double percentage_APC_TNF_bound_prod_rate_;
-    double percentage_APC_TNF_blocked_prod_rate_;
-    double percentage_APC_TNF_exh_prod_rate_;
-    double NK_IFN_free_prod_rate_;
-    double NK_IFN_Ag_prod_rate_;
-    double NK_IFN_bound_prod_rate_;
-    double NK_IFN_blocked_prod_rate_;
-    double NK_TNF_free_prod_rate_;
-    double NK_TNF_Ag_prod_rate_;
-    double NK_TNF_bound_prod_rate_;
-    double NK_TNF_blocked_prod_rate_;
-    double TNF_deg;
-    double IFN_deg;
-    double LT_exh_rate_;
-
-    ///Asking the user the parameters that define the system
-    std::cout<<"Enter the filename where you want to store the values\n";
-    std::cin>>this->filename;
-    ///Media Parameters
-    std::cout<<"enter the number of cells that the media supports\n";
-    std::cout<<"default is 2e6, enter -1 to keep this value\n";
-    std::cin>>max_num_cells_;
-    if (max_num_cells_==-1)
-        max_num_cells_=2e6;
-
-    std::cout<<"enter the applied concentration of Antigen\n";
-    std::cout<<"default is 10 ug/ml, enter -1 to keep this value\n";
-    std::cin>>Ag;
-    if (Ag==-1)
-        Ag=5;
-
-    std::cout<<"enter the applied concentration of blocking Ab\n";
-    std::cout<<"default is 10 ug/ml, enter -1 to keep this value\n";
-    std::cin>>Ab;
-    if (Ab==-1)
-        Ab=5;
-
-      std::cout<<"Enter de Antigen internalization rate";
-    std::cout<<"default is, 0.000005, enter -1 to keep this value";
-    std::cin>>this->Ag_internalization_rate;
-    if (Ag_internalization_rate==-1)
-        Ag_internalization_rate==0.000005;
-
-    std::cout<<"Enter the degradation rate of TNF";
-    std::cin>>TNF_deg;
-
-    /// Initial number of cells
-    std::cout<<"enter the intial number of APC cells\n";
-    std::cout<<"default is 1e5, enter -1 to keep this value\n";
-    std::cin>>init_num_APC_cells;
-    if (init_num_APC_cells==-1)
-        init_num_APC_cells=1e5;
-
-    std::cout<<"enter the intial number of NK cells\n";
-    std::cout<<"default is 1e5, enter -1 to keep this value\n";
-    std::cin>>init_num_NK_cells;
-    if (init_num_NK_cells==-1)
-        init_num_NK_cells=1e5;
-
-    std::cout<<"enter the intial number of LT cells\n";
-    std::cout<<"default is 9e5, enter -1 to keep this value\n";
-    std::cin>>init_num_LT_cells;
-    if (init_num_LT_cells==-1)
-        init_num_LT_cells=9e5;
-
-    std::cout<<"enter the intial number of LT cells specific for the antigen \n";
-    std::cout<<"default is 1000, enter -1  to keep this value\n";
-    std::cin>>LT_num_specific;
-    if (LT_num_specific==-1)
-        LT_num_specific=1000;
-
-
-    ///Parameters of time
-    std::cout<<"enter the duration of the simulation in hours\n";
-    std::cout<<"default is 120, enter -1 to keep this value\n";
-    std::cin>>this->sim_duration_d;
-    if (sim_duration_d==-1)
-        sim_duration_d=120;
-
-    std::cout<<"enter the duration of the time step of the simulation in hours\n";
-    std::cout<<"default is 0.01, enter -1 to keep this value\n";
-    std::cin>>this->time_step_d;
-    if (time_step_d==-1)
-        time_step_d=0.01;
-
-    ///Proliferation rates
-    std::cout<<"enter the following proliferation rates\n";
-    std::cout<<"of APC cells default value =1/240 h, enter -1 to keep this value\n";
-    std::cin>>APC_free_proliferation_rate_;
-    if (APC_free_proliferation_rate_==-1)
-        APC_free_proliferation_rate_=1.0/240;
-
-    std::cout<<"of NK cells default value =1/240 h, enter -1 to keep this value\n";
-    std::cin>>NK_max_proliferation_rate_;
-    if (NK_max_proliferation_rate_==-1)
-        NK_max_proliferation_rate_=1.0/240;
-
-    std::cout<<"of LT cells that do not express the receptor, default value  1/96 1/h, enter -1 to keep this value \n";
-    std::cin>>LT_max_no_receptor_prol_rate_;
-    if (LT_max_no_receptor_prol_rate_==-1)
-        LT_max_no_receptor_prol_rate_=1.0/96;
-
-    std::cout<<"of LT cells that do express the receptor and it it is free, default value 1/2, enter -1 to keep this value \n";
-    std::cin>>LT_max_free_prol_rate_;
-    if (LT_max_free_prol_rate_==-1)
-        LT_max_free_prol_rate_=1.0/2;
-
-    std::cout<<"of LT cells where the receptor have been bound, default value 1/1.2, enter -1 to keep this value \n";
-    std::cin>>LT_max_bound_prol_rate_;
-    if (LT_max_bound_prol_rate_==-1)
-        LT_max_bound_prol_rate_=1.0/1.2;
-
-    ///Conversion rates
-    ///APC
-    std::cout<<"\n\n enter the following conversion rates in APC cells\n";
-    std::cout<<"of Antigen internalization default it needs 30 h for 1 ug/ml of antigen, enter -1 to keep this value \n";
-    std::cin>>APC_no_to_free_rate_per_Ag_;
-    if (APC_no_to_free_rate_per_Ag_==-1)
-        APC_no_to_free_rate_per_Ag_=1.0/30;
-    std::cout<<"of lingand receptor binding default value it needs 1 h for a population of 100e3, enter -1 to keep this value \n";
-    std::cin>>APC_free_to_bound_rate_per_LT_;
-    if (APC_free_to_bound_rate_per_LT_==-1)
-        APC_free_to_bound_rate_per_LT_=1.0/1e5;
-    std::cout<<"of Ab binding";
-    std::cout<<"defaut is 1/1e5, enter -1 to keep this value\n";
-    std::cin>>APC_Ab_binding_rate_;
-    if (APC_Ab_binding_rate_==-1)
-        APC_Ab_binding_rate_=1/1e5;
-    std::cout<<"of exhausted APC";
-    std::cout<<"defaut is 1/1e5, enter -1 to keep this value\n";
-    std::cin>>APC_exh_rate;
-    if (APC_exh_rate==-1)
-        APC_exh_rate=1/1e5;
-
-    ///NK
-    std::cout<<"\n\n enter the following conversion rates in NK cells\n";
-    std::cout<<"of Antigen internalization default it needs 30 h for 1 ug/ml of antigen, enter -1 to keep this value \n";
-    std::cin>>NK_no_to_free_rate_per_Ag_;
-    if (NK_no_to_free_rate_per_Ag_==-1)
-        NK_no_to_free_rate_per_Ag_=1.0/30;
-    std::cout<<"of lingand receptor binding default value it needs 1 h for a population of 100e3, enter -1 to keep this value \n";
-    std::cin>>NK_free_to_bound_rate_per_LT_;
-    if (NK_free_to_bound_rate_per_LT_==-1)
-        NK_free_to_bound_rate_per_LT_=1.0/1e5;
-    std::cout<<"of Ab binding";
-    std::cout<<"defaut is 1/1e5, enter -1 to keep this value\n";
-    std::cin>>NK_Ab_binding_rate;
-    if (NK_Ab_binding_rate==-1)
-        NK_Ab_binding_rate=1/1e5;
-    std::cout<<"of exhausted NK";
-    std::cout<<"defaut is 1/1e5, enter -1 to keep this value\n";
-    std::cin>>NK_exh_rate;
-    if (NK_exh_rate==-1)
-        NK_exh_rate=1/1e5;
-
-    ///LT
-    std::cout<<"\n\n enter the following conversion rates in LT cells\n";
-    std::cout<<"of receptor expression per APC cell default value is 6 hours for 1e5 cells, enter -1 to keep this value\n";
-    std::cin>>LT_no_to_free_rate_per_APC_;
-    if (LT_no_to_free_rate_per_APC_==-1)
-        LT_no_to_free_rate_per_APC_=1.0/6e5;
-    std::cout<<"of lingand receptor binding per APC cell  default value is 1h for a population of 1e5 cells, enter -1 to keep this value\n";
-    std::cin>>LT_free_to_bound_rate_per_APC_;
-    if (LT_free_to_bound_rate_per_APC_==-1)
-        LT_free_to_bound_rate_per_APC_=1.0/1e5;
-
-    ///IFNg production rates
-    ///APC
-    std::cout<<"\n\n enter the following IFN production rates in APC cells\n";
-    std::cout<<"of cells without receptor or free receptor default value is 0.5 pg per hour per 1e5 cells, enter -1 to keep this value \n";
-    std::cin>>APC_IFN_free_prod_rate_;
-    if (APC_IFN_free_prod_rate_==-1)
-        APC_IFN_free_prod_rate_=0.5/1e5;
-    std::cout<<"of cells with the internalized antigen  default value is 5 pg per hour per 1e5 cells, enter -1 to keep this value  \n";
-    std::cin>>APC_IFN_Ag_prod_rate_;
-    if (APC_IFN_Ag_prod_rate_==-1)
-        APC_IFN_Ag_prod_rate_=5.0/1e5;
-    std::cout<<"of cells with bound receptor  default value is 10 pg per hour per 1e5 cells, enter -1 to keep this value  \n";
-    std::cin>>APC_IFN_bound_prod_rate_;
-    if (APC_IFN_bound_prod_rate_==-1)
-        APC_IFN_bound_prod_rate_=10.0/1e5;
-
-    ///NK
-    std::cout<<"\n\n enter the following IFN production rates in APC cells\n";
-    std::cout<<"of cells without receptor or free receptor default value is 0.5 pg per hour per 1e5 cells, enter -1 to keep this value \n";
-    std::cin>>NK_IFN_free_prod_rate_;
-    if (NK_IFN_free_prod_rate_==-1)
-        NK_IFN_free_prod_rate_=0.5/1e5;
-    std::cout<<"of cells with the internalized antigen  default value is 5 pg per hour per 1e5 cells, enter -1 to keep this value  \n";
-    std::cin>>NK_IFN_Ag_prod_rate_;
-    if (NK_IFN_Ag_prod_rate_==-1)
-        NK_IFN_Ag_prod_rate_=5.0/1e5;
-    std::cout<<"of cells with bound receptor  default value is 10 pg per hour per 1e5 cells, enter -1 to keep this value  \n";
-    std::cin>>NK_IFN_bound_prod_rate_;
-    if (NK_IFN_bound_prod_rate_==-1)
-        NK_IFN_bound_prod_rate_=10.0/1e5;
-
-    ///LT
-    std::cout<<"\n\n enter the following IFN production rates in LT cells\n";
-    std::cout<<"of cells without receptor default value is 0.001 pg per hour per 1e5 cells, enter -1 to keep this value \n";
-    std::cin>>LT_IFN_no_rec_prod_rate_;
-    if (LT_IFN_no_rec_prod_rate_==-1)
-        LT_IFN_no_rec_prod_rate_=0.001/1e5;
-    std::cout<<"of cells with free receptor  default value is 500 pg per hour per 1e5 cells, enter -1 to keep this value\n";
-    std::cin>>LT_IFN_free_prod_rate_;
-    if (LT_IFN_free_prod_rate_==-1)
-        LT_IFN_free_prod_rate_=101.0/1e5;
-    std::cout<<"of cells with bound receptor,  default value is 1000 pg per hour per 1e5 cells, enter -1 to keep this value \n";
-    std::cin>>LT_IFN_bound_prod_rate_;
-    if (LT_IFN_bound_prod_rate_==-1)
-        LT_IFN_bound_prod_rate_=200.0/1e5;
-
-    ///TNF production rates
-    ///APC
-    std::cout<<"\n\n enter the following TNF production rates in APC cells\n";
-    std::cout<<"of cells without receptor or free receptor default value is 0.5 pg per hour per 1e5 cells, enter -1 to keep this value \n";
-    std::cin>>APC_TNF_free_prod_rate_;
-    if (APC_TNF_free_prod_rate_==-1)
-        APC_TNF_free_prod_rate_=5/1e5;
-    std::cout<<"of cells with the internalized antigen  default value is 5 pg per hour per 1e5 cells, enter -1 to keep this value  \n";
-    std::cin>>APC_TNF_Ag_prod_rate_;
-    if (APC_TNF_Ag_prod_rate_==-1)
-        APC_TNF_Ag_prod_rate_=570/1e5;
-    std::cout<<"of cells with bound receptor  default value is 10 pg per hour per 1e5 cells, enter -1 to keep this value  \n";
-    std::cin>>APC_TNF_bound_prod_rate_;
-    if (APC_TNF_bound_prod_rate_==-1)
-        APC_TNF_bound_prod_rate_=1110/1e5;
-
-    ///NK
-    std::cout<<"\n\n enter the following TNF production rates in APC cells\n";
-    std::cout<<"of cells without receptor or free receptor default value is 0.5 pg per hour per 1e5 cells, enter -1 to keep this value \n";
-    std::cin>>NK_TNF_free_prod_rate_;
-    if (NK_TNF_free_prod_rate_==-1)
-        NK_TNF_free_prod_rate_=5/1e5;
-    std::cout<<"of cells with the internalized antigen  default value is 5 pg per hour per 1e5 cells, enter -1 to keep this value  \n";
-    std::cin>>NK_TNF_Ag_prod_rate_;
-    if (NK_TNF_Ag_prod_rate_==-1)
-        NK_TNF_Ag_prod_rate_=570/1e5;
-    std::cout<<"of cells with bound receptor  default value is 10 pg per hour per 1e5 cells, enter -1 to keep this value  \n";
-    std::cin>>NK_TNF_bound_prod_rate_;
-    if (NK_TNF_bound_prod_rate_==-1)
-        NK_TNF_bound_prod_rate_=1110/1e5;
-    std::cout<<"of cells with bound receptor  default value is 10 pg per hour per 1e5 cells, enter -1 to keep this value  \n";
-    std::cin>>NK_TNF_blocked_prod_rate_;
-    if (NK_TNF_blocked_prod_rate_==-1)
-        NK_TNF_blocked_prod_rate_=1110/1e5;
-
-    ///LT
-    std::cout<<"\n\n enter the following TNF production rates in LT cells, enter -1 to keep this value\n";
-    std::cout<<"of cells without receptor default value is 0.001 pg per hour per 1e5 cells, enter -1 to keep this value \n";
-    std::cin>>LT_TNF_no_rec_prod_rate_;
-    if (LT_TNF_no_rec_prod_rate_==-1)
-        LT_TNF_no_rec_prod_rate_=0.001/1e5;
-    std::cout<<"of cells with free receptor  default value is 500 pg per hour per 1e5 cells, enter -1 to keep this value\n";
-    std::cin>>LT_TNF_free_prod_rate_;
-    if (LT_TNF_free_prod_rate_==-1)
-        LT_TNF_free_prod_rate_=10.0/1e5;
-    std::cout<<"of cells with bound receptor,  default value is 1000 pg per hour per 1e5 cells, enter -1 to keep this value \n";
-    std::cin>>LT_IFN_bound_prod_rate_;
-    if (LT_TNF_bound_prod_rate_==-1)
-        LT_TNF_bound_prod_rate_=20.0/1e5;
-
-    IFN_deg=0;
-    LT_TNF_bound_prod_rate_=0;
-    APC_IFN_blocked_prod_rate_=0;
-    APC_TNF_blocked_prod_rate_=0;
-    NK_IFN_blocked_prod_rate_=0;
-    LT_max_blocked_prol_rate_=0;
-    LT_IFN_blocked_prod_rate_=0;
-    LT_TNF_blocked_prod_rate_=0;
-    LT_mAb_binding_rate_=0;
-    LT_TNF_bound_prod_rate_=0;
-
-
-
-    std::cout<<"Thanks";
-
-
-
-    m=Media(max_num_cells_,
-            init_num_APC_cells+init_num_LT_cells+init_num_NK_cells,
-            0,
-            0,
-            0,
-            0,
-            TNF_deg,
-            IFN_deg
-            //  Ag_internalization_rate
-            );
-
-    APC=APC_cells(init_num_APC_cells,
-                  APC_free_proliferation_rate_,
-                  APC_Ag_proliferation_rate_,
-                  APC_bound_proliferation_rate_,
-                  APC_blocked_proliferation_rate_,
-                  APC_exh_proliferation_rate_,
-                  APC_free_apop_rate_,
-                  APC_Ag_apop_rate_,
-                  APC_bound_apop_rate_,
-                  APC_blocked_apop_rate_,
-                  APC_exh_apop_rate_,
-                  APC_no_to_free_rate_per_Ag_ ,
-                  APC_free_to_bound_rate_per_LT_,
-                  APC_Ab_binding_rate_,
-                  APC_exh_rate,
-                  APC_IFN_free_prod_rate_,
-                  APC_IFN_Ag_prod_rate_,
-                  APC_IFN_bound_prod_rate_,
-                  APC_IFN_blocked_prod_rate_,
-                  APC_IFN_exh_prod_rate_,
-                  percentage_APC_IFN_free_prod_rate_,
-                  percentage_APC_IFN_Ag_prod_rate_,
-                  percentage_APC_IFN_bound_prod_rate_,
-                  percentage_APC_IFN_blocked_prod_rate_,
-                  percentage_APC_IFN_exh_prod_rate_,
-
-                  APC_TNF_free_prod_rate_,
-                  APC_TNF_Ag_prod_rate_,
-                  APC_TNF_bound_prod_rate_,
-                  APC_TNF_blocked_prod_rate_,
-                  APC_TNF_exh_prod_rate_,
-                  percentage_APC_TNF_free_prod_rate_,
-                  percentage_APC_TNF_Ag_prod_rate_,
-                  percentage_APC_TNF_bound_prod_rate_,
-                  percentage_APC_TNF_blocked_prod_rate_,
-                  percentage_APC_TNF_exh_prod_rate_,
-                  );
-
-    NK=NK_cells(init_num_NK_cells,
-                NK_max_proliferation_rate_,
-                NK_no_to_free_rate_per_Ag_ ,
-                NK_free_to_bound_rate_per_LT_,
-                NK_Ab_binding_rate,
-                NK_exh_rate,
-                NK_IFN_free_prod_rate_,
-                NK_IFN_Ag_prod_rate_,
-                NK_IFN_bound_prod_rate_,
-                NK_IFN_blocked_prod_rate_,
-                NK_TNF_free_prod_rate_,
-                NK_TNF_Ag_prod_rate_,
-                NK_TNF_bound_prod_rate_,
-                NK_TNF_blocked_prod_rate_
-                );
-
-
-    LT=LT_cells(init_num_LT_cells,
-                LT_num_specific,
-                LT_max_no_receptor_prol_rate_,
-                LT_max_free_prol_rate_,
-                LT_max_bound_prol_rate_,
-                LT_max_blocked_prol_rate_,
-                LT_IFN_no_rec_prod_rate_,
-                LT_IFN_free_prod_rate_,
-                LT_IFN_bound_prod_rate_,
-                LT_IFN_blocked_prod_rate_,
-                LT_TNF_no_rec_prod_rate_,
-                LT_TNF_free_prod_rate_,
-                LT_TNF_bound_prod_rate_,
-                LT_TNF_blocked_prod_rate_,
-                LT_no_to_free_rate_per_APC_,
-                LT_free_to_bound_rate_per_APC_,
-                LT_mAb_binding_rate_,
-                LT_exh_rate_
-                );
-
-}*/
-
 std::ostream& Cell_simulator::run(std::ostream& f)
 {
     f<<"Experiment run \n";
     trun_d=0;
     /*1*/    f<<"round"<<" , ";
-
     /*2*/    f<<"IFNamma[]"<<" , ";
     /*3*/    f<<"TNF[]"<<" , ";
-
     /*4*/    f<<"Total APC"<<" , ";
     /*5*/    f<<"Total NK"<<" , ";
     /*6*/    f<<"Total LT"<<" , ";
-
     /*7*/    f<<"APC0"<<" , ";
     /*8*/    f<<"APCa "<<" , ";
     /*9*/    f<<"APCbo"<<" , ";
     /*10*/    f<<"APCbo_bl"<<" , ";
     /*11*/    f<<"APC_bl"<<" , ";
-//    /*12*/    f<<"APC exh"<<" , ";
+    /*12*/    f<<"%APC expresing receptor"<<" , ";
+    /*13*/    f<<"APC.IFNgamma_production_rate"<<" , ";
+    /*14*/    f<<"APC.percentage of IFN producing cells"<<" , ";
+    /*15*/    f<<"APC.TNF_production_rate"<<" , ";
+    /*16*/    f<<"APC.percentage of TNF producing cells"<<" , ";
 
-    /*13*/    f<<"%APC expresing receptor"<<" , ";
-    /*14*/    f<<"APC.IFNgamma_production_rate"<<" , ";
-    /*15*/    f<<"APC.percentage of IFN producing cells"<<" , ";
-    /*16*/    f<<"APC.TNF_production_rate"<<" , ";
-    /*17*/    f<<"APC.percentage of TNF producing cells"<<" , ";
+    /*17*/    f<<"NK0"<<" , ";
+    /*18*/    f<<"NKa"<<" , ";
+    /*19*/    f<<"NKbo"<<" , ";
+    /*20*/    f<<"NKbo_bl"<<" , ";
+    /*21*/    f<<"NKbl"<<" , ";
+    /*22*/    f<<"%NK expresing receptor"<<" , ";
+    /*23*/    f<<"NK.IFNgamma_production_rate"<<" , ";
+    /*24*/    f<<"NK.percentage of IFN producing cell"<<" , ";
+    /*25*/    f<<"NK.TNF_production_rate"<<" , ";
+    /*26*/    f<<"NK.percentage of TNF producing cell"<<" , ";
 
-    /*18*/    f<<"NK0"<<" , ";
-    /*19*/    f<<"NKa"<<" , ";
-    /*20*/    f<<"NKbo"<<" , ";
-    /*21*/    f<<"NKbo_bl"<<" , ";
-    /*22*/    f<<"NKbl"<<" , ";
- //   /*23*/    f<<"NK exh"<<" , ";
+    /*27*/    f<<"LT no Agsp"<<" , ";
+    /*28*/    f<<"LT0"<<" , ";
+    /*29*/    f<<"LTbo"<<" , ";
+    /*30*/    f<<"LTbl"<<" , ";
+    /*31*/    f<<"%LT expresing receptor"<<" , ";
+    /*32*/    f<<"LT.IFNgamma_production_rate"<<" , ";
+    /*33*/    f<<"LT.percentage of IFN producing cell"<<" , ";
+    /*34*/    f<<"LT.TNF_production_rate"<<" , ";
+    /*35*/    f<<"LT.percentage of TNF producing cell"<<" , ";
+    /*36*/    f<<"LT undergoing apoptosis"<<" , ";
+    /*37*/    f<<"Tymidine incorporated"<<" , ";
 
-    /*24*/    f<<"%NK expresing receptor"<<" , ";
-    /*25*/    f<<"NK.IFNgamma_production_rate"<<" , ";
-    /*26*/    f<<"NK.percentage of IFN producing cell"<<" , ";
-    /*27*/    f<<"NK.TNF_production_rate"<<" , ";
-    /*28*/    f<<"NK.percentage of TNF producing cell"<<" , ";
-
-    /*29*/    f<<"LT no Agsp"<<" , ";
-    /*30*/    f<<"LT0"<<" , ";
-    /*31*/    f<<"LTbo"<<" , ";
-    /*32*/    f<<"LTbl"<<" , ";
-//    /*33*/    f<<"LTexh"<<" , ";
-
-    /*34*/    f<<"%LT expresing receptor"<<" , ";
-    /*35*/    f<<"LT.IFNgamma_production_rate"<<" , ";
-    /*36*/    f<<"LT.percentage of IFN producing cell"<<" , ";
-    /*37*/    f<<"LT.TNF_production_rate"<<" , ";
-    /*38*/    f<<"LT.percentage of TNF producing cell"<<" , ";
-    /*39*/    f<<"LT undergoing apoptosis"<<" , ";
-
-    /*40*/    f<<"Tymidine incorporated"<<" , ";
-    /*41*/    f<<"Ag"<<" , ";
-    /*42*/    f<<"Ab"<<" , ";
+    /*38*/    f<<"Ag"<<" , ";
+    /*39*/    f<<"Ab"<<" , ";
     f<<"\n";
 
     double eps=1e-7;
@@ -521,46 +83,42 @@ std::ostream& Cell_simulator::run(std::ostream& f)
             /*9*/            f<<APC.APCbo()<<" , ";
             /*10*/           f<<APC.APCbo_Ab()<<" , ";
             /*11*/           f<<APC.APCbl()<<" , ";
-//            /*12*/           f<<APC.APCexh()<<" , ";
 
 
-            /*13*/           f<<APC.percentage_cell_expressing_receptor()<<" , ";
-            /*14*/           f<<APC.APC_IFNgamma_production_rate()<<" , ";
-            /*15*/           f<<APC.percentage_APC_producing_IFN()<<" , ";
-            /*16*/           f<<APC.APC_TNF_production_rate()<<" , ";
-            /*17*/           f<<APC.percentage_APC_producing_TNF()<<" , ";
+
+            /*12*/           f<<APC.percentage_cell_expressing_receptor()<<" , ";
+            /*13*/           f<<APC.APC_IFNgamma_production_rate()<<" , ";
+            /*14*/           f<<APC.percentage_APC_producing_IFN()<<" , ";
+            /*15*/           f<<APC.APC_TNF_production_rate()<<" , ";
+            /*16*/           f<<APC.percentage_APC_producing_TNF()<<" , ";
 
 
-            /*18*/           f<<NK.NK0()<<" , ";
-            /*19*/           f<<NK.NKa()<<" , ";
-            /*20*/           f<<NK.NKbo()<<" , ";
-            /*21*/           f<<NK.NKbo_Ab()<<" , ";
-            /*22*/           f<<NK.NKbl()<<" , ";
-//            /*23*/           f<<NK.NKexh()<<" , ";
+            /*17*/           f<<NK.NK0()<<" , ";
+            /*18*/           f<<NK.NKa()<<" , ";
+            /*19*/           f<<NK.NKbo()<<" , ";
+            /*20*/           f<<NK.NKbo_Ab()<<" , ";
+            /*21*/           f<<NK.NKbl()<<" , ";
+            /*22*/           f<<NK.percentage_NK_expressing_receptor()<<" , ";
+            /*23*/           f<<NK.NK_IFNgamma_production_rate()<<" , ";
+            /*24*/           f<<NK.percentage_NK_producing_IFN()<<" , ";
+            /*25*/           f<<NK.NK_TNF_production_rate()<<" , ";
+            /*26*/           f<<NK.percentage_NK_producing_TNF()<<" , ";
 
-            /*24*/           f<<NK.percentage_NK_expressing_receptor()<<" , ";
-            /*25*/           f<<NK.NK_IFNgamma_production_rate()<<" , ";
-            /*26*/           f<<NK.percentage_NK_producing_IFN()<<" , ";
-            /*27*/           f<<NK.NK_TNF_production_rate()<<" , ";
-            /*28*/           f<<NK.percentage_NK_producing_TNF()<<" , ";
+            /*27*/    f<<LT.LTns()<<" , ";
+            /*28*/    f<<LT.LT0()<<" , ";
+            /*29*/    f<<LT.LTbo()<<" , ";
+            /*30*/    f<<LT.LTbl()<<" , ";
 
-            /*29*/    f<<LT.LTns()<<" , ";
-            /*30*/    f<<LT.LT0()<<" , ";
-            /*31*/    f<<LT.LTbo()<<" , ";
-            /*32*/    f<<LT.LTbl()<<" , ";
-//            /*33*/    f<<LT.LTexh()<<" , ";
+            /*31*/    f<<LT.LT_percentage_cell_expressing_receptor()<<" , ";
+            /*32*/    f<<LT.LT_IFNgamma_production_rate()<<" , ";
+            /*33*/    f<<LT.percentage_LT_IFN_production()<<" , ";
+            /*34*/    f<<LT.TNF_production_rate()<<" , ";
+            /*35*/    f<<LT.percentage_LT_TNF_production()<<" , ";
+            /*36*/    f<<LT.percentage_apoptotic_LT_cells()<<" , ";
+            /*37*/    f<<m.Tymidine_incorporated()<<" , ";
 
-            /*34*/    f<<LT.LT_percentage_cell_expressing_receptor()<<" , ";
-            /*35*/    f<<LT.LT_IFNgamma_production_rate()<<" , ";
-            /*36*/    f<<LT.percentage_LT_IFN_production()<<" , ";
-            /*37*/    f<<LT.TNF_production_rate()<<" , ";
-            /*38*/    f<<LT.percentage_LT_TNF_production()<<" , ";
-
-            /*39*/    f<<LT.percentage_apoptotic_LT_cells()<<" , ";
-
-            /*40*/    f<<m.Tymidine_incorporated()<<" , ";
-            /*41*/    f<<m.Ag()<<" , ";
-            /*42*/    f<<m.Ab()<<"\n";
+            /*38*/    f<<m.Ag()<<" , ";
+            /*39*/    f<<m.Ab()<<"\n";
 
         };
 
@@ -606,57 +164,48 @@ f.open(filename.c_str(),std::ios_base::app);
 
 
 
-/*1*/    f<<"round"<<" , ";
+    /*1*/    f<<"round"<<" , ";
+    /*2*/    f<<"IFNamma[]"<<" , ";
+    /*3*/    f<<"TNF[]"<<" , ";
+    /*4*/    f<<"Total APC"<<" , ";
+    /*5*/    f<<"Total NK"<<" , ";
+    /*6*/    f<<"Total LT"<<" , ";
+    /*7*/    f<<"APC0"<<" , ";
+    /*8*/    f<<"APCa "<<" , ";
+    /*9*/    f<<"APCbo"<<" , ";
+    /*10*/    f<<"APCbo_bl"<<" , ";
+    /*11*/    f<<"APC_bl"<<" , ";
+    /*12*/    f<<"%APC expresing receptor"<<" , ";
+    /*13*/    f<<"APC.IFNgamma_production_rate"<<" , ";
+    /*14*/    f<<"APC.percentage of IFN producing cells"<<" , ";
+    /*15*/    f<<"APC.TNF_production_rate"<<" , ";
+    /*16*/    f<<"APC.percentage of TNF producing cells"<<" , ";
 
-/*2*/    f<<"IFNamma[]"<<" , ";
-/*3*/    f<<"TNF[]"<<" , ";
+    /*17*/    f<<"NK0"<<" , ";
+    /*18*/    f<<"NKa"<<" , ";
+    /*19*/    f<<"NKbo"<<" , ";
+    /*20*/    f<<"NKbo_bl"<<" , ";
+    /*21*/    f<<"NKbl"<<" , ";
+    /*22*/    f<<"%NK expresing receptor"<<" , ";
+    /*23*/    f<<"NK.IFNgamma_production_rate"<<" , ";
+    /*24*/    f<<"NK.percentage of IFN producing cell"<<" , ";
+    /*25*/    f<<"NK.TNF_production_rate"<<" , ";
+    /*26*/    f<<"NK.percentage of TNF producing cell"<<" , ";
 
-/*4*/    f<<"Total APC"<<" , ";
-/*5*/    f<<"Total NK"<<" , ";
-/*6*/    f<<"Total LT"<<" , ";
+    /*27*/    f<<"LT no Agsp"<<" , ";
+    /*28*/    f<<"LT0"<<" , ";
+    /*29*/    f<<"LTbo"<<" , ";
+    /*30*/    f<<"LTbl"<<" , ";
+    /*31*/    f<<"%LT expresing receptor"<<" , ";
+    /*32*/    f<<"LT.IFNgamma_production_rate"<<" , ";
+    /*33*/    f<<"LT.percentage of IFN producing cell"<<" , ";
+    /*34*/    f<<"LT.TNF_production_rate"<<" , ";
+    /*35*/    f<<"LT.percentage of TNF producing cell"<<" , ";
+    /*36*/    f<<"LT undergoing apoptosis"<<" , ";
+    /*37*/    f<<"Tymidine incorporated"<<" , ";
 
-/*7*/    f<<"APC0"<<" , ";
-/*8*/    f<<"APCa "<<" , ";
-/*9*/    f<<"APCbo"<<" , ";
-/*10*/    f<<"APCbo_bl"<<" , ";
-/*11*/    f<<"APC_bl"<<" , ";
-///*12*/    f<<"APC exh"<<" , ";
-
-/*13*/    f<<"%APC expresing receptor"<<" , ";
-/*14*/    f<<"APC.IFNgamma_production_rate"<<" , ";
-/*15*/    f<<"APC.percentage of IFN producing cells"<<" , ";
-/*16*/    f<<"APC.TNF_production_rate"<<" , ";
-/*17*/    f<<"APC.percentage of TNF producing cells"<<" , ";
-
-/*18*/    f<<"NK0"<<" , ";
-/*19*/    f<<"NKa"<<" , ";
-/*20*/    f<<"NKbo"<<" , ";
-/*21*/    f<<"NKbo_bl"<<" , ";
-/*22*/    f<<"NKbl"<<" , ";
-///*23*/    f<<"NK exh"<<" , ";
-
-/*24*/    f<<"%NK expresing receptor"<<" , ";
-/*25*/    f<<"NK.IFNgamma_production_rate"<<" , ";
-/*26*/    f<<"NK.percentage of IFN producing cell"<<" , ";
-/*27*/    f<<"NK.TNF_production_rate"<<" , ";
-/*28*/    f<<"NK.percentage of TNF producing cell"<<" , ";
-
-/*29*/    f<<"LT no Agsp"<<" , ";
-/*30*/    f<<"LT0"<<" , ";
-/*31*/    f<<"LTbo"<<" , ";
-/*32*/    f<<"LTbl"<<" , ";
-///*33*/    f<<"LTexh"<<" , ";
-
-/*34*/    f<<"%LT expresing receptor"<<" , ";
-/*35*/    f<<"LT.IFNgamma_production_rate"<<" , ";
-/*36*/    f<<"LT.percentage of IFN producing cell"<<" , ";
-/*37*/    f<<"LT.TNF_production_rate"<<" , ";
-/*38*/    f<<"LT.percentage of TNF producing cell"<<" , ";
-/*39*/    f<<"LT undergoing apoptosis"<<" , ";
-
-/*40*/    f<<"Tymidine incorporated"<<" , ";
-/*41*/    f<<"Ag"<<" , ";
-/*42*/    f<<"Ab"<<" , ";
+    /*38*/    f<<"Ag"<<" , ";
+    /*39*/    f<<"Ab"<<" , ";
           f<<"\n";
 
     double eps=1e-7;
@@ -673,59 +222,55 @@ f.open(filename.c_str(),std::ios_base::app);
             std::cout<<LT.num_LT()<<"\n";
 
 
-/*1*/            f<<trun_d<<" , ";
-/*2*/            f<<m.IFNgamma()<<" , ";
-/*3*/            f<<m.TNF()<<" , ";
+            /*1*/            f<<trun_d<<" , ";
+            /*2*/            f<<m.IFNgamma()<<" , ";
+            /*3*/            f<<m.TNF()<<" , ";
 
-/*4*/            f<<APC.num_APC()<<" , ";
-/*5*/            f<<NK.num_NK()<<" , ";
-/*6*/            f<<LT.num_LT()<<" , ";
+            /*4*/            f<<APC.num_APC()<<" , ";
+            /*5*/            f<<NK.num_NK()<<" , ";
+            /*6*/            f<<LT.num_LT()<<" , ";
 
-/*7*/            f<<APC.APC0()<<" , ";
-/*8*/            f<<APC.APCa()<<" , ";
-/*9*/            f<<APC.APCbo()<<" , ";
-/*10*/           f<<APC.APCbo_Ab()<<" , ";
-/*11*/           f<<APC.APCbl()<<" , ";
-///*12*/           f<<APC.APCexh()<<" , ";
-
-
-/*13*/           f<<APC.percentage_cell_expressing_receptor()<<" , ";
-/*14*/           f<<APC.APC_IFNgamma_production_rate()<<" , ";
-/*15*/           f<<APC.percentage_APC_producing_IFN()<<" , ";
-/*16*/           f<<APC.APC_TNF_production_rate()<<" , ";
-/*17*/           f<<APC.percentage_APC_producing_TNF()<<" , ";
+            /*7*/            f<<APC.APC0()<<" , ";
+            /*8*/            f<<APC.APCa()<<" , ";
+            /*9*/            f<<APC.APCbo()<<" , ";
+            /*10*/           f<<APC.APCbo_Ab()<<" , ";
+            /*11*/           f<<APC.APCbl()<<" , ";
 
 
-/*18*/           f<<NK.NK0()<<" , ";
-/*19*/           f<<NK.NKa()<<" , ";
-/*20*/           f<<NK.NKbo()<<" , ";
-/*21*/           f<<NK.NKbo_Ab()<<" , ";
-/*22*/           f<<NK.NKbl()<<" , ";
-///*23*/           f<<NK.NKexh()<<" , ";
 
-/*24*/           f<<NK.percentage_NK_expressing_receptor()<<" , ";
-/*25*/           f<<NK.NK_IFNgamma_production_rate()<<" , ";
-/*26*/           f<<NK.percentage_NK_producing_IFN()<<" , ";
-/*27*/           f<<NK.NK_TNF_production_rate()<<" , ";
-/*28*/           f<<NK.percentage_NK_producing_TNF()<<" , ";
+            /*12*/           f<<APC.percentage_cell_expressing_receptor()<<" , ";
+            /*13*/           f<<APC.APC_IFNgamma_production_rate()<<" , ";
+            /*14*/           f<<APC.percentage_APC_producing_IFN()<<" , ";
+            /*15*/           f<<APC.APC_TNF_production_rate()<<" , ";
+            /*16*/           f<<APC.percentage_APC_producing_TNF()<<" , ";
 
-/*29*/    f<<LT.LTns()<<" , ";
-/*30*/    f<<LT.LT0()<<" , ";
-/*31*/    f<<LT.LTbo()<<" , ";
-/*32*/    f<<LT.LTbl()<<" , ";
-///*33*/    f<<LT.LTexh()<<" , ";
 
-/*34*/    f<<LT.LT_percentage_cell_expressing_receptor()<<" , ";
-/*35*/    f<<LT.LT_IFNgamma_production_rate()<<" , ";
-/*36*/    f<<LT.percentage_LT_IFN_production()<<" , ";
-/*37*/    f<<LT.TNF_production_rate()<<" , ";
-/*38*/    f<<LT.percentage_LT_TNF_production()<<" , ";
+            /*17*/           f<<NK.NK0()<<" , ";
+            /*18*/           f<<NK.NKa()<<" , ";
+            /*19*/           f<<NK.NKbo()<<" , ";
+            /*20*/           f<<NK.NKbo_Ab()<<" , ";
+            /*21*/           f<<NK.NKbl()<<" , ";
+            /*22*/           f<<NK.percentage_NK_expressing_receptor()<<" , ";
+            /*23*/           f<<NK.NK_IFNgamma_production_rate()<<" , ";
+            /*24*/           f<<NK.percentage_NK_producing_IFN()<<" , ";
+            /*25*/           f<<NK.NK_TNF_production_rate()<<" , ";
+            /*26*/           f<<NK.percentage_NK_producing_TNF()<<" , ";
 
-/*39*/    f<<LT.percentage_apoptotic_LT_cells()<<" , ";
+            /*27*/    f<<LT.LTns()<<" , ";
+            /*28*/    f<<LT.LT0()<<" , ";
+            /*29*/    f<<LT.LTbo()<<" , ";
+            /*30*/    f<<LT.LTbl()<<" , ";
 
-/*40*/    f<<m.Tymidine_incorporated()<<" , ";
-/*41*/    f<<m.Ag()<<" , ";
-/*42*/    f<<m.Ab()<<"\n";
+            /*31*/    f<<LT.LT_percentage_cell_expressing_receptor()<<" , ";
+            /*32*/    f<<LT.LT_IFNgamma_production_rate()<<" , ";
+            /*33*/    f<<LT.percentage_LT_IFN_production()<<" , ";
+            /*34*/    f<<LT.TNF_production_rate()<<" , ";
+            /*35*/    f<<LT.percentage_LT_TNF_production()<<" , ";
+            /*36*/    f<<LT.percentage_apoptotic_LT_cells()<<" , ";
+            /*37*/    f<<m.Tymidine_incorporated()<<" , ";
+
+            /*38*/    f<<m.Ag()<<" , ";
+            /*39*/    f<<m.Ab()<<"\n";
 
         };
 
@@ -778,116 +323,80 @@ Cell_simulator& Cell_simulator::applyParameters(const SimParameters& sp,
                   /*2*/ sp.IFN_APC0_prod_rate_,
                   /*3*/ sp.IFN_APCa_prod_rate_,
                   /*4*/ sp.IFN_APCbo_prod_rate_,
-
-
                   /// 3) TNF Poductions rates of each type of APC
                   /*5*/ sp.TNF_APC0_prod_rate_,
                   /*6*/ sp.TNF_APCa_prod_rate_,
                   /*7*/ sp.TNF_APCbo_prod_rate_,
-
-
                   /// 4) Percentages of IFN productions of each type of APC
                   /*8*/ sp.percentage_IFN_APC0_prod_rate_,
                   /*9*/ sp.percentage_IFN_APCa_prod_rate_,
                   /*10*/ sp.percentage_IFN_APCbo_prod_rate_,
-
                   /// 5)Percentages of TNF productions of each type of APC
                   /*11*/ sp.percentage_TNF_APC0_prod_rate_,
-                  /*12*/ sp.percentage_TNF_APCa_prod_rate_,
-                  /*13*/ sp.percentage_TNF_APCbo_prod_rate_,
-
-
                   /// 6) Proliferation rates
-                  /*14*/ sp.APC_bound_proliferation_rate_,
-
+                  /*12*/ sp.APC_bound_proliferation_rate_,
                   /// 7) Apoptosis rates
-                  /*15*/ sp.APC0_apop_rate_,
-                  /*16*/ sp.APCa_apop_rate_,
-                  /*17*/ sp.APCbo_apop_rate_,
-                  /*18*/ sp.APCbl_apop_rate_,
-//                  /*19*/ sp.APCexh_apop_rate_,
-
+                  /*13*/ sp.APC0_apop_rate_,
+                  /*14*/ sp.APCa_apop_rate_,
+                  /*15*/ sp.APCbo_apop_rate_,
                   /// 8) constant saturation of TNF for apoptosis
-                  /*20*/ sp.Ks_APC_m_TNF_,
-
+                  /*16*/ sp.Ks_APC_m_TNF_,
                   /// 9) conversion rates
-                  /*21*/ sp.APC_Ag_,
-                  /*22*/ sp.APC_APC_,
-                  /*23*/ sp.APC_NK_,
-                  /*24*/ sp.APC_LT_1_,
-                  /*25*/ sp.APC_LT_2_,
-                  /*26*/ sp.APC_Ab_,
-//                  /*27*/ sp.APC_exh_,
-
+                  /*17*/ sp.APC_Ag_,
+                  /*18*/ sp.APC_APC_,
+                  /*19*/ sp.APC_NK_,
+                  /*20*/ sp.APC_LT_1_,
+                  /*21*/ sp.APC_LT_2_,
+                  /*22*/ sp.APC_Ab_,
                   /// 10)Saturation constant of IFN and TNF for activation
-                  /*28*/ sp.KsAPC_LT_,
-
+                  /*23*/ sp.KsAPC_LT_,
                   /// 11)Saturation constant of APC_LT interaction
-                  /*29*/ sp.APC_Ksi_,
-                  /*30*/ sp.APC_Kst_,
-
+                  /*24*/ sp.APC_Ksi_,
+                  /*25*/ sp.APC_Kst_,
                   /// 12) Percentages of cell expressing receptor
-                  /*31*/ sp.APC0_expressing_receptor_,
-                  /*32*/ sp.APCa_expressing_receptor_,
+                  /*26*/ sp.APC0_expressing_receptor_,
                   /// 13) Apoptosis rate for TNF
-                  /*33*/ sp.u_APC_TNF_);
+                  /*27*/ sp.u_APC_TNF_);
 
     NK=NK_cells (sp.init_ratio_NK_*tr.init_cells,
                  /// 2) IFN Poductions rates of each type of NK
                  /*2*/ sp.IFN_NK0_prod_rate_,
                  /*3*/ sp.IFN_NKa_prod_rate_,
                  /*4*/ sp.IFN_NKbo_prod_rate_,
-
                  /// 3) TNF Poductions rates of each type of NK
                  /*5*/ sp.TNF_NK0_prod_rate_,
                  /*6*/ sp.TNF_NKa_prod_rate_,
                  /*7*/ sp.TNF_NKbo_prod_rate_,
-
                  /// 4) Percentages of IFN productions of each type of NK
                  /*8*/ sp.percentage_IFN_NK0_prod_rate_,
-                 /*9*/ sp.percentage_IFN_AgNKa_prod_rate_,
-                 /*10*/ sp.percentage_IFN_NKbo_prod_rate_,
-
                  /// 5)Percentages of TNF productions of each type of NK
-                 /*11*/ sp.percentage_TNF_NK0_prod_rate_,
-                 /*12*/ sp.percentage_TNF_NKa_prod_rate_,
-                 /*13*/ sp.percentage_TNF_NKbo_prod_rate_,
-
+                 /*9*/ sp.percentage_TNF_NK0_prod_rate_,
+                 /*10*/ sp.percentage_TNF_NKa_prod_rate_,
+                 /*11*/ sp.percentage_TNF_NKbo_prod_rate_,
                  /// 6) Proliferation rates
-                 /*13.5*/ sp.NK0_proliferation_rate_,
-                 /*14*/ sp.NKa_proliferation_rate_,
-                 /*15*/ sp.NKbo_proliferation_rate_,
-                 /*16*/ sp.NKbl_proliferation_rate_,
-
+                 /*12*/ sp.NK0_proliferation_rate_,
+                 /*13*/ sp.NKa_proliferation_rate_,
+                 /*14*/ sp.NKbo_proliferation_rate_,
                  /// 7) Apoptosis rates
-                 /*17*/ sp.NK0_apop_rate_,
-                 /*18*/ sp.NKa_apop_rate_,
-                 /*19*/ sp.NKbo_apop_rate_,
-                 /*20*/ sp.NKbl_apop_rate_,
-//                 /*21*/ sp.NKexh_apop_rate_,
-
+                 /*15*/ sp.NK0_apop_rate_,
+                 /*16*/ sp.NKa_apop_rate_,
+                 /*17*/ sp.NKbo_apop_rate_,
                  /// 8) constant saturation of TNF for apoptosis
-                 /*22*/ sp.Ks_NK_m_TNF_,
-
+                 /*18*/ sp.Ks_NK_m_TNF_,
                  /// 9) conversion rates
-                 /*23*/ sp.KaNK_,
-                 /*24*/ sp.NK_NK_,
-                 /*25*/ sp.NK_Ab_,
-//                 /*26*/ sp.NK_exh_,
-
+                 /*19*/ sp.KaNK_,
+                 /*20*/ sp.NK_NK_,
+                 /*21*/ sp.NK_Ab_,
                  /// 10)Saturation constant of NK interaction for activation
-                 /*27*/ sp.KsAPC_NK_,
-
+                 /*22*/ sp.KsAPC_NK_,
                  /// 11)Saturation constant of NK_LT interaction
-                 /*28*/ sp.NK_Ksi_,
-                 /*29*/ sp.NK_Kst_,
-
+                 /*23*/ sp.NK_Ksi_,
+                 /*24*/ sp.NK_Kst_,
                  /// 12) Percentages of cell expressing receptor
-                 /*30*/ sp.NK0_expressing_receptor_,
-                 /*31*/ sp.NKa_expressing_receptor_,
-
+                 /*25*/ sp.NK0_expressing_receptor_,
+                 /*26*/ sp.NKa_expressing_receptor_,
                  /// 13) Apoptosis rate for TNF
-                 /*32*/ sp.u_NK_TNF_);
+                 /*27*/ sp.u_NK_TNF_);
 
 
     LT=LT_cells  (sp.ratio_init_LTns_*tr.init_cells,
@@ -896,49 +405,37 @@ Cell_simulator& Cell_simulator::applyParameters(const SimParameters& sp,
                      /*3*/ sp.IFN_LTns_prod_rate_,
                      /*4*/ sp.IFN_LTbo_prod_rate_,
                      /*5*/ sp.IFN_LTbl_prod_rate_,
-
                  /// 3) TNF Poductions rates of each type of LT
                      /*6*/ sp.TNF_LTns_prod_rate_,
                      /*7*/ sp.TNF_LTbo_prod_rate_,
                      /*8*/ sp.TNF_LTbl_prod_rate_,
-
                  /// 4) Percentages of IFN productions of each type of LT
                      /*9*/ sp.percentage_IFN_LTns_prod_rate_,
                      /*10*/ sp.percentage_IFN_LTbo_prod_rate_,
                      /*11*/ sp.percentage_IFN_LTbl_prod_rate_,
-
-
                  /// 5)Percentages of TNF productions of each type of LT
                      /*12*/ sp.percentage_TNF_LTns_prod_rate_,
                      /*13*/ sp.percentage_TNF_LTbo_prod_rate_,
                      /*14*/ sp.percentage_TNF_LTbl_prod_rate_,
-
                  /// 6) Proliferation rates
                      /*15*/ sp.LTns_proliferation_rate_,
                      /*16*/ sp.LTbo_proliferation_rate_,
                      /*17*/ sp.LTbl_proliferation_rate_,
-
                  /// 7) Apoptosis rates
                      /*18*/ sp.LTns_apop_rate_,
                      /*19*/ sp.LTbo_apop_rate_,
                      /*20*/ sp.LTbl_apop_rate_,
-//                     /*21*/ sp.LTexh_apop_rate_,
-
                  /// 8) constant saturation of TNF for apoptosis
-                     /*22*/ sp.Ks_LT_m_TNF_,
-
+                     /*21*/ sp.Ks_LT_m_TNF_,
                  /// 9) Percentages of cell expressing receptor
-                     /*23*/ sp.LTns_expressing_receptor_,
-
+                     /*22*/ sp.LTns_expressing_receptor_,
                  /// 10) Apoptosis rate for TNF
-                     /*24*/ sp.u_LT_TNF_,
-
-//                  /// 11) LT exh rate
-//                      /*25*/ sp.LT_exh_rate_,
-
+                     /*23*/ sp.u_LT_TNF_,
                   /// 12) apoptosis related parameters
-                      /*26*/ sp.t_apop_meas_,
-                      /*27*/ sp.t_duration_apoptosis_
+                      /*24*/ sp.t_apop_meas_,
+                      /*25*/ sp.t_duration_apoptosis_,
+                  /// Lt Ab binding rate
+                      /*26*/ sp.LT_Ab_
         );
 
     time_step_d=tr.time_step_d;
@@ -1945,182 +1442,125 @@ void Cell_simulator::Optimize(const Parameters& priorPar,
      /// 1) Init ratio of LT, NK, APC cells
          /*1*/ sp.push_back_1S("init_K_ratio_LT",0.89/(1-0.89),0.899/(1-0.899));// Fórmula leucocitaria
          /*2*/ sp.push_back_1S("init_K_ratio_APC_NK",0.8/(1-0.8),0.9/(1-0.9)); // Fórmula leucocitaria
-
-
-         /// APC
-
+     /// APC
          /// 2) IFN Poductions rates of each type of APC
          /*2*/ sp.push_back_dB("IFN_APC0_prod_rate",1.0e-8,1.0e-5);
          /*3*/ sp.push_back_dB("IFN_APCa_prod_rate",2.0e-6,2e-3);
          /*4*/ sp.push_back_dB("IFN_APCbo_prod_rate",1e-6,1e-3);
-
-
          /// 3) TNF Poductions rates of each type of APC
          /*5*/ sp.push_back_dB("TNF_APC0_prod_rate",1.0e-8,1.0e-5);
          /*6*/ sp.push_back_dB("TNF_APCa_prod_rate",2.0e-4,2.0);//k
          /*7*/ sp.push_back_dB("TNF_APCbo_prod_rate",1.0e-4,1.0);
-
-
          /// 4) Percentages of IFN productions of each type of APC
          /*8*/ sp.push_back_dB("Kpercentage_IFN_APC0_prod_rate",0.01,0.06);//oj
          /*9*/ sp.push_back_dB("Kpercentage_IFN_APCa_prod_rate",0.08,0.5);
          /*10*/ sp.push_back_dB("Kpercentage_IFN_APCbo_prod_rate",0.14,0.5);
-
          /// 5)Percentages of TNF productions of each type of APC
          /*11*/ sp.push_back_dB("Kpercentage_TNF_APC0_prod_rate",0.02,0.08);
-         /*12*/ sp.push_back_dB("Kpercentage_TNF_APCa_prod_rate",0.15,1);
-         /*13*/ sp.push_back_dB("Kpercentage_TNF_APCbo_prod_rate",0.4,1);
-
-
          /// 6) Proliferation rates
-         /*14*/ sp.push_back_dB("APC_bound_proliferation_rate",0.00001,0.001);
-
+         /*12*/ sp.push_back_dB("APC_bound_proliferation_rate",0.00001,0.001);
          /// 7) Apoptosis rates
-         /*15*/ sp.push_back_dB("APC0_apop_rate",3.0e-6,3.0e-4);//k
-         /*16*/ sp.push_back_dB("APCa_apop_rate",0.00001,0.001);//k
-         /*17*/ sp.push_back_dB("APCbo_apop_rate",0.00001,0.001);//k
-         /*18*/ sp.push_back_dB("APCbl_apop_rate",0.00001,0.001);//k
-    //   /*19*/ sp.push_back_dB("APCexh_apop_rate",0.014,10);
-
+         /*13*/ sp.push_back_dB("APC0_apop_rate",3.0e-6,3.0e-4);//k
+         /*14*/ sp.push_back_dB("APCa_apop_rate",0.00001,0.001);//k
+         /*15*/ sp.push_back_dB("APCbo_apop_rate",0.00001,0.001);//k
          /// 8) constant saturation of TNF for apoptosis
-         /*20*/ sp.push_back_dB("Ks_APC_m_TNF",0.002,20);//K
-
+         /*16*/ sp.push_back_dB("Ks_APC_m_TNF",0.002,20);//K
          /// 9) conversion rates
-         /*21*/ sp.push_back_dB("APC_Ag",1.0e-6,1e-1);//ojímetro (promedio de k)
-         /*22*/ sp.push_back_dB("APC_APC",1.0e-10,1.0e-1);//ver
-         /*23*/ sp.push_back_dB("APC_NK",1.0e-10,1.0e-1);//ver
-         /*24*/ sp.push_back_dB("APC_LT_1",4.0e-7,4.0e-1);//K, multiplicar por la posibilidad de encuentro? No diferencio x que no tengo el dato, dejo que el programa modifique
-         /*25*/ sp.push_back_dB("APC_LT_2",4.0e-7,4.0e-1);//K, multiplicar por la posibilidad de encuentro?
-         /*26*/ sp.push_back_dB("APC_Ab",1.0e-6,1e-1);
-    //     /*27*/ sp.push_back_dB("APC_exh",1e-3,10);
-
+         /*17*/ sp.push_back_dB("APC_Ag",1.0e-6,1e-1);//ojímetro (promedio de k)
+         /*18*/ sp.push_back_dB("APC_APC",1.0e-10,1.0e-1);//ver
+         /*19*/ sp.push_back_dB("APC_NK",1.0e-10,1.0e-1);//ver
+         /*20*/ sp.push_back_dB("APC_LT_1",4.0e-7,4.0e-1);//K, multiplicar por la posibilidad de encuentro? No diferencio x que no tengo el dato, dejo que el programa modifique
+         /*21*/ sp.push_back_dB("APC_LT_2",4.0e-7,4.0e-1);//K, multiplicar por la posibilidad de encuentro?
+         /*22*/ sp.push_back_dB("APC_Ab",1.0e-6,1e-1);
          /// 10)Saturation constant of IFN and TNF for activation
-         /*28*/ sp.push_back_dB("KsAPC_LT",10.0e1,10.0e5);//k
-
+         /*23*/ sp.push_back_dB("KsAPC_LT",10.0e1,10.0e5);//k
          /// 11)Saturation constant of APC_LT interaction
-         /*29*/ sp.push_back_dB("APC_Ksi",1.0e-2,1e2);//Kirschner
-         /*30*/ sp.push_back_dB("APC_Kst",1.0e2,1.0e6);//Kirschner (promedio)
-
+         /*24*/ sp.push_back_dB("APC_Ksi",1.0e-2,1e2);//Kirschner
+         /*25*/ sp.push_back_dB("APC_Kst",1.0e2,1.0e6);//Kirschner (promedio)
          /// 12) Percentages of cell expressing receptor
-         /*31*/ sp.push_back_dB("APC0_Kratio_expressing_receptor",001,0.007);
-         /*32*/ sp.push_back_dB("APCa_Kratio_expressing_receptor",0.15,1);
+         /*26*/ sp.push_back_dB("APC0_Kratio_expressing_receptor",001,0.007);
          /// 13) Apoptosis rate for TNF
-         /*33*/ sp.push_back_dB("u_APC_TNF",0.0000417,0.417);//K
+         /*27*/ sp.push_back_dB("u_APC_TNF",0.0000417,0.417);//K
 
          /// NK
-
          /// 2) IFN Poductions rates of each type of NK
          /*2*/  sp.push_back_dB("IFN_NK0_prod_rate",1.0e-8,1.0e-5);
          /*3*/  sp.push_back_dB("IFN_NKa_prod_rate",2.0e-4,2.0);
          /*4*/  sp.push_back_dB("IFN_NKbo_prod_rate",1.0e-4,1.0);
-
-
          /// 3) TNF Poductions rates of each type of NK
          /*5*/  sp.push_back_dB("TNF_NK0_prod_rate",1.0e-8,1.0e-5);
          /*6*/  sp.push_back_dB("TNF_NKa_prod_rate",2.0e-6,2e-3);
          /*7*/  sp.push_back_dB("TNF_NKbo_prod_rate",1e-6,1e-3);
-
-
          /// 4) Percentages of IFN productions of each type of NK
          /*8*/  sp.push_back_dB("Kpercentage_IFN_NK0_prod_rate",0.1,0.06);
-         /*9*/  sp.push_back_dB("Kpercentage_IFN_AgNKa_prod_rate",0.2,1.0);
-         /*10*/  sp.push_back_dB("Kpercentage_IFN_NKbo_prod_rate",0.3,1.0);
-
          /// 5)Percentages of TNF productions of each type of NK
-         /*11*/  sp.push_back_dB("Kpercentage_TNF_NK0_prod_rate",0.1,0.06);
-         /*12*/  sp.push_back_dB("Kpercentage_TNF_NKa_prod_rate",0.05,0.5);
-         /*13*/  sp.push_back_dB("Kpercentage_TNF_NKbo_prod_rate",0.04,0.5);
-
+         /*9*/  sp.push_back_dB("Kpercentage_TNF_NK0_prod_rate",0.1,0.06);
+         /*10*/  sp.push_back_dB("Kpercentage_TNF_NKa_prod_rate",0.05,0.5);
+         /*11*/  sp.push_back_dB("Kpercentage_TNF_NKbo_prod_rate",0.04,0.5);
          /// 6) Proliferation rates
-         /*13.5*/  sp.push_back_dB("NK0_proliferation_rate",3.0e-6,3.0e-4);
-         /*14*/  sp.push_back_dB("NKa_proliferation_rate",0.00001,0.001);
-         /*15*/  sp.push_back_dB("NKbo_proliferation_rate",0.00001,0.001);
-         /*16*/  sp.push_back_dB("NKbl_proliferation_rate",0.00001,0.001);
-
+         /*12*/  sp.push_back_dB("NK0_proliferation_rate",3.0e-6,3.0e-4);
+         /*13*/  sp.push_back_dB("NKa_proliferation_rate",0.00001,0.001);
+         /*14*/  sp.push_back_dB("NKbo_proliferation_rate",0.00001,0.001);
          /// 7) Apoptosis rates
-         /*17*/  sp.push_back_dB("NK0_apop_rate",3.0e-6,3.0e-4);
-         /*18*/  sp.push_back_dB("NKa_apop_rate",0.00001,0.001);
-         /*19*/  sp.push_back_dB("NKbo_apop_rate",0.00001,0.001);
-         /*20*/  sp.push_back_dB("NKbl_apop_rate",0.00001,0.001);
-    //     /*21*/  sp.push_back_dB("NKexh_apop_rate",1.0/2,10);
-
-
-
+         /*15*/  sp.push_back_dB("NK0_apop_rate",3.0e-6,3.0e-4);
+         /*16*/  sp.push_back_dB("NKa_apop_rate",0.00001,0.001);
+         /*17*/  sp.push_back_dB("NKbo_apop_rate",0.00001,0.001);
          /// 8) constant saturation of TNF for apoptosis
-         /*22*/  sp.push_back_dB("Ks_NK_m_TNF",0.002,20);
-
+         /*18*/  sp.push_back_dB("Ks_NK_m_TNF",0.002,20);
          /// 9) conversion rates
-         /*23*/  sp.push_back_dB("KaNK",1e-6,1e-2);
-         /*24*/  sp.push_back_dB("NK_NK",1e-8,1e-1);
-         /*25*/  sp.push_back_dB("NK_Ab",1e-8,1e-1);
-    //     /*26*/  sp.push_back_dB("NK_exh",1e-6,10);
-
+         /*19*/  sp.push_back_dB("KaNK",1e-6,1e-2);
+         /*20*/  sp.push_back_dB("NK_NK",1e-8,1e-1);
+         /*21*/  sp.push_back_dB("NK_Ab",1e-8,1e-1);
          /// 10)Saturation constant of APC NK interaction for activation
-         /*27*/  sp.push_back_dB("KsAPC_NK",0.005,50);
-
+         /*22*/  sp.push_back_dB("KsAPC_NK",0.005,50);
          /// 11)Saturation constant of NK_LT interaction
-         /*28*/  sp.push_back_dB("NK_Ksi",1.0e-2,1e6);
-         /*29*/  sp.push_back_dB("NK_Kst",1.0e-2,1e6);
-
-
+         /*23*/  sp.push_back_dB("NK_Ksi",1.0e-2,1e6);
+         /*24*/  sp.push_back_dB("NK_Kst",1.0e-2,1e6);
          /// 12) Percentages of cell expressing receptor
-         /*30*/  sp.push_back_1S("NK0_Kratio_expressing_receptor",0.0,0.03);
-         /*31*/  sp.push_back_1S("NKa_Kratio_expressing_receptor",0.1,0.5);
-
+         /*25*/  sp.push_back_1S("NK0_Kratio_expressing_receptor",0.0,0.03);
+         /*26*/  sp.push_back_1S("NKa_Kratio_expressing_receptor",0.1,0.5);
          /// 13) Apoptosis rate for TNF
-         /*32*/  sp.push_back_dB("u_NK_TNF",0.0000417,0.417);
-
+         /*27*/  sp.push_back_dB("u_NK_TNF",0.0000417,0.417);
          /// LT
          /// 1) Init number of LT
             /*2*/  sp.push_back_1S("Kratio_initLTspecific",0.0,0.05);//K
-
          /// 2) IFN Poductions rates of each type of LT
             /*3*/  sp.push_back_dB("IFN_LTns_prod_rate",0.0000002,0.002);
             /*4*/  sp.push_back_dB("IFN_LTbo_prod_rate",0.000002,0.02);//k
             /*5*/  sp.push_back_dB("IFN_LTbl_prod_rate",0.000001,0.01);
-
         /// 3) TNF Poductions rates of each type of LT
             /*6*/  sp.push_back_dB("TNF_LTns_prod_rate",0.00000002,0.0002);
             /*7*/  sp.push_back_dB("TNF_LTbo_prod_rate",0.0001,0.01);
             /*8*/  sp.push_back_dB("TNF_LTbl_prod_rate",0.00005,0.005);
-
-
         /// 4) Percentages of IFN productions of each type of LT
             /*9*/  sp.push_back_dB("Kpercentage_IFN_LTns_prod_rate",0.01,0.06);
             /*10*/  sp.push_back_dB("Kpercentage_IFN_LTbo_prod_rate",0.05,0.5);
             /*11*/  sp.push_back_dB("Kpercentage_IFN_LTbl_prod_rate",0.01,0.25);
-
-
         /// 5)Percentages of TNF productions of each type of LT
             /*12*/  sp.push_back_dB("Kpercentage_TNF_LTns_prod_rate",0.0,0.05);
             /*13*/  sp.push_back_dB("Kpercentage_TNF_LTbo_prod_rate",0.2,0.25);
             /*14*/  sp.push_back_dB("Kpercentage_TNF_LTbl_prod_rate",0.01,0.125);
-
         /// 6) Proliferation rates
             /*15*/  sp.push_back_dB("LTns_proliferation_rate",1.0/6000.0,1.0/60);//oj
             /*16*/  sp.push_back_dB("LTbo_proliferation_rate",0.083,0.83);//K
             /*17*/  sp.push_back_dB("LTbl_proliferation_rate",0.041,0.41);//e
-
         /// 7) Apoptosis rates
             /*18*/  sp.push_back_dB("LTns_apop_rate",0.0001,1);
             /*19*/  sp.push_back_dB("LTbo_apop_rate",0.055,0.55);
             /*20*/  sp.push_back_dB("LTbl_apop_rate",0.11,1.1);
-    //        /*21*/  sp.push_back_dB("LTexh_apop_rate",1.0/2.0,10);
-
-        /// 8) constant saturation of TNF for apoptosis
-            /*22*/  sp.push_back_dB("Ks_LT_m_TNF",0.0004,4.0);//k, promedio de LN y lung
+       /// 8) constant saturation of TNF for apoptosis
+            /*21*/  sp.push_back_dB("Ks_LT_m_TNF",0.0004,4.0);//k, promedio de LN y lung
 
         /// 9) Percentages of cell expressing receptor
-            /*23*/  sp.push_back_dB("LTns_Kratio_expressing_receptor",0.01,0.1);
+            /*22*/  sp.push_back_dB("LTns_Kratio_expressing_receptor",0.01,0.1);
 
         /// 10) Apoptosis rate for TNF
-            /*24*/  sp.push_back_dB("u_LT_TNF",1.0/240.0,10);//k
+            /*23*/  sp.push_back_dB("u_LT_TNF",1.0/240.0,10);//k
 
-    //    /// 11) LT exh rate
-    //        /*25*/ sp.push_back_dB("LT_exh_rate",1.0/6.0,10);
 
         /// 12) apoptosis related parameters
-            /*27*/ sp.push_back_dB("t_duration_apoptosis",0.1,20);
+            /*24*/ sp.push_back_dB("t_duration_apoptosis",0.1,20);
+            /*25*/ sp.push_back_dB("LT_Ab",0.01,10);
 
          /// Media
          /*1*/ sp.push_back_dB("TNF_deg",1.0/18,1.0/6);//k
@@ -2135,183 +1575,133 @@ void Cell_simulator::Optimize(const Parameters& priorPar,
      Parameters sp;
      sp.setMode("minimal");
      /// 1) Init ratio of LT, NK, APC cells
-     /*1*/ sp.push_back_1S("init_K_ratio_LT",0.89/(1-0.89),0.899/(1-0.899));
-     /*2*/ sp.push_back_1S("init_K_ratio_APC_NK",0.8/(1-0.8),0.9/(1-0.9));
-
-
+         /*1*/ sp.push_back_1S("init_K_ratio_LT",0.89/(1-0.89),0.899/(1-0.899));// Fórmula leucocitaria
+         /*2*/ sp.push_back_1S("init_K_ratio_APC_NK",0.8/(1-0.8),0.9/(1-0.9)); // Fórmula leucocitaria
      /// APC
+         /// 2) IFN Poductions rates of each type of APC
+         /*2*/ sp.push_back_dB("IFN_APC0_prod_rate",1.0e-8,1.0e-5);
+         /*3*/ sp.push_back_dB("IFN_APCa_prod_rate",2.0e-6,2e-3);
+         /*4*/ sp.push_back_dB("IFN_APCbo_prod_rate",1e-6,1e-3);
+         /// 3) TNF Poductions rates of each type of APC
+         /*5*/ sp.push_back_dB("TNF_APC0_prod_rate",1.0e-8,1.0e-5);
+         /*6*/ sp.push_back_dB("TNF_APCa_prod_rate",2.0e-4,2.0);//k
+         /*7*/ sp.push_back_dB("TNF_APCbo_prod_rate",1.0e-4,1.0);
+         /// 4) Percentages of IFN productions of each type of APC
+         /*8*/ sp.push_back_dB("Kpercentage_IFN_APC0_prod_rate",0.01,0.06);//oj
+         /*9*/ sp.push_back_dB("Kpercentage_IFN_APCa_prod_rate",0.08,0.5);
+         /*10*/ sp.push_back_dB("Kpercentage_IFN_APCbo_prod_rate",0.14,0.5);
+         /// 5)Percentages of TNF productions of each type of APC
+         /*11*/ sp.push_back_dB("Kpercentage_TNF_APC0_prod_rate",0.02,0.08);
+         /// 6) Proliferation rates
+         /*12*/ sp.push_back_dB("APC_bound_proliferation_rate",0.00001,0.001);
+         /// 7) Apoptosis rates
+         /*13*/ sp.push_back_dB("APC0_apop_rate",3.0e-6,3.0e-4);//k
+         /*14*/ sp.push_back_dB("APCa_apop_rate",0.00001,0.001);//k
+         /*15*/ sp.push_back_dB("APCbo_apop_rate",0.00001,0.001);//k
+         /// 8) constant saturation of TNF for apoptosis
+         /*16*/ sp.push_back_dB("Ks_APC_m_TNF",0.002,20);//K
+         /// 9) conversion rates
+         /*17*/ sp.push_back_dB("APC_Ag",1.0e-6,1e-1);//ojímetro (promedio de k)
+         /*18*/ sp.push_back_dB("APC_APC",1.0e-10,1.0e-1);//ver
+         /*19*/ sp.push_back_dB("APC_NK",1.0e-10,1.0e-1);//ver
+         /*20*/ sp.push_back_dB("APC_LT_1",4.0e-7,4.0e-1);//K, multiplicar por la posibilidad de encuentro? No diferencio x que no tengo el dato, dejo que el programa modifique
+         /*21*/ sp.push_back_dB("APC_LT_2",4.0e-7,4.0e-1);//K, multiplicar por la posibilidad de encuentro?
+         /*22*/ sp.push_back_dB("APC_Ab",1.0e-6,1e-1);
+         /// 10)Saturation constant of IFN and TNF for activation
+         /*23*/ sp.push_back_dB("KsAPC_LT",10.0e1,10.0e5);//k
+         /// 11)Saturation constant of APC_LT interaction
+         /*24*/ sp.push_back_dB("APC_Ksi",1.0e-2,1e2);//Kirschner
+         /*25*/ sp.push_back_dB("APC_Kst",1.0e2,1.0e6);//Kirschner (promedio)
+         /// 12) Percentages of cell expressing receptor
+         /*26*/ sp.push_back_dB("APC0_Kratio_expressing_receptor",001,0.007);
+         /// 13) Apoptosis rate for TNF
+         /*27*/ sp.push_back_dB("u_APC_TNF",0.0000417,0.417);//K
 
-     /// 2) IFN Poductions rates of each type of APC
-     /*2*/ sp.push_back_dB("IFN_APC_prod_rate",1.0e-8,10);
+         /// NK
+         /// 2) IFN Poductions rates of each type of NK
+         /*2*/  sp.push_back_dB("IFN_NK0_prod_rate",1.0e-8,1.0e-5);
+         /*3*/  sp.push_back_dB("IFN_NKa_prod_rate",2.0e-4,2.0);
+         /*4*/  sp.push_back_dB("IFN_NKbo_prod_rate",1.0e-4,1.0);
+         /// 3) TNF Poductions rates of each type of NK
+         /*5*/  sp.push_back_dB("TNF_NK0_prod_rate",1.0e-8,1.0e-5);
+         /*6*/  sp.push_back_dB("TNF_NKa_prod_rate",2.0e-6,2e-3);
+         /*7*/  sp.push_back_dB("TNF_NKbo_prod_rate",1e-6,1e-3);
+         /// 4) Percentages of IFN productions of each type of NK
+         /*8*/  sp.push_back_dB("Kpercentage_IFN_NK0_prod_rate",0.1,0.06);
+         /// 5)Percentages of TNF productions of each type of NK
+         /*9*/  sp.push_back_dB("Kpercentage_TNF_NK0_prod_rate",0.1,0.06);
+         /*10*/  sp.push_back_dB("Kpercentage_TNF_NKa_prod_rate",0.05,0.5);
+         /*11*/  sp.push_back_dB("Kpercentage_TNF_NKbo_prod_rate",0.04,0.5);
+         /// 6) Proliferation rates
+         /*12*/  sp.push_back_dB("NK0_proliferation_rate",3.0e-6,3.0e-4);
+         /*13*/  sp.push_back_dB("NKa_proliferation_rate",0.00001,0.001);
+         /*14*/  sp.push_back_dB("NKbo_proliferation_rate",0.00001,0.001);
+         /// 7) Apoptosis rates
+         /*15*/  sp.push_back_dB("NK0_apop_rate",3.0e-6,3.0e-4);
+         /*16*/  sp.push_back_dB("NKa_apop_rate",0.00001,0.001);
+         /*17*/  sp.push_back_dB("NKbo_apop_rate",0.00001,0.001);
+         /// 8) constant saturation of TNF for apoptosis
+         /*18*/  sp.push_back_dB("Ks_NK_m_TNF",0.002,20);
+         /// 9) conversion rates
+         /*19*/  sp.push_back_dB("KaNK",1e-6,1e-2);
+         /*20*/  sp.push_back_dB("NK_NK",1e-8,1e-1);
+         /*21*/  sp.push_back_dB("NK_Ab",1e-8,1e-1);
+         /// 10)Saturation constant of APC NK interaction for activation
+         /*22*/  sp.push_back_dB("KsAPC_NK",0.005,50);
+         /// 11)Saturation constant of NK_LT interaction
+         /*23*/  sp.push_back_dB("NK_Ksi",1.0e-2,1e6);
+         /*24*/  sp.push_back_dB("NK_Kst",1.0e-2,1e6);
+         /// 12) Percentages of cell expressing receptor
+         /*25*/  sp.push_back_1S("NK0_Kratio_expressing_receptor",0.0,0.03);
+         /*26*/  sp.push_back_1S("NKa_Kratio_expressing_receptor",0.1,0.5);
+         /// 13) Apoptosis rate for TNF
+         /*27*/  sp.push_back_dB("u_NK_TNF",0.0000417,0.417);
+         /// LT
+         /// 1) Init number of LT
+            /*2*/  sp.push_back_1S("Kratio_initLTspecific",0.0,0.05);//K
+         /// 2) IFN Poductions rates of each type of LT
+            /*3*/  sp.push_back_dB("IFN_LTns_prod_rate",0.0000002,0.002);
+            /*4*/  sp.push_back_dB("IFN_LTbo_prod_rate",0.000002,0.02);//k
+            /*5*/  sp.push_back_dB("IFN_LTbl_prod_rate",0.000001,0.01);
+        /// 3) TNF Poductions rates of each type of LT
+            /*6*/  sp.push_back_dB("TNF_LTns_prod_rate",0.00000002,0.0002);
+            /*7*/  sp.push_back_dB("TNF_LTbo_prod_rate",0.0001,0.01);
+            /*8*/  sp.push_back_dB("TNF_LTbl_prod_rate",0.00005,0.005);
+        /// 4) Percentages of IFN productions of each type of LT
+            /*9*/  sp.push_back_dB("Kpercentage_IFN_LTns_prod_rate",0.01,0.06);
+            /*10*/  sp.push_back_dB("Kpercentage_IFN_LTbo_prod_rate",0.05,0.5);
+            /*11*/  sp.push_back_dB("Kpercentage_IFN_LTbl_prod_rate",0.01,0.25);
+        /// 5)Percentages of TNF productions of each type of LT
+            /*12*/  sp.push_back_dB("Kpercentage_TNF_LTns_prod_rate",0.0,0.05);
+            /*13*/  sp.push_back_dB("Kpercentage_TNF_LTbo_prod_rate",0.2,0.25);
+            /*14*/  sp.push_back_dB("Kpercentage_TNF_LTbl_prod_rate",0.01,0.125);
+        /// 6) Proliferation rates
+            /*15*/  sp.push_back_dB("LTns_proliferation_rate",1.0/6000.0,1.0/60);//oj
+            /*16*/  sp.push_back_dB("LTbo_proliferation_rate",0.083,0.83);//K
+            /*17*/  sp.push_back_dB("LTbl_proliferation_rate",0.041,0.41);//e
+        /// 7) Apoptosis rates
+            /*18*/  sp.push_back_dB("LTns_apop_rate",0.0001,1);
+            /*19*/  sp.push_back_dB("LTbo_apop_rate",0.055,0.55);
+            /*20*/  sp.push_back_dB("LTbl_apop_rate",0.11,1.1);
+       /// 8) constant saturation of TNF for apoptosis
+            /*21*/  sp.push_back_dB("Ks_LT_m_TNF",0.0004,4.0);//k, promedio de LN y lung
 
+        /// 9) Percentages of cell expressing receptor
+            /*22*/  sp.push_back_dB("LTns_Kratio_expressing_receptor",0.01,0.1);
 
-
-     /// 3) TNF Poductions rates of each type of APC
-     /*5*/ sp.push_back_dB("TNF_APC0_prod_rate",1.0e-8,10);
-     /*6*/ sp.push_back_dB("TNF_APCa_prod_rate",1.0e-3,10);
-     /*7*/ sp.push_back_dB("TNF_APCbo_prod_rate",1.0e-4,10);
-
-
-     /// 4) Percentages of IFN productions of each type of APC
-     /*8*/ sp.push_back_dB("Kpercentage_IFN_APC0_prod_rate",0.01,10);
-     /*9*/ sp.push_back_dB("Kpercentage_IFN_APCa_prod_rate",0.12,10);
-     /*10*/ sp.push_back_dB("Kpercentage_IFN_APCbo_prod_rate",0.35,10);
-
-     /// 5)Percentages of TNF productions of each type of APC
-     /*11*/ sp.push_back_dB("Kpercentage_TNF_APC0_prod_rate",0.01,10);
-     /*12*/ sp.push_back_dB("Kpercentage_TNF_APCa_prod_rate",0.12,10);
-     /*13*/ sp.push_back_dB("Kpercentage_TNF_APCbo_prod_rate",0.35,10);
-
-
-     /// 6) Proliferation rates
-     /*14*/ sp.push_back_dB("APC_bound_proliferation_rate",1.0/24,10);
-
-     /// 7) Apoptosis rates
-     /*15*/ sp.push_back_dB("APC0_apop_rate",0.00028,10);
-     /*16*/ sp.push_back_dB("APCa_apop_rate",0.0014,10);
-     /*17*/ sp.push_back_dB("APCbo_apop_rate",0.0014,10);
-     /*18*/ sp.push_back_dB("APCbl_apop_rate",0.0014,10);
-//     /*19*/ sp.push_back_dB("APCexh_apop_rate",0.014,10);
-
-     /// 8) constant saturation of TNF for apoptosis
-     /*20*/ sp.push_back_dB("Ks_APC_m_TNF",0.5,10);
-
-     /// 9) conversion rates
-     /*21*/ sp.push_back_dB("APC_Ag",1.0/240,10);
-     /*22*/ sp.push_back_dB("APC_APC",1.0e-3,10);
-     /*23*/ sp.push_back_dB("APC_NK",1.0e-3,10);
-     /*24*/ sp.push_back_dB("APC_LT_1",1.0e-3,10);
-     /*25*/ sp.push_back_dB("APC_LT_2",1.0e-3,10);
-     /*26*/ sp.push_back_dB("APC_Ab",1.0e-4,10);
-//     /*27*/ sp.push_back_dB("APC_exh",1e-3,10);
-
-     /// 10)Saturation constant of IFN and TNF for activation
-     /*28*/ sp.push_back_dB("KsAPC_LT",0.5,10);
-
-     /// 11)Saturation constant of APC_LT interaction
-     /*29*/ sp.push_back_dB("APC_Ksi",0.5,10);
-     /*30*/ sp.push_back_dB("APC_Kst",0.5,10);
-
-     /// 12) Percentages of cell expressing receptor
-     /*31*/ sp.push_back_dB("APC0_Kratio_expressing_receptor",0.01,10);
-     /*32*/ sp.push_back_dB("APCa_Kratio_expressing_receptor",0.25,10);
-     /// 13) Apoptosis rate for TNF
-     /*33*/ sp.push_back_dB("u_APC_TNF",1.0/24,10);
-
-     /// NK
-
-     /// 2) IFN Poductions rates of each type of NK
-     /*2*/  sp.push_back_dB("IFN_NK0_prod_rate",1.0e-8,10);
-     /*3*/  sp.push_back_dB("IFN_NKa_prod_rate",1.0e-3,10);
-     /*4*/  sp.push_back_dB("IFN_NKbo_prod_rate",1.0e-4,10);
-
-     /// 3) TNF Poductions rates of each type of NK
-     /*5*/  sp.push_back_dB("TNF_NK0_prod_rate",1.0e-8,10);
-     /*6*/  sp.push_back_dB("TNF_NKa_prod_rate",1.0e-5,10);
-     /*7*/  sp.push_back_dB("TNF_NKbo_prod_rate",1.0e-6,10);
-
-     /// 4) Percentages of IFN productions of each type of NK
-     /*8*/  sp.push_back_dB("Kpercentage_IFN_NK0_prod_rate",0.01,10);
-     /*9*/  sp.push_back_dB("Kpercentage_IFN_AgNKa_prod_rate",0.2,10);
-     /*10*/  sp.push_back_dB("Kpercentage_IFN_NKbo_prod_rate",0.25,10);
-
-     /// 5)Percentages of TNF productions of each type of NK
-     /*11*/  sp.push_back_dB("Kpercentage_TNF_NK0_prod_rate",0.01,10);
-     /*12*/  sp.push_back_dB("Kpercentage_TNF_NKa_prod_rate",0.2,10);
-     /*13*/  sp.push_back_dB("Kpercentage_TNF_NKbo_prod_rate",0.25,10);
-
-     /// 6) Proliferation rates
-     /*13.5*/  sp.push_back_dB("NK0_proliferation_rate",1.0/120,10);
-     /*14*/  sp.push_back_dB("NKa_proliferation_rate",1.0/6,10);
-     /*15*/  sp.push_back_dB("NKbo_proliferation_rate",1.0/7,10);
-     /*16*/  sp.push_back_dB("NKbl_proliferation_rate",1.0/6,10);
-
-     /// 7) Apoptosis rates
-     /*17*/  sp.push_back_dB("NK0_apop_rate",1.0/120,10);
-     /*18*/  sp.push_back_dB("NKa_apop_rate",1.0/6,10);
-     /*19*/  sp.push_back_dB("NKbo_apop_rate",1.0/7,10);
-     /*20*/  sp.push_back_dB("NKbl_apop_rate",1.0/6,10);
-//     /*21*/  sp.push_back_dB("NKexh_apop_rate",1.0/2,10);
-
-     /// 8) constant saturation of TNF for apoptosis
-     /*22*/  sp.push_back_dB("Ks_NK_m_TNF",0.5,10);
-
-     /// 9) conversion rates
-     /*23*/  sp.push_back_dB("KaNK",1e-5,10);
-     /*24*/  sp.push_back_dB("NK_NK",1e-6,10);
-     /*25*/  sp.push_back_dB("NK_Ab",1e-6,10);
-//     /*26*/  sp.push_back_dB("NK_exh",1e-6,10);
-
-     /// 10)Saturation constant of APC NK interaction for activation
-     /*27*/  sp.push_back_dB("KsAPC_NK",0.5,10);
-
-     /// 11)Saturation constant of NK_LT interaction
-     /*28*/  sp.push_back_dB("NK_Ksi",0.5,10);
-     /*29*/  sp.push_back_dB("NK_Kst",0.5,10);
-
-     /// 12) Percentages of cell expressing receptor
-     /*30*/  sp.push_back_dB("NK0_Kratio_expressing_receptor",0.01,10);
-     /*31*/  sp.push_back_dB("NKa_Kratio_expressing_receptor",0.01,10);
-
-     /// 13) Apoptosis rate for TNF
-     /*32*/  sp.push_back_dB("u_NK_TNF",1.0/24.0,10);
-
-     /// LT
-     /// 1) Init number of LT
-        /*2*/  sp.push_back_dB("Kratio_initLTspecific",0.001,10);
-
-     /// 2) IFN Poductions rates of each type of LT
-        /*3*/  sp.push_back_dB("IFN_LTns_prod_rate",1.0e-8,10);
-        /*4*/  sp.push_back_dB("IFN_LTbo_prod_rate",1.0e-1,10);
-        /*5*/  sp.push_back_dB("IFN_LTbl_prod_rate",1.0e-3,10);
-
-    /// 3) TNF Poductions rates of each type of LT
-        /*6*/  sp.push_back_dB("TNF_LTns_prod_rate",1.0e-10,10);
-        /*7*/  sp.push_back_dB("TNF_LTbo_prod_rate",1.0e-6,10);
-        /*8*/  sp.push_back_dB("TNF_LTbl_prod_rate",1.0e-8,10);
-
-    /// 4) Percentages of IFN productions of each type of LT
-        /*9*/  sp.push_back_dB("Kpercentage_IFN_LTns_prod_rate",0.01,10);
-        /*10*/  sp.push_back_dB("Kpercentage_IFN_LTbo_prod_rate",0.4,10);
-        /*11*/  sp.push_back_dB("Kpercentage_IFN_LTbl_prod_rate",0.3,10);
+        /// 10) Apoptosis rate for TNF
+            /*23*/  sp.push_back_dB("u_LT_TNF",1.0/240.0,10);//k
 
 
-    /// 5)Percentages of TNF productions of each type of LT
-        /*12*/  sp.push_back_dB("Kpercentage_TNF_LTns_prod_rate",0.01,10);
-        /*13*/  sp.push_back_dB("Kpercentage_TNF_LTbo_prod_rate",0.4,10);
-        /*14*/  sp.push_back_dB("Kpercentage_TNF_LTbl_prod_rate",0.3,10);
+        /// 12) apoptosis related parameters
+            /*24*/ sp.push_back_dB("t_duration_apoptosis",0.1,20);
+            /*25*/ sp.push_back_dB("LT_Ab",0.01,10);
 
-    /// 6) Proliferation rates
-        /*15*/  sp.push_back_dB("LTns_proliferation_rate",1.0/120.0,10);
-        /*16*/  sp.push_back_dB("LTbo_proliferation_rate",1.0/3.0,10);
-        /*17*/  sp.push_back_dB("LTbl_proliferation_rate",1.0/6.0,10);
-
-    /// 7) Apoptosis rates
-        /*18*/  sp.push_back_dB("LTns_apop_rate",1.0/120.0,10);
-        /*19*/  sp.push_back_dB("LTbo_apop_rate",1.0/3.0,10);
-        /*20*/  sp.push_back_dB("LTbl_apop_rate",1.0/6.0,10);
-//        /*21*/  sp.push_back_dB("LTexh_apop_rate",1.0/2.0,10);
-
-    /// 8) constant saturation of TNF for apoptosis
-        /*22*/  sp.push_back_dB("Ks_LT_m_TNF",0.5,10);
-
-    /// 9) Percentages of cell expressing receptor
-        /*23*/  sp.push_back_dB("LTns_Kratio_expressing_receptor",0.01,10);
-
-    /// 10) Apoptosis rate for TNF
-        /*24*/  sp.push_back_dB("u_LT_TNF",1.0/24.0,10);
-
-//    /// 11) LT exh rate
-//        /*25*/ sp.push_back_dB("LT_exh_rate",1.0/6.0,10);
-
-    /// 12) apoptosis related parameters
-        /*27*/ sp.push_back_dB("t_duration_apoptosis",2.0,10);
-
-     /// Media
-     /*1*/ sp.push_back_dB("TNF_deg",0.5/24.0,10);
-     /*2*/ sp.push_back_dB("IFN_deg",0.5/24.0,10);
-     /*3*/ sp.push_back_dB("Ag_deg",1/16.0,10);
-     /*4*/ sp.push_back_dB("Prol_TymTr",0.1,10);
+         /// Media
+         /*1*/ sp.push_back_dB("TNF_deg",1.0/18,1.0/6);//k
+         /*2*/ sp.push_back_dB("IFN_deg",1.0/18,1.0/6);//k
+         /*3*/ sp.push_back_dB("Ag_deg",1.0/18,1/6);//oj
+         /*4*/ sp.push_back_dB("Prol_TymTr",0.001,10);
 
 
    return sp;
