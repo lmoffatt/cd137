@@ -238,8 +238,10 @@ void Media::update(double& time_step,double t_run,const APC_cells& APC ,const NK
     TNF_d+=TNF_delta;
 
     /// Ag concentration
-    double Ag_delta=(-Ag_d*Ag_deg_d)*time_step;
-            Ag_d+=Ag_delta;
+    if (Ag_d>0.0)
+    {double Ag_delta=(-Ag_d*Ag_deg_d)*time_step;
+            Ag_d+=Ag_delta;}
+    else{Ag_d=0.0;}
 
     /// The total number of cells is the adittion of APC + NK + LT
     num_cells_d=APC.num_APC()+NK.num_NK()+LT.num_LT();

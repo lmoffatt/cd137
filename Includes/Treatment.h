@@ -9,18 +9,11 @@
 #include "Measurement.h"
 
 struct Treatment
-{
-
-
-    double Ag;
+{   double Ag;
     double Ab;
-
     double sim_duration_d;
-
     double init_cells;
-
     double time_step_d;
-
     double t_apop_meas_d;
 
 };

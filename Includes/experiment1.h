@@ -7,7 +7,6 @@ void BayesParameters ();
 
 void BayesParametersTest ();
 
-
 void TestParametersIO();
 
 void compareTimeStep();
