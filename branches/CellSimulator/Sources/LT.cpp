@@ -171,45 +171,42 @@ void LT_cells::update(double& time_step, double t_run, const Media& m, const APC
 {    /// cells not sensitive to the Ag proliferate passively or die
    double LTns_delta=(
                -LTns_apop_rate_d*LTns_d+
-               LTns_proliferation_rate_d*LTns_d
+               LTns_proliferation_rate_d*LTns_d*m.prol_ratio()
                )*time_step;
    LTns_d+=LTns_delta;
 
 
     /// Ag specific cells proliferate and some of them interact with APC and get activated and express the receptor.
     /// During interaction LT receptor can be block or bind to ligand
-   double LT0_delta=(
-               -LTns_apop_rate_d*LT0_d
-               +LTns_proliferation_rate_d*LT0_d-
-               (APC.APC_LT_1()-(LT_Ab_d*m.Ab()))*LT0_d*(APC.APCa()/(APC.APCa()+APC.KsAPC_LT()))-
-               (LT_Ab_d*m.Ab())*LT0_d*(APC.APCa()/(APC.APCa()+APC.KsAPC_LT()))-
-               (APC.APC_LT_1()-(LT_Ab_d*m.Ab()))*LT0_d*(APC.APCbl()/(APC.APCbl()+APC.KsAPC_LT()))-
-               (LT_Ab_d*m.Ab())*LT0_d*(APC.APCbl()/(APC.APCbl()+APC.KsAPC_LT()))-
-               (APC.APC_LT_2 ()-(LT_Ab_d*m.Ab()))*LT0_d*(APC.APCbo()/(APC.APCbo()+APC.KsAPC_LT()))-
-               (LT_Ab_d*m.Ab())*LT0_d*(APC.APCbo()/(APC.APCbo()+APC.KsAPC_LT()))-
-               (APC.APC_LT_2()-(LT_Ab_d*m.Ab()))*LT0_d*(APC.APCbo_Ab()/(APC.APCbo_Ab()+APC.KsAPC_LT()))-
-               (LT_Ab_d*m.Ab())*LT0_d*(APC.APCbo_Ab()/(APC.APCbo_Ab()+APC.KsAPC_LT()))
-               )*time_step;
+   double LT0_delta=(LT0_d*(
+                         -LTns_apop_rate_d
+                         +LTns_proliferation_rate_d*m.prol_ratio()
+                         -APC.APC_LT_1()*(APC.APCa()/(APC.APCa()+APC.KsAPC_LT()))
+                         -APC.APC_LT_1()*(APC.APCbl()/(APC.APCbl()+APC.KsAPC_LT()))
+                         -APC.APC_LT_2()*(APC.APCbo()/(APC.APCbo()+APC.KsAPC_LT()))
+                         -APC.APC_LT_2()*(APC.APCbo_Ab()/(APC.APCbo_Ab()+APC.KsAPC_LT()))
+                         ))*time_step;
    LT0_d+=LT0_delta;
     /// Cells interact only once with APC and can recieve signaling by CD137 or not.
    double LTbo_delta=(
-               (APC.APC_LT_1()-(LT_Ab_d*m.Ab()))*LT0_d*(APC.APCa()/(APC.APCa()+APC.KsAPC_LT()))+
-               (APC.APC_LT_1()-(LT_Ab_d*m.Ab()))*LT0_d*(APC.APCbl()/(APC.APCbl()+APC.KsAPC_LT()))+
-               (APC.APC_LT_2 ()-(LT_Ab_d*m.Ab()))*LT0_d*(APC.APCbo()/(APC.APCbo()+APC.KsAPC_LT()))+
-               (APC.APC_LT_2()-(LT_Ab_d*m.Ab()))*LT0_d*(APC.APCbo_Ab()/(APC.APCbo_Ab()+APC.KsAPC_LT()))+
-               +LTbo_proliferation_rate_d*LTbo_d-LTbo_apop_rate_d*LTbo_d
-               -LTbo_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))
+               APC.APC_LT_1()*LT_Ab_d/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCa()/(APC.APCa()+APC.KsAPC_LT()))
+              +APC.APC_LT_1()*LT_Ab_d/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbl()/(APC.APCbl()+APC.KsAPC_LT()))
+              +APC.APC_LT_2()*LT_Ab_d/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo()/(APC.APCbo()+APC.KsAPC_LT()))
+              +APC.APC_LT_2()*LT_Ab_d/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo_Ab()/(APC.APCbo_Ab()+APC.KsAPC_LT()))
+              +LTbo_proliferation_rate_d*m.prol_ratio()*LTbo_d
+              -LTbo_apop_rate_d*LTbo_d
+              -LTbo_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))
                )*time_step;
 
     LTbo_d+=LTbo_delta;
     double LTbl_delta=(
-                (LT_Ab_d*m.Ab())*LT0_d*(APC.APCa()/(APC.APCa()+APC.KsAPC_LT()))-
-                (LT_Ab_d*m.Ab())*LT0_d*(APC.APCbl()/(APC.APCbl()+APC.KsAPC_LT()))-
-                (LT_Ab_d*m.Ab())*LT0_d*(APC.APCbo()/(APC.APCbo()+APC.KsAPC_LT()))-
-                (LT_Ab_d*m.Ab())*LT0_d*(APC.APCbo_Ab()/(APC.APCbo_Ab()+APC.KsAPC_LT()))
-                +LTbl_proliferation_rate_d*LTbl_d
-                -LTbl_apop_rate_d*LTbl_d
-                -LTbl_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))
+                           APC.APC_LT_1()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCa()/(APC.APCa()+APC.KsAPC_LT()))
+                          +APC.APC_LT_1()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbl()/(APC.APCbl()+APC.KsAPC_LT()))
+                          +APC.APC_LT_2()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo()/(APC.APCbo()+APC.KsAPC_LT()))
+                          +APC.APC_LT_2()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo_Ab()/(APC.APCbo_Ab()+APC.KsAPC_LT()))
+                          +LTbl_proliferation_rate_d*m.prol_ratio()*LTbl_d
+                          -LTbl_apop_rate_d*LTbl_d
+                          -LTbl_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))
                 )*time_step;
     LTbl_d+=LTbl_delta;
 
@@ -217,8 +214,10 @@ void LT_cells::update(double& time_step, double t_run, const Media& m, const APC
    double LT_TymTr_incorporated_delta;
    if (m.TymidineTriteate()>0){
        LT_TymTr_incorporated_delta=(
-                   (LTns_proliferation_rate_d*LTns_d+LTns_proliferation_rate_d*LT0_d+LTbo_proliferation_rate_d*LTbo_d+
-                                  +LTbl_proliferation_rate_d*LTbl_d)*m.Prol_TymTr()
+                   (LTns_proliferation_rate_d*LTns_d*m.prol_ratio()+
+                    LTns_proliferation_rate_d*m.prol_ratio()*LT0_d+
+                    LTbo_proliferation_rate_d*LTbo_d*m.prol_ratio()
+                                  +LTbl_proliferation_rate_d*m.prol_ratio()*LTbl_d)*m.Prol_TymTr()
                    )*time_step;
        LT_TymTr_incorporated_d+=LT_TymTr_incorporated_delta;
    }
@@ -475,7 +474,7 @@ std::vector<double> LT_cells::Derivative(double t_run, const Media& m, const APC
     /// cells not sensitive to the Ag proliferate passively or die
    double LTns_delta=(
                -LTns_apop_rate_d*LTns_d+
-               LTns_proliferation_rate_d*LTns_d
+               LTns_proliferation_rate_d*m.prol_ratio()*LTns_d
                );
 
    D.push_back(LTns_delta);
@@ -483,46 +482,44 @@ std::vector<double> LT_cells::Derivative(double t_run, const Media& m, const APC
 
    /// Ag specific cells proliferate and some of them interact with APC and get activated and express the receptor.
    /// During interaction LT receptor can be block or bind to ligand
-   double LT0_delta=(
-               -LTns_apop_rate_d*LT0_d
-               +LTns_proliferation_rate_d*LT0_d-
-               (APC.APC_LT_1()-(LT_Ab_d*m.Ab()))*LT0_d*(APC.APCa()/(APC.APCa()+APC.KsAPC_LT()))-
-               (LT_Ab_d*m.Ab())*LT0_d*(APC.APCa()/(APC.APCa()+APC.KsAPC_LT()))-
-               (APC.APC_LT_1()-(LT_Ab_d*m.Ab()))*LT0_d*(APC.APCbl()/(APC.APCbl()+APC.KsAPC_LT()))-
-               (LT_Ab_d*m.Ab())*LT0_d*(APC.APCbl()/(APC.APCbl()+APC.KsAPC_LT()))-
-               (APC.APC_LT_2 ()-(LT_Ab_d*m.Ab()))*LT0_d*(APC.APCbo()/(APC.APCbo()+APC.KsAPC_LT()))-
-               (LT_Ab_d*m.Ab())*LT0_d*(APC.APCbo()/(APC.APCbo()+APC.KsAPC_LT()))-
-               (APC.APC_LT_2()-(LT_Ab_d*m.Ab()))*LT0_d*(APC.APCbo_Ab()/(APC.APCbo_Ab()+APC.KsAPC_LT()))-
-               (LT_Ab_d*m.Ab())*LT0_d*(APC.APCbo_Ab()/(APC.APCbo_Ab()+APC.KsAPC_LT()))
+   double LT0_delta=LT0_d*(
+               -LTns_apop_rate_d
+               +LTns_proliferation_rate_d*m.prol_ratio()
+               -APC.APC_LT_1()*(APC.APCa()/(APC.APCa()+APC.KsAPC_LT()))
+               -APC.APC_LT_1()*(APC.APCbl()/(APC.APCbl()+APC.KsAPC_LT()))
+               -APC.APC_LT_2()*(APC.APCbo()/(APC.APCbo()+APC.KsAPC_LT()))
+               -APC.APC_LT_2()*(APC.APCbo_Ab()/(APC.APCbo_Ab()+APC.KsAPC_LT()))
                );
    D.push_back(LT0_delta);
     /// Cells interact only once with APC and can recieve signaling by CD137 or not.
-   double LTbo_delta=(
-               (APC.APC_LT_1()-(LT_Ab_d*m.Ab()))*LT0_d*(APC.APCa()/(APC.APCa()+APC.KsAPC_LT()))+
-               (APC.APC_LT_1()-(LT_Ab_d*m.Ab()))*LT0_d*(APC.APCbl()/(APC.APCbl()+APC.KsAPC_LT()))+
-               (APC.APC_LT_2 ()-(LT_Ab_d*m.Ab()))*LT0_d*(APC.APCbo()/(APC.APCbo()+APC.KsAPC_LT()))+
-               (APC.APC_LT_2()-(LT_Ab_d*m.Ab()))*LT0_d*(APC.APCbo_Ab()/(APC.APCbo_Ab()+APC.KsAPC_LT()))+
-               +LTbo_proliferation_rate_d*LTbo_d-LTbo_apop_rate_d*LTbo_d
-               -LTbo_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))
-               );
+   double LTbo_delta=
+                 APC.APC_LT_1()*LT_Ab_d/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCa()/(APC.APCa()+APC.KsAPC_LT()))
+                +APC.APC_LT_1()*LT_Ab_d/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbl()/(APC.APCbl()+APC.KsAPC_LT()))
+                +APC.APC_LT_2()*LT_Ab_d/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo()/(APC.APCbo()+APC.KsAPC_LT()))
+                +APC.APC_LT_2()*LT_Ab_d/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo_Ab()/(APC.APCbo_Ab()+APC.KsAPC_LT()))
+                +LTbo_proliferation_rate_d*m.prol_ratio()*LTbo_d
+                -LTbo_apop_rate_d*LTbo_d
+                -LTbo_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d));
 
     D.push_back(LTbo_delta);
     double LTbl_delta=(
-                (LT_Ab_d*m.Ab())*LT0_d*(APC.APCa()/(APC.APCa()+APC.KsAPC_LT()))-
-                (LT_Ab_d*m.Ab())*LT0_d*(APC.APCbl()/(APC.APCbl()+APC.KsAPC_LT()))-
-                (LT_Ab_d*m.Ab())*LT0_d*(APC.APCbo()/(APC.APCbo()+APC.KsAPC_LT()))-
-                (LT_Ab_d*m.Ab())*LT0_d*(APC.APCbo_Ab()/(APC.APCbo_Ab()+APC.KsAPC_LT()))
-                +LTbl_proliferation_rate_d*LTbl_d
-                -LTbl_apop_rate_d*LTbl_d
-                -LTbl_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))
+                APC.APC_LT_1()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCa()/(APC.APCa()+APC.KsAPC_LT()))
+               +APC.APC_LT_1()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbl()/(APC.APCbl()+APC.KsAPC_LT()))
+               +APC.APC_LT_2()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo()/(APC.APCbo()+APC.KsAPC_LT()))
+               +APC.APC_LT_2()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo_Ab()/(APC.APCbo_Ab()+APC.KsAPC_LT()))
+               +LTbl_proliferation_rate_d*m.prol_ratio()*LTbl_d
+               -LTbl_apop_rate_d*LTbl_d
+               -LTbl_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))
                 );
     D.push_back(LTbl_delta);
 
 
    double LT_TymTr_incorporated_delta;
    if (m.TymidineTriteate()>0){
-       LT_TymTr_incorporated_delta=((LTns_proliferation_rate_d*LTns_d+LTns_proliferation_rate_d*LT0_d+LTbo_proliferation_rate_d*LTbo_d+
-                                  +LTbl_proliferation_rate_d*LTbl_d)*m.Prol_TymTr());
+       LT_TymTr_incorporated_delta=((LTns_proliferation_rate_d*m.prol_ratio()*LTns_d+
+                                     LTns_proliferation_rate_d*m.prol_ratio()*LT0_d+
+                                     LTbo_proliferation_rate_d*m.prol_ratio()*LTbo_d+
+                                  LTbl_proliferation_rate_d*m.prol_ratio()*LTbl_d)*m.Prol_TymTr());
        }
    else
        LT_TymTr_incorporated_delta=0;

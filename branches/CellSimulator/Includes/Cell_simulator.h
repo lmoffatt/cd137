@@ -35,7 +35,7 @@ public:
 				    const Treatment& tr);
 
 
-    virtual Cell_simulator& setData(const ABC_data& conditions){};
+    virtual Cell_simulator& setData(const ABC_data& conditions){}
 
 
 
@@ -60,7 +60,7 @@ public:
 
     // versions with Parameters instead of SimParameters
 
-    Cell_simulator& applyParameters(const Parameters& sp,
+    Cell_simulator& applyParameters(const Parameters& current,
                                     const Treatment& tr);
 
 
@@ -70,19 +70,20 @@ public:
 
 
 
-    Cell_simulator(const Parameters& sp,
+    Cell_simulator(const Parameters& prior,
+                   const Parameters& current,
                    const Experiment& E);
 
-    Results Simulate(const Parameters& simPar,
+    Results Simulate(const Parameters& current,
                      const Treatment& protocol,
                      const Results& results);
 
-    Experiment Simulate(const Parameters& simPar,
+    Experiment Simulate(const Parameters& current,
                         const Experiment& exp);
 
 
-    void Optimize(const Parameters& priorPar,
-                                 const Experiment& exp,
+    void Optimize(const Parameters& current,
+                  const Experiment& exp,
                   const std::string& filename);
 
 

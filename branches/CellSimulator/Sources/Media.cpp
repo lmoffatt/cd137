@@ -13,7 +13,8 @@ Media::Media(double IFNgamma_init,
              double init_num_cells,
              double init_Ag,
              double init_Ab,
-             double Prol_TymTr_init
+             double Prol_TymTr_init,
+             double max_num_cells_init
                 ):
 
     IFNgamma_d(IFNgamma_init),
@@ -26,7 +27,8 @@ Media::Media(double IFNgamma_init,
     Ag_d(init_Ag),
     Ab_d(init_Ab),
     TymidineTriteate_d(0),
-    Prol_TymTr_d(Prol_TymTr_init)
+    Prol_TymTr_d(Prol_TymTr_init),
+    max_num_cells_d(max_num_cells_init)
 
    {}
 
@@ -61,7 +63,8 @@ Media::Media(const Parameters& p,
     Ag_d(tr.Ag),
     Ab_d(tr.Ab),
     TymidineTriteate_d(0),
-    Prol_TymTr_d(p.mean("Prol_TymTr")){}
+    Prol_TymTr_d(p.mean("Prol_TymTr")),
+    max_num_cells_d(p.mean("max_num_cells")){}
 
 Media::Media(const Media& other):
     IFNgamma_d(other.IFNgamma_d),
@@ -74,7 +77,8 @@ Media::Media(const Media& other):
     Ag_d(other.Ag_d),
     Ab_d(other.Ab_d),
     TymidineTriteate_d(other.TymidineTriteate_d),
-    Prol_TymTr_d(other.Prol_TymTr_d)
+    Prol_TymTr_d(other.Prol_TymTr_d),
+    max_num_cells_d(other.max_num_cells_d)
 
   {}
 
@@ -103,7 +107,8 @@ void swap(Media& one, Media& other)
     std::swap(one.Ab_d,other.Ab_d);
     std::swap(one.TymidineTriteate_d,other.TymidineTriteate_d);
     std::swap(one.Prol_TymTr_d,other.Prol_TymTr_d);
- }
+    std::swap(one.max_num_cells_d,other.max_num_cells_d);
+    }
 
 
 
@@ -209,6 +214,11 @@ const double& Media::Prol_TymTr() const
     {
      return Prol_TymTr_d;
     }
+double Media::prol_ratio() const{
+    double sum=max_num_cells_d/(max_num_cells_d+num_cells_d);
+    return sum;
+
+}
 
 /// Tymidine incorporated by NK cells
 double& Media::Tymidine_incorporated()
@@ -237,6 +247,8 @@ void Media::update(double& time_step,double t_run,const APC_cells& APC ,const NK
            TNF_d*TNF_degradation())*time_step;
     TNF_d+=TNF_delta;
 
+
+
     /// Ag concentration
     if (Ag_d>0.0)
     {double Ag_delta=(-Ag_d*Ag_deg_d)*time_step;
@@ -245,6 +257,7 @@ void Media::update(double& time_step,double t_run,const APC_cells& APC ,const NK
 
     /// The total number of cells is the adittion of APC + NK + LT
     num_cells_d=APC.num_APC()+NK.num_NK()+LT.num_LT();
+
     /// Tymidine Pulse at 114
 
     double Tymidine_incorporated_;
@@ -277,6 +290,7 @@ void Media::update(double& time_step,double t_run,const APC_cells& APC ,const NK
     s<<"\n Ag deg \t"<<c.Ag_deg_d;
     s<<"\n TymidineTriteate_d \t"<<c.TymidineTriteate_d;
     s<<"\n Prol_TymTr_d \t"<<c.Prol_TymTr_d;
+    s<<"\n max_num_cells \t"<<c.max_num_cells_d;
 
 
   return s;

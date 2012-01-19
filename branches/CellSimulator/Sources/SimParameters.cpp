@@ -134,7 +134,8 @@ SimParameters::SimParameters():
     /*2*/ IFN_deg_(0.5),
     /*3*/ Ag_deg_(0.5),
     /*4*/ TymidineTriteate_(0.5),// No es parámetro
-    /*5*/ Prol_TymTr_(0.5)
+    /*5*/ Prol_TymTr_(0.5),
+    /*6*/ max_num_cells_(0.0)
 
 {}
 
@@ -276,6 +277,7 @@ std::vector<double> SimParameters::getParameters()const
         /*3*/ par.push_back(log(Ag_deg_));
         /*3*/ par.push_back(log(TymidineTriteate_)); // No es parámetro
         /*4*/ par.push_back(log(Prol_TymTr_));
+        par.push_back(log(max_num_cells_));
     }
 
     else if (mode_=="PARTIAL")
@@ -412,6 +414,7 @@ std::vector<double> SimParameters::getParameters()const
         /*1*/ par.push_back(log(TNF_deg_));
         /*3*/ par.push_back(log(TymidineTriteate_));
         /*4*/ par.push_back(log(Prol_TymTr_));
+        par.push_back(log(max_num_cells_));
 
 
     }
@@ -555,6 +558,7 @@ SimParameters& SimParameters::applyParameters(const std::vector<double>& param)
         /*2.5*/ Ag_deg_=exp(param[i++]);
         /*3*/ TymidineTriteate_=exp(param[i++]);
         /*4*/ Prol_TymTr_=exp(param[i++]);
+              max_num_cells_=exp(param[i++]);
 
 
     }
@@ -691,6 +695,7 @@ SimParameters& SimParameters::applyParameters(const std::vector<double>& param)
        /*2.5*/ Ag_deg_=exp(param[i++]);
        /*3*/ TymidineTriteate_=exp(param[i++]);
        /*4*/ Prol_TymTr_=exp(param[i++]);
+        max_num_cells_=exp(param[i++]);
 
     }
     return *this;
@@ -829,7 +834,8 @@ SimParameters::SimParameters(const SimParameters& other):
     /*2*/ IFN_deg_(other.IFN_deg_),
     /*3*/ Ag_deg_(other.Ag_deg_),
     /**/ TymidineTriteate_(other.TymidineTriteate_),
-    /*4*/ Prol_TymTr_(other.Prol_TymTr_)
+    /*4*/ Prol_TymTr_(other.Prol_TymTr_),
+    max_num_cells_(other.max_num_cells_)
 
 {}
 
@@ -974,6 +980,7 @@ void swap(SimParameters& one, SimParameters& other)
        /*2.5*/  std::swap(one.Ag_deg_,other.Ag_deg_);
     /*3*/  std::swap(one.TymidineTriteate_,other.TymidineTriteate_);
     /*4*/  std::swap(one.Prol_TymTr_,other.Prol_TymTr_);
+           std::swap(one.max_num_cells_,other.max_num_cells_);
 }
 
 std::ostream& operator<<(std::ostream& s,SimParameters p)
@@ -1066,6 +1073,7 @@ std::ostream& operator<<(std::ostream& s,SimParameters p)
            s<<"n\ Ag_deg_\t"<<p.Ag_deg_;
     /*3*/  s<<"\n TymidineTriteate_\t"<<p.TymidineTriteate_;
     /*4*/  s<<"\n Prol_TymTr_\t"<<p.Prol_TymTr_;
+           s<<"n mnc \t"<<p.max_num_cells_;
 
     return s;
 
