@@ -7,11 +7,11 @@
 
 int main()
 {
- //   TestParametersIO();
+  //  TestParametersIO();
   // BayesParametersTest();
   // BayesParameters();
    loadModel();
-  // compareTimeStep();
+   //compareTimeStep();
 
 }
 

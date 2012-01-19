@@ -409,12 +409,21 @@ std::ostream& operator<<(std::ostream& s, const Parameters& p){
          while (!line.empty()&& line.compare("End")!=0)
          {
             std::string name;
-            double mean,dBstd;
+            double value1,value2;
+            std::string errorType;
             std::stringstream ss(line);
             ss>>name;
-            ss>>mean;
-            ss>>dBstd;
-            p.push_back_dB(name,mean,dBstd);
+            ss>>value1;
+            ss>>value2;
+            ss>>errorType;
+            if (errorType.compare("dB")==0)
+                p.push_back_dB(name,value1,value2);
+            else if (errorType.compare("1S")==0)
+                p.push_back_1S(name,value1,value2);
+            else if (errorType.compare("2S")==0)
+                p.push_back_2S(name,value1,value2);
+            else if (errorType.compare("3S")==0)
+                p.push_back_3S(name,value1,value2);
             std::getline(s,line);
             if (line.compare("End")==0)
                 std::cout<<"here";

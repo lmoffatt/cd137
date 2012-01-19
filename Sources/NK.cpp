@@ -190,41 +190,50 @@ void NK_cells::update(double& time_step,const Media& m, const APC_cells& APC,con
     /// we update each subpopulation of cells independently and we take into account the transition from one state to the other
 
     /// naive cell, die, proliferate and some of them are "lost" since they activate
-    double NK0_delta=(NK0_d*NK0_proliferation_rate_d-
+    double NK0_delta=(NK0_d*NK0_proliferation_rate_d*m.prol_ratio()-
                       NK0_d*NK0_apop_rate_d-
                       NK0_d*m.Ag()*KaNK_d*
                       ((APC.APCa()+
-                       APC.APCbl()+
+                       APC.APCbo()+
                       (APC.APCbo_TNF_production_rate()/APC.APCa_TNF_production_rate())*(APC.APCbl()+APC.APCbo_Ab()))/
                       ((APC.APCa()+
-                       APC.APCbl()+
+                       APC.APCbo()+
                       (APC.APCbo_TNF_production_rate()/APC.APCa_TNF_production_rate())*(APC.APCbl()+APC.APCbo_Ab()))+ KsAPC_NK_d))*
-                      ((APC.APCa()+APC.APCbl()+APC.APCbl()+APC.APCbo_Ab())/
-                      ((APC.APCa()+APC.APCbl()+APC.APCbl()+APC.APCbo_Ab())+ KsAPC_NK_d)))
+                      ((APC.APCa()+APC.APCbl()+APC.APCbo()+APC.APCbo_Ab())/
+                      ((APC.APCa()+APC.APCbl()+APC.APCbo()+APC.APCbo_Ab())+ KsAPC_NK_d)))
                       *time_step;
     NK0_d+=NK0_delta;
 
     /// activated NK "came from NK0" cell die, proliferate and some of them are "lost" since they bound ligand or mAb
-    double NKa_delta=(NKa_proliferation_rate_d*NKa_d+
+    double NKa_delta=(NKa_proliferation_rate_d*NKa_d*m.prol_ratio()+
                       NK0_d*m.Ag()*KaNK_d*
-                      ((APC.APCa()+
-                       APC.APCbl()+
-                      (APC.APCbo_TNF_production_rate()/APC.APCa_TNF_production_rate())*(APC.APCbl()+APC.APCbo_Ab()))/
-                      ((APC.APCa()+
-                       APC.APCbl()+
-                      (APC.APCbo_TNF_production_rate()/APC.APCa_TNF_production_rate())*(APC.APCbl()+APC.APCbo_Ab()))+ KsAPC_NK_d))*
-                      ((APC.APCa()+APC.APCbl()+APC.APCbl()+APC.APCbo_Ab())/
-                      ((APC.APCa()+APC.APCbl()+APC.APCbl()+APC.APCbo_Ab())+ KsAPC_NK_d))-
-                      NK_NK_d*NKa_d*NKa_expressing_receptor_d*(2*NKa_d*NKa_expressing_receptor_d+NKbo_d+NKbl_d)-
-                      APC.APC_NK()*NKa_d*NKa_expressing_receptor_d*(APC.APCa()+APC.APCbo()+APC.APCbl())-
-                      NK_Ab_d*NKa_d*NKa_expressing_receptor_d*m.Ab()-
-                      NKa_apop_rate_d*NKa_d-
-                      u_NK_TNF_d*NKa_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d)))*time_step;
+                      (
+                          (APC.APCa()+
+                           APC.APCbo()+
+                           (APC.APCbo_TNF_production_rate()/APC.APCa_TNF_production_rate())*(APC.APCbl()+APC.APCbo_Ab())
+                           )/
+                          ((APC.APCa()+
+                            APC.APCbo()+
+                            (APC.APCbo_TNF_production_rate()/APC.APCa_TNF_production_rate())*(APC.APCbl()+APC.APCbo_Ab())
+                            )+
+                           KsAPC_NK_d
+                           )
+                       )*
+                      ((APC.APCa()+APC.APCbl()+APC.APCbo()+APC.APCbo_Ab())/
+                       ((APC.APCa()+APC.APCbl()+APC.APCbo()+APC.APCbo_Ab())+ KsAPC_NK_d)
+                       )-
+                      NKa_d*NK_NK_d*NKa_expressing_receptor_d*(2*NKa_d*NKa_expressing_receptor_d+NKbo_d+NKbl_d)-
+                      NKa_d*APC.APC_NK()*NKa_expressing_receptor_d*(APC.APCa()+APC.APCbo()+APC.APCbl())-
+                      NKa_d*NK_Ab_d*NKa_expressing_receptor_d*m.Ab()-
+                      NKa_d*NKa_apop_rate_d-
+                      NKa_d*u_NK_TNF_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d))
+                      )*
+                      time_step;
     NKa_d+=NKa_delta;
     /// El porcentaje de células productoras de IL-12 está dentro de la constante
 
     /// signalized NK cell "came" from NKa, proliferate, die and some of them are "lost" since they bound mAb
-    double NKbo_delta= (NKbo_d*NKbo_proliferation_rate_d+
+    double NKbo_delta= (NKbo_d*NKbo_proliferation_rate_d*m.prol_ratio()+
                         NK_NK_d*NKa_d*NKa_expressing_receptor_d*(2*NKa_d*NKa_expressing_receptor_d+NKbo_d+NKbl_d)+
                         APC.APC_NK()*NKa_d*NKa_expressing_receptor_d*(APC.APCa()+APC.APCbo()+APC.APCbl())-
                         NKbo_apop_rate_d*NKbo_d-
@@ -235,7 +244,7 @@ void NK_cells::update(double& time_step,const Media& m, const APC_cells& APC,con
 
     /// signalized NK cells are blocke if they bind with the blocking mAb, proliferate and die
 
-    double NKbo_Ab_delta=(NKbo_Ab_d*NKbo_proliferation_rate_d+
+    double NKbo_Ab_delta=(NKbo_Ab_d*NKbo_proliferation_rate_d*m.prol_ratio()+
                           NKbo_d*NK_Ab_d*m.Ab()-
                           NKbo_apop_rate_d*NKbo_Ab_d-
                           u_NK_TNF_d*NKbo_Ab_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d)))
@@ -243,7 +252,7 @@ void NK_cells::update(double& time_step,const Media& m, const APC_cells& APC,con
     NKbo_Ab_d+=NKbo_Ab_delta;
 
     /// block NK cells are activated cells that binds to mAb, proliferate and die
-    double NKbl_delta=(NKbl_d*NKa_proliferation_rate_d+
+    double NKbl_delta=(NKbl_d*NKa_proliferation_rate_d*m.prol_ratio()+
                        NK_Ab_d*NKa_d*NKa_expressing_receptor_d*m.Ab()-
                        NKa_apop_rate_d*NKbl_d-
                        u_NK_TNF_d*NKbl_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d)))*time_step;
@@ -253,8 +262,8 @@ void NK_cells::update(double& time_step,const Media& m, const APC_cells& APC,con
     double NK_TymTr_incorporated_delta;
     if (m.TymidineTriteate()>0){
         NK_TymTr_incorporated_delta=
-                ((NK0_d*NK0_proliferation_rate_d+(NKa_d+NKbl_d)*NKa_proliferation_rate_d+
-                  (NKbo_d+NKbo_Ab_d)*NKbo_proliferation_rate_d)*m.Prol_TymTr()
+                ((NK0_d*NK0_proliferation_rate_d*m.prol_ratio()+(NKa_d+NKbl_d)*NKa_proliferation_rate_d*m.prol_ratio()+
+                  (NKbo_d+NKbo_Ab_d)*NKbo_proliferation_rate_d*m.prol_ratio())*m.Prol_TymTr()
                  )*time_step;
         NK_TymTr_incorporated_d+=NK_TymTr_incorporated_delta;
     }
@@ -486,7 +495,7 @@ std::vector<double> NK_cells::Derivative(const Media& m, const APC_cells& APC)co
 
     /// naive cell, die, proliferate and some of them are "lost" since they activate
 
-    double NK0_delta=(NK0_d*NK0_proliferation_rate_d-
+    double NK0_delta=(NK0_d*NK0_proliferation_rate_d*m.prol_ratio()-
                       NK0_d*NK0_apop_rate_d-
                       NK0_d*m.Ag()*KaNK_d*
                       ((APC.APCa()+
@@ -518,7 +527,7 @@ std::vector<double> NK_cells::Derivative(const Media& m, const APC_cells& APC)co
     /// El porcentaje de células productoras de IL-12 está dentro de la constante
 
     /// signalized NK cell "came" from NKa, proliferate, die and some of them are "lost" since they bound mAb
-    double NKbo_delta= (NKbo_d*NKbo_proliferation_rate_d+
+    double NKbo_delta= (NKbo_d*NKbo_proliferation_rate_d*m.prol_ratio()+
                         NK_NK_d*NKa_d*NKa_expressing_receptor_d*NKa_d*NKa_expressing_receptor_d+
                         NK_NK_d*NKa_d*NKa_expressing_receptor_d*NKbo_d+
                         APC.APC_NK()*NKa_d*NKa_expressing_receptor_d*APC.APCa()+
@@ -530,13 +539,13 @@ std::vector<double> NK_cells::Derivative(const Media& m, const APC_cells& APC)co
 
     /// signalized NK cells are blocke if they bind with the blocking mAb, proliferate and die
 
-    double NKbo_Ab_delta=(NKbo_Ab_d*NKbo_proliferation_rate_d+
+    double NKbo_Ab_delta=(NKbo_Ab_d*NKbo_proliferation_rate_d*m.prol_ratio()+
                           NKbo_d*NK_Ab_d*m.Ab()-
                           NKbo_apop_rate_d*NKbo_Ab_d-
                           u_NK_TNF_d*NKbo_Ab_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d)));
     D.push_back(NKbo_Ab_delta);
     /// block NK cells are activated cells that binds to mAb, proliferate and die
-    double NKbl_delta=(NKbo_Ab_d*NKbo_proliferation_rate_d+
+    double NKbl_delta=(NKbo_Ab_d*NKbo_proliferation_rate_d*m.prol_ratio()+
                        NKbo_d*NK_Ab_d*m.Ab()-
                        NKbo_apop_rate_d*NKbo_Ab_d-
                        u_NK_TNF_d*NKbo_Ab_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d)));
@@ -545,8 +554,9 @@ std::vector<double> NK_cells::Derivative(const Media& m, const APC_cells& APC)co
 
     double NK_TymTr_incorporated_delta=0;
     if (m.TymidineTriteate()>0){
-        NK_TymTr_incorporated_delta=((NK0_d*NK0_proliferation_rate_d+(NKa_d+NKbl_d)*NKa_proliferation_rate_d+
-                                      (NKbo_d+NKbo_Ab_d)*NKbo_proliferation_rate_d)*m.Prol_TymTr());
+        NK_TymTr_incorporated_delta=((NK0_d*NK0_proliferation_rate_d*m.prol_ratio()+
+                                      (NKa_d+NKbl_d)*NKa_proliferation_rate_d*m.prol_ratio()+
+                                      (NKbo_d+NKbo_Ab_d)*NKbo_proliferation_rate_d*m.prol_ratio())*m.Prol_TymTr());
     }
     D.push_back(NK_TymTr_incorporated_delta);
 

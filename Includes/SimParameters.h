@@ -140,6 +140,7 @@ public:
     /*3*/ double Ag_deg_;
     /*4*/ double TymidineTriteate_;// No es parámetro
     /*5*/ double Prol_TymTr_;
+    /*6*/ double max_num_cells_;
 
     SimParameters(const SimParameters& other);
     friend void swap(SimParameters& one, SimParameters& other);

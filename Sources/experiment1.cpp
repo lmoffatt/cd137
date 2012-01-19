@@ -10,7 +10,7 @@ void loadModel()
     med.Ag=0.0;
     med.Ab=0.0;
     med.sim_duration_d=120;
-    med.time_step_d=1.0/120;
+    med.time_step_d=1.0/600;
     med.init_cells=1.0e6;
     med.t_apop_meas_d=119;
 
@@ -18,7 +18,7 @@ void loadModel()
     Mtb.Ag=10.0;
     Mtb.Ab=0.0;
     Mtb.sim_duration_d=120;
-    Mtb.time_step_d=1.0/120;
+    Mtb.time_step_d=1.0/600;
     Mtb.init_cells=1.0e6;
     Mtb.t_apop_meas_d=119;
 
@@ -26,7 +26,7 @@ void loadModel()
     block.Ag=10.0;
     block.Ab=10.0;
     block.sim_duration_d=120;
-    block.time_step_d=1.0/120;
+    block.time_step_d=1.0/600;
     block.init_cells=1.0e6;
     block.t_apop_meas_d=119;
 
@@ -40,16 +40,30 @@ void loadModel()
 
 
 
-    std::string filename="MODEL.txt";
+    std::string filenamePrior="priorMODEL.txt";
+
     std::ifstream f;
-    f.open(filename.c_str());
+    f.open(filenamePrior.c_str());
 
-    Parameters sp;
-    f>>sp;
+    Parameters prior;
+    f>>prior;
 
-    std::cout<<sp;
+    std::cout<<prior;
     f.close();
-    Cell_simulator cell(sp, E);
+
+ /*   std::string filenameCurrent="curentMODEL.txt";
+
+    f.open(filenameCurrent.c_str());
+
+    Parameters current;
+    f>>current;
+
+    std::cout<<current;
+    f.close();
+
+*/
+
+    Cell_simulator cell(prior,prior, E);
 
 
 
@@ -58,14 +72,15 @@ void loadModel()
     //OptimizationResults O=cell.Optimize(sp,sp,simulExp,1,500);
 
     if (1)
-    cell.Optimize(sp,E,"MODELOptimization.txt");
+    cell.Optimize(prior,E,"MODELOptimization.txt");
 else
     {
         std::string filename="MODEL_Run.txt";
         std::ofstream f;
         f.open(filename.c_str());
 
-        cell.run(f,sp);
+
+        cell.run(f,prior);
         f.close();
 
       }
@@ -397,7 +412,7 @@ void compareTimeStep()
     Parameters sp=Cell_simulator::getStandardParameters();
 
 
-    Cell_simulator cell(sp, E);
+    Cell_simulator cell(sp,sp, E);
 
     std::string filename="comparetimestep.txt";
     std::ofstream f;
@@ -468,7 +483,7 @@ void BayesParameters()
     Parameters sp=Cell_simulator::getStandardParameters();
 
 
-    Cell_simulator cell(sp, E);
+    Cell_simulator cell(sp,sp, E);
 
      //Modificar num iteracines
     //simulExp: simulado  E:experimental
@@ -529,7 +544,7 @@ void BayesParametersTest()
     Parameters sp=Cell_simulator::getStandardParameters();
 
 
-    Cell_simulator cell(sp, E);
+    Cell_simulator cell(sp, sp,E);
 
     Experiment SimE=cell.Simulate(sp,E);
 

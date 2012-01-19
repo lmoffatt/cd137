@@ -49,6 +49,9 @@ public:
     /// Timidine Triate/Proliferation conversion factor
     /*4*/    double& Prol_TymTr();
     const double& Prol_TymTr() const;
+    /// Proliferation ratio
+    double prol_ratio() const;
+
 
     void update(double& time_step,double t_run,const APC_cells& APC ,const NK_cells& NK,const LT_cells& LT);
 
@@ -61,7 +64,8 @@ public:
           double init_num_cells,
           double init_Ag,
           double init_Ab,
-          double Prol_TymTr_init
+          double Prol_TymTr_init,
+          double max_num_cells_
           );
 
     Media(const Parameters& sp,
@@ -99,6 +103,7 @@ private:
     /*2*/ double IFN_deg_d;
     /*3*/ double Ag_deg_d;
     /*4*/ double Prol_TymTr_d;/// conversion rate Tym/prol
+    /*5*/ double max_num_cells_d;
 };
 
 

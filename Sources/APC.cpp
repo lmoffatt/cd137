@@ -190,12 +190,12 @@ void APC_cells::update(double& time_step,const Media& m, const NK_cells& NK, con
     /// activated APC cells die and some of them are "lost" since they bind receptor or mAb, they came from APC0
     double APCa_delta_pos=(m.Ag()*APC0_d*APC_Ag_d*(m.IFNgamma()/(m.IFNgamma()+ Ksi_d))*(m.TNF()/(m.TNF()+Kst_d))+
                            APC_Ag_d*m.Ag()*APC0_d)*time_step;
-    double APCa_delta_neg= (APCa_apop_rate_d*APCa_d -
-                            u_APC_TNF_d*APCa_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d))-
-                            APC_APC_d*APCa_d*(2*APCa_d+APCbo_d)-
-                            APC_NK_d*APCa_d*(NK.NKa()*NK.NKa_expressing_receptor()+NK.NKbo())-
-                            (APC_LT_1_d-(LT.LT_Ab()*m.Ab()))*LT.LT0()*(APCa_d/(APCa_d+KsAPC_LT_d))-
-                            APC_Ab_d*m.Ab()*APCa_d
+    double APCa_delta_neg= (-APCa_apop_rate_d*APCa_d
+                            -u_APC_TNF_d*APCa_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d))
+                            -APC_APC_d*APCa_d*(2*APCa_d+APCbo_d)
+                            -APC_NK_d*APCa_d*(NK.NKa()*NK.NKa_expressing_receptor()+NK.NKbo())
+                            -APC_LT_1_d*LT.LT_Ab()/(LT.LT_Ab()+m.Ab())*LT.LT0()*(APCa_d/(APCa_d+KsAPC_LT_d))
+                            -APC_Ab_d*m.Ab()*APCa_d
                             )*time_step;
 
     APCa_d+=APCa_delta_pos+APCa_delta_neg;
@@ -203,8 +203,8 @@ void APC_cells::update(double& time_step,const Media& m, const NK_cells& NK, con
     double APCbo_delta=(
                 APC_APC_d*APCa_d*(2*APCa_d+APCbo_d)+
                 APC_NK_d*APCa_d*(NK.NKa()*NK.NKa_expressing_receptor()+NK.NKbo())+
-                (APC_LT_1_d-(LT.LT_Ab()*m.Ab()))*LT.LT0()*(APCa_d/(APCa_d+KsAPC_LT_d))+
-                APCbo_d*APC_bound_proliferation_rate_d-
+                APC_LT_1_d*LT.LT_Ab()/(LT.LT_Ab()+m.Ab())*LT.LT0()*(APCa_d/(APCa_d+KsAPC_LT_d))+
+                APCbo_d*APC_bound_proliferation_rate_d*m.prol_ratio()-
                 APCbo_d*APCbo_apop_rate_d-
                 APCbo_d*APC_Ab_d*m.Ab()-
                 u_APC_TNF_d*APCbo_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d))
@@ -215,14 +215,16 @@ void APC_cells::update(double& time_step,const Media& m, const NK_cells& NK, con
     /// block APC has ligand free, so they can be signalized and "lost". They came from APCa.
     double APCbl_delta= (APC_Ab_d*m.Ab()*APCa_d-
                          APCa_apop_rate_d*APCbl_d-
-                         APC_Ab_d*m.Ab()*APCbl_d-
+                         APCbl_d*APC_APC_d*(APCa_d+APCbo_d)+
+                         APCbl_d*APC_APC_d*(NK.NKa()+NK.NKbo())+
                          u_APC_TNF_d*APCbl_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d)))*time_step;
     APCbl_d+=APCbl_delta;
 
     /// These cells are signalized and blocked. They came from APCbl or APCbo. They can proliferate or die
     double APCbo_Ab_delta= (APCbo_d*APC_Ab_d*m.Ab()+
-                            APC_Ab_d*m.Ab()*APCbl_d+
-                            APCbo_Ab_d*APC_bound_proliferation_rate_d-
+                            APCbl_d*APC_APC_d*(APCa_d+APCbo_d)+
+                            APCbl_d*APC_APC_d*(NK.NKa()+NK.NKbo())+
+                            APCbo_Ab_d*APC_bound_proliferation_rate_d*m.prol_ratio()-
                             APCbo_apop_rate_d*APCbo_Ab_d-
                             APCbo_Ab_d*u_APC_TNF_d*APCbo_Ab_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d)))*time_step;
     APCbo_Ab_d+=APCbo_Ab_delta;
@@ -230,7 +232,7 @@ void APC_cells::update(double& time_step,const Media& m, const NK_cells& NK, con
     if (m.TymidineTriteate()>0)
     {
         APC_TymTr_incorporated_delta=(
-                    (APCbo_d)*APC_bound_proliferation_rate_d*m.Prol_TymTr()
+                    APCbo_d*APC_bound_proliferation_rate_d*m.prol_ratio()*m.Prol_TymTr()
                     )*time_step;
         APC_TymTr_incorporated_d+=APC_TymTr_incorporated_delta;
     }
@@ -580,7 +582,7 @@ std::vector<double> APC_cells::Derivative(const Media& m, const NK_cells& NK, co
                 APC_APC_d*APCa_d*(2*APCa_d+APCbo_d)+
                 APC_NK_d*APCa_d*(NK.NKa()*NK.NKa_expressing_receptor()+NK.NKbo())+
                 (APC_LT_1_d-(LT.LT_Ab()*m.Ab()))*LT.LT0()*(APCa_d/(APCa_d+KsAPC_LT_d))+
-                APCbo_d*APC_bound_proliferation_rate_d-
+                APCbo_d*APC_bound_proliferation_rate_d*m.prol_ratio()-
                 APCbo_d*APCbo_apop_rate_d-
                 APCbo_d*APC_Ab_d*m.Ab()-
                 u_APC_TNF_d*APCbo_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d))
@@ -593,13 +595,16 @@ std::vector<double> APC_cells::Derivative(const Media& m, const NK_cells& NK, co
 
     double APCbl_delta= (APC_Ab_d*m.Ab()*APCa_d-
                          APCa_apop_rate_d*APCbl_d-
-                         APC_Ab_d*m.Ab()*APCbl_d-
+                         APCbl_d*APC_APC_d*(APCa_d+APCbo_d)+
+                         APCbl_d*APC_APC_d*(NK.NKa()+NK.NKbo())+
                          u_APC_TNF_d*APCbl_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d)));
+
     D.push_back(APCbl_delta);
 
     double APCbo_Ab_delta= (APCbo_d*APC_Ab_d*m.Ab()+
-                            APC_Ab_d*m.Ab()*APCbl_d+
-                            APCbo_Ab_d*APC_bound_proliferation_rate_d-
+                            APCbl_d*APC_APC_d*(APCa_d+APCbo_d)+
+                            APCbl_d*APC_APC_d*(NK.NKa()+NK.NKbo())+
+                            APCbo_Ab_d*APC_bound_proliferation_rate_d*m.prol_ratio()-
                             APCbo_apop_rate_d*APCbo_Ab_d-
                             APCbo_Ab_d*u_APC_TNF_d*APCbo_Ab_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d)));
     D.push_back(APCbo_Ab_delta);
@@ -608,7 +613,7 @@ std::vector<double> APC_cells::Derivative(const Media& m, const NK_cells& NK, co
     if (m.TymidineTriteate()>0)
     {
         APC_TymTr_incorporated_delta=
-                ((APCbo_d+APCbo_Ab_d)*APC_bound_proliferation_rate_d*m.Prol_TymTr());
+                ((APCbo_d+APCbo_Ab_d)*APC_bound_proliferation_rate_d*m.prol_ratio()*m.Prol_TymTr());
     }
     else
         APC_TymTr_incorporated_delta=0;
