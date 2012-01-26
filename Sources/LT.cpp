@@ -181,18 +181,18 @@ void LT_cells::update(double& time_step, double t_run, const Media& m, const APC
    double LT0_delta=(LT0_d*(
                          -LTns_apop_rate_d
                          +LTns_proliferation_rate_d*m.prol_ratio()
-                         -APC.APC_LT_1()*(APC.APCa()/(APC.APCa()+APC.KsAPC_LT()))
-                         -APC.APC_LT_1()*(APC.APCbl()/(APC.APCbl()+APC.KsAPC_LT()))
-                         -APC.APC_LT_2()*(APC.APCbo()/(APC.APCbo()+APC.KsAPC_LT()))
-                         -APC.APC_LT_2()*(APC.APCbo_Ab()/(APC.APCbo_Ab()+APC.KsAPC_LT()))
+                         -APC.APC_LT_1()*(APC.APCa())
+                         -APC.APC_LT_1()*(APC.APCbl())
+                         -APC.APC_LT_2()*(APC.APCbo())
+                         -APC.APC_LT_2()*(APC.APCbo_Ab())
                          ))*time_step;
    LT0_d+=LT0_delta;
     /// Cells interact only once with APC and can recieve signaling by CD137 or not.
    double LTbo_delta=(
-               APC.APC_LT_1()*LT_Ab_d/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCa()/(APC.APCa()+APC.KsAPC_LT()))
-              +APC.APC_LT_1()*LT_Ab_d/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbl()/(APC.APCbl()+APC.KsAPC_LT()))
-              +APC.APC_LT_2()*LT_Ab_d/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo()/(APC.APCbo()+APC.KsAPC_LT()))
-              +APC.APC_LT_2()*LT_Ab_d/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo_Ab()/(APC.APCbo_Ab()+APC.KsAPC_LT()))
+               APC.APC_LT_1()*LT_Ab_d/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCa())
+              +APC.APC_LT_1()*LT_Ab_d/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbl())
+              +APC.APC_LT_2()*LT_Ab_d/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo())
+              +APC.APC_LT_2()*LT_Ab_d/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo_Ab())
               +LTbo_proliferation_rate_d*m.prol_ratio()*LTbo_d
               -LTbo_apop_rate_d*LTbo_d
               -LTbo_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))
@@ -200,10 +200,10 @@ void LT_cells::update(double& time_step, double t_run, const Media& m, const APC
 
     LTbo_d+=LTbo_delta;
     double LTbl_delta=(
-                           APC.APC_LT_1()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCa()/(APC.APCa()+APC.KsAPC_LT()))
-                          +APC.APC_LT_1()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbl()/(APC.APCbl()+APC.KsAPC_LT()))
-                          +APC.APC_LT_2()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo()/(APC.APCbo()+APC.KsAPC_LT()))
-                          +APC.APC_LT_2()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo_Ab()/(APC.APCbo_Ab()+APC.KsAPC_LT()))
+                           APC.APC_LT_1()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCa())
+                          +APC.APC_LT_1()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbl())
+                          +APC.APC_LT_2()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo())
+                          +APC.APC_LT_2()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo_Ab())
                           +LTbl_proliferation_rate_d*m.prol_ratio()*LTbl_d
                           -LTbl_apop_rate_d*LTbl_d
                           -LTbl_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))
@@ -493,9 +493,9 @@ std::vector<double> LT_cells::Derivative(double t_run, const Media& m, const APC
    D.push_back(LT0_delta);
     /// Cells interact only once with APC and can recieve signaling by CD137 or not.
    double LTbo_delta=
-                 APC.APC_LT_1()*LT_Ab_d/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCa()/(APC.APCa()+APC.KsAPC_LT()))
-                +APC.APC_LT_1()*LT_Ab_d/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbl()/(APC.APCbl()+APC.KsAPC_LT()))
-                +APC.APC_LT_2()*LT_Ab_d/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo()/(APC.APCbo()+APC.KsAPC_LT()))
+                 APC.APC_LT_1()*LT_Ab_d/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCa())
+                +APC.APC_LT_1()*LT_Ab_d/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbl())
+                +APC.APC_LT_2()*LT_Ab_d/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo())
                 +APC.APC_LT_2()*LT_Ab_d/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo_Ab()/(APC.APCbo_Ab()+APC.KsAPC_LT()))
                 +LTbo_proliferation_rate_d*m.prol_ratio()*LTbo_d
                 -LTbo_apop_rate_d*LTbo_d

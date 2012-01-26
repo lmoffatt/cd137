@@ -199,8 +199,7 @@ void NK_cells::update(double& time_step,const Media& m, const APC_cells& APC,con
                       ((APC.APCa()+
                        APC.APCbo()+
                       (APC.APCbo_TNF_production_rate()/APC.APCa_TNF_production_rate())*(APC.APCbl()+APC.APCbo_Ab()))+ KsAPC_NK_d))*
-                      ((APC.APCa()+APC.APCbl()+APC.APCbo()+APC.APCbo_Ab())/
-                      ((APC.APCa()+APC.APCbl()+APC.APCbo()+APC.APCbo_Ab())+ KsAPC_NK_d)))
+                      ((APC.APCa()+APC.APCbl()+APC.APCbo()+APC.APCbo_Ab())))
                       *time_step;
     NK0_d+=NK0_delta;
 
@@ -219,8 +218,7 @@ void NK_cells::update(double& time_step,const Media& m, const APC_cells& APC,con
                            KsAPC_NK_d
                            )
                        )*
-                      ((APC.APCa()+APC.APCbl()+APC.APCbo()+APC.APCbo_Ab())/
-                       ((APC.APCa()+APC.APCbl()+APC.APCbo()+APC.APCbo_Ab())+ KsAPC_NK_d)
+                      ((APC.APCa()+APC.APCbl()+APC.APCbo()+APC.APCbo_Ab())
                        )-
                       NKa_d*NK_NK_d*NKa_expressing_receptor_d*(2*NKa_d*NKa_expressing_receptor_d+NKbo_d+NKbl_d)-
                       NKa_d*APC.APC_NK()*NKa_expressing_receptor_d*(APC.APCa()+APC.APCbo()+APC.APCbl())-

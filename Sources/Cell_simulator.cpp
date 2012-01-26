@@ -64,8 +64,8 @@ std::ostream& Cell_simulator::run(std::ostream& f)
     f<<"\n";
 
     double eps=1e-7;
-    /*double tstart=31;
-    double tend=32;*/
+//    double tstart=0;
+//    double tend=1;
 
     while ((trun_d<this->sim_duration_d))
     {
@@ -633,8 +633,9 @@ Results Cell_simulator::Simulate(const SimParameters& simPar,
 
     double eps=1e-7;
 
-    while (trun_d+eps<=results.Duration())
+    while (trun_d+eps<=results.Duration()&&(!( m.TNF()!=m.TNF())))
     {
+
 
         if(trun_d+eps>=tTNFs)
         {
@@ -867,7 +868,6 @@ Results Cell_simulator::Simulate(const SimParameters& simPar,
         NK.update(time_step_d,m,APC,LT);
         LT.update(time_step_d,trun_d,m,APC,NK);
         m.update(time_step_d,trun_d, APC,NK,LT);
-
 
 
 
