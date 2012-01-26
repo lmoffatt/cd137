@@ -142,7 +142,7 @@ BayesIteration& BayesIteration::getPosterior()
     std::size_t factor=250;
     std::size_t numIterations=1000;
     std::size_t numSeeds=20;
-    std::map<double,Parameters> seeds=getRandomParameters(numSeeds*factor,0.5);
+    std::map<double,Parameters> seeds=getRandomParameters(numSeeds*factor,0.1);
 
     std::map<double,Parameters> friuts;
 

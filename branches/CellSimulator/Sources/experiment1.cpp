@@ -10,7 +10,7 @@ void loadModel()
     med.Ag=0.0;
     med.Ab=0.0;
     med.sim_duration_d=120;
-    med.time_step_d=1.0/600;
+    med.time_step_d=1.0/120;
     med.init_cells=1.0e6;
     med.t_apop_meas_d=119;
 
@@ -18,15 +18,15 @@ void loadModel()
     Mtb.Ag=10.0;
     Mtb.Ab=0.0;
     Mtb.sim_duration_d=120;
-    Mtb.time_step_d=1.0/600;
+    Mtb.time_step_d=1.0/120;
     Mtb.init_cells=1.0e6;
     Mtb.t_apop_meas_d=119;
 
     Treatment block;
     block.Ag=10.0;
-    block.Ab=10.0;
+    block.Ab=1.0;
     block.sim_duration_d=120;
-    block.time_step_d=1.0/600;
+    block.time_step_d=1.0/120;
     block.init_cells=1.0e6;
     block.t_apop_meas_d=119;
 

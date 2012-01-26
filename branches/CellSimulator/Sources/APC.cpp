@@ -182,9 +182,11 @@ void APC_cells::update(double& time_step,const Media& m, const NK_cells& NK, con
 
     /// the number of naive cells (no Ag) die and some of them are "lost" since they internalize the Ag
 
-    double APC0_delta=(-APC0_apop_rate_d*APC0_d-
-                       m.Ag()*APC0_d*APC_Ag_d*(m.IFNgamma()/(m.IFNgamma()+ Ksi_d))*(m.TNF()/(m.TNF()+Kst_d))-
-                       APC_Ag_d*m.Ag()*APC0_d)*time_step;
+    double APC0_delta=(-APC0_apop_rate_d*APC0_d //apoptosis
+                       // activation in inflamatory context APC0_d ->APCa_d
+                       -m.Ag()*APC0_d*APC_Ag_d*(m.IFNgamma()/(m.IFNgamma()+ Ksi_d))*(m.TNF()/(m.TNF()+Kst_d))
+                       //activation basal (dendritic cells)
+                       -APC_Ag_d*m.Ag()*APC0_d)*time_step;
 
     APC0_d+=APC0_delta;
     /// activated APC cells die and some of them are "lost" since they bind receptor or mAb, they came from APC0
@@ -194,39 +196,39 @@ void APC_cells::update(double& time_step,const Media& m, const NK_cells& NK, con
                             -u_APC_TNF_d*APCa_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d))
                             -APC_APC_d*APCa_d*(2*APCa_d+APCbo_d)
                             -APC_NK_d*APCa_d*(NK.NKa()*NK.NKa_expressing_receptor()+NK.NKbo())
-                            -APC_LT_1_d*LT.LT_Ab()/(LT.LT_Ab()+m.Ab())*LT.LT0()*(APCa_d/(APCa_d+KsAPC_LT_d))
+                            -APC_LT_1_d*LT.LT_Ab()/(LT.LT_Ab()+m.Ab())*LT.LT0()*(APCa_d)
                             -APC_Ab_d*m.Ab()*APCa_d
                             )*time_step;
 
     APCa_d+=APCa_delta_pos+APCa_delta_neg;
     /// only bound APC could proliferate. They also die. They came from APCa. Some of them are "lost" since they bind mAb
     double APCbo_delta=(
-                APC_APC_d*APCa_d*(2*APCa_d+APCbo_d)+
-                APC_NK_d*APCa_d*(NK.NKa()*NK.NKa_expressing_receptor()+NK.NKbo())+
-                APC_LT_1_d*LT.LT_Ab()/(LT.LT_Ab()+m.Ab())*LT.LT0()*(APCa_d/(APCa_d+KsAPC_LT_d))+
-                APCbo_d*APC_bound_proliferation_rate_d*m.prol_ratio()-
-                APCbo_d*APCbo_apop_rate_d-
-                APCbo_d*APC_Ab_d*m.Ab()-
-                u_APC_TNF_d*APCbo_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d))
+                APC_APC_d*APCa_d*(2*APCa_d+APCbo_d)
+                +APC_NK_d*APCa_d*(NK.NKa()*NK.NKa_expressing_receptor()+NK.NKbo())
+                +APC_LT_1_d*LT.LT_Ab()/(LT.LT_Ab()+m.Ab())*LT.LT0()*(APCa_d)
+//                +APCbo_d*APC_bound_proliferation_rate_d*m.prol_ratio()
+                -APCbo_d*APCbo_apop_rate_d
+                -APCbo_d*APC_Ab_d*m.Ab()
+                -u_APC_TNF_d*APCbo_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d))
                 )*time_step;
 
     APCbo_d+=APCbo_delta;
 
     /// block APC has ligand free, so they can be signalized and "lost". They came from APCa.
-    double APCbl_delta= (APC_Ab_d*m.Ab()*APCa_d-
-                         APCa_apop_rate_d*APCbl_d-
-                         APCbl_d*APC_APC_d*(APCa_d+APCbo_d)+
-                         APCbl_d*APC_APC_d*(NK.NKa()+NK.NKbo())+
-                         u_APC_TNF_d*APCbl_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d)))*time_step;
+    double APCbl_delta= (APC_Ab_d*m.Ab()*APCa_d
+                         -APCa_apop_rate_d*APCbl_d
+                         -APCbl_d*APC_APC_d*(APCa_d+APCbo_d)
+                         -APCbl_d*APC_NK_d*(NK.NKa()+NK.NKbo())
+                         -u_APC_TNF_d*APCbl_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d)))*time_step;
     APCbl_d+=APCbl_delta;
 
     /// These cells are signalized and blocked. They came from APCbl or APCbo. They can proliferate or die
-    double APCbo_Ab_delta= (APCbo_d*APC_Ab_d*m.Ab()+
-                            APCbl_d*APC_APC_d*(APCa_d+APCbo_d)+
-                            APCbl_d*APC_APC_d*(NK.NKa()+NK.NKbo())+
-                            APCbo_Ab_d*APC_bound_proliferation_rate_d*m.prol_ratio()-
-                            APCbo_apop_rate_d*APCbo_Ab_d-
-                            APCbo_Ab_d*u_APC_TNF_d*APCbo_Ab_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d)))*time_step;
+    double APCbo_Ab_delta= (APCbo_d*APC_Ab_d*m.Ab()
+                            +APCbl_d*APC_APC_d*(APCa_d+APCbo_d)
+                            +APCbl_d*APC_APC_d*(NK.NKa()+NK.NKbo())
+//                            +APCbo_Ab_d*APC_bound_proliferation_rate_d*m.prol_ratio()
+                            -APCbo_apop_rate_d*APCbo_Ab_d
+                            -APCbo_Ab_d*u_APC_TNF_d*APCbo_Ab_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d)))*time_step;
     APCbo_Ab_d+=APCbo_Ab_delta;
     double APC_TymTr_incorporated_delta;
     if (m.TymidineTriteate()>0)
