@@ -81,15 +81,15 @@ class NK_cells
                /// 5)Percentages of TNF productions of each type of NK
                /*9*/ double percentage_TNF_NK0_prod_rate_,
                /*10*/ double percentage_TNF_NKa_prod_rate_,
-               /*11*/ double percentage_TNF_NKbo_prod_rate_,
+               //*11*/ double percentage_TNF_NKbo_prod_rate_,
                /// 6) Proliferation rates
                /*12*/ double NK0_proliferation_rate_,
                /*13*/ double NKa_proliferation_rate_,
-               /*14*/ double NKbo_proliferation_rate_,
+               //*14*/ double NKbo_proliferation_rate_,
                /// 7) Apoptosis rates
                /*15*/ double NK0_apop_rate_,
                /*16*/ double NKa_apop_rate_,
-               /*17*/ double NKbo_apop_rate_,
+               //*17*/ double NKbo_apop_rate_,
                /// 8) constant saturation of TNF for apoptosis
                /*18*/ double Ks_NK_m_TNF_,
                /// 9) conversion rates
@@ -150,15 +150,15 @@ private:
     /// 5)Percentages of TNF productions of each type of NK
     /*9*/ double percentage_TNF_NK0_prod_rate_d;
     /*10*/ double percentage_TNF_NKa_prod_rate_d;
-    /*11*/ double percentage_TNF_NKbo_prod_rate_d;
+    //*11*/ double percentage_TNF_NKbo_prod_rate_d;
     /// 6) Proliferation rates
     /*12*/ double NK0_proliferation_rate_d;
     /*13*/ double NKa_proliferation_rate_d;
-    /*14*/ double NKbo_proliferation_rate_d;
+    //*14*/ double NKbo_proliferation_rate_d;
     /// 7) Apoptosis rates
     /*15*/ double NK0_apop_rate_d;
     /*16*/ double NKa_apop_rate_d;
-    /*17*/ double NKbo_apop_rate_d;
+    //*17*/ double NKbo_apop_rate_d;
     /// 8) constant saturation of TNF for apoptosis
     /*18*/ double Ks_NK_m_TNF_d;
     /// 9) conversion rates

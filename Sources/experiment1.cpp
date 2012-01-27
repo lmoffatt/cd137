@@ -144,7 +144,7 @@ else
 //    /// 3) TNF Poductions rates of each type of APC
 //    /*5*/ sp.TNF_APC0_prod_rate_=1e-4;
 //    /*6*/ sp.TNF_APCa_prod_rate_=1e-4;
-//    /*7*/ sp.TNF_APCbo_prod_rate_=1e-2;
+//    /*7*/ sp.APC_TNF_Induction_CD137=1e-2;
 
 
 //    /// 4) Percentages of IFN productions of each type of APC
@@ -155,7 +155,7 @@ else
 //    /// 5)Percentages of TNF productions of each type of APC
 //    /*11*/ sp.percentage_TNF_APC0_prod_rate_=0.001;
 //    /*12*/ sp.percentage_TNF_APCa_prod_rate_=0.01;
-//    /*13*/ sp.percentage_TNF_APCbo_prod_rate_=0.035;
+//    /*13*/ sp.percentage_APC_TNF_Induction_CD137=0.035;
 
 
 //    /// 6) Proliferation rates

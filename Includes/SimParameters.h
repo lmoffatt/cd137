@@ -22,11 +22,11 @@ public:
     /// 3) TNF Poductions rates of each type of APC
     /*5*/ double TNF_APC0_prod_rate_;
     /*6*/ double TNF_APCa_prod_rate_;
-    /*7*/ double TNF_APCbo_prod_rate_;
+    /*7*/ double APC_TNF_Induction_CD137;
     /// 4) Percentages of IFN productions of each type of APC
     /*8*/ double percentage_IFN_APC0_prod_rate_;
     /*9*/ double percentage_IFN_APCa_prod_rate_;
-    /*10*/ double percentage_IFN_APCbo_prod_rate_;
+    //*10*/ double percentage_IFN_APCbo_prod_rate_;
     /// 5)Percentages of TNF productions of each type of APC
     /*11*/ double percentage_TNF_APC0_prod_rate_;
     /// 6) Proliferation rates
@@ -42,10 +42,10 @@ public:
     /*18*/ double APC_APC_;
     /*19*/ double APC_NK_;
     /*20*/ double APC_LT_1_;
-    /*21*/ double APC_LT_2_;
+    /*21*/ double APC_Ag_2_;
     /*22*/ double APC_Ab_;
-    /// 10)Saturation constant of IFN and TNF for activation
-    /*23*/ double KsAPC_LT_;
+//    /// 10)Saturation constant of IFN and TNF for activation
+//    /*23*/ double KsAPC_LT_;
     /// 11)Saturation constant of APC_LT interaction
     /*24*/ double APC_Ksi_;
     /*25*/ double APC_Kst_;
@@ -70,15 +70,15 @@ public:
     /// 5)Percentages of TNF productions of each type of NK
     /*9*/ double percentage_TNF_NK0_prod_rate_;
     /*10*/ double percentage_TNF_NKa_prod_rate_;
-    /*11*/ double percentage_TNF_NKbo_prod_rate_;
+    //*11*/ double percentage_TNF_NKbo_prod_rate_;
     /// 6) Proliferation rates
     /*12*/ double NK0_proliferation_rate_;
     /*13*/ double NKa_proliferation_rate_;
-    /*14*/ double NKbo_proliferation_rate_;
+    //*14*/ double NKbo_proliferation_rate_;
     /// 7) Apoptosis rates
     /*15*/ double NK0_apop_rate_;
     /*16*/ double NKa_apop_rate_;
-    /*17*/ double NKbo_apop_rate_;
+    //*17*/ double NKbo_apop_rate_;
     /// 8) constant saturation of TNF for apoptosis
     /*18*/ double Ks_NK_m_TNF_;
     /// 9) conversion rates
@@ -110,11 +110,11 @@ public:
     /// 4) Percentages of IFN productions of each type of LT
     /*9*/ double percentage_IFN_LTns_prod_rate_;
     /*10*/ double percentage_IFN_LTbo_prod_rate_;
-    /*11*/ double percentage_IFN_LTbl_prod_rate_;
+    //*11*/ double percentage_IFN_LTbl_prod_rate_;
     /// 5)Percentages of TNF productions of each type of LT
     /*12*/ double percentage_TNF_LTns_prod_rate_;
     /*13*/ double percentage_TNF_LTbo_prod_rate_;
-    /*14*/ double percentage_TNF_LTbl_prod_rate_;
+    //*14*/ double percentage_TNF_LTbl_prod_rate_;
     /// 6) Proliferation rates
     /*15*/ double LTns_proliferation_rate_;
     /*16*/ double LTbo_proliferation_rate_;

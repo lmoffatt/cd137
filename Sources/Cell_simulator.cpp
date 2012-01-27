@@ -329,11 +329,11 @@ Cell_simulator& Cell_simulator::applyParameters(const SimParameters& sp,
                   /// 3) TNF Poductions rates of each type of APC
                   /*5*/ sp.TNF_APC0_prod_rate_,
                   /*6*/ sp.TNF_APCa_prod_rate_,
-                  /*7*/ sp.TNF_APCbo_prod_rate_,
+                  /*7*/ sp.APC_TNF_Induction_CD137,
                   /// 4) Percentages of IFN productions of each type of APC
                   /*8*/ sp.percentage_IFN_APC0_prod_rate_,
                   /*9*/ sp.percentage_IFN_APCa_prod_rate_,
-                  /*10*/ sp.percentage_IFN_APCbo_prod_rate_,
+                  //*10*/ sp.percentage_IFN_APCbo_prod_rate_,
                   /// 5)Percentages of TNF productions of each type of APC
                   /*11*/ sp.percentage_TNF_APC0_prod_rate_,
                   /// 6) Proliferation rates
@@ -349,10 +349,10 @@ Cell_simulator& Cell_simulator::applyParameters(const SimParameters& sp,
                   /*18*/ sp.APC_APC_,
                   /*19*/ sp.APC_NK_,
                   /*20*/ sp.APC_LT_1_,
-                  /*21*/ sp.APC_LT_2_,
+                  /*21*/ sp.APC_Ag_2_,
                   /*22*/ sp.APC_Ab_,
-                  /// 10)Saturation constant of IFN and TNF for activation
-                  /*23*/ sp.KsAPC_LT_,
+//                  /// 10)Saturation constant of IFN and TNF for activation
+//                  /*23*/ sp.KsAPC_LT_,
                   /// 11)Saturation constant of APC_LT interaction
                   /*24*/ sp.APC_Ksi_,
                   /*25*/ sp.APC_Kst_,
@@ -375,15 +375,15 @@ Cell_simulator& Cell_simulator::applyParameters(const SimParameters& sp,
                  /// 5)Percentages of TNF productions of each type of NK
                  /*9*/ sp.percentage_TNF_NK0_prod_rate_,
                  /*10*/ sp.percentage_TNF_NKa_prod_rate_,
-                 /*11*/ sp.percentage_TNF_NKbo_prod_rate_,
+                 //*11*/ sp.percentage_TNF_NKbo_prod_rate_,
                  /// 6) Proliferation rates
                  /*12*/ sp.NK0_proliferation_rate_,
                  /*13*/ sp.NKa_proliferation_rate_,
-                 /*14*/ sp.NKbo_proliferation_rate_,
+                 //*14*/ sp.NKbo_proliferation_rate_,
                  /// 7) Apoptosis rates
                  /*15*/ sp.NK0_apop_rate_,
                  /*16*/ sp.NKa_apop_rate_,
-                 /*17*/ sp.NKbo_apop_rate_,
+                 //*17*/ sp.NKbo_apop_rate_,
                  /// 8) constant saturation of TNF for apoptosis
                  /*18*/ sp.Ks_NK_m_TNF_,
                  /// 9) conversion rates
@@ -415,11 +415,11 @@ Cell_simulator& Cell_simulator::applyParameters(const SimParameters& sp,
                  /// 4) Percentages of IFN productions of each type of LT
                      /*9*/ sp.percentage_IFN_LTns_prod_rate_,
                      /*10*/ sp.percentage_IFN_LTbo_prod_rate_,
-                     /*11*/ sp.percentage_IFN_LTbl_prod_rate_,
+                     //*11*/ sp.percentage_IFN_LTbl_prod_rate_,
                  /// 5)Percentages of TNF productions of each type of LT
                      /*12*/ sp.percentage_TNF_LTns_prod_rate_,
                      /*13*/ sp.percentage_TNF_LTbo_prod_rate_,
-                     /*14*/ sp.percentage_TNF_LTbl_prod_rate_,
+                     //*14*/ sp.percentage_TNF_LTbl_prod_rate_,
                  /// 6) Proliferation rates
                      /*15*/ sp.LTns_proliferation_rate_,
                      /*16*/ sp.LTbo_proliferation_rate_,
@@ -1447,6 +1447,7 @@ void Cell_simulator::Optimize(const Parameters& priorPar,
      /// 1) Init ratio of LT, NK, APC cells
          /*1*/ sp.push_back_1S("init_K_ratio_LT",0.89/(1-0.89),0.899/(1-0.899));// Fórmula leucocitaria
          /*2*/ sp.push_back_1S("init_K_ratio_APC_NK",0.8/(1-0.8),0.9/(1-0.9)); // Fórmula leucocitaria
+         /*3*/ sp.push_back_1S("init_K_ratio_NK_APC",0.8/(1-0.8),0.9/(1-0.9));
      /// APC
          /// 2) IFN Poductions rates of each type of APC
          /*2*/ sp.push_back_1S("IFN_APC0_prod_rate",1.0e-8,1.0e-5);
@@ -1459,7 +1460,7 @@ void Cell_simulator::Optimize(const Parameters& priorPar,
          /// 4) Percentages of IFN productions of each type of APC
          /*8*/ sp.push_back_1S("Kpercentage_IFN_APC0_prod_rate",0.01,0.06);//oj
          /*9*/ sp.push_back_1S("Kpercentage_IFN_APCa_prod_rate",0.08,0.5);
-         /*10*/ sp.push_back_1S("Kpercentage_IFN_APCbo_prod_rate",0.14,0.5);
+         //*10*/ sp.push_back_1S("Kpercentage_IFN_APCbo_prod_rate",0.14,0.5);
          /// 5)Percentages of TNF productions of each type of APC
          /*11*/ sp.push_back_1S("Kpercentage_TNF_APC0_prod_rate",0.02,0.08);
          /// 6) Proliferation rates
@@ -1475,10 +1476,10 @@ void Cell_simulator::Optimize(const Parameters& priorPar,
          /*18*/ sp.push_back_1S("APC_APC",1.0e-10,1.0e-1);//ver
          /*19*/ sp.push_back_1S("APC_NK",1.0e-10,1.0e-1);//ver
          /*20*/ sp.push_back_1S("APC_LT_1",4.0e-7,4.0e-1);//K, multiplicar por la posibilidad de encuentro? No diferencio x que no tengo el dato, dejo que el programa modifique
-         /*21*/ sp.push_back_1S("APC_LT_2",4.0e-7,4.0e-1);//K, multiplicar por la posibilidad de encuentro?
+         /*21*/ sp.push_back_1S("APC_Ag_2",4.0e-7,4.0e-1);//K, multiplicar por la posibilidad de encuentro?
          /*22*/ sp.push_back_1S("APC_Ab",1.0e-6,1e-1);
-         /// 10)Saturation constant of IFN and TNF for activation
-         /*23*/ sp.push_back_1S("KsAPC_LT",10.0e1,10.0e5);//k
+//         /// 10)Saturation constant of IFN and TNF for activation
+//         /*23*/ sp.push_back_1S("KsAPC_LT",10.0e1,10.0e5);//k
          /// 11)Saturation constant of APC_LT interaction
          /*24*/ sp.push_back_1S("APC_Ksi",1.0e-2,1e2);//Kirschner
          /*25*/ sp.push_back_1S("APC_Kst",1.0e2,1.0e6);//Kirschner (promedio)
@@ -1501,15 +1502,15 @@ void Cell_simulator::Optimize(const Parameters& priorPar,
          /// 5)Percentages of TNF productions of each type of NK
          /*9*/  sp.push_back_1S("Kpercentage_TNF_NK0_prod_rate",0.1,0.06);
          /*10*/  sp.push_back_1S("Kpercentage_TNF_NKa_prod_rate",0.05,0.5);
-         /*11*/  sp.push_back_1S("Kpercentage_TNF_NKbo_prod_rate",0.04,0.5);
+         //*11*/  sp.push_back_1S("Kpercentage_TNF_NKbo_prod_rate",0.04,0.5);
          /// 6) Proliferation rates
          /*12*/  sp.push_back_1S("NK0_proliferation_rate",3.0e-6,3.0e-4);
          /*13*/  sp.push_back_1S("NKa_proliferation_rate",0.00001,0.001);
-         /*14*/  sp.push_back_1S("NKbo_proliferation_rate",0.00001,0.001);
+         //*14*/  sp.push_back_1S("NKbo_proliferation_rate",0.00001,0.001);
          /// 7) Apoptosis rates
          /*15*/  sp.push_back_1S("NK0_apop_rate",3.0e-6,3.0e-4);
          /*16*/  sp.push_back_1S("NKa_apop_rate",0.00001,0.001);
-         /*17*/  sp.push_back_1S("NKbo_apop_rate",0.00001,0.001);
+         //*17*/  sp.push_back_1S("NKbo_apop_rate",0.00001,0.001);
          /// 8) constant saturation of TNF for apoptosis
          /*18*/  sp.push_back_1S("Ks_NK_m_TNF",0.002,20);
          /// 9) conversion rates
@@ -1540,11 +1541,11 @@ void Cell_simulator::Optimize(const Parameters& priorPar,
         /// 4) Percentages of IFN productions of each type of LT
             /*9*/  sp.push_back_1S("Kpercentage_IFN_LTns_prod_rate",0.01,0.06);
             /*10*/  sp.push_back_1S("Kpercentage_IFN_LTbo_prod_rate",0.05,0.5);
-            /*11*/  sp.push_back_1S("Kpercentage_IFN_LTbl_prod_rate",0.01,0.25);
+            //*11*/  sp.push_back_1S("Kpercentage_IFN_LTbl_prod_rate",0.01,0.25);
         /// 5)Percentages of TNF productions of each type of LT
             /*12*/  sp.push_back_1S("Kpercentage_TNF_LTns_prod_rate",0.0,0.05);
             /*13*/  sp.push_back_1S("Kpercentage_TNF_LTbo_prod_rate",0.2,0.25);
-            /*14*/  sp.push_back_1S("Kpercentage_TNF_LTbl_prod_rate",0.01,0.125);
+            //*14*/  sp.push_back_1S("Kpercentage_TNF_LTbl_prod_rate",0.01,0.125);
         /// 6) Proliferation rates
             /*15*/  sp.push_back_1S("LTns_proliferation_rate",1.0/6000.0,1.0/60);//oj
             /*16*/  sp.push_back_1S("LTbo_proliferation_rate",0.083,0.83);//K
@@ -1583,6 +1584,7 @@ void Cell_simulator::Optimize(const Parameters& priorPar,
      /// 1) Init ratio of LT, NK, APC cells
          /*1*/ sp.push_back_1S("init_K_ratio_LT",0.89/(1-0.89),0.899/(1-0.899));// Fórmula leucocitaria
          /*2*/ sp.push_back_1S("init_K_ratio_APC_NK",0.8/(1-0.8),0.9/(1-0.9)); // Fórmula leucocitaria
+              /*3*/ sp.push_back_1S("init_K_ratio_NK_APC",0.30,0.6);
      /// APC
          /// 2) IFN Poductions rates of each type of APC
          /*2*/ sp.push_back_1S("IFN_APC0_prod_rate",1.0e-8,1.0e-5);
@@ -1595,7 +1597,7 @@ void Cell_simulator::Optimize(const Parameters& priorPar,
          /// 4) Percentages of IFN productions of each type of APC
          /*8*/ sp.push_back_dB("Kpercentage_IFN_APC0_prod_rate",0.01,0.06);//oj
          /*9*/ sp.push_back_dB("Kpercentage_IFN_APCa_prod_rate",0.08,0.5);
-         /*10*/ sp.push_back_dB("Kpercentage_IFN_APCbo_prod_rate",0.14,0.5);
+         //*10*/ sp.push_back_dB("Kpercentage_IFN_APCbo_prod_rate",0.14,0.5);
          /// 5)Percentages of TNF productions of each type of APC
          /*11*/ sp.push_back_dB("Kpercentage_TNF_APC0_prod_rate",0.02,0.08);
          /// 6) Proliferation rates
@@ -1611,10 +1613,10 @@ void Cell_simulator::Optimize(const Parameters& priorPar,
          /*18*/ sp.push_back_dB("APC_APC",1.0e-10,1.0e-1);//ver
          /*19*/ sp.push_back_dB("APC_NK",1.0e-10,1.0e-1);//ver
          /*20*/ sp.push_back_dB("APC_LT_1",4.0e-7,4.0e-1);//K, multiplicar por la posibilidad de encuentro? No diferencio x que no tengo el dato, dejo que el programa modifique
-         /*21*/ sp.push_back_dB("APC_LT_2",4.0e-7,4.0e-1);//K, multiplicar por la posibilidad de encuentro?
+         /*21*/ sp.push_back_dB("APC_Ag_2",4.0e-7,4.0e-1);//K, multiplicar por la posibilidad de encuentro?
          /*22*/ sp.push_back_dB("APC_Ab",1.0e-6,1e-1);
-         /// 10)Saturation constant of IFN and TNF for activation
-         /*23*/ sp.push_back_dB("KsAPC_LT",10.0e1,10.0e5);//k
+//         /// 10)Saturation constant of IFN and TNF for activation
+//         /*23*/ sp.push_back_dB("KsAPC_LT",10.0e1,10.0e5);//k
          /// 11)Saturation constant of APC_LT interaction
          /*24*/ sp.push_back_dB("APC_Ksi",1.0e-2,1e2);//Kirschner
          /*25*/ sp.push_back_dB("APC_Kst",1.0e2,1.0e6);//Kirschner (promedio)
@@ -1637,15 +1639,15 @@ void Cell_simulator::Optimize(const Parameters& priorPar,
          /// 5)Percentages of TNF productions of each type of NK
          /*9*/  sp.push_back_dB("Kpercentage_TNF_NK0_prod_rate",0.1,0.06);
          /*10*/  sp.push_back_dB("Kpercentage_TNF_NKa_prod_rate",0.05,0.5);
-         /*11*/  sp.push_back_dB("Kpercentage_TNF_NKbo_prod_rate",0.04,0.5);
+         //*11*/  sp.push_back_dB("Kpercentage_TNF_NKbo_prod_rate",0.04,0.5);
          /// 6) Proliferation rates
          /*12*/  sp.push_back_dB("NK0_proliferation_rate",3.0e-6,3.0e-4);
          /*13*/  sp.push_back_dB("NKa_proliferation_rate",0.00001,0.001);
-         /*14*/  sp.push_back_dB("NKbo_proliferation_rate",0.00001,0.001);
+         //*14*/  sp.push_back_dB("NKbo_proliferation_rate",0.00001,0.001);
          /// 7) Apoptosis rates
          /*15*/  sp.push_back_dB("NK0_apop_rate",3.0e-6,3.0e-4);
          /*16*/  sp.push_back_dB("NKa_apop_rate",0.00001,0.001);
-         /*17*/  sp.push_back_dB("NKbo_apop_rate",0.00001,0.001);
+         //*17*/  sp.push_back_dB("NKbo_apop_rate",0.00001,0.001);
          /// 8) constant saturation of TNF for apoptosis
          /*18*/  sp.push_back_dB("Ks_NK_m_TNF",0.002,20);
          /// 9) conversion rates
@@ -1676,11 +1678,11 @@ void Cell_simulator::Optimize(const Parameters& priorPar,
         /// 4) Percentages of IFN productions of each type of LT
             /*9*/  sp.push_back_dB("Kpercentage_IFN_LTns_prod_rate",0.01,0.06);
             /*10*/  sp.push_back_dB("Kpercentage_IFN_LTbo_prod_rate",0.05,0.5);
-            /*11*/  sp.push_back_dB("Kpercentage_IFN_LTbl_prod_rate",0.01,0.25);
+            //*11*/  sp.push_back_dB("Kpercentage_IFN_LTbl_prod_rate",0.01,0.25);
         /// 5)Percentages of TNF productions of each type of LT
             /*12*/  sp.push_back_dB("Kpercentage_TNF_LTns_prod_rate",0.0,0.05);
             /*13*/  sp.push_back_dB("Kpercentage_TNF_LTbo_prod_rate",0.2,0.25);
-            /*14*/  sp.push_back_dB("Kpercentage_TNF_LTbl_prod_rate",0.01,0.125);
+            //*14*/  sp.push_back_dB("Kpercentage_TNF_LTbl_prod_rate",0.01,0.125);
         /// 6) Proliferation rates
             /*15*/  sp.push_back_dB("LTns_proliferation_rate",1.0/6000.0,1.0/60);//oj
             /*16*/  sp.push_back_dB("LTbo_proliferation_rate",0.083,0.83);//K

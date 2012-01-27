@@ -74,11 +74,11 @@ public:
              /// 4) Percentages of IFN productions of each type of LT
              /*9*/ double percentage_IFN_LTns_prod_rate_,
              /*10*/ double percentage_IFN_LTbo_prod_rate_,
-             /*11*/ double percentage_IFN_LTbl_prod_rate_,
+             //*11*/ double percentage_IFN_LTbl_prod_rate_,
              /// 5)Percentages of TNF productions of each type of LT
              /*12*/ double percentage_TNF_LTns_prod_rate_,
              /*13*/ double percentage_TNF_LTbo_prod_rate_,
-             /*14*/ double percentage_TNF_LTbl_prod_rate_,
+             //*14*/ double percentage_TNF_LTbl_prod_rate_,
              /// 6) Proliferation rates
              /*15*/ double LTns_proliferation_rate_,
              /*16*/ double LTbo_proliferation_rate_,
@@ -142,11 +142,11 @@ private:
     /// 4) Percentages of IFN productions of each type of LT
     /*9*/ double percentage_IFN_LTns_prod_rate_d;
     /*10*/ double percentage_IFN_LTbo_prod_rate_d;
-    /*11*/ double percentage_IFN_LTbl_prod_rate_d;
+    //*11*/ double percentage_IFN_LTbl_prod_rate_d;
     /// 5)Percentages of TNF productions of each type of LT
     /*12*/ double percentage_TNF_LTns_prod_rate_d;
     /*13*/ double percentage_TNF_LTbo_prod_rate_d;
-    /*14*/ double percentage_TNF_LTbl_prod_rate_d;
+    //*14*/ double percentage_TNF_LTbl_prod_rate_d;
     /// 6) Proliferation rates
     /*15*/ double LTns_proliferation_rate_d;
     /*16*/ double LTbo_proliferation_rate_d;
