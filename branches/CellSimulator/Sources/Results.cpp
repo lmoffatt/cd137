@@ -131,31 +131,24 @@ Results::Results(std::string experimentName):
     {
         duration_=120.0;
         /*27*/        TNF_.push_back(Measurement(16.0,50.29,8.82));//
-                      TNF_.push_back(Measurement(32.0,46.29,8.82));//
         /*28*/        TNF_.push_back(Measurement(48.0,42.00,7.737));//
                       TNF_.push_back(Measurement(72.0,28.29,8.82));//
-                      TNF_.push_back(Measurement(96.0,28.29,8.82));//
         /*29*/        TNF_.push_back(Measurement(119.0,28.309,5.613));//
-                      IFN_.push_back(Measurement(15.0,4.794,0.89));//
         /*28*/        IFN_.push_back(Measurement(16.0,4.794,0.89));//
-                      IFN_.push_back(Measurement(17.0,4.794,0.89));//
         /*29*/        IFN_.push_back(Measurement(48.0,11.29,1.873));//
         /*30*/        IFN_.push_back(Measurement(119.0,28.209,5.584));//
         /*31*/        APC_expression_.push_back(Measurement(0.0,3.0,0.6));//  //:means true error
         /*32*/        APC_expression_.push_back(Measurement(16.0,14.5,2.0));//
         /*33*/        APC_expression_.push_back(Measurement(119.0,6.9,3.6));//
-                      NK_expression_.push_back(Measurement(0.0,1.54,0.67));//
         /*34*/        NK_expression_.push_back (Measurement (24.0, 11.32,1.36));//
-                      NK_expression_.push_back (Measurement (119.0, 1.32,1.36));//
+                      NK_expression_.push_back (Measurement (119.0, 2.82,1.36));//
         /*35*/        LT_expression_.push_back (Measurement (0.0,2.0,1.1));//
         /*36*/        LT_expression_.push_back (Measurement (16.0,2.2,0.7));//
         /*37*/        LT_expression_.push_back(Measurement (24.0, 4.1, 2.3));//
         /*38*/        LT_expression_.push_back(Measurement (119.0,29.7, 7.77));//
         /*39*/        APC_IFNg_.push_back(Measurement (16.0,7.66,2.20));//
         /*40*/        APC_IFNg_.push_back (Measurement (119.0,4.8,1.48));//
-                      APC_TNFa_.push_back(Measurement (15.0,13.96,2.52));//
         /*41*/        APC_TNFa_.push_back(Measurement (16.0,13.96,2.52));//
-                      APC_TNFa_.push_back(Measurement (17.0,13.96,2.52));//
         /*42*/        APC_TNFa_.push_back (Measurement (119.0,7.05,2.03));//
         /*43*/        NK_IFNg_.push_back(Measurement (24.0,27.18,5.32));//
         /*44*/        NK_TNFa_.push_back (Measurement (24.0,5.81,0.97));//
@@ -176,14 +169,12 @@ Results::Results(std::string experimentName):
 /*53*/        TNF_.push_back(Measurement(119.0,38.86,6.632));//
               IFN_.push_back(Measurement(15.0,8.2280,1.251));//
 /*54*/        IFN_.push_back(Measurement(16.0,8.2280,1.251));//
-               IFN_.push_back(Measurement(17.0,8.2280,1.251));//
+              IFN_.push_back(Measurement(17.0,8.2280,1.251));//
 /*55*/        IFN_.push_back(Measurement(48.0,7.911,1.208));//
 /*56*/        IFN_.push_back(Measurement(119.0,13.091,2.24));//
 /*57*/        APC_IFNg_.push_back(Measurement (16.0,14.11,4.02));//
 /*58*/        APC_IFNg_.push_back (Measurement (119.0,6.78,2.48));//
-               APC_TNFa_.push_back(Measurement (15.0,41.7,6.99));//
 /*59*/        APC_TNFa_.push_back(Measurement (16.0,41.7,6.99));//
-              APC_TNFa_.push_back(Measurement (17.0,41.7,6.99));//
 /*60*/        APC_TNFa_.push_back (Measurement (119.0,12.03,2.13));//
 /*61*/        NK_IFNg_.push_back(Measurement (24.0,36.11,8.2));//
 /*62*/        NK_TNFa_.push_back (Measurement (24.0,8.66,1.48));//

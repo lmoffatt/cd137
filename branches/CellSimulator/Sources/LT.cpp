@@ -19,11 +19,11 @@ LT_cells::LT_cells(/// 1) Init number of LT
                    /// 4) Percentages of IFN productions of each type of LT
                    /*9*/ double percentage_IFN_LTns_prod_rate_,
                    /*10*/ double percentage_IFN_LTbo_prod_rate_,
-                   /*11*/ double percentage_IFN_LTbl_prod_rate_,
+                   //*11*/ double percentage_IFN_LTbl_prod_rate_,
                    /// 5)Percentages of TNF productions of each type of LT
                    /*12*/ double percentage_TNF_LTns_prod_rate_,
                    /*13*/ double percentage_TNF_LTbo_prod_rate_,
-                   /*14*/ double percentage_TNF_LTbl_prod_rate_,
+                   //*14*/ double percentage_TNF_LTbl_prod_rate_,
                    /// 6) Proliferation rates
                    /*15*/ double LTns_proliferation_rate_,
                    /*16*/ double LTbo_proliferation_rate_,
@@ -58,10 +58,10 @@ LT_cells::LT_cells(/// 1) Init number of LT
     /*12*/ TNF_LTbl_prod_rate_d(TNF_LTbl_prod_rate_),
     /*13*/ percentage_IFN_LTns_prod_rate_d(percentage_IFN_LTns_prod_rate_),
     /*14*/ percentage_IFN_LTbo_prod_rate_d( percentage_IFN_LTbo_prod_rate_),
-    /*15*/ percentage_IFN_LTbl_prod_rate_d(percentage_IFN_LTbl_prod_rate_),
+    //*15*/ percentage_IFN_LTbl_prod_rate_d(percentage_IFN_LTbl_prod_rate_),
     /*16*/ percentage_TNF_LTns_prod_rate_d(percentage_TNF_LTns_prod_rate_),
     /*17*/ percentage_TNF_LTbo_prod_rate_d(percentage_TNF_LTbo_prod_rate_),
-    /*18*/ percentage_TNF_LTbl_prod_rate_d(percentage_TNF_LTbl_prod_rate_),
+    //*18*/ percentage_TNF_LTbl_prod_rate_d(percentage_TNF_LTbl_prod_rate_),
     /*19*/ LTns_proliferation_rate_d(LTns_proliferation_rate_),
     /*20*/ LTbo_proliferation_rate_d(LTbo_proliferation_rate_),
     /*21*/ LTbl_proliferation_rate_d(LTbl_proliferation_rate_),
@@ -97,10 +97,10 @@ LT_cells::LT_cells(const LT_cells& other):
     /*12*/ TNF_LTbl_prod_rate_d(other.TNF_LTbl_prod_rate_d),
     /*13*/ percentage_IFN_LTns_prod_rate_d(other.percentage_IFN_LTns_prod_rate_d),
     /*14*/ percentage_IFN_LTbo_prod_rate_d(other. percentage_IFN_LTbo_prod_rate_d),
-    /*15*/ percentage_IFN_LTbl_prod_rate_d(other.percentage_IFN_LTbl_prod_rate_d),
+    //*15*/ percentage_IFN_LTbl_prod_rate_d(other.percentage_IFN_LTbl_prod_rate_d),
     /*16*/ percentage_TNF_LTns_prod_rate_d(other.percentage_TNF_LTns_prod_rate_d),
     /*17*/ percentage_TNF_LTbo_prod_rate_d(other.percentage_TNF_LTbo_prod_rate_d),
-    /*18*/ percentage_TNF_LTbl_prod_rate_d(other.percentage_TNF_LTbl_prod_rate_d),
+    //*18*/ percentage_TNF_LTbl_prod_rate_d(other.percentage_TNF_LTbl_prod_rate_d),
     /*19*/ LTns_proliferation_rate_d(other.LTns_proliferation_rate_d),
     /*20*/ LTbo_proliferation_rate_d(other.LTbo_proliferation_rate_d),
     /*21*/ LTbl_proliferation_rate_d(other.LTbl_proliferation_rate_d),
@@ -144,10 +144,10 @@ void swap(LT_cells& one, LT_cells& other)
     /*12*/ std::swap(one.TNF_LTbl_prod_rate_d,other.TNF_LTbl_prod_rate_d);
     /*13*/ std::swap(one.percentage_IFN_LTns_prod_rate_d,other.percentage_IFN_LTns_prod_rate_d);
     /*14*/ std::swap(one.percentage_IFN_LTbo_prod_rate_d,other. percentage_IFN_LTbo_prod_rate_d);
-    /*15*/ std::swap(one.percentage_IFN_LTbl_prod_rate_d,other.percentage_IFN_LTbl_prod_rate_d);
+    //*15*/ std::swap(one.percentage_IFN_LTbl_prod_rate_d,other.percentage_IFN_LTbl_prod_rate_d);
     /*16*/ std::swap(one.percentage_TNF_LTns_prod_rate_d,other.percentage_TNF_LTns_prod_rate_d);
     /*17*/ std::swap(one.percentage_TNF_LTbo_prod_rate_d,other.percentage_TNF_LTbo_prod_rate_d);
-    /*18*/ std::swap(one.percentage_TNF_LTbl_prod_rate_d,other.percentage_TNF_LTbl_prod_rate_d);
+    //*18*/ std::swap(one.percentage_TNF_LTbl_prod_rate_d,other.percentage_TNF_LTbl_prod_rate_d);
     /*19*/ std::swap(one.LTns_proliferation_rate_d,other.LTns_proliferation_rate_d);
     /*20*/ std::swap(one.LTbo_proliferation_rate_d,other.LTbo_proliferation_rate_d);
     /*21*/ std::swap(one.LTbl_proliferation_rate_d,other.LTbl_proliferation_rate_d);
@@ -183,16 +183,16 @@ void LT_cells::update(double& time_step, double t_run, const Media& m, const APC
                          +LTns_proliferation_rate_d*m.prol_ratio()
                          -APC.APC_LT_1()*(APC.APCa())
                          -APC.APC_LT_1()*(APC.APCbl())
-                         -APC.APC_LT_2()*(APC.APCbo())
-                         -APC.APC_LT_2()*(APC.APCbo_Ab())
+                         -APC.APC_LT_1()*(APC.APCbo())
+                         -APC.APC_LT_1()*(APC.APCbo_Ab())
                          ))*time_step;
    LT0_d+=LT0_delta;
     /// Cells interact only once with APC and can recieve signaling by CD137 or not.
    double LTbo_delta=(
                APC.APC_LT_1()*LT_Ab_d/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCa())
               +APC.APC_LT_1()*LT_Ab_d/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbl())
-              +APC.APC_LT_2()*LT_Ab_d/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo())
-              +APC.APC_LT_2()*LT_Ab_d/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo_Ab())
+              +APC.APC_LT_1()*LT_Ab_d/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo())
+              +APC.APC_LT_1()*LT_Ab_d/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo_Ab())
               +LTbo_proliferation_rate_d*m.prol_ratio()*LTbo_d
               -LTbo_apop_rate_d*LTbo_d
               -LTbo_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))
@@ -202,10 +202,10 @@ void LT_cells::update(double& time_step, double t_run, const Media& m, const APC
     double LTbl_delta=(
                            APC.APC_LT_1()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCa())
                           +APC.APC_LT_1()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbl())
-                          +APC.APC_LT_2()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo())
-                          +APC.APC_LT_2()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo_Ab())
-                          +LTbl_proliferation_rate_d*m.prol_ratio()*LTbl_d
-                          -LTbl_apop_rate_d*LTbl_d
+                          +APC.APC_LT_1()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo())
+                          +APC.APC_LT_1()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo_Ab())
+                          +LTbo_proliferation_rate_d/LTbl_proliferation_rate_d*m.prol_ratio()*LTbl_d
+                          -LTbo_apop_rate_d*LTbl_apop_rate_d*LTbl_d
                           -LTbl_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))
                 )*time_step;
     LTbl_d+=LTbl_delta;
@@ -217,7 +217,7 @@ void LT_cells::update(double& time_step, double t_run, const Media& m, const APC
                    (LTns_proliferation_rate_d*LTns_d*m.prol_ratio()+
                     LTns_proliferation_rate_d*m.prol_ratio()*LT0_d+
                     LTbo_proliferation_rate_d*LTbo_d*m.prol_ratio()
-                                  +LTbl_proliferation_rate_d*m.prol_ratio()*LTbl_d)*m.Prol_TymTr()
+                                  +LTbo_proliferation_rate_d/LTbl_proliferation_rate_d*m.prol_ratio()*LTbl_d)*m.Prol_TymTr()
                    )*time_step;
        LT_TymTr_incorporated_d+=LT_TymTr_incorporated_delta;
    }
@@ -293,7 +293,7 @@ double LT_cells::LT_IFNgamma_production_rate() const
       double sum=LTns_d*percentage_IFN_LTns_prod_rate_d*IFN_LTns_prod_rate_d+
                LT0_d*percentage_IFN_LTns_prod_rate_d*IFN_LTns_prod_rate_d+
                LTbo_d*percentage_IFN_LTbo_prod_rate_d*IFN_LTbo_prod_rate_d+
-               LTbl_d*percentage_IFN_LTbl_prod_rate_d*IFN_LTbl_prod_rate_d;
+               LTbl_d*percentage_IFN_LTbo_prod_rate_d*IFN_LTbo_prod_rate_d/IFN_LTbl_prod_rate_d;
       return sum;
   }
 
@@ -302,7 +302,7 @@ double LT_cells::percentage_LT_IFN_production() const
       double sum=(LTns_d*percentage_IFN_LTns_prod_rate_d+
                LT0_d*percentage_IFN_LTns_prod_rate_d+
                LTbo_d*percentage_IFN_LTbo_prod_rate_d+
-                  LTbl_d*percentage_IFN_LTbl_prod_rate_d)*100/num_LT();
+                  LTbl_d*percentage_IFN_LTbo_prod_rate_d)*100/num_LT();
       return sum;
   }
 
@@ -312,7 +312,7 @@ double LT_cells::TNF_production_rate() const
       double sum=LTns_d*percentage_TNF_LTns_prod_rate_d*TNF_LTns_prod_rate_d+
                  LT0_d*percentage_TNF_LTns_prod_rate_d*TNF_LTns_prod_rate_d+
                  LTbo_d*percentage_TNF_LTbo_prod_rate_d*TNF_LTbo_prod_rate_d+
-                 LTbl_d*percentage_TNF_LTbl_prod_rate_d*TNF_LTbl_prod_rate_d;
+                 LTbl_d*percentage_TNF_LTbo_prod_rate_d*TNF_LTbo_prod_rate_d/TNF_LTbl_prod_rate_d;
       return sum;
   }
 
@@ -322,7 +322,7 @@ double LT_cells::percentage_LT_TNF_production() const
       double sum=(LTns_d*percentage_TNF_LTns_prod_rate_d+
                LT0_d*percentage_TNF_LTns_prod_rate_d+
                LTbo_d*percentage_TNF_LTbo_prod_rate_d+
-                  LTbl_d*percentage_TNF_LTbl_prod_rate_d)*100/num_LT();
+                  LTbl_d*percentage_TNF_LTbo_prod_rate_d)*100/num_LT();
       return sum;
   }
 
@@ -379,10 +379,10 @@ std::ostream& operator<<(std::ostream& s, const LT_cells& c)
    /*12*/ s<<"\n TNF_LTbl_prod_rate_d \t"<<c.TNF_LTbl_prod_rate_d;
    /*13*/ s<<"\n percentage_IFN_LTns_prod_rate_d \t"<<c.percentage_IFN_LTns_prod_rate_d;
    /*14*/ s<<"\n percentage_IFN_LTbo_prod_rate_d \t"<<c. percentage_IFN_LTbo_prod_rate_d;
-   /*15*/ s<<"\n percentage_IFN_LTbl_prod_rate_d \t"<<c.percentage_IFN_LTbl_prod_rate_d;
+   //*15*/ s<<"\n percentage_IFN_LTbl_prod_rate_d \t"<<c.percentage_IFN_LTbl_prod_rate_d;
    /*16*/ s<<"\n percentage_TNF_LTns_prod_rate_d \t"<<c.percentage_TNF_LTns_prod_rate_d;
-   /*17*/ s<<"\n percentage_TNF_LTbo_prod_rate_d \t"<<c.percentage_TNF_LTbo_prod_rate_d;
-   /*18*/ s<<"\n percentage_TNF_LTbl_prod_rate_d \t"<<c.percentage_TNF_LTbl_prod_rate_d;
+   //*17*/ s<<"\n percentage_TNF_LTbo_prod_rate_d \t"<<c.percentage_TNF_LTbo_prod_rate_d;
+   //*18*/ s<<"\n percentage_TNF_LTbl_prod_rate_d \t"<<c.percentage_TNF_LTbl_prod_rate_d;
    /*19*/ s<<"\n LTns_proliferation_rate_d \t"<<c.LTns_proliferation_rate_d;
    /*20*/ s<<"\n LTbo_proliferation_rate_d \t"<<c.LTbo_proliferation_rate_d;
    /*21*/ s<<"\n LTbl_proliferation_rate_d \t"<<c.LTbl_proliferation_rate_d;
@@ -437,11 +437,11 @@ LT_cells::LT_cells(const Parameters& p, const Treatment& t):
     /// 4) Percentages of IFN productions of each type of LT
         /*9*/  percentage_IFN_LTns_prod_rate_d(p.mean_ratio("Kpercentage_IFN_LTns_prod_rate")),
         /*10*/  percentage_IFN_LTbo_prod_rate_d(p.mean_ratio("Kpercentage_IFN_LTbo_prod_rate")),
-        /*11*/  percentage_IFN_LTbl_prod_rate_d(p.mean_ratio("Kpercentage_IFN_LTbl_prod_rate")),
+        //*11*/  percentage_IFN_LTbl_prod_rate_d(p.mean_ratio("Kpercentage_IFN_LTbl_prod_rate")),
     /// 5)Percentages of TNF productions of each type of LT
         /*12*/  percentage_TNF_LTns_prod_rate_d(p.mean_ratio("Kpercentage_TNF_LTns_prod_rate")),
         /*13*/  percentage_TNF_LTbo_prod_rate_d(p.mean_ratio("Kpercentage_TNF_LTbo_prod_rate")),
-        /*14*/  percentage_TNF_LTbl_prod_rate_d(p.mean_ratio("Kpercentage_TNF_LTbl_prod_rate")),
+        //*14*/  percentage_TNF_LTbl_prod_rate_d(p.mean_ratio("Kpercentage_TNF_LTbl_prod_rate")),
     /// 6) Proliferation rates
         /*15*/  LTns_proliferation_rate_d(p.mean("LTns_proliferation_rate")),
         /*16*/  LTbo_proliferation_rate_d(p.mean("LTbo_proliferation_rate")),
@@ -485,28 +485,28 @@ std::vector<double> LT_cells::Derivative(double t_run, const Media& m, const APC
    double LT0_delta=LT0_d*(
                -LTns_apop_rate_d
                +LTns_proliferation_rate_d*m.prol_ratio()
-               -APC.APC_LT_1()*(APC.APCa()/(APC.APCa()+APC.KsAPC_LT()))
-               -APC.APC_LT_1()*(APC.APCbl()/(APC.APCbl()+APC.KsAPC_LT()))
-               -APC.APC_LT_2()*(APC.APCbo()/(APC.APCbo()+APC.KsAPC_LT()))
-               -APC.APC_LT_2()*(APC.APCbo_Ab()/(APC.APCbo_Ab()+APC.KsAPC_LT()))
+               -APC.APC_LT_1()*(APC.APCa()/*/(APC.APCa()+APC.KsAPC_LT())*/)
+               -APC.APC_LT_1()*(APC.APCbl()/*/(APC.APCbl()+APC.KsAPC_LT())*/)
+               -APC.APC_LT_1()*(APC.APCbo()/*/(APC.APCbo()+APC.KsAPC_LT())*/)
+               -APC.APC_LT_1()*(APC.APCbo_Ab()/*/(APC.APCbo_Ab()+APC.KsAPC_LT())*/)
                );
    D.push_back(LT0_delta);
     /// Cells interact only once with APC and can recieve signaling by CD137 or not.
    double LTbo_delta=
                  APC.APC_LT_1()*LT_Ab_d/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCa())
                 +APC.APC_LT_1()*LT_Ab_d/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbl())
-                +APC.APC_LT_2()*LT_Ab_d/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo())
-                +APC.APC_LT_2()*LT_Ab_d/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo_Ab()/(APC.APCbo_Ab()+APC.KsAPC_LT()))
+                +APC.APC_LT_1()*LT_Ab_d/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo())
+                +APC.APC_LT_1()*LT_Ab_d/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo_Ab()/*/(APC.APCbo_Ab()+APC.KsAPC_LT())*/)
                 +LTbo_proliferation_rate_d*m.prol_ratio()*LTbo_d
                 -LTbo_apop_rate_d*LTbo_d
                 -LTbo_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d));
 
     D.push_back(LTbo_delta);
     double LTbl_delta=(
-                APC.APC_LT_1()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCa()/(APC.APCa()+APC.KsAPC_LT()))
-               +APC.APC_LT_1()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbl()/(APC.APCbl()+APC.KsAPC_LT()))
-               +APC.APC_LT_2()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo()/(APC.APCbo()+APC.KsAPC_LT()))
-               +APC.APC_LT_2()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo_Ab()/(APC.APCbo_Ab()+APC.KsAPC_LT()))
+                APC.APC_LT_1()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCa()/*/(APC.APCa()+APC.KsAPC_LT())*/)
+               +APC.APC_LT_1()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbl()/*/(APC.APCbl()+APC.KsAPC_LT())*/)
+               +APC.APC_LT_1()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo()/*/(APC.APCbo()+APC.KsAPC_LT())*/)
+               +APC.APC_LT_1()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo_Ab()/*/(APC.APCbo_Ab()+APC.KsAPC_LT())*/)
                +LTbl_proliferation_rate_d*m.prol_ratio()*LTbl_d
                -LTbl_apop_rate_d*LTbl_d
                -LTbl_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))

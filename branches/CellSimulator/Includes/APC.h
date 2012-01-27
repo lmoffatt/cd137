@@ -63,14 +63,14 @@ public:
     /// Receptor binding rate to LT
     double& APC_LT_1();
     const double& APC_LT_1() const;
-    double& APC_LT_2();
-    const double& APC_LT_2() const;
+    double& APC_Ag_2();
+    const double& APC_Ag_2() const;
     /// Ab binding rate
     double& APC_Ab();
     const double& APC_Ab()const;
-    /// Constante de saturación Unión APC_LT
-    double& KsAPC_LT();
-    const double& KsAPC_LT() const;
+//    /// Constante de saturación Unión APC_LT
+//    double& KsAPC_LT();
+//    const double& KsAPC_LT() const;
 
     /// 6) Tymidine incorporated by APC cells
     double& APC_TymTr_incorporated();
@@ -94,7 +94,7 @@ public:
         /// 4) Percentages of IFN productions of each type of APC
         /*8*/ double percentage_IFN_APC0_prod_rate_,
         /*9*/ double percentage_IFN_APCa_prod_rate_,
-        /*10*/ double percentage_IFN_APCbo_prod_rate_,
+        //*10*/ double percentage_IFN_APCbo_prod_rate_,
         /// 5)Percentages of TNF productions of APC0
         /*11*/ double percentage_TNF_APC0_prod_rate_,
         /// 6) Proliferation rates
@@ -110,10 +110,10 @@ public:
         /*18*/ double APC_APC_,
         /*19*/ double APC_NK_,
         /*20*/ double APC_LT_1_,
-        /*21*/ double APC_LT_2_,
+        /*21*/ double APC_Ag_2_,
         /*22*/ double APC_Ab_,
-        /// 10)Saturation constant of IFN and TNF for activation
-        /*23*/ double KsAPC_LT_,
+//        /// 10)Saturation constant of IFN and TNF for activation
+//        /*23*/ double KsAPC_LT_,
         /// 11)Saturation constant of APC_LT interaction
         /*24*/ double Ksi_,
         /*25*/ double Kst_,
@@ -168,7 +168,7 @@ private:
     /// 4) Percentages of IFN productions of each type of APC
     /*8*/ double percentage_IFN_APC0_prod_rate_d;
     /*9*/ double percentage_IFN_APCa_prod_rate_d;
-    /*10*/ double percentage_IFN_APCbo_prod_rate_d;
+    //*10*/ double percentage_IFN_APCbo_prod_rate_d;
     /// 5)Percentages of TNF productions of each type of APC
     /*11*/ double percentage_TNF_APC0_prod_rate_d;
     /// 6) Proliferation rates
@@ -184,7 +184,7 @@ private:
     /*18*/ double APC_APC_d;
     /*19*/ double APC_NK_d;
     /*20*/ double APC_LT_1_d;
-    /*21*/ double APC_LT_2_d;
+    /*21*/ double APC_Ag_2_d;
     /*22*/ double APC_Ab_d;
     /// 10)Saturation constant of IFN and TNF for activation
     /*23*/ double KsAPC_LT_d;

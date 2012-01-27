@@ -17,11 +17,11 @@ SimParameters::SimParameters():
     /// 3) TNF Poductions rates of each type of APC
     /*5*/ TNF_APC0_prod_rate_(1e-10),
     /*6*/ TNF_APCa_prod_rate_(1e-10),
-    /*7*/ TNF_APCbo_prod_rate_(1e-10),
+    /*7*/ APC_TNF_Induction_CD137(1e-10),
     /// 4) Percentages of IFN productions of each type of APC
     /*8*/ percentage_IFN_APC0_prod_rate_(0.01),
     /*9*/ percentage_IFN_APCa_prod_rate_(0.01),
-    /*10*/ percentage_IFN_APCbo_prod_rate_(0.01),
+   //*10*/ percentage_IFN_APCbo_prod_rate_(0.01),
     /// 5)Percentages of TNF productions of each type of APC
     /*11*/ percentage_TNF_APC0_prod_rate_(0.01),
     /// 6) Proliferation rates
@@ -37,10 +37,10 @@ SimParameters::SimParameters():
     /*18*/ APC_APC_(1e-6),
     /*19*/ APC_NK_(1e-6),
     /*20*/ APC_LT_1_(1e-6),
-    /*21*/ APC_LT_2_(1e-6),
+    /*21*/ APC_Ag_2_(1e-6),
     /*22*/ APC_Ab_(1e-6),
-    /// 10)Saturation constant of IFN and TNF for activation
-    /*23*/ KsAPC_LT_(1e-6),
+//    /// 10)Saturation constant of IFN and TNF for activation
+//    /*23*/ KsAPC_LT_(1e-6),
     /// 11)Saturation constant of APC_LT interaction
     /*24*/ APC_Ksi_(1e-6),
     /*25*/ APC_Kst_(1e-6),
@@ -65,15 +65,15 @@ SimParameters::SimParameters():
     /// 5)Percentages of TNF productions of each type of NK
     /*9*/  percentage_TNF_NK0_prod_rate_(0.01),
     /*10*/  percentage_TNF_NKa_prod_rate_(0.01),
-    /*11*/  percentage_TNF_NKbo_prod_rate_(0.01),
+    //*11*/  percentage_TNF_NKbo_prod_rate_(0.01),
     /// 6) Proliferation rates
     /*12*/  NK0_proliferation_rate_(1e-6),
     /*13*/  NKa_proliferation_rate_(1e-6),
-    /*14*/  NKbo_proliferation_rate_(1e-6),
+    //*14*/  NKbo_proliferation_rate_(1e-6),
     /// 7) Apoptosis rates
     /*15*/  NK0_apop_rate_(1e-6),
     /*16*/  NKa_apop_rate_(1e-6),
-    /*17*/  NKbo_apop_rate_(1e-6),
+    //*17*/  NKbo_apop_rate_(1e-6),
     /// 8) constant saturation of TNF for apoptosis
     /*18*/  Ks_NK_m_TNF_(1e-6),
     /// 9) conversion rates
@@ -105,11 +105,11 @@ SimParameters::SimParameters():
    /// 4) Percentages of IFN productions of each type of LT
        /*9*/  percentage_IFN_LTns_prod_rate_(0.05),
        /*10*/  percentage_IFN_LTbo_prod_rate_(0.8),
-       /*11*/  percentage_IFN_LTbl_prod_rate_(0.8),
+       //*11*/  percentage_IFN_LTbl_prod_rate_(0.8),
    /// 5)Percentages of TNF productions of each type of LT
        /*12*/  percentage_TNF_LTns_prod_rate_(0.05),
        /*13*/  percentage_TNF_LTbo_prod_rate_(0.8),
-       /*14*/  percentage_TNF_LTbl_prod_rate_(0.8),
+       //*14*/  percentage_TNF_LTbl_prod_rate_(0.8),
    /// 6) Proliferation rates
        /*15*/  LTns_proliferation_rate_(1e-10),
        /*16*/  LTbo_proliferation_rate_(1e-10),
@@ -156,11 +156,11 @@ std::vector<double> SimParameters::getParameters()const
        /// 3) TNF Poductions rates of each type of APC
         /*5*/ par.push_back(log(TNF_APC0_prod_rate_));
         /*6*/ par.push_back(log(TNF_APCa_prod_rate_));
-        /*7*/ par.push_back(log(TNF_APCbo_prod_rate_));
+        /*7*/ par.push_back(log(APC_TNF_Induction_CD137));
         /// 4) Percentages of IFN productions of each type of APC
         /*8*/ par.push_back(log(percentage_IFN_APC0_prod_rate_));
         /*9*/ par.push_back(log(percentage_IFN_APCa_prod_rate_));
-        /*10*/ par.push_back(log(percentage_IFN_APCbo_prod_rate_));
+        //*10*/ par.push_back(log(percentage_IFN_APCbo_prod_rate_));
         /// 5)Percentages of TNF productions of each type of APC
         /*11*/ par.push_back(log(percentage_TNF_APC0_prod_rate_));
         /// 6) Proliferation rates
@@ -176,10 +176,10 @@ std::vector<double> SimParameters::getParameters()const
         /*18*/ par.push_back(log(APC_APC_));
         /*19*/ par.push_back(log(APC_NK_));
         /*20*/ par.push_back(log(APC_LT_1_));
-        /*21*/ par.push_back(log(APC_LT_2_));
+        /*21*/ par.push_back(log(APC_Ag_2_));
         /*22*/ par.push_back(log(APC_Ab_));
-        /// 10)Saturation constant of IFN and TNF for activation
-        /*23*/ par.push_back(log(KsAPC_LT_));
+//        /// 10)Saturation constant of IFN and TNF for activation
+//        /*23*/ par.push_back(log(KsAPC_LT_));
         /// 11)Saturation constant of APC_LT interaction
         /*24*/ par.push_back(log(APC_Ksi_));
         /*25*/ par.push_back(log(APC_Kst_));
@@ -204,15 +204,15 @@ std::vector<double> SimParameters::getParameters()const
         /// 5)Percentages of TNF productions of each type of NK
         /*9*/  par.push_back(log(percentage_TNF_NK0_prod_rate_));
         /*10*/  par.push_back(log(percentage_TNF_NKa_prod_rate_));
-        /*11*/  par.push_back(log(percentage_TNF_NKbo_prod_rate_));
+        //*11*/  par.push_back(log(percentage_TNF_NKbo_prod_rate_));
         /// 6) Proliferation rates
         /*12*/par.push_back (log(NK0_proliferation_rate_));
         /*13*/  par.push_back(log(NKa_proliferation_rate_));
-        /*14*/  par.push_back(log(NKbo_proliferation_rate_));
+        //*14*/  par.push_back(log(NKbo_proliferation_rate_));
         /// 7) Apoptosis rates
         /*15*/  par.push_back(log(NK0_apop_rate_));
         /*16*/  par.push_back(log(NKa_apop_rate_));
-        /*17*/  par.push_back(log(NKbo_apop_rate_));
+        //*17*/  par.push_back(log(NKbo_apop_rate_));
         /// 8) constant saturation of TNF for apoptosis
         /*18*/  par.push_back(log(Ks_NK_m_TNF_));
         /// 9) conversion rates
@@ -245,11 +245,11 @@ std::vector<double> SimParameters::getParameters()const
        /// 4) Percentages of IFN productions of each type of LT
        /*9*/  par.push_back(log(percentage_IFN_LTns_prod_rate_));
        /*10*/  par.push_back(log(percentage_IFN_LTbo_prod_rate_));
-       /*11*/  par.push_back(log(percentage_IFN_LTbl_prod_rate_));
+       //*11*/  par.push_back(log(percentage_IFN_LTbl_prod_rate_));
        /// 5)Percentages of TNF productions of each type of LT
        /*12*/  par.push_back(log(percentage_TNF_LTns_prod_rate_));
        /*13*/  par.push_back(log(percentage_TNF_LTbo_prod_rate_));
-       /*14*/  par.push_back(log(percentage_TNF_LTbl_prod_rate_));
+       //*14*/  par.push_back(log(percentage_TNF_LTbl_prod_rate_));
        /// 6) Proliferation rates
        /*15*/  par.push_back(log(LTns_proliferation_rate_));
        /*16*/  par.push_back(log(LTbo_proliferation_rate_));
@@ -295,11 +295,11 @@ std::vector<double> SimParameters::getParameters()const
        /// 3) TNF Poductions rates of each type of APC
         /*5*/ par.push_back(log(TNF_APC0_prod_rate_));
         /*6*/ par.push_back(log(TNF_APCa_prod_rate_));
-        /*7*/ par.push_back(log(TNF_APCbo_prod_rate_));
+        /*7*/ par.push_back(log(APC_TNF_Induction_CD137));
         /// 4) Percentages of IFN productions of each type of APC
         /*8*/ par.push_back(log(percentage_IFN_APC0_prod_rate_));
         /*9*/ par.push_back(log(percentage_IFN_APCa_prod_rate_));
-        /*10*/ par.push_back(log(percentage_IFN_APCbo_prod_rate_));
+        //*10*/ par.push_back(log(percentage_IFN_APCbo_prod_rate_));
         /// 5)Percentages of TNF productions of each type of APC
         /*11*/ par.push_back(log(percentage_TNF_APC0_prod_rate_));
         /// 6) Proliferation rates
@@ -315,10 +315,10 @@ std::vector<double> SimParameters::getParameters()const
         /*18*/ par.push_back(log(APC_APC_));
         /*19*/ par.push_back(log(APC_NK_));
         /*20*/ par.push_back(log(APC_LT_1_));
-        /*21*/ par.push_back(log(APC_LT_2_));
+        /*21*/ par.push_back(log(APC_Ag_2_));
         /*22*/ par.push_back(log(APC_Ab_));
-        /// 10)Saturation constant of IFN and TNF for activation
-        /*23*/ par.push_back(log(KsAPC_LT_));
+//        /// 10)Saturation constant of IFN and TNF for activation
+//        /*23*/ par.push_back(log(KsAPC_LT_));
         /// 11)Saturation constant of APC_LT interaction
         /*24*/ par.push_back(log(APC_Ksi_));
         /*25*/ par.push_back(log(APC_Kst_));
@@ -343,15 +343,15 @@ std::vector<double> SimParameters::getParameters()const
         /// 5)Percentages of TNF productions of each type of NK
         /*9*/  par.push_back(log(percentage_TNF_NK0_prod_rate_));
         /*10*/  par.push_back(log(percentage_TNF_NKa_prod_rate_));
-        /*11*/  par.push_back(log(percentage_TNF_NKbo_prod_rate_));
+        //*11*/  par.push_back(log(percentage_TNF_NKbo_prod_rate_));
         /// 6) Proliferation rates
         /*12*/par.push_back (log(NK0_proliferation_rate_));
         /*13*/  par.push_back(log(NKa_proliferation_rate_));
-        /*14*/  par.push_back(log(NKbo_proliferation_rate_));
+        //*14*/  par.push_back(log(NKbo_proliferation_rate_));
         /// 7) Apoptosis rates
         /*15*/  par.push_back(log(NK0_apop_rate_));
         /*16*/  par.push_back(log(NKa_apop_rate_));
-        /*17*/  par.push_back(log(NKbo_apop_rate_));
+        //*17*/  par.push_back(log(NKbo_apop_rate_));
         /// 8) constant saturation of TNF for apoptosis
         /*18*/  par.push_back(log(Ks_NK_m_TNF_));
         /// 9) conversion rates
@@ -384,11 +384,11 @@ std::vector<double> SimParameters::getParameters()const
        /// 4) Percentages of IFN productions of each type of LT
        /*9*/  par.push_back(log(percentage_IFN_LTns_prod_rate_));
        /*10*/  par.push_back(log(percentage_IFN_LTbo_prod_rate_));
-       /*11*/  par.push_back(log(percentage_IFN_LTbl_prod_rate_));
+       //*11*/  par.push_back(log(percentage_IFN_LTbl_prod_rate_));
        /// 5)Percentages of TNF productions of each type of LT
        /*12*/  par.push_back(log(percentage_TNF_LTns_prod_rate_));
        /*13*/  par.push_back(log(percentage_TNF_LTbo_prod_rate_));
-       /*14*/  par.push_back(log(percentage_TNF_LTbl_prod_rate_));
+       //*14*/  par.push_back(log(percentage_TNF_LTbl_prod_rate_));
        /// 6) Proliferation rates
        /*15*/  par.push_back(log(LTns_proliferation_rate_));
        /*16*/  par.push_back(log(LTbo_proliferation_rate_));
@@ -440,11 +440,11 @@ SimParameters& SimParameters::applyParameters(const std::vector<double>& param)
         /// 3) TNF Poductions rates of each type of APC
         /*5*/  TNF_APC0_prod_rate_ = exp(param[i++]);
         /*6*/  TNF_APCa_prod_rate_ = exp(param[i++]);
-        /*7*/  TNF_APCbo_prod_rate_ = exp(param[i++]);
+        /*7*/  APC_TNF_Induction_CD137 = exp(param[i++]);
         /// 4) Percentages of IFN productions of each type of APC
         /*8*/  percentage_IFN_APC0_prod_rate_ = exp(param[i++]);
         /*9*/  percentage_IFN_APCa_prod_rate_ = exp(param[i++]);
-        /*10*/  percentage_IFN_APCbo_prod_rate_ = exp(param[i++]);
+        //*10*/  percentage_IFN_APCbo_prod_rate_ = exp(param[i++]);
         /// 5)Percentages of TNF productions of each type of APC
         /*11*/  percentage_TNF_APC0_prod_rate_ = exp(param[i++]);
         /// 6) Proliferation rates
@@ -460,10 +460,10 @@ SimParameters& SimParameters::applyParameters(const std::vector<double>& param)
         /*18*/  APC_APC_ = exp(param[i++]);
         /*19*/  APC_NK_ = exp(param[i++]);
         /*20*/  APC_LT_1_ = exp(param[i++]);
-        /*21*/  APC_LT_2_ = exp(param[i++]);
+        /*21*/  APC_Ag_2_ = exp(param[i++]);
         /*22*/  APC_Ab_ = exp(param[i++]);
-        /// 10)Saturation constant of IFN and TNF for activation
-        /*23*/  KsAPC_LT_ = exp(param[i++]);
+//        //*// 10)Saturation constant of IFN and TNF for activation
+//        /*23*/  KsAPC_LT_ = exp(param[i++]);*/
         /// 11)Saturation constant of APC_LT interaction
         /*24*/  APC_Ksi_ = exp(param[i++]);
         /*25*/  APC_Kst_ = exp(param[i++]);
@@ -487,15 +487,15 @@ SimParameters& SimParameters::applyParameters(const std::vector<double>& param)
         /// 5)Percentages of TNF productions of each type of NK
         /*9*/ percentage_TNF_NK0_prod_rate_= exp(param[i++]);
         /*10*/ percentage_TNF_NKa_prod_rate_= exp(param[i++]);
-        /*11*/ percentage_TNF_NKbo_prod_rate_= exp(param[i++]);
+        //*11*/ percentage_TNF_NKbo_prod_rate_= exp(param[i++]);
         /// 6) Proliferation rates
         /*12*/NK0_proliferation_rate_= exp(param[i++]);
         /*13*/ NKa_proliferation_rate_= exp(param[i++]);
-        /*14*/ NKbo_proliferation_rate_= exp(param[i++]);
+        //*14*/ NKbo_proliferation_rate_= exp(param[i++]);
         /// 7) Apoptosis rates
         /*15*/ NK0_apop_rate_= exp(param[i++]);
         /*16*/ NKa_apop_rate_= exp(param[i++]);
-        /*17*/ NKbo_apop_rate_= exp(param[i++]);
+       //*17*/ NKbo_apop_rate_= exp(param[i++]);
         /// 8) constant saturation of TNF for apoptosis
         /*18*/ Ks_NK_m_TNF_= exp(param[i++]);
         /// 9) conversion rates
@@ -528,11 +528,11 @@ SimParameters& SimParameters::applyParameters(const std::vector<double>& param)
        /// 4) Percentages of IFN productions of each type of LT
        /*9*/  percentage_IFN_LTns_prod_rate_=exp(param[i++]);
        /*10*/  percentage_IFN_LTbo_prod_rate_=exp(param[i++]);
-       /*11*/  percentage_IFN_LTbl_prod_rate_=exp(param[i++]);
+       //*11*/  percentage_IFN_LTbl_prod_rate_=exp(param[i++]);
        /// 5)Percentages of TNF productions of each type of LT
        /*12*/  percentage_TNF_LTns_prod_rate_=exp(param[i++]);
        /*13*/  percentage_TNF_LTbo_prod_rate_=exp(param[i++]);
-       /*14*/  percentage_TNF_LTbl_prod_rate_=exp(param[i++]);
+       //*14*/  percentage_TNF_LTbl_prod_rate_=exp(param[i++]);
        /// 6) Proliferation rates
        /*15*/  LTns_proliferation_rate_=exp(param[i++]);
        /*16*/  LTbo_proliferation_rate_=exp(param[i++]);
@@ -576,11 +576,11 @@ SimParameters& SimParameters::applyParameters(const std::vector<double>& param)
                 /// 3) TNF Poductions rates of each type of APC
                 /*5*/  TNF_APC0_prod_rate_ = exp(param[i++]);
                 /*6*/  TNF_APCa_prod_rate_ = exp(param[i++]);
-                /*7*/  TNF_APCbo_prod_rate_ = exp(param[i++]);
+                /*7*/  APC_TNF_Induction_CD137 = exp(param[i++]);
                 /// 4) Percentages of IFN productions of each type of APC
                 /*8*/  percentage_IFN_APC0_prod_rate_ = exp(param[i++]);
                 /*9*/  percentage_IFN_APCa_prod_rate_ = exp(param[i++]);
-                /*10*/  percentage_IFN_APCbo_prod_rate_ = exp(param[i++]);
+                //*10*/  percentage_IFN_APCbo_prod_rate_ = exp(param[i++]);
                 /// 5)Percentages of TNF productions of each type of APC
                 /*11*/  percentage_TNF_APC0_prod_rate_ = exp(param[i++]);
                 /// 6) Proliferation rates
@@ -596,10 +596,10 @@ SimParameters& SimParameters::applyParameters(const std::vector<double>& param)
                 /*18*/  APC_APC_ = exp(param[i++]);
                 /*19*/  APC_NK_ = exp(param[i++]);
                 /*20*/  APC_LT_1_ = exp(param[i++]);
-                /*21*/  APC_LT_2_ = exp(param[i++]);
+                /*21*/  APC_Ag_2_ = exp(param[i++]);
                 /*22*/  APC_Ab_ = exp(param[i++]);
-                /// 10)Saturation constant of IFN and TNF for activation
-                /*23*/  KsAPC_LT_ = exp(param[i++]);
+//                /// 10)Saturation constant of IFN and TNF for activation
+//                /*23*/  KsAPC_LT_ = exp(param[i++]);
                 /// 11)Saturation constant of APC_LT interaction
                 /*24*/  APC_Ksi_ = exp(param[i++]);
                 /*25*/  APC_Kst_ = exp(param[i++]);
@@ -623,15 +623,15 @@ SimParameters& SimParameters::applyParameters(const std::vector<double>& param)
                 /// 5)Percentages of TNF productions of each type of NK
                 /*9*/ percentage_TNF_NK0_prod_rate_= exp(param[i++]);
                 /*10*/ percentage_TNF_NKa_prod_rate_= exp(param[i++]);
-                /*11*/ percentage_TNF_NKbo_prod_rate_= exp(param[i++]);
+                //*11*/ percentage_TNF_NKbo_prod_rate_= exp(param[i++]);
                 /// 6) Proliferation rates
                 /*12*/NK0_proliferation_rate_= exp(param[i++]);
                 /*13*/ NKa_proliferation_rate_= exp(param[i++]);
-                /*14*/ NKbo_proliferation_rate_= exp(param[i++]);
+                //*14*/ NKbo_proliferation_rate_= exp(param[i++]);
                 /// 7) Apoptosis rates
                 /*15*/ NK0_apop_rate_= exp(param[i++]);
                 /*16*/ NKa_apop_rate_= exp(param[i++]);
-                /*17*/ NKbo_apop_rate_= exp(param[i++]);
+                //*17*/ NKbo_apop_rate_= exp(param[i++]);
                 /// 8) constant saturation of TNF for apoptosis
                 /*18*/ Ks_NK_m_TNF_= exp(param[i++]);
                 /// 9) conversion rates
@@ -664,11 +664,11 @@ SimParameters& SimParameters::applyParameters(const std::vector<double>& param)
                /// 4) Percentages of IFN productions of each type of LT
                /*9*/  percentage_IFN_LTns_prod_rate_=exp(param[i++]);
                /*10*/  percentage_IFN_LTbo_prod_rate_=exp(param[i++]);
-               /*11*/  percentage_IFN_LTbl_prod_rate_=exp(param[i++]);
+               //*11*/  percentage_IFN_LTbl_prod_rate_=exp(param[i++]);
                /// 5)Percentages of TNF productions of each type of LT
                /*12*/  percentage_TNF_LTns_prod_rate_=exp(param[i++]);
                /*13*/  percentage_TNF_LTbo_prod_rate_=exp(param[i++]);
-               /*14*/  percentage_TNF_LTbl_prod_rate_=exp(param[i++]);
+               //*14*/  percentage_TNF_LTbl_prod_rate_=exp(param[i++]);
                /// 6) Proliferation rates
                /*15*/  LTns_proliferation_rate_=exp(param[i++]);
                /*16*/  LTbo_proliferation_rate_=exp(param[i++]);
@@ -715,11 +715,11 @@ SimParameters::SimParameters(const SimParameters& other):
     /// 3) TNF Poductions rates of each type of APC
     /*5*/  TNF_APC0_prod_rate_ (other.TNF_APC0_prod_rate_),
     /*6*/  TNF_APCa_prod_rate_ (other.TNF_APCa_prod_rate_),
-    /*7*/  TNF_APCbo_prod_rate_ (other.TNF_APCbo_prod_rate_),
+    /*7*/  APC_TNF_Induction_CD137 (other.APC_TNF_Induction_CD137),
     /// 4) Percentages of IFN productions of each type of APC
     /*8*/  percentage_IFN_APC0_prod_rate_ (other.percentage_IFN_APC0_prod_rate_),
     /*9*/  percentage_IFN_APCa_prod_rate_ (other.percentage_IFN_APCa_prod_rate_),
-    /*10*/  percentage_IFN_APCbo_prod_rate_ (other.percentage_IFN_APCbo_prod_rate_),
+    //*10*/  percentage_IFN_APCbo_prod_rate_ (other.percentage_IFN_APCbo_prod_rate_),
     /// 5)Percentages of TNF productions of each type of APC
     /*11*/  percentage_TNF_APC0_prod_rate_ (other.percentage_TNF_APC0_prod_rate_),
     /// 6) Proliferation rates
@@ -735,10 +735,10 @@ SimParameters::SimParameters(const SimParameters& other):
     /*18*/  APC_APC_ (other.APC_APC_),
     /*19*/  APC_NK_ (other.APC_NK_),
     /*20*/  APC_LT_1_ (other.APC_LT_1_),
-    /*21*/  APC_LT_2_ (other.APC_LT_2_),
+    /*21*/  APC_Ag_2_ (other.APC_Ag_2_),
     /*22*/  APC_Ab_ (other.APC_Ab_),
-    /// 10)Saturation constant of IFN and TNF for activation
-    /*23*/  KsAPC_LT_ (other.KsAPC_LT_),
+//    /// 10)Saturation constant of IFN and TNF for activation
+//    /*23*/  KsAPC_LT_ (other.KsAPC_LT_),
     /// 11)Saturation constant of APC_LT interaction
     /*24*/  APC_Ksi_ (other.APC_Ksi_),
     /*25*/  APC_Kst_ (other.APC_Kst_),
@@ -763,15 +763,15 @@ SimParameters::SimParameters(const SimParameters& other):
     /// 5)Percentages of TNF productions of each type of NK
     /*9*/ percentage_TNF_NK0_prod_rate_(other.percentage_TNF_NK0_prod_rate_),
     /*10*/ percentage_TNF_NKa_prod_rate_(other.percentage_TNF_NKa_prod_rate_),
-    /*11*/ percentage_TNF_NKbo_prod_rate_(other.percentage_TNF_NKbo_prod_rate_),
+    //*11*/ percentage_TNF_NKbo_prod_rate_(other.percentage_TNF_NKbo_prod_rate_),
     /// 6) Proliferation rates
     /*12*/ NK0_proliferation_rate_ (other. NK0_proliferation_rate_),
     /*13*/ NKa_proliferation_rate_(other.NKa_proliferation_rate_),
-    /*14*/ NKbo_proliferation_rate_(other.NKbo_proliferation_rate_),
+    //*14*/ NKbo_proliferation_rate_(other.NKbo_proliferation_rate_),
     /// 7) Apoptosis rates
     /*15*/ NK0_apop_rate_(other.NK0_apop_rate_),
     /*16*/ NKa_apop_rate_(other.NKa_apop_rate_),
-    /*17*/ NKbo_apop_rate_(other.NKbo_apop_rate_),
+    //*17*/ NKbo_apop_rate_(other.NKbo_apop_rate_),
     /// 8) constant saturation of TNF for apoptosis
     /*18*/ Ks_NK_m_TNF_(other.Ks_NK_m_TNF_),
     /// 9) conversion rates
@@ -805,11 +805,11 @@ SimParameters::SimParameters(const SimParameters& other):
     /// 4) Percentages of IFN productions of each type of LT
     /*9*/  percentage_IFN_LTns_prod_rate_(other.percentage_IFN_LTns_prod_rate_),
     /*10*/  percentage_IFN_LTbo_prod_rate_(other.percentage_IFN_LTbo_prod_rate_),
-    /*11*/  percentage_IFN_LTbl_prod_rate_(other.percentage_IFN_LTbl_prod_rate_),
+    //*11*/  percentage_IFN_LTbl_prod_rate_(other.percentage_IFN_LTbl_prod_rate_),
     /// 5)Percentages of TNF productions of each type of LT
     /*12*/  percentage_TNF_LTns_prod_rate_(other.percentage_TNF_LTns_prod_rate_),
     /*13*/  percentage_TNF_LTbo_prod_rate_(other.percentage_TNF_LTbo_prod_rate_),
-    /*14*/  percentage_TNF_LTbl_prod_rate_(other.percentage_TNF_LTbl_prod_rate_),
+    //*14*/  percentage_TNF_LTbl_prod_rate_(other.percentage_TNF_LTbl_prod_rate_),
     /// 6) Proliferation rates
     /*15*/  LTns_proliferation_rate_(other.LTns_proliferation_rate_),
     /*16*/  LTbo_proliferation_rate_(other.LTbo_proliferation_rate_),
@@ -862,11 +862,11 @@ void swap(SimParameters& one, SimParameters& other)
     /// 3) TNF Poductions rates of each type of APC
     /*5*/  std::swap(one.TNF_APC0_prod_rate_ ,other.TNF_APC0_prod_rate_);
     /*6*/  std::swap(one.TNF_APCa_prod_rate_ ,other.TNF_APCa_prod_rate_);
-    /*7*/  std::swap(one.TNF_APCbo_prod_rate_ ,other.TNF_APCbo_prod_rate_);
+    /*7*/  std::swap(one.APC_TNF_Induction_CD137 ,other.APC_TNF_Induction_CD137);
     /// 4) Percentages of IFN productions of each type of APC
     /*8*/  std::swap(one.percentage_IFN_APC0_prod_rate_ ,other.percentage_IFN_APC0_prod_rate_);
     /*9*/  std::swap(one.percentage_IFN_APCa_prod_rate_ ,other.percentage_IFN_APCa_prod_rate_);
-    /*10*/  std::swap(one.percentage_IFN_APCbo_prod_rate_ ,other.percentage_IFN_APCbo_prod_rate_);
+    //*10*/  std::swap(one.percentage_IFN_APCbo_prod_rate_ ,other.percentage_IFN_APCbo_prod_rate_);
     /// 5)Percentages of TNF productions of each type of APC
     /*11*/  std::swap(one.percentage_TNF_APC0_prod_rate_ ,other.percentage_TNF_APC0_prod_rate_);
     /// 6) Proliferation rates
@@ -882,10 +882,10 @@ void swap(SimParameters& one, SimParameters& other)
     /*18*/  std::swap(one.APC_APC_ ,other.APC_APC_);
     /*19*/  std::swap(one.APC_NK_ ,other.APC_NK_);
     /*20*/  std::swap(one.APC_LT_1_ ,other.APC_LT_1_);
-    /*21*/  std::swap(one.APC_LT_2_ ,other.APC_LT_2_);
+    /*21*/  std::swap(one.APC_Ag_2_ ,other.APC_Ag_2_);
     /*22*/  std::swap(one.APC_Ab_ ,other.APC_Ab_);
-    /// 10)Saturation constant of IFN and TNF for activation
-    /*23*/  std::swap(one.KsAPC_LT_ ,other.KsAPC_LT_);
+//    /// 10)Saturation constant of IFN and TNF for activation
+//    /*23*/  std::swap(one.KsAPC_LT_ ,other.KsAPC_LT_);
     /// 11)Saturation constant of APC_LT interaction
     /*24*/  std::swap(one.APC_Ksi_ ,other.APC_Ksi_);
     /*25*/  std::swap(one.APC_Kst_ ,other.APC_Kst_);
@@ -909,15 +909,15 @@ void swap(SimParameters& one, SimParameters& other)
    /// 5)Percentages of TNF productions of each type of NK
    /*9*/ std::swap(one.percentage_TNF_NK0_prod_rate_,other.percentage_TNF_NK0_prod_rate_);
    /*10*/ std::swap(one.percentage_TNF_NKa_prod_rate_,other.percentage_TNF_NKa_prod_rate_);
-   /*11*/ std::swap(one.percentage_TNF_NKbo_prod_rate_,other.percentage_TNF_NKbo_prod_rate_);
+   //*11*/ std::swap(one.percentage_TNF_NKbo_prod_rate_,other.percentage_TNF_NKbo_prod_rate_);
     /// 6) Proliferation rates
     /*12*/ std::swap(one.NK0_proliferation_rate_,other.NK0_proliferation_rate_);
     /*13*/ std::swap(one.NKa_proliferation_rate_,other.NKa_proliferation_rate_);
-    /*14*/ std::swap(one.NKbo_proliferation_rate_,other.NKbo_proliferation_rate_);
+    //*14*/ std::swap(one.NKbo_proliferation_rate_,other.NKbo_proliferation_rate_);
     /// 7) Apoptosis rates
     /*15*/ std::swap(one.NK0_apop_rate_,other.NK0_apop_rate_);
     /*16*/ std::swap(one.NKa_apop_rate_,other.NKa_apop_rate_);
-    /*17*/ std::swap(one.NKbo_apop_rate_,other.NKbo_apop_rate_);
+    //*17*/ std::swap(one.NKbo_apop_rate_,other.NKbo_apop_rate_);
     /// 8) constant saturation of TNF for apoptosis
     /*18*/ std::swap(one.Ks_NK_m_TNF_,other.Ks_NK_m_TNF_);
     /// 9) conversion rates
@@ -950,11 +950,11 @@ void swap(SimParameters& one, SimParameters& other)
     /// 4) Percentages of IFN productions of each type of LT
     /*9*/   std::swap(one.percentage_IFN_LTns_prod_rate_,other.percentage_IFN_LTns_prod_rate_);
     /*10*/  std::swap(one.percentage_IFN_LTbo_prod_rate_,other.percentage_IFN_LTbo_prod_rate_);
-    /*11*/   std::swap(one.percentage_IFN_LTbl_prod_rate_,other.percentage_IFN_LTbl_prod_rate_);
+    //*11*/   std::swap(one.percentage_IFN_LTbl_prod_rate_,other.percentage_IFN_LTbl_prod_rate_);
     /// 5)Percentages of TNF productions of each type of LT
     /*12*/   std::swap(one.percentage_TNF_LTns_prod_rate_,other.percentage_TNF_LTns_prod_rate_);
     /*13*/   std::swap(one.percentage_TNF_LTbo_prod_rate_,other.percentage_TNF_LTbo_prod_rate_);
-    /*14*/   std::swap(one.percentage_TNF_LTbl_prod_rate_,other.percentage_TNF_LTbl_prod_rate_);
+    //*14*/   std::swap(one.percentage_TNF_LTbl_prod_rate_,other.percentage_TNF_LTbl_prod_rate_);
     /// 6) Proliferation rates
     /*15*/   std::swap(one.LTns_proliferation_rate_,other.LTns_proliferation_rate_);
     /*16*/   std::swap(one.LTbo_proliferation_rate_,other.LTbo_proliferation_rate_);
@@ -991,10 +991,10 @@ std::ostream& operator<<(std::ostream& s,SimParameters p)
     /*4*/   s<<"\n IFN_APCbo_prod_rate_ \t"<<p.IFN_APCbo_prod_rate_;
     /*5*/   s<<"\n TNF_APC0_prod_rate_ \t"<<p.TNF_APC0_prod_rate_;
     /*6*/   s<<"\n TNF_APCa_prod_rate_ \t"<<p.TNF_APCa_prod_rate_;
-    /*7*/   s<<"\n TNF_APCbo_prod_rate_ \t"<<p.TNF_APCbo_prod_rate_;
+    /*7*/   s<<"\n APC_TNF_Induction_CD137 \t"<<p.APC_TNF_Induction_CD137;
     /*8*/   s<<"\n percentage_IFN_APC0_prod_rate_ \t"<<p.percentage_IFN_APC0_prod_rate_;
     /*9*/   s<<"\n percentage_IFN_APCa_prod_rate_ \t"<<p.percentage_IFN_APCa_prod_rate_;
-    /*10*/  s<<"\n percentage_IFN_APCbo_prod_rate_\t"<<p.percentage_IFN_APCbo_prod_rate_;
+    //*10*/  s<<"\n percentage_IFN_APCbo_prod_rate_\t"<<p.percentage_IFN_APCbo_prod_rate_;
     /*11*/  s<<"\n percentage_TNF_APC0_prod_rate_\t"<<p.percentage_TNF_APC0_prod_rate_;
     /*12*/  s<<"\n APC_bound_proliferation_rate_\t"<<p.APC_bound_proliferation_rate_;
     /*13*/  s<<"\n APC0_apop_rate_\t"<<p.APC0_apop_rate_;
@@ -1005,9 +1005,9 @@ std::ostream& operator<<(std::ostream& s,SimParameters p)
     /*18*/  s<<"\n APC_APC_\t"<<p.APC_APC_;
     /*19*/  s<<"\n APC_NK_\t"<<p.APC_NK_;
     /*20*/  s<<"\n APC_LT_1_\t"<<p.APC_LT_1_;
-    /*21*/  s<<"\n APC_LT_2_\t"<<p.APC_LT_2_;
+    /*21*/  s<<"\n APC_Ag_2_\t"<<p.APC_Ag_2_;
     /*22*/  s<<"\n APC_Ab_\t"<<p.APC_Ab_;
-    /*23*/  s<<"\n KsAPC_LT_\t"<<p.KsAPC_LT_;
+//    /*23*/  s<<"\n KsAPC_LT_\t"<<p.KsAPC_LT_;
     /*24*/  s<<"\n Ksi_\t"<<p.APC_Ksi_;
     /*25*/  s<<"\n Kst_\t"<<p.APC_Kst_;
     /*26*/  s<<"\n APC0_expressing_receptor_\t"<<p.APC0_expressing_receptor_;
@@ -1023,13 +1023,13 @@ std::ostream& operator<<(std::ostream& s,SimParameters p)
     /*8*/   s<<"\n percentage_IFN_NK0_prod_rate_\t"<<p.percentage_IFN_NK0_prod_rate_;
     /*9*/  s<<"\n percentage_TNF_NK0_prod_rate_\t"<<p.percentage_TNF_NK0_prod_rate_;
     /*10*/  s<<"\n percentage_TNF_NKa_prod_rate_\t"<<p.percentage_TNF_NKa_prod_rate_;
-    /*11*/  s<<"\n percentage_TNF_NKbo_prod_rate_\t"<<p.percentage_TNF_NKbo_prod_rate_;
+    //*11*/  s<<"\n percentage_TNF_NKbo_prod_rate_\t"<<p.percentage_TNF_NKbo_prod_rate_;
     /*12*/  s<<"\n NK0_proliferation_rate_\t"<<p.NK0_proliferation_rate_;
     /*13*/  s<<"\n NKa_proliferation_rate_\t"<<p.NKa_proliferation_rate_;
-    /*14*/  s<<"\n NKbo_proliferation_rate_\t"<<p.NKbo_proliferation_rate_;
+    //*14*/  s<<"\n NKbo_proliferation_rate_\t"<<p.NKbo_proliferation_rate_;
     /*15*/  s<<"\n NK0_apop_rate_\t"<<p.NK0_apop_rate_;
     /*16*/  s<<"\n NKa_apop_rate_\t"<<p.NKa_apop_rate_;
-    /*17*/  s<<"\n NKbo_apop_rate_\t"<<p.NKbo_apop_rate_;
+    //*17*/  s<<"\n NKbo_apop_rate_\t"<<p.NKbo_apop_rate_;
     /*18*/  s<<"\n Ks_NK_m_TNF_\t"<<p.Ks_NK_m_TNF_;
     /*19*/  s<<"\n KaNK_\t"<<p.KaNK_;
     /*20*/  s<<"\n NK_NK_\t"<<p.NK_NK_;
@@ -1051,10 +1051,10 @@ std::ostream& operator<<(std::ostream& s,SimParameters p)
     /*8*/   s<<"\n TNF_LTbl_prod_rate_\t"<<p. TNF_LTbl_prod_rate_;
     /*9*/   s<<"\n percentage_IFN_LTns_prod_rate_\t"<<p. percentage_IFN_LTns_prod_rate_;
     /*10*/  s<<"\n percentage_IFN_LTbo_prod_rate_\t"<<p. percentage_IFN_LTbo_prod_rate_;
-    /*11*/  s<<"\n percentage_IFN_LTbl_prod_rate_\t"<<p. percentage_IFN_LTbl_prod_rate_;
+    //*11*/  s<<"\n percentage_IFN_LTbl_prod_rate_\t"<<p. percentage_IFN_LTbl_prod_rate_;
     /*12*/  s<<"\n percentage_TNF_LTns_prod_rate_\t"<<p. percentage_TNF_LTns_prod_rate_;
     /*13*/  s<<"\n percentage_TNF_LTbo_prod_rate_\t"<<p. percentage_TNF_LTbo_prod_rate_;
-    /*14*/  s<<"\n percentage_TNF_LTbl_prod_rate_\t"<<p. percentage_TNF_LTbl_prod_rate_;
+    //*14*/  s<<"\n percentage_TNF_LTbl_prod_rate_\t"<<p. percentage_TNF_LTbl_prod_rate_;
     /*15*/  s<<"\n LTns_proliferation_rate_\t"<<p. LTns_proliferation_rate_;
     /*16*/  s<<"\n LTbo_proliferation_rate_\t"<<p. LTbo_proliferation_rate_;
     /*17*/  s<<"\n LTbl_proliferation_rate_\t"<<p. LTbl_proliferation_rate_;
