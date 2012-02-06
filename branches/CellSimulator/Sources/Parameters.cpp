@@ -30,6 +30,7 @@ void swap(Parameters& one, Parameters& other)
     std::swap(one.pMean_,other.pMean_);
     std::swap(one.pStd_,other.pStd_);
     std::swap(one.cov_,other.cov_);
+    std::swap(one.mode_,other.mode_);
 
 }
 
@@ -295,6 +296,66 @@ Parameters Parameters::randomSample(double factor)const{
 
     }
     return sample;
+
+}
+Parameters Parameters::randomSample(Parameters prior,double factor)const{
+    Parameters sample;
+    for (std::map<std::string,std::size_t>::const_iterator it=name_.begin();
+         it!=name_.end();
+         ++it)
+
+    {
+        double m=pow(10,randNormal(pMean(it->first),factor*prior.pStd(it->first)));
+        sample.push_back_dB(it->first,m,0);
+
+    }
+    return sample;
+
+}
+
+
+
+
+Parameters Parameters::randomSample(Parameters prior,double factor,double probIncludeParameter)const{
+    Parameters sample,sampleout;
+    for (std::size_t i=0; i<pMean_.size();i++)
+    {
+        std::map<std::string,std::size_t>::const_iterator it;
+    for (it=name_.begin();
+         it!=name_.end();
+         ++it)
+
+    {
+        if (it->second==i)
+            break;
+    }
+
+        double r=(1.0*rand())/(1.0*RAND_MAX);
+
+        if (r<probIncludeParameter)
+        {
+            std::string str=it->first;
+
+            double m=pMean(it->first);
+            double s=factor*prior.pStd(it->first);
+            m=randNormal(m,s);
+            m=pow(10,m);
+
+            sample.push_back_dB(str,m,0);
+        }
+        else
+        {
+            std::string str=it->first;
+
+            double m=pMean(it->first);
+             m=pow(10,m);
+
+            sample.push_back_dB(str,m,0);
+        }
+    }
+
+     sampleout=sample;
+    return sampleout;
 
 }
 

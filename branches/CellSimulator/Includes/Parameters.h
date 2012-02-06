@@ -93,6 +93,11 @@ public:
 
     Parameters randomSample(double factor)const;
 
+    Parameters randomSample(Parameters prior,double factor,double probIncludeParameter)const;
+    Parameters randomSample(Parameters prior,double factor)const;
+
+
+
     Parameters(const Parameters& other);
     Parameters();
     ~Parameters(){}

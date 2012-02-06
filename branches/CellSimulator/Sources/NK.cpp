@@ -193,13 +193,20 @@ void NK_cells::update(double& time_step,const Media& m, const APC_cells& APC,con
     double NK0_delta=(NK0_d*NK0_proliferation_rate_d*m.prol_ratio()-
                       NK0_d*NK0_apop_rate_d-
                       NK0_d*m.Ag()*KaNK_d*
-                      ((APC.APCa()+
-                       APC.APCbo()+
-                      (APC.APCbo_TNF_production_rate()/APC.APCa_TNF_production_rate())*(APC.APCbl()+APC.APCbo_Ab()))/
-                      ((APC.APCa()+
-                       APC.APCbo()+
-                      (APC.APCbo_TNF_production_rate()/APC.APCa_TNF_production_rate())*(APC.APCbl()+APC.APCbo_Ab()))+ KsAPC_NK_d))*
-                      ((APC.APCa()+APC.APCbl()+APC.APCbo()+APC.APCbo_Ab())))
+                      (
+                          (APC.APCa()+
+                           APC.APCbo()+
+                           (APC.APCbo_TNF_production_rate())*(APC.APCbl()+APC.APCbo_Ab())
+                           )/
+                          ((APC.APCa()+
+                            APC.APCbo()+
+                            (APC.APCbo_TNF_production_rate())*(APC.APCbl()+APC.APCbo_Ab())
+                            )+
+                           KsAPC_NK_d
+                           )
+                       )*
+                      ((APC.APCa()+APC.APCbl()+APC.APCbo()+APC.APCbo_Ab())
+                       ))
                       *time_step;
     NK0_d+=NK0_delta;
 
@@ -209,11 +216,11 @@ void NK_cells::update(double& time_step,const Media& m, const APC_cells& APC,con
                       (
                           (APC.APCa()+
                            APC.APCbo()+
-                           (APC.APCbo_TNF_production_rate()/APC.APCa_TNF_production_rate())*(APC.APCbl()+APC.APCbo_Ab())
+                           (APC.APCbo_TNF_production_rate())*(APC.APCbl()+APC.APCbo_Ab())
                            )/
                           ((APC.APCa()+
                             APC.APCbo()+
-                            (APC.APCbo_TNF_production_rate()/APC.APCa_TNF_production_rate())*(APC.APCbl()+APC.APCbo_Ab())
+                            (APC.APCbo_TNF_production_rate())*(APC.APCbl()+APC.APCbo_Ab())
                             )+
                            KsAPC_NK_d
                            )
@@ -221,7 +228,7 @@ void NK_cells::update(double& time_step,const Media& m, const APC_cells& APC,con
                       ((APC.APCa()+APC.APCbl()+APC.APCbo()+APC.APCbo_Ab())
                        )-
                       NKa_d*NK_NK_d*NKa_expressing_receptor_d*(2*NKa_d*NKa_expressing_receptor_d+NKbo_d+NKbl_d)-
-                      NKa_d*APC.APC_NK()*NKa_expressing_receptor_d*(APC.APCa()+APC.APCbo()+APC.APCbl())-
+                      NKa_d*APC.APC_NK()*NKa_expressing_receptor_d*(APC.APCa()+APC.APCbo()+APC.APCbl()+APC.APCbo_Ab())-
                       NKa_d*NK_Ab_d*NKa_expressing_receptor_d*m.Ab()-
                       NKa_d*NKa_apop_rate_d-
                       NKa_d*u_NK_TNF_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d))
@@ -233,7 +240,7 @@ void NK_cells::update(double& time_step,const Media& m, const APC_cells& APC,con
     /// signalized NK cell "came" from NKa, proliferate, die and some of them are "lost" since they bound mAb
     double NKbo_delta= (NKbo_d*NKa_proliferation_rate_d*m.prol_ratio()+
                         NK_NK_d*NKa_d*NKa_expressing_receptor_d*(2*NKa_d*NKa_expressing_receptor_d+NKbo_d+NKbl_d)+
-                        APC.APC_NK()*NKa_d*NKa_expressing_receptor_d*(APC.APCa()+APC.APCbo()+APC.APCbl())-
+                        APC.APC_NK()*NKa_d*NKa_expressing_receptor_d*(APC.APCa()+APC.APCbo()+APC.APCbl()+APC.APCbo_Ab())-
                         NKa_apop_rate_d*NKbo_d-
                         u_NK_TNF_d*NKbo_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d))-
                         NKbo_d*NK_Ab_d*m.Ab())*time_step;
@@ -260,8 +267,8 @@ void NK_cells::update(double& time_step,const Media& m, const APC_cells& APC,con
     double NK_TymTr_incorporated_delta;
     if (m.TymidineTriteate()>0){
         NK_TymTr_incorporated_delta=
-                ((NK0_d*NK0_proliferation_rate_d*m.prol_ratio()+(NKa_d+NKbl_d)*NKa_proliferation_rate_d*m.prol_ratio()+
-                  (NKbo_d+NKbo_Ab_d)*NKa_proliferation_rate_d*m.prol_ratio())*m.Prol_TymTr()
+                (((NK0_d*NK0_proliferation_rate_d*m.prol_ratio()+(NKa_d+NKbl_d)*NKa_proliferation_rate_d*m.prol_ratio()+
+                  (NKbo_d+NKbo_Ab_d)*NKa_proliferation_rate_d*m.prol_ratio()))*m.Prol_TymTr()
                  )*time_step;
         NK_TymTr_incorporated_d+=NK_TymTr_incorporated_delta;
     }
@@ -306,7 +313,7 @@ double NK_cells::percentage_NK_producing_TNF() const
 {
     double sum=100*(percentage_TNF_NK0_prod_rate_d*NK0_d
                     +percentage_TNF_NKa_prod_rate_d*(NKa_d+NKbl_d)
-                    +percentage_TNF_NKa_prod_rate_d*(NKbo_d+NKbl_d))/num_NK();
+                    +percentage_TNF_NKa_prod_rate_d*(NKbo_d+NKbo_Ab_d))/num_NK();
     return sum;
 }
 

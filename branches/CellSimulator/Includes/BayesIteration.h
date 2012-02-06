@@ -77,6 +77,12 @@ public:
 
     BayesIteration& getPosterior();
 
+    BayesIteration& getPosterior(const Parameters& startingPoint);
+
+    BayesIteration& getPosterior(const Parameters& startingPoint,double factor, std::size_t numSeeds,double probParChange);
+
+
+
     virtual std::ostream& put(std::ostream& s,const Parameters& parameters)const;
 
 
