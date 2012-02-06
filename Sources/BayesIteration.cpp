@@ -125,6 +125,109 @@ std::vector<double> BayesIteration::getDataStandardError()const
 
 }
 
+BayesIteration& BayesIteration::getPosterior(const Parameters& startingPoint)
+{
+    std::vector<double> data=getData();
+    std::vector<double> w=getDataWeigth();
+
+    Parameters p=priors_.back();
+
+   std::size_t numIterations=2000;
+
+    LevenbergMarquardtParameters LM(this,
+                                    data,
+                                    startingPoint,
+                                    w,
+                                    numIterations);
+    LM.optimize();
+     std::ofstream f;
+
+    f.open(filename_.c_str(),std::ios_base::app);
+
+    f<<"--------------------------------------------------"
+       "---------------------------------------------------\n";
+    f<<"----------The prior is-----------------------------\n";
+    f<<"--------------------------------------------------"
+       "---------------------------------------------------\n";
+
+    put(f,p);
+
+
+
+    f<<"--------------------------------------------------"
+       "---------------------------------------------------\n";
+    f<<"----------Start from the following point------------------\n";
+    f<<"--------------------------------------------------"
+       "---------------------------------------------------\n";
+    put(f,startingPoint);
+
+
+    f<<"--------------------------------------------------"
+       "---------------------------------------------------\n";
+    f<<"----------Result of Levenberg Marquardt------------------\n";
+    f<<"--------------------------------------------------"
+       "---------------------------------------------------\n";
+    f<<LM;
+    put(f,LM.OptimParameters());
+
+
+    f.close();
+}
+
+BayesIteration& BayesIteration::getPosterior(const Parameters& startingPoint,double factor, std::size_t numSeeds,double probParChange)
+{
+    std::vector<double> data=getData();
+    std::vector<double> w=getDataWeigth();
+
+    Parameters p=priors_.back();
+
+    std::size_t numIterations=2000;
+
+    std::ofstream f;
+
+    f.open(filename_.c_str(),std::ios_base::app);
+
+    f<<"--------------------------------------------------"
+       "---------------------------------------------------\n";
+    f<<"----------The prior is-----------------------------\n";
+    f<<"--------------------------------------------------"
+       "---------------------------------------------------\n";
+
+    put(f,p);
+
+    for (std::size_t i=0;i<numSeeds;i++)
+    {
+
+        Parameters seed;
+        seed=startingPoint.randomSample(p,factor,probParChange);
+        LevenbergMarquardtParameters LM(this,
+                                        data,
+                                        startingPoint,
+                                        w,
+                                        numIterations);
+        LM.optimize();
+
+
+
+        f<<"--------------------------------------------------"
+           "---------------------------------------------------\n";
+        f<<"----------Start from the following point------------------\n";
+        f<<"--------------------------------------------------"
+           "---------------------------------------------------\n";
+        put(f,seed);
+
+
+        f<<"--------------------------------------------------"
+           "---------------------------------------------------\n";
+        f<<"----------Result of Levenberg Marquardt------------------\n";
+        f<<"--------------------------------------------------"
+           "---------------------------------------------------\n";
+        f<<LM;
+        put(f,LM.OptimParameters());
+    }
+
+    f.close();
+}
 
 
 
@@ -139,10 +242,10 @@ BayesIteration& BayesIteration::getPosterior()
     Parameters p=priors_.back();
 
 
-    std::size_t factor=250;
-    std::size_t numIterations=1000;
-    std::size_t numSeeds=20;
-    std::map<double,Parameters> seeds=getRandomParameters(numSeeds*factor,0.1);
+    std::size_t factor=2;
+    std::size_t numIterations=2000;
+    std::size_t numSeeds=2;
+    std::map<double,Parameters> seeds=getRandomParameters(numSeeds*factor,0.2);
 
     std::map<double,Parameters> friuts;
 
@@ -159,6 +262,17 @@ BayesIteration& BayesIteration::getPosterior()
     std::ofstream f;
 
     f.open(filename_.c_str(),std::ios_base::app);
+
+    f<<"--------------------------------------------------"
+       "---------------------------------------------------\n";
+    f<<"----------The prior is-----------------------------\n";
+    f<<"--------------------------------------------------"
+       "---------------------------------------------------\n";
+
+    put(f,p);
+
+
+
     f<<"--------------------------------------------------"
        "---------------------------------------------------\n";
     f<<"----------Start from the center-------------------\n";

@@ -1,4 +1,7 @@
 #include <fstream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include "Includes/experiment1.h"
 #include "Includes/Cell_simulator.h"
 #include "Includes/Treatment.h"
@@ -6,7 +9,11 @@
 #include "Includes/OptimizationResults.h"
 
 void loadModel()
-{   Treatment  med;
+
+{
+    srand ( time(NULL) );
+
+    Treatment  med;
     med.Ag=0.0;
     med.Ab=0.0;
     med.sim_duration_d=120;
@@ -72,8 +79,53 @@ void loadModel()
     //OptimizationResults O=cell.Optimize(sp,sp,simulExp,1,500);
 
     if (1)
-    cell.Optimize(prior,E,"MODELOptimization.txt");
-else
+    {
+        if (false)
+            cell.Optimize(prior,E,"MODELOptimization.txt");
+        else if (false)
+        {
+            BayesIteration b(&cell,prior,&E,"ModeloOptimizationCont.txt");
+
+            std::string filenameStartingParameter="resultMODEL.txt";
+
+            std::ifstream f;
+            f.open(filenameStartingParameter.c_str());
+
+            Parameters seedPar;
+            f>>seedPar;
+
+            std::cout<<seedPar;
+            f.close();
+
+            b.getPosterior(seedPar);
+        }
+        else
+        {
+            BayesIteration b(&cell,prior,&E,"ModeloOptimizationContRand.txt");
+
+            std::string filenameStartingParameter="resultMODEL.txt";
+
+            std::ifstream f;
+            f.open(filenameStartingParameter.c_str());
+
+            Parameters seedPar;
+            f>>seedPar;
+
+            std::cout<<seedPar;
+            f.close();
+            double factor=0.1;
+            std::size_t numseeds=10;
+            double probParameterChange=1;
+            b.getPosterior(seedPar,factor,numseeds,probParameterChange);
+
+        }
+
+
+    }
+
+
+
+    else
     {
         std::string filename="MODEL_Run.txt";
         std::ofstream f;
@@ -83,7 +135,7 @@ else
         cell.run(f,prior);
         f.close();
 
-      }
+    }
 
 
 
