@@ -273,7 +273,7 @@ Results::Results(std::string experimentName):
               //APC_TNFa_.push_back (Measurement (118.7,12.03,2.13));
               //APC_TNFa_.push_back (Measurement (118.8,12.03,2.13));
               //APC_TNFa_.push_back (Measurement (118.9,12.03,2.13));
-/*60*/        APC_TNFa_.push_back (Measurement (119.0,12.03,2.13));//
+/*60*/        APC_TNFa_.push_back (Measurement (119.0,19.03,4.13));//
 /*61*/        /*NK_IFNg_.push_back(Measurement (23.8,36.11,8.2));//
               NK_IFNg_.push_back(Measurement (23.9,36.11,8.2));*/
               NK_IFNg_.push_back(Measurement (24.0,36.11,8.2));
