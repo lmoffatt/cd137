@@ -132,7 +132,7 @@ BayesIteration& BayesIteration::getPosterior(const Parameters& startingPoint)
 
     Parameters p=priors_.back();
 
-   std::size_t numIterations=2000;
+   std::size_t numIterations=200;
 
     LevenbergMarquardtParameters LM(this,
                                     data,
@@ -181,7 +181,7 @@ BayesIteration& BayesIteration::getPosterior(const Parameters& startingPoint,dou
 
     Parameters p=priors_.back();
 
-    std::size_t numIterations=2000;
+    std::size_t numIterations=200;
 
     std::ofstream f;
 
@@ -202,7 +202,7 @@ BayesIteration& BayesIteration::getPosterior(const Parameters& startingPoint,dou
         seed=startingPoint.randomSample(p,factor,probParChange);
         LevenbergMarquardtParameters LM(this,
                                         data,
-                                        startingPoint,
+                                        seed,
                                         w,
                                         numIterations);
         LM.optimize();
@@ -243,7 +243,7 @@ BayesIteration& BayesIteration::getPosterior()
 
 
     std::size_t factor=2;
-    std::size_t numIterations=2000;
+    std::size_t numIterations=200;
     std::size_t numSeeds=2;
     std::map<double,Parameters> seeds=getRandomParameters(numSeeds*factor,0.2);
 

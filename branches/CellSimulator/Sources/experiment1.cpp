@@ -80,9 +80,9 @@ void loadModel()
 
     if (1)
     {
-        if (true)
+        if (false)
             cell.Optimize(prior,E,"MODELOptimization.txt");
-        else if (false)
+        else if (true)
         {
             BayesIteration b(&cell,prior,&E,"ModeloOptimizationCont.txt");
 
