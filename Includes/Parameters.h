@@ -109,7 +109,7 @@ public:
     friend std::ostream& operator<<(std::ostream& s, const Parameters& p);
     friend std::istream& operator>>(std::istream& s, Parameters& p);
 
-
+    double chi2Distance(const Parameters& other)const;
 
 
 
@@ -126,6 +126,10 @@ private:
 
 std::ostream& operator<<(std::ostream& s, const Parameters& p);
 std::istream& operator>>(std::istream& s, Parameters& p);
+
+double dbDistance(const Parameters& one,const Parameters& other);
+
+bool areTheSame(const Parameters& one, const Parameters& other);
 
 
 double randNormal(double mean,double stddev);

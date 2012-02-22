@@ -132,7 +132,7 @@ BayesIteration& BayesIteration::getPosterior(const Parameters& startingPoint)
 
     Parameters p=priors_.back();
 
-   std::size_t numIterations=200;
+   std::size_t numIterations=1000;
 
     LevenbergMarquardtParameters LM(this,
                                     data,
@@ -169,19 +169,27 @@ BayesIteration& BayesIteration::getPosterior(const Parameters& startingPoint)
        "---------------------------------------------------\n";
     f<<LM;
     put(f,LM.OptimParameters());
+    f<<"chi2Distance to seed\t"<<startingPoint.chi2Distance(LM.OptimParameters())<<"\n";
+    f<<"dBDistance to seed\t"<<dbDistance(startingPoint,LM.OptimParameters())<<"\n";
+    f<<"chi2Distance to prior\t"<<p.chi2Distance(LM.OptimParameters())<<"\n";
+    f<<"dBDistance to seed\t"<<dbDistance(p,LM.OptimParameters())<<"\n";
 
 
     f.close();
+    return *this;
 }
 
-BayesIteration& BayesIteration::getPosterior(const Parameters& startingPoint,double factor, std::size_t numSeeds,double probParChange)
+BayesIteration& BayesIteration::getPosterior(const Parameters& startingPoint,
+                                             double factor,
+                                             std::size_t numSeeds,
+                                             double probParChange)
 {
     std::vector<double> data=getData();
     std::vector<double> w=getDataWeigth();
 
     Parameters p=priors_.back();
 
-    std::size_t numIterations=200;
+    std::size_t numIterations=1000;
 
     std::ofstream f;
 
@@ -224,9 +232,16 @@ BayesIteration& BayesIteration::getPosterior(const Parameters& startingPoint,dou
            "---------------------------------------------------\n";
         f<<LM;
         put(f,LM.OptimParameters());
+        f<<"chi2Distance to seed\t"<<startingPoint.chi2Distance(LM.OptimParameters())<<"\n";
+        f<<"dBDistance to seed\t"<<dbDistance(startingPoint,LM.OptimParameters())<<"\n";
+        f<<"chi2Distance to prior\t"<<p.chi2Distance(LM.OptimParameters())<<"\n";
+        f<<"dBDistance to seed\t"<<dbDistance(p,LM.OptimParameters())<<"\n";
+
     }
 
     f.close();
+    return *this;
+
 }
 
 
@@ -243,7 +258,7 @@ BayesIteration& BayesIteration::getPosterior()
 
 
     std::size_t factor=2;
-    std::size_t numIterations=200;
+    std::size_t numIterations=1000;
     std::size_t numSeeds=2;
     std::map<double,Parameters> seeds=getRandomParameters(numSeeds*factor,0.2);
 
