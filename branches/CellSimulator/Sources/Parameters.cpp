@@ -504,3 +504,41 @@ std::ostream& operator<<(std::ostream& s, const Parameters& p){
        mode_("")
 
  {}
+
+
+ bool areTheSame(const Parameters& one, const Parameters& other)
+ {
+     if (one.size()!=other.size())
+         return false;
+     for (std::size_t i=0; i<one.size();i++)
+         if (one.indexToName(i)!=other.indexToName(i))
+             return false;
+     return true;
+ }
+
+
+ double dbDistance(const Parameters& one,const Parameters& other)
+ {
+     double result=0;
+
+     for (std::size_t i=0;i<one.size();i++)
+        {
+            result+=pow(other.pMean(other.indexToName(i))-one.pMean(one.indexToName(i)),2);
+        }
+     result=sqrt(result/one.size())*10;
+     return result;
+ }
+
+
+ double Parameters::chi2Distance(const Parameters &other)const
+ {
+     double result=0;
+
+     for (std::size_t i=0;i<size();i++)
+        {
+            result+=pow((other.pMean(other.indexToName(i))-pMean(indexToName(i))/pStd(indexToName(i))),2);
+        }
+    // result=sqrt(result/one.size())*10;
+     return result;
+
+ }
