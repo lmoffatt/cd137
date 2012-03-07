@@ -120,7 +120,7 @@ Results::Results(std::string experimentName):
 /*18*/        APC_TNFa_.push_back (Measurement (119.0,4.12,2.91));//
 /*19*/        NK_IFNg_.push_back(Measurement (24.0,3.55,1.43));//
 /*20*/        NK_TNFa_.push_back (Measurement (24.0,3.06,1.44));//
-/*21*/        LT_IFNg_.push_back (Measurement (119.0,3.4,1.1));//
+/*21*/        LT_IFNg_.push_back (Measurement (119,3.4,1.1));//
 /*22*/        LT_TNFa_.push_back(Measurement (119.0,1.54,1.33));//
 /*23*/        LT_Apoptosis_.push_back(Measurement(119.0,16.55,4.10));//
 /*24*/        Proliferation_.push_back(Measurement(119,3516.0,935.0));//

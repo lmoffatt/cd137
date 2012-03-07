@@ -113,8 +113,8 @@ void loadModel()
 
             std::cout<<seedPar;
             f.close();
-            double factor=0.1;
-            std::size_t numseeds=10;
+            double factor=0.2;
+            std::size_t numseeds=100;
             double probParameterChange=1;
             b.getPosterior(seedPar,factor,numseeds,probParameterChange);
 

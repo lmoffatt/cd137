@@ -169,10 +169,11 @@ BayesIteration& BayesIteration::getPosterior(const Parameters& startingPoint)
        "---------------------------------------------------\n";
     f<<LM;
     put(f,LM.OptimParameters());
+    f<<"SS \t"<<LM.SS()<<"\n";
     f<<"chi2Distance to seed\t"<<startingPoint.chi2Distance(LM.OptimParameters())<<"\n";
     f<<"dBDistance to seed\t"<<dbDistance(startingPoint,LM.OptimParameters())<<"\n";
     f<<"chi2Distance to prior\t"<<p.chi2Distance(LM.OptimParameters())<<"\n";
-    f<<"dBDistance to seed\t"<<dbDistance(p,LM.OptimParameters())<<"\n";
+    f<<"dBDistance to prior\t"<<dbDistance(p,LM.OptimParameters())<<"\n";
 
 
     f.close();
@@ -232,10 +233,12 @@ BayesIteration& BayesIteration::getPosterior(const Parameters& startingPoint,
            "---------------------------------------------------\n";
         f<<LM;
         put(f,LM.OptimParameters());
+        f<<"SS \t"<<LM.SS()<<"\n";
+        f<<"SS of seed \t"<<LM.SS()<<"\n";
         f<<"chi2Distance to seed\t"<<startingPoint.chi2Distance(LM.OptimParameters())<<"\n";
         f<<"dBDistance to seed\t"<<dbDistance(startingPoint,LM.OptimParameters())<<"\n";
         f<<"chi2Distance to prior\t"<<p.chi2Distance(LM.OptimParameters())<<"\n";
-        f<<"dBDistance to seed\t"<<dbDistance(p,LM.OptimParameters())<<"\n";
+        f<<"dBDistance to prior\t"<<dbDistance(p,LM.OptimParameters())<<"\n";
 
     }
 
