@@ -384,12 +384,13 @@ double randNormal(double mean,double stddev)
 }
 double randNormal()
 {
-    const std::size_t n=20;
-    double r=0;
-    for (std::size_t i=0;i<n;++i)
-        r+=(1.0*rand())/RAND_MAX;
 
-    r=(r-0.5*n)/sqrt(n/12);
+    //Box-Muller method http://en.wikipedia.org/wiki/Normal_distribution#Generating_values_from_normal_distribution
+    double U=(1.0*rand())/RAND_MAX;
+    double V=(1.0*rand())/RAND_MAX;
+    const double PI=3.1415926;
+
+    double r=sqrt(-2*log(U))*cos(2*PI*V);
     return r;
 
 }
