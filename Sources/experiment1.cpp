@@ -8,6 +8,21 @@
 #include "Includes/Experiment.h"
 #include "Includes/OptimizationResults.h"
 
+std::string nowLabel()
+{
+time_t rawtime;
+
+  time ( &rawtime );
+
+std::string now=ctime (&rawtime);
+now.erase(now.size()-1);
+// remove the ":"
+now.erase(now.find(":"),1);
+now.erase(now.find(":"),1);
+std::string nowout;
+nowout=now;
+return nowout;
+}
 void loadModel()
 
 {
@@ -101,7 +116,10 @@ void loadModel()
         }
         else
         {
-            BayesIteration b(&cell,prior,&E,"ModeloOptimizationContRand.txt");
+            std::string outputfilename="ModeloOptimizationContRand";
+            outputfilename.append(nowLabel()+".txt");
+
+            BayesIteration b(&cell,prior,&E,outputfilename);
 
             std::string filenameStartingParameter="resultMODEL.txt";
 
