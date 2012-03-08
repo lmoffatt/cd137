@@ -4,6 +4,7 @@
 #include <fstream>
 #include <cstddef>
 #include <vector>
+#include <sstream>
 #include "Results.h"
 #include "Includes/Cell_simulator.h"
 #include "Includes/SimParameters.h"
@@ -18,6 +19,7 @@
 std::ostream& Cell_simulator::run(std::ostream& f)
 {
     f<<"Experiment run \n";
+
     trun_d=0;
     /*1*/    f<<"round"<<" , ";
     /*2*/    f<<"IFNamma[]"<<" , ";
@@ -67,11 +69,18 @@ std::ostream& Cell_simulator::run(std::ostream& f)
 //    double tstart=0;
 //    double tend=1;
 
+
+    std::stringstream ss;
     while ((trun_d<this->sim_duration_d))
     {
 
         if ((trun_d+eps-floor(trun_d+eps)<time_step_d))/*||((trun_d>tstart)&&(trun_d<tend)))*/
         {
+
+            if (m.TNF()==m.TNF())
+                ss.str()="";
+            else
+                f<<ss.str();
 
             /*1*/            f<<trun_d<<" , ";
             /*2*/            f<<m.IFNgamma()<<" , ";
@@ -123,7 +132,67 @@ std::ostream& Cell_simulator::run(std::ostream& f)
             /*38*/    f<<m.Ag()<<" , ";
             /*39*/    f<<m.Ab()<<"\n";
 
-        };
+
+        }
+        else
+        {
+
+            /*1*/            ss<<trun_d<<" , ";
+            /*2*/            ss<<m.IFNgamma()<<" , ";
+            /*3*/            ss<<m.TNF()<<" , ";
+
+            /*4*/            ss<<APC.num_APC()<<" , ";
+            /*5*/            ss<<NK.num_NK()<<" , ";
+            /*6*/            ss<<LT.num_LT()<<" , ";
+
+            /*7*/            ss<<APC.APC0()<<" , ";
+            /*8*/            ss<<APC.APCa()<<" , ";
+            /*9*/            ss<<APC.APCbo()<<" , ";
+            /*10*/           ss<<APC.APCbo_Ab()<<" , ";
+            /*11*/           ss<<APC.APCbl()<<" , ";
+
+
+
+            /*12*/           ss<<APC.percentage_cell_expressing_receptor()<<" , ";
+            /*13*/           ss<<APC.APC_IFNgamma_production_rate()<<" , ";
+            /*14*/           ss<<APC.percentage_APC_producing_IFN()<<" , ";
+            /*15*/           ss<<APC.APC_TNF_production_rate()<<" , ";
+            /*16*/           ss<<APC.percentage_APC_producing_TNF()<<" , ";
+
+
+            /*17*/           ss<<NK.NK0()<<" , ";
+            /*18*/           ss<<NK.NKa()<<" , ";
+            /*19*/           ss<<NK.NKbo()<<" , ";
+            /*20*/           ss<<NK.NKbo_Ab()<<" , ";
+            /*21*/           ss<<NK.NKbl()<<" , ";
+            /*22*/           ss<<NK.percentage_NK_expressing_receptor()<<" , ";
+            /*23*/           ss<<NK.NK_IFNgamma_production_rate()<<" , ";
+            /*24*/           ss<<NK.percentage_NK_producing_IFN()<<" , ";
+            /*25*/           ss<<NK.NK_TNF_production_rate()<<" , ";
+            /*26*/           ss<<NK.percentage_NK_producing_TNF()<<" , ";
+
+            /*27*/    ss<<LT.LTns()<<" , ";
+            /*28*/    ss<<LT.LT0()<<" , ";
+            /*29*/    ss<<LT.LTbo()<<" , ";
+            /*30*/    ss<<LT.LTbl()<<" , ";
+
+            /*31*/    ss<<LT.LT_percentage_cell_expressing_receptor()<<" , ";
+            /*32*/    ss<<LT.LT_IFNgamma_production_rate()<<" , ";
+            /*33*/    ss<<LT.percentage_LT_IFN_production()<<" , ";
+            /*34*/    ss<<LT.TNF_production_rate()<<" , ";
+            /*35*/    ss<<LT.percentage_LT_TNF_production()<<" , ";
+            /*36*/    ss<<LT.percentage_apoptotic_LT_cells()<<" , ";
+            /*37*/    ss<<m.Tymidine_incorporated()<<" , ";
+
+            /*38*/    ss<<m.Ag()<<" , ";
+            /*39*/    ss<<m.Ab()<<"\n";
+
+        }
+        if (m.TNF()!=m.TNF())
+        {
+            f<<ss.str()<<std::endl;
+            break;
+        }
 
 
         APC.update(time_step_d,m,NK,LT);
