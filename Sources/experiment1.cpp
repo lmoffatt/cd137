@@ -97,9 +97,11 @@ void loadModel()
     {
         if (false)
             cell.Optimize(prior,E,"MODELOptimization.txt");
-        else if (false)
+        else if (true)
         {
-            BayesIteration b(&cell,prior,&E,"ModeloOptimizationCont.txt");
+            std::string outputfilename="ModeloOptimizationCont";
+            outputfilename.append(nowLabel()+".txt");
+            BayesIteration b(&cell,prior,&E,outputfilename);
 
             std::string filenameStartingParameter="resultMODEL.txt";
 
