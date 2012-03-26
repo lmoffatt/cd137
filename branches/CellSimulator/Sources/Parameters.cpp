@@ -179,7 +179,7 @@ void Parameters::push_back_dB(const std::string& name,double meanValue,double pS
 void Parameters::push_back_1S(const std::string& name,double minValue_p34,double maxValue_p68)
 {
     double stds=log10(maxValue_p68/minValue_p34)*10/2.0;
-    push_back_dB(name,sqrt(minValue_p34*maxValue_p68),log10(maxValue_p68/minValue_p34)*20.0);
+    push_back_dB(name,sqrt(minValue_p34*maxValue_p68),log10(maxValue_p68/minValue_p34)*10.0/2.0);
 }
 
 
