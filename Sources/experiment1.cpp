@@ -95,7 +95,7 @@ void loadModel()
 
     if (1)
     {
-        if (false)
+        if (true)
             cell.Optimize(prior,E,"MODELOptimization.txt");
         else if (true)
         {
