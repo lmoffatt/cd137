@@ -77,7 +77,7 @@ double Parameters::dBStd(const std::string& name)const
 {
     std::map<std::string,size_t>::const_iterator it=name_.find(name);
     if((it!=name_.end())&& !pStd_.empty())
-        return pStd_[(*it).second]*20;
+        return pStd_[(*it).second]*10;
     else
         return std::numeric_limits<double>::quiet_NaN();
 
@@ -178,19 +178,20 @@ void Parameters::push_back_dB(const std::string& name,double meanValue,double pS
 
 void Parameters::push_back_1S(const std::string& name,double minValue_p34,double maxValue_p68)
 {
+    double stds=log10(maxValue_p68/minValue_p34)*10/2.0;
     push_back_dB(name,sqrt(minValue_p34*maxValue_p68),log10(maxValue_p68/minValue_p34)*20.0);
 }
 
 
 void Parameters::push_back_2S(const std::string& name,double minValue_p02,double maxValue_p98)
 {
-    push_back_dB(name,sqrt(minValue_p02*maxValue_p98),log10(maxValue_p98/minValue_p02)*10.0);
+    push_back_dB(name,sqrt(minValue_p02*maxValue_p98),log10(maxValue_p98/minValue_p02)*10.0/4.0);
 
 }
 
 void Parameters::push_back_3S(const std::string& name,double minValue_p001,double maxValue_p999)
 {
-    push_back_dB(name,sqrt(minValue_p001*maxValue_p999),log10(maxValue_p999/minValue_p001)*20.0/3.0);
+    push_back_dB(name,sqrt(minValue_p001*maxValue_p999),log10(maxValue_p999/minValue_p001)*10.0/6.0);
 
 }
 
