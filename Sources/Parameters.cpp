@@ -77,7 +77,7 @@ double Parameters::dBStd(const std::string& name)const
 {
     std::map<std::string,size_t>::const_iterator it=name_.find(name);
     if((it!=name_.end())&& !pStd_.empty())
-        return pStd_[(*it).second]*10;
+        return pStd_[(*it).second]*20;
     else
         return std::numeric_limits<double>::quiet_NaN();
 
