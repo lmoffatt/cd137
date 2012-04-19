@@ -95,7 +95,7 @@ void loadModel()
 
     if (1)
     {
-        if (true)
+        if (false)
             cell.Optimize(prior,E,"MODELOptimization.txt");
         else if (true)
         {
@@ -133,7 +133,7 @@ void loadModel()
 
             std::cout<<seedPar;
             f.close();
-            double factor=0.2;
+            double factor=0;
             std::size_t numseeds=100;
             double probParameterChange=1;
             b.getPosterior(seedPar,factor,numseeds,probParameterChange);
