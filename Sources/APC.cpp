@@ -635,8 +635,8 @@ APC_cells::APC_cells(const Parameters& p, const Treatment& t):
     /// 1) Init ratio of cells
     /*1*/  init_ratio_APC_d(p.mean_ratio("init_K_ratio_APC_NK")),
     /// 2) IFN Poductions rates of each type of APC
-    /*2*/  IFN_APC0_prod_rate_d(p.mean("IFN_APC0_prod_rate")),
-    /*3*/  IFN_APCa_prod_rate_d(p.mean("IFN_APCa_prod_rate")),
+    /*2*/  IFN_APC0_prod_rate_d(p.mean("IFN_NK0_prod_rate")/p.mean("IFN_APC0_prod_rate")),
+    /*3*/  IFN_APCa_prod_rate_d(p.mean("IFN_NKa_prod_rate")/p.mean("IFN_APCa_prod_rate")),
     /*4*/  IFN_APCbo_prod_rate_d(p.mean("IFN_APCbo_prod_rate")),
     /// 3) TNF Poductions rates of each type of APC
     /*5*/  TNF_APC0_prod_rate_d(p.mean("TNF_APC0_prod_rate")),
@@ -708,8 +708,8 @@ std::vector<double> APC_cells::Derivative(const Media& m, const NK_cells& NK, co
                            APC_Ag_d*m.Ag()*APC0_d );
     double APCa_delta_neg= (APCa_apop_rate_d*APCa_d -
                             u_APC_TNF_d*APCa_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d))-
-                            APC_APC_d*APCa_d*(2*APCa_d+APCbo_d)-
-                            APC_NK_d*APCa_d*(NK.NKa()*NK.NKa_expressing_receptor()+NK.NKbo())-
+                            APC_APC_d*APCa_d*(2*APCa_d+APCbo_d+APCbl_d+APCbo_Ab_d)-
+                            APC_NK_d*APCa_d*(NK.NKa()*NK.NKa_expressing_receptor()+NK.NKbo()+NK.NKbl()+NK.NKbo_Ab())-
                             (APC_LT_1_d-(LT.LT_Ab()*m.Ab()))*LT.LT0()*(APCa_d/*/(APCa_d/*+KsAPC_LT_d)*/)-
                             APC_Ab_d*m.Ab()*APCa_d);
 
@@ -721,8 +721,8 @@ std::vector<double> APC_cells::Derivative(const Media& m, const NK_cells& NK, co
     /// interactionts between cells are similar.
 
     double APCbo_delta=(
-                APC_APC_d*APCa_d*(2*APCa_d+APCbo_d)+
-                APC_NK_d*APCa_d*(NK.NKa()*NK.NKa_expressing_receptor()+NK.NKbo())+
+                APC_APC_d*APCa_d*(2*APCa_d+APCbo_d+APCbl_d+APCbo_Ab_d)+
+                APC_NK_d*APCa_d*(NK.NKa()*NK.NKa_expressing_receptor()+NK.NKbo()+NK.NKbl()+NK.NKbo_Ab())+
                 (APC_LT_1_d-(LT.LT_Ab()*m.Ab()))*LT.LT0()*(APCa_d/*/(APCa_d+/*KsAPC_LT_d)*/)+
                 APCbo_d*APC_bound_proliferation_rate_d*m.prol_ratio()-
                 APCbo_d*APCbo_apop_rate_d-

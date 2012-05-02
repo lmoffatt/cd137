@@ -168,12 +168,27 @@ BayesIteration& BayesIteration::getPosterior(const Parameters& startingPoint)
     f<<"--------------------------------------------------"
        "---------------------------------------------------\n";
     f<<LM;
-    put(f,LM.OptimParameters());
     f<<"SS \t"<<LM.SS()<<"\n";
+    f<<"Evidence \t"<<LM.getEvidence()<<"\n";
+    f<<"Posterior Likelihoo \t"<<LM.getLogPostLik()<<"\n";
+    f<<"logDetPriorCov \t"<<LM.logDetPriorCov()<<"\n";
+    f<<"logDetPostrCov \t"<<LM.logDetPostCov()<<"\n";
+    f<<"logDetPostrStd \t"<<LM.logDetPostStd()<<"\n";
+    f<<"SSdata \t"<<LM.SSdata()<<"\n";
+
+
+
     f<<"chi2Distance to seed\t"<<startingPoint.chi2Distance(LM.OptimParameters())<<"\n";
     f<<"dBDistance to seed\t"<<dbDistance(startingPoint,LM.OptimParameters())<<"\n";
     f<<"chi2Distance to prior\t"<<p.chi2Distance(LM.OptimParameters())<<"\n";
-    f<<"dBDistance to prior\t"<<dbDistance(p,LM.OptimParameters())<<"\n";
+    f<<"dBDistance to prior\t"<<dbDistance(p,LM.OptimParameters())<<std::endl;
+    put(f,LM.OptimParameters());
+    f<<"SS \t"<<LM.SS()<<"\n";
+    f<<"Evidence \t"<<LM.getEvidence()<<"\n";
+    f<<"chi2Distance to seed\t"<<startingPoint.chi2Distance(LM.OptimParameters())<<"\n";
+    f<<"dBDistance to seed\t"<<dbDistance(startingPoint,LM.OptimParameters())<<"\n";
+    f<<"chi2Distance to prior\t"<<p.chi2Distance(LM.OptimParameters())<<"\n";
+    f<<"dBDistance to prior\t"<<dbDistance(p,LM.OptimParameters())<<std::endl;
 
 
     f.close();

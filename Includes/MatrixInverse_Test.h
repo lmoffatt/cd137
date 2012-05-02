@@ -7,4 +7,6 @@ bool inv_test(const std::vector< std::vector< double> >& matrix);
 
 bool inv_test();
 
+bool det_test();
+
 #endif // MATRIXINVERSE_TEST_H

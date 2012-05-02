@@ -6,6 +6,12 @@
 std::vector< std::vector< double> >
 inv(const std::vector< std::vector< double> >& matrix);
 
+double det(const std::vector< std::vector< double> >& matrix);
+
+std::vector< std::vector< double> >
+chol(const std::vector< std::vector< double> >& matrix);
+
+
 
 
 std::ostream& operator<<(
