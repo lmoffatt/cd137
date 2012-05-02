@@ -26,6 +26,18 @@ public:
                                  std::size_t numIterations);
 
 
+
+
+    double getEvidence()const;
+
+    double getLogPostLik()const;
+
+    double logDetPriorCov()const;
+    double logDetPostCov()const;
+    double logDetPostStd()const;
+    double SSdata()const;
+
+
     LevenbergMarquardtParameters(const LevenbergMarquardtParameters& other);
 
     friend void swap(LevenbergMarquardtParameters& one, LevenbergMarquardtParameters& other);
@@ -94,6 +106,14 @@ private:
     std::vector<double> G_;
     std::vector< std::vector<double> > JTWJ_;
     std::vector< std::vector<double> > JTWJinv_;
+
+    double evidence_;
+    double LogPostLik_;
+    double logDetPriorCov_;
+    double logDetPostCov_;
+    double logDetPostStd_;
+    double SSdata_;
+
 
     std::vector<double> d_;
 

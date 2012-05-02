@@ -4,6 +4,7 @@
 #include "Results.h"
 #include "Includes/MatrixInverse_Test.h"
 #include "LevenbergMarquardt_Test.h"
+#include "MatrixInverse_Test.h"
 
 int main()
 {
@@ -12,6 +13,6 @@ int main()
   // BayesParameters();
    loadModel();
    //compareTimeStep();
-
+//    det_test();
 }
 

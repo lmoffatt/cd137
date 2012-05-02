@@ -201,9 +201,64 @@ LevenbergMarquardtParameters& LevenbergMarquardtParameters::optimize()
         }
 
     JTWJinv_=inv(JTWJ_);
+    evidence_=0;
+    logDetPriorCov_=0;
+    LogPostLik_=0;
+  logDetPostStd_=0;
+    for (std::size_t i=0; i<w_.size();i++)
+    {
+        LogPostLik_+=0.5*log(w_[i]);
+    }
+    for (std::size_t i=currParam_.size(); i<w_.size();i++)
+    {
+        logDetPriorCov_+=log(w_[i]);
+    }
+    for (std::size_t i=0;i<currParam_.size(); i++)
+    {
+        logDetPostStd_+=log(JTWJinv_[i][i]);
+    }
+
+
+    LogPostLik_+= -0.5*currSS_;
+    logDetPostCov_=log(det(JTWJinv_));
+    evidence_=LogPostLik_+0.5*log(det(JTWJinv_));
+
+
+
+
 
     optimParam_.setCovariance(JTWJinv_);
     return *this;
+}
+
+double LevenbergMarquardtParameters::getEvidence()const
+{
+
+return evidence_;
+}
+double LevenbergMarquardtParameters::getLogPostLik()const
+{
+
+return LogPostLik_;
+}
+
+double LevenbergMarquardtParameters::logDetPriorCov()const
+{
+    return logDetPriorCov_;
+}
+double LevenbergMarquardtParameters::logDetPostCov()const
+{
+    return logDetPostCov_;
+}
+
+double LevenbergMarquardtParameters::logDetPostStd()const
+{
+    return logDetPostStd_;
+}
+
+double LevenbergMarquardtParameters::SSdata()const
+{
+    return SSdata_;
 }
 
 
@@ -388,11 +443,14 @@ void LevenbergMarquardtParameters::initialize()
     currYfit_=f_->yfit(currParam_);
     nFeval_++;
     currSS_=0;
+    SSdata_=0;
     std::vector<double> ss(nData_);
     for (std::size_t n=0; n<nData_; ++n)
     {
        ss[n]=(currYfit_[n]-data_[n])*(currYfit_[n]-data_[n])*w_[n];
         currSS_+=ss[n];
+        if (n<nData_-currParam_.size())
+            SSdata_+=ss[n];
     }
     nFeval_++;
     nFeval_--;
@@ -463,6 +521,7 @@ std::string LevenbergMarquardtParameters::report()const{
     s<<"Parameter change \t"<<LM.minParamChange_<<"\t";
     s<<"SS change \t"<<LM.minSSChange_<<"\t";
     s<<"Gradient norm \t"<<LM.NormGrad_<<"\n";
+    s<<"Evidence \t"<<LM.evidence_<<"\n";
     s<<"End\n";
 
 }

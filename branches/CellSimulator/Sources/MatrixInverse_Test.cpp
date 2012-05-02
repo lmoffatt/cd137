@@ -74,3 +74,23 @@ bool inv_test()
 
 }
 
+
+
+bool det_test()
+{
+    std::vector< std::vector <double> > A(3,std::vector<double>(3));
+    A[0][0]=14;
+    A[0][1]=37;
+    A[0][2]=44;
+    A[1][0]=37;
+    A[1][1]=110;
+    A[1][2]=127;
+    A[2][0]=44;
+    A[2][1]=127;
+    A[2][2]=149;
+
+    double d=det(A);
+    std::cout<<"el det es "<<d;
+    return d==225;
+
+}

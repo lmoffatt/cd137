@@ -39,7 +39,8 @@ SOURCES += \
     Sources/OptimizationResults.cpp \
     Sources/LevenbergMarquardt_Test.cpp \
     Sources/BayesIteration.cpp \
-    Sources/RungeKutta4.cpp
+    Sources/RungeKutta4.cpp \
+    Sources/matrixCholesky.cpp
 
 HEADERS += \
     Includes/NK.h \
