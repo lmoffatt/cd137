@@ -97,7 +97,7 @@ void loadModel()
     {
         if (false)
             cell.Optimize(prior,E,"MODELOptimization.txt");
-        else if (true)
+        else if (false)
         {
             std::string outputfilename="ModeloOptimizationCont";
             outputfilename.append(nowLabel()+".txt");
@@ -133,7 +133,7 @@ void loadModel()
 
             std::cout<<seedPar;
             f.close();
-            double factor=0;
+            double factor=1;
             std::size_t numseeds=100;
             double probParameterChange=1;
             b.getPosterior(seedPar,factor,numseeds,probParameterChange);
