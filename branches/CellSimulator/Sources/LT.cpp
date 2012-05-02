@@ -215,53 +215,36 @@ void LT_cells::update(double& time_step, double t_run, const Media& m, const APC
                           +APC.APC_LT_1()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbl())
                           +APC.APC_LT_1()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo())
                           +APC.APC_LT_1()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo_Ab())
-<<<<<<< .mine
-                          +LTbo_proliferation_rate_d*m.prol_ratio()*LTbl_d
-                          -LTbo_apop_rate_d*LTbl_d
-=======
                           +LTbo_proliferation_rate_d*LTbl_proliferation_rate_d*m.prol_ratio()*LTbl_d
                           -LTbo_apop_rate_d*LTbl_apop_rate_d*LTbl_d
->>>>>>> .r116
                           -LTbl_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))
                 )*time_step;
     LTbl_d+=LTbl_delta;
 
 
-<<<<<<< .mine
-//   double LT_TymTr_incorporated_delta;
-//   if (m.TymidineTriteate()>0){
-//       LT_TymTr_incorporated_delta=(
-//                   (LTns_proliferation_rate_d*LTns_d*m.prol_ratio()+
-//                    LTns_proliferation_rate_d*m.prol_ratio()*LT0_d+
-//                    LTbo_proliferation_rate_d*LTbo_d*m.prol_ratio()
-//                                  +LTbo_proliferation_rate_d/LTbl_proliferation_rate_d*m.prol_ratio()*LTbl_d)*m.Prol_TymTr()
-//                   )*time_step;
-//       LT_TymTr_incorporated_d+=LT_TymTr_incorporated_delta;
-
-
-
-       double LT_TymTr_incorporated_delta;
-       if (m.TymidineTriteate()>0){
-           LT_TymTr_incorporated_delta=(
-                       (LTns_proliferation_rate_d*LTns_d*m.prol_ratio()+
-                        LTns_proliferation_rate_d*m.prol_ratio()*LT0_d+
-                        LTbo_proliferation_rate_d*LTbo_d*m.prol_ratio()
-                                      +LTbo_proliferation_rate_d*m.prol_ratio()*LTbl_d)*m.Prol_TymTr()
-                       )*time_step;
-           LT_TymTr_incorporated_d+=LT_TymTr_incorporated_delta;
-
-=======
    double LT_TymTr_incorporated_delta;
    if (m.TymidineTriteate()>0){
        LT_TymTr_incorporated_delta=(
                    (LTns_proliferation_rate_d*LTns_d*m.prol_ratio()+
                     LTns_proliferation_rate_d*m.prol_ratio()*LT0_d+
                     LTbo_proliferation_rate_d*LTbo_d*m.prol_ratio()
-                                  +LTbo_proliferation_rate_d*LTbl_proliferation_rate_d*m.prol_ratio()*LTbl_d)*m.Prol_TymTr()
+                                  +LTbo_proliferation_rate_d/LTbl_proliferation_rate_d*m.prol_ratio()*LTbl_d)*m.Prol_TymTr()
                    )*time_step;
        LT_TymTr_incorporated_d+=LT_TymTr_incorporated_delta;
->>>>>>> .r116
+
+
    }
+
+//       double LT_TymTr_incorporated_delta;
+//       if (m.TymidineTriteate()>0){
+//           LT_TymTr_incorporated_delta=(
+//                       (LTns_proliferation_rate_d*LTns_d*m.prol_ratio()+
+//                        LTns_proliferation_rate_d*m.prol_ratio()*LT0_d+
+//                        LTbo_proliferation_rate_d*LTbo_d*m.prol_ratio()
+//                                      +LTbo_proliferation_rate_d*m.prol_ratio()*LTbl_d)*m.Prol_TymTr()
+//                       )*time_step;
+//           LT_TymTr_incorporated_d+=LT_TymTr_incorporated_delta;
+
 //   double  Total_cells_in_apoptosis_delta;
 //   if ((t_run>t_apop_meas_d-t_duration_apoptosis_d)&&(t_run<=t_apop_meas_d)){
 //        Total_cells_in_apoptosis_delta=(LTns_apop_rate_d*LTns_d+LTns_apop_rate_d*LT0_d+
@@ -347,11 +330,7 @@ double LT_cells::LT_IFNgamma_production_rate() const
       double sum=LTns_d*percentage_IFN_LTns_prod_rate_d*IFN_LTns_prod_rate_d+
                LT0_d*percentage_IFN_LTns_prod_rate_d*IFN_LTns_prod_rate_d+
                LTbo_d*percentage_IFN_LTbo_prod_rate_d*IFN_LTbo_prod_rate_d+
-<<<<<<< .mine
-               LTbl_d*percentage_IFN_LTbo_prod_rate_d*IFN_LTbo_prod_rate_d;
-=======
                LTbl_d*percentage_IFN_LTbo_prod_rate_d*IFN_LTbo_prod_rate_d*IFN_LTbl_prod_rate_d;
->>>>>>> .r116
       return sum;
   }
 
@@ -376,11 +355,7 @@ double LT_cells::TNF_production_rate() const
       double sum=LTns_d*percentage_TNF_LTns_prod_rate_d*TNF_LTns_prod_rate_d+
                  LT0_d*percentage_TNF_LTns_prod_rate_d*TNF_LTns_prod_rate_d+
                  LTbo_d*percentage_TNF_LTbo_prod_rate_d*TNF_LTbo_prod_rate_d+
-<<<<<<< .mine
-                 LTbl_d*percentage_TNF_LTbo_prod_rate_d*TNF_LTbo_prod_rate_d;
-=======
                  LTbl_d*percentage_TNF_LTbo_prod_rate_d*TNF_LTbo_prod_rate_d*TNF_LTbl_prod_rate_d;
->>>>>>> .r116
       return sum;
   }
 
