@@ -395,10 +395,12 @@ Cell_simulator& Cell_simulator::applyParameters(const SimParameters& sp,
                   /*2*/ sp.IFN_APC0_prod_rate_,
                   /*3*/ sp.IFN_APCa_prod_rate_,
                   /*4*/ sp.IFN_APCbo_prod_rate_,
+                  sp.IFN_APC_generic_prod_rate_,
                   /// 3) TNF Poductions rates of each type of APC
                   /*5*/ sp.TNF_APC0_prod_rate_,
                   /*6*/ sp.TNF_APCa_prod_rate_,
                   /*7*/ sp.APC_TNF_Induction_CD137,
+                  sp.TNF_APC_generic_prod_rate_,
                   /// 4) Percentages of IFN productions of each type of APC
                   /*8*/ sp.percentage_IFN_APC0_prod_rate_,
                   /*9*/ sp.percentage_IFN_APCa_prod_rate_,
@@ -411,6 +413,7 @@ Cell_simulator& Cell_simulator::applyParameters(const SimParameters& sp,
                   /*13*/ sp.APC0_apop_rate_,
                   /*14*/ sp.APCa_apop_rate_,
                   /*15*/ sp.APCbo_apop_rate_,
+                  sp.APC_generic_apop_rate_,
                   /// 8) constant saturation of TNF for apoptosis
                   /*16*/ sp.Ks_APC_m_TNF_,
                   /// 9) conversion rates
@@ -435,10 +438,12 @@ Cell_simulator& Cell_simulator::applyParameters(const SimParameters& sp,
                  /*2*/ sp.IFN_NK0_prod_rate_,
                  /*3*/ sp.IFN_NKa_prod_rate_,
                  /*4*/ sp.IFN_NKbo_prod_rate_,
+                       sp.IFN_NK_generic_prod_rate_,
                  /// 3) TNF Poductions rates of each type of NK
                  /*5*/ sp.TNF_NK0_prod_rate_,
                  /*6*/ sp.TNF_NKa_prod_rate_,
                  /*7*/ sp.TNF_NKbo_prod_rate_,
+                       sp.TNF_NK_generic_prod_rate_,
                  /// 4) Percentages of IFN productions of each type of NK
                  /*8*/ sp.percentage_IFN_NK0_prod_rate_,
                  /// 5)Percentages of TNF productions of each type of NK
@@ -448,11 +453,13 @@ Cell_simulator& Cell_simulator::applyParameters(const SimParameters& sp,
                  /// 6) Proliferation rates
                  /*12*/ sp.NK0_proliferation_rate_,
                  /*13*/ sp.NKa_proliferation_rate_,
+                 sp.NK_generic_proliferation_rate_,
                  //*14*/ sp.NKbo_proliferation_rate_,
                  /// 7) Apoptosis rates
                  /*15*/ sp.NK0_apop_rate_,
                  /*16*/ sp.NKa_apop_rate_,
                  //*17*/ sp.NKbo_apop_rate_,
+                 sp.NK_generic_apop_rate_,
                  /// 8) constant saturation of TNF for apoptosis
                  /*18*/ sp.Ks_NK_m_TNF_,
                  /// 9) conversion rates
@@ -477,10 +484,12 @@ Cell_simulator& Cell_simulator::applyParameters(const SimParameters& sp,
                      /*3*/ sp.IFN_LTns_prod_rate_,
                      /*4*/ sp.IFN_LTbo_prod_rate_,
                      /*5*/ sp.IFN_LTbl_prod_rate_,
+                  sp.IFN_LT_generic_prod_rate_,
                  /// 3) TNF Poductions rates of each type of LT
                      /*6*/ sp.TNF_LTns_prod_rate_,
                      /*7*/ sp.TNF_LTbo_prod_rate_,
                      /*8*/ sp.TNF_LTbl_prod_rate_,
+                  sp.TNF_LT_generic_prod_rate_,
                  /// 4) Percentages of IFN productions of each type of LT
                      /*9*/ sp.percentage_IFN_LTns_prod_rate_,
                      /*10*/ sp.percentage_IFN_LTbo_prod_rate_,
@@ -493,10 +502,12 @@ Cell_simulator& Cell_simulator::applyParameters(const SimParameters& sp,
                      /*15*/ sp.LTns_proliferation_rate_,
                      /*16*/ sp.LTbo_proliferation_rate_,
                      /*17*/ sp.LTbl_proliferation_rate_,
+                            sp.LT_generic_proliferation_rate_,
                  /// 7) Apoptosis rates
                      /*18*/ sp.LTns_apop_rate_,
                      /*19*/ sp.LTbo_apop_rate_,
                      /*20*/ sp.LTbl_apop_rate_,
+                            sp.LT_generic_apop_rate_,
                  /// 8) constant saturation of TNF for apoptosis
                      /*21*/ sp.Ks_LT_m_TNF_,
                  /// 9) Percentages of cell expressing receptor

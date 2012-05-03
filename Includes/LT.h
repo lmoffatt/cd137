@@ -67,10 +67,12 @@ public:
              /*3*/ double IFN_LTns_prod_rate_,
              /*4*/ double IFN_LTbo_prod_rate_,
              /*5*/ double IFN_LTbl_prod_rate_,
+             double IFN_LT_generic_prod_rate_,
              /// 3) TNF Poductions rates of each type of LT
              /*6*/ double TNF_LTns_prod_rate_,
              /*7*/ double TNF_LTbo_prod_rate_,
              /*8*/ double TNF_LTbl_prod_rate_,
+             double TNF_generic_prod_rate_,
              /// 4) Percentages of IFN productions of each type of LT
              /*9*/ double percentage_IFN_LTns_prod_rate_,
              /*10*/ double percentage_IFN_LTbo_prod_rate_,
@@ -83,10 +85,12 @@ public:
              /*15*/ double LTns_proliferation_rate_,
              /*16*/ double LTbo_proliferation_rate_,
              /*17*/ double LTbl_proliferation_rate_,
+             double LT_generic_proliferation_rate_,
              /// 7) Apoptosis rates
              /*18*/ double LTns_apop_rate_,
              /*19*/ double LTbo_apop_rate_,
              /*20*/ double LTbl_apop_rate_,
+             double LT_generic_apop_rate_,
              /// 8) constant saturation of TNF for apoptosis
              /*21*/ double Ks_LT_m_TNF_,
              /// 9) Percentages of cell expressing receptor
@@ -135,10 +139,12 @@ private:
     /*3*/ double IFN_LTns_prod_rate_d;
     /*4*/ double IFN_LTbo_prod_rate_d;
     /*5*/ double IFN_LTbl_prod_rate_d;
+          double IFN_LT_generic_prod_rate_d;
     /// 3) TNF Poductions rates of each type of LT
     /*6*/ double TNF_LTns_prod_rate_d;
     /*7*/ double TNF_LTbo_prod_rate_d;
     /*8*/ double TNF_LTbl_prod_rate_d;
+          double TNF_LT_generic_prod_rate_d;
     /// 4) Percentages of IFN productions of each type of LT
     /*9*/ double percentage_IFN_LTns_prod_rate_d;
     /*10*/ double percentage_IFN_LTbo_prod_rate_d;
@@ -151,10 +157,12 @@ private:
     /*15*/ double LTns_proliferation_rate_d;
     /*16*/ double LTbo_proliferation_rate_d;
     /*17*/ double LTbl_proliferation_rate_d;
+          double LT_generic_proliferation_rate_d;
     /// 7) Apoptosis rates
     /*18*/ double LTns_apop_rate_d;
     /*19*/ double LTbo_apop_rate_d;
     /*20*/ double LTbl_apop_rate_d;
+          double LT_generic_apop_rate_d;
     /// 8) constant saturation of TNF for apoptosis
     /*21*/ double Ks_LT_m_TNF_d;
     /// 9) Percentages of cell expressing receptor

@@ -146,6 +146,7 @@ Results::Results(std::string experimentName):
          /*37*/             LT_expression_.push_back(Measurement (119.0,29.7, 7.77));
         /*39*/              APC_IFNg_.push_back(Measurement (16.0,7.66,2.20));//
        /*40*/             APC_TNFa_.push_back (Measurement (119.0,7.05,4.03));
+                       APC_TNFa_.push_back (Measurement(16.0,12.96,2.52));
         /*41*/             NK_IFNg_.push_back(Measurement (24.0,27.18,2.32));
         /*42*/             NK_TNFa_.push_back (Measurement (24.0,5.81,0.97));
                          LT_TNFa_.push_back(Measurement (119.0,4.27,0.59));
