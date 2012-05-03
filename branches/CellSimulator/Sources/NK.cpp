@@ -10,10 +10,12 @@ NK_cells::NK_cells(/// 1) Init number of NK
                    /*2*/ double IFN_NK0_prod_rate_,
                    /*3*/ double IFN_NKa_prod_rate_,
                    /*4*/ double IFN_NKbo_prod_rate_,
+                         double IFN_NK_generic_prod_rate_,
                    /// 3) TNF Poductions rates of each type of NK
                    /*5*/ double TNF_NK0_prod_rate_,
                    /*6*/ double TNF_NKa_prod_rate_,
                    /*7*/ double TNF_NKbo_prod_rate_,
+                         double TNF_NK_generic_prod_rate_,
                    /// 4) Percentages of IFN productions of each type of NK
                    /*8*/ double percentage_IFN_NK0_prod_rate_,
                    /// 5)Percentages of TNF productions of each type of NK
@@ -23,10 +25,12 @@ NK_cells::NK_cells(/// 1) Init number of NK
                    /// 6) Proliferation rates
                    /*12*/ double NK0_proliferation_rate_,
                    /*13*/ double NKa_proliferation_rate_,
+                   double NK_generic_proliferation_rate_,
                    //*14*/ double NKbo_proliferation_rate_,
                    /// 7) Apoptosis rates
                    /*15*/ double NK0_apop_rate_,
                    /*16*/ double NKa_apop_rate_,
+                   double NK_generic_apop_rate_,
                    //*17*/ double NKbo_apop_rate_,
                    /// 8) constant saturation of TNF for apoptosis
                    /*18*/ double Ks_NK_m_TNF_,
@@ -56,10 +60,12 @@ NK_cells::NK_cells(/// 1) Init number of NK
     /*2*/ IFN_NK0_prod_rate_d (IFN_NK0_prod_rate_),
     /*3*/ IFN_NKa_prod_rate_d (IFN_NKa_prod_rate_),
     /*4*/ IFN_NKbo_prod_rate_d (IFN_NKbo_prod_rate_),
+    IFN_NK_generic_prod_rate_d(IFN_NK_generic_prod_rate_),
     /// 3) TNF Poductions rates of each type of NK
     /*5*/ TNF_NK0_prod_rate_d (TNF_NK0_prod_rate_),
     /*6*/ TNF_NKa_prod_rate_d(TNF_NKa_prod_rate_),
     /*7*/ TNF_NKbo_prod_rate_d (TNF_NKbo_prod_rate_),
+    TNF_NK_generic_prod_rate_d (TNF_NK_generic_prod_rate_),
     /// 4) Percentages of IFN productions of each type of NK
     /*8*/ percentage_IFN_NK0_prod_rate_d (percentage_IFN_NK0_prod_rate_),
     /// 5)Percentages of TNF productions of each type of NK
@@ -69,10 +75,12 @@ NK_cells::NK_cells(/// 1) Init number of NK
     /// 6) Proliferation rates
     /*12*/ NK0_proliferation_rate_d (NK0_proliferation_rate_),
     /*13*/ NKa_proliferation_rate_d (NKa_proliferation_rate_),
+    NK_generic_proliferation_rate_d (NK_generic_proliferation_rate_),
     //*14*/ NKbo_proliferation_rate_d (NKbo_proliferation_rate_),
     /// 7) Apoptosis rates
     /*15*/ NK0_apop_rate_d (NK0_apop_rate_),
     /*16*/ NKa_apop_rate_d (NKa_apop_rate_),
+    NK_generic_apop_rate_d (NK_generic_apop_rate_),
     //*17*/ NKbo_apop_rate_d (NKbo_apop_rate_),
     /// 8) constant saturation of TNF for apoptosis
     /*18*/ Ks_NK_m_TNF_d (Ks_NK_m_TNF_),
@@ -106,19 +114,23 @@ NK_cells::NK_cells(const NK_cells& other):
      /*7*/ init_ratio_NK_d(other.init_ratio_NK_d),
      /*8*/ IFN_NK0_prod_rate_d(other.IFN_NK0_prod_rate_d),
      /*9*/ IFN_NKa_prod_rate_d(other.IFN_NKa_prod_rate_d),
+    IFN_NK_generic_prod_rate_d(other.IFN_NK_generic_prod_rate_d),
      /*10*/ IFN_NKbo_prod_rate_d(other.IFN_NKbo_prod_rate_d),
      /*11*/ TNF_NK0_prod_rate_d(other.TNF_NK0_prod_rate_d),
      /*12*/ TNF_NKa_prod_rate_d(other.TNF_NKa_prod_rate_d),
      /*13*/ TNF_NKbo_prod_rate_d(other.TNF_NKbo_prod_rate_d),
+    TNF_NK_generic_prod_rate_d(other.TNF_NK_generic_prod_rate_d),
      /*14*/ percentage_IFN_NK0_prod_rate_d(other.percentage_IFN_NK0_prod_rate_d),
      /*15*/ percentage_TNF_NK0_prod_rate_d(other.percentage_TNF_NK0_prod_rate_d),
      /*16*/ percentage_TNF_NKa_prod_rate_d(other.percentage_TNF_NKa_prod_rate_d),
      //*17*/ percentage_TNF_NKbo_prod_rate_d(other.percentage_TNF_NKbo_prod_rate_d),
      /*18*/ NK0_proliferation_rate_d (other.NK0_proliferation_rate_d),
      /*19*/ NKa_proliferation_rate_d(other.NKa_proliferation_rate_d),
+    NK_generic_proliferation_rate_d(other.NK_generic_proliferation_rate_d),
      //*20*/ NKbo_proliferation_rate_d(other.NKbo_proliferation_rate_d),
      /*21*/ NK0_apop_rate_d(other.NK0_apop_rate_d),
      /*22*/ NKa_apop_rate_d(other.NKa_apop_rate_d),
+    NK_generic_apop_rate_d(other.NK_generic_apop_rate_d),
      //*23*/ NKbo_apop_rate_d(other.NKbo_apop_rate_d),
      /*24*/ Ks_NK_m_TNF_d(other.Ks_NK_m_TNF_d),
      /*25*/ KaNK_d(other.KaNK_d),
@@ -156,18 +168,22 @@ void swap(NK_cells& one, NK_cells& other)
     /*8*/ std::swap(one.IFN_NK0_prod_rate_d,other.IFN_NK0_prod_rate_d);
     /*9*/ std::swap(one.IFN_NKa_prod_rate_d,other.IFN_NKa_prod_rate_d);
     /*10*/ std::swap(one.IFN_NKbo_prod_rate_d,other.IFN_NKbo_prod_rate_d);
+    std::swap(one.IFN_NK_generic_prod_rate_d,other.IFN_NK_generic_prod_rate_d);
     /*11*/ std::swap(one.TNF_NK0_prod_rate_d,other.TNF_NK0_prod_rate_d);
     /*12*/ std::swap(one.TNF_NKa_prod_rate_d,other.TNF_NKa_prod_rate_d);
     /*13*/ std::swap(one.TNF_NKbo_prod_rate_d,other.TNF_NKbo_prod_rate_d);
+    std::swap(one.TNF_NK_generic_prod_rate_d,other.TNF_NK_generic_prod_rate_d);
     /*14*/ std::swap(one.percentage_IFN_NK0_prod_rate_d,other.percentage_IFN_NK0_prod_rate_d);
     /*15*/ std::swap(one.percentage_TNF_NK0_prod_rate_d,other.percentage_TNF_NK0_prod_rate_d);
     /*16*/ std::swap(one.percentage_TNF_NKa_prod_rate_d,other.percentage_TNF_NKa_prod_rate_d);
     //*17*/ std::swap(one.percentage_TNF_NKbo_prod_rate_d,other.percentage_TNF_NKbo_prod_rate_d);
     /*18*/ std::swap(one.NK0_proliferation_rate_d ,other.NK0_proliferation_rate_d),
     /*19*/ std::swap(one.NKa_proliferation_rate_d,other.NKa_proliferation_rate_d);
+    std::swap(one.NK_generic_proliferation_rate_d,other.NK_generic_proliferation_rate_d);
     //*20*/ std::swap(one.NKbo_proliferation_rate_d,other.NKbo_proliferation_rate_d);
     /*21*/ std::swap(one.NK0_apop_rate_d,other.NK0_apop_rate_d);
     /*22*/ std::swap(one.NKa_apop_rate_d,other.NKa_apop_rate_d);
+    std::swap(one.NK_generic_apop_rate_d,other.NK_generic_apop_rate_d);
     //*23*/ std::swap(one.NKbo_apop_rate_d,other.NKbo_apop_rate_d);
     /*24*/ std::swap(one.Ks_NK_m_TNF_d,other.Ks_NK_m_TNF_d);
     /*25*/ std::swap(one.KaNK_d,other.KaNK_d);
@@ -236,39 +252,34 @@ void NK_cells::update(double& time_step,const Media& m, const APC_cells& APC,con
                       time_step;
     NKa_d+=NKa_delta;
     /// El porcentaje de células productoras de IL-12 está dentro de la constante
+    if (m.Ab()==0){
+        NKbl_d=0;
 
     /// signalized NK cell "came" from NKa, proliferate, die and some of them are "lost" since they bound mAb
-    double NKbo_delta= (NKbo_d*NKa_proliferation_rate_d*m.prol_ratio()+
+    double NKbo_delta= (NKbo_d*NKa_proliferation_rate_d*NK_generic_proliferation_rate_d*m.prol_ratio()+
                         NK_NK_d*NKa_d*NKa_expressing_receptor_d*(2*NKa_d*NKa_expressing_receptor_d+NKbo_d+NKbl_d+NKbo_Ab_d)+
                         APC.APC_NK()*NKa_d*NKa_expressing_receptor_d*(APC.APCa()+APC.APCbo()+APC.APCbl()+APC.APCbo_Ab())-
-                        NKa_apop_rate_d*NKbo_d-
-                        u_NK_TNF_d*NKbo_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d))-
-                        NKbo_d*NK_Ab_d*m.Ab())*time_step;
+                        NKa_apop_rate_d*NK_generic_apop_rate_d*NKbo_d-
+                        u_NK_TNF_d*NKbo_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d))
+                        )*time_step;
 
     NKbo_d+=NKbo_delta;
-
-    /// signalized NK cells are blocke if they bind with the blocking mAb, proliferate and die
-
-    double NKbo_Ab_delta=(NKbo_Ab_d*NKa_proliferation_rate_d*m.prol_ratio()+
-                          NKbo_d*NK_Ab_d*m.Ab()-
-                          NKa_apop_rate_d*NKbo_Ab_d-
-                          u_NK_TNF_d*NKbo_Ab_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d)))
-            *time_step;
-    NKbo_Ab_d+=NKbo_Ab_delta;
+}
+ else {
 
     /// block NK cells are activated cells that binds to mAb, proliferate and die
-    double NKbl_delta=(NKbl_d*NKa_proliferation_rate_d*m.prol_ratio()+
+    double NKbl_delta=(NKbl_d*NKa_proliferation_rate_d*NK_generic_proliferation_rate_d*m.prol_ratio()+
                        NK_Ab_d*NKa_d*NKa_expressing_receptor_d*m.Ab()-
-                       NKa_apop_rate_d*NKbl_d-
+                       NKa_apop_rate_d*NK_generic_apop_rate_d*NKbl_d-
                        u_NK_TNF_d*NKbl_d*(m.TNF()/(m.TNF()+Ks_NK_m_TNF_d)))*time_step;
 
     NKbl_d+=NKbl_delta;
-
+}
     double NK_TymTr_incorporated_delta;
     if (m.TymidineTriteate()>0){
         NK_TymTr_incorporated_delta=
-                (((NK0_d*NK0_proliferation_rate_d*m.prol_ratio()+(NKa_d+NKbl_d)*NKa_proliferation_rate_d*m.prol_ratio()+
-                  (NKbo_d+NKbo_Ab_d)*NKa_proliferation_rate_d*m.prol_ratio()))*m.Prol_TymTr()
+                (((NK0_d*NK0_proliferation_rate_d*m.prol_ratio()+NKa_d*NKa_proliferation_rate_d*m.prol_ratio()+
+                  (NKbo_d+NKbl_d)*NKa_proliferation_rate_d*m.prol_ratio()*NK_generic_proliferation_rate_d))*m.Prol_TymTr()
                  )*time_step;
         NK_TymTr_incorporated_d+=NK_TymTr_incorporated_delta;
     }
@@ -366,16 +377,16 @@ double NK_cells::num_NK() const
 double NK_cells::NK_IFNgamma_production_rate() const
 {
     double sum=IFN_NK0_prod_rate_d*NK0_d*percentage_IFN_NK0_prod_rate_d+
-            IFN_NKa_prod_rate_d*(NKa_d+NKbl_d)+
-            (NKbo_d+NKbo_Ab_d)*IFN_NKa_prod_rate_d/IFN_NKbo_prod_rate_d;
+            IFN_NKa_prod_rate_d*NKa_d+NKbl_d*IFN_NKa_prod_rate_d*IFN_NK_generic_prod_rate_d+
+            NKbo_d*IFN_NKa_prod_rate_d*IFN_NKbo_prod_rate_d*IFN_NK_generic_prod_rate_d;
     return sum;
 }
 
 double NK_cells::NK_TNF_production_rate() const
 {
     double sum=TNF_NK0_prod_rate_d*NK0_d*percentage_TNF_NK0_prod_rate_d+
-            TNF_NKa_prod_rate_d*(NKa_d+NKbl_d)*percentage_TNF_NKa_prod_rate_d+
-            (NKbo_d+NKbo_Ab_d)*percentage_TNF_NKa_prod_rate_d*TNF_NKa_prod_rate_d/TNF_NKbo_prod_rate_d;
+            TNF_NKa_prod_rate_d*NKa_d*percentage_TNF_NKa_prod_rate_d+NKbl_d*percentage_TNF_NKa_prod_rate_d*TNF_NK_generic_prod_rate_d+
+            NKbo_d*percentage_TNF_NKa_prod_rate_d*TNF_NKa_prod_rate_d*TNF_NKbo_prod_rate_d*TNF_NK_generic_prod_rate_d;
     return sum;
 }
 
@@ -480,19 +491,23 @@ std::ostream& operator<<(std::ostream& s, const NK_cells& c)
         /*2*/ s<<"\n IFN_NK0_prod_rate_ \t"<<c.IFN_NK0_prod_rate_d;
         /*3*/ s<<"\n IFN_NK0_prod_rate_ \t"<<c.IFN_NK0_prod_rate_d;
         /*4*/ s<<"\n IFN_NKbo_prod_rate_ \t"<<c.IFN_NKbo_prod_rate_d;
+        s<<"\n IFN_NK_generic_prod_rate \t"<<c.IFN_NK_generic_prod_rate_d;
         /*5*/ s<<"\n TNF_NK0_prod_rate_ \t"<<c.TNF_NK0_prod_rate_d;
         /*6*/ s<<"\n TNF_NKa_prod_rate_ \t"<<c.TNF_NKa_prod_rate_d;
         /*7*/ s<<"\n TNF_NKbo_prod_rate_ \t"<<c.TNF_NKbo_prod_rate_d;
+        s<<"\n TNF_NK_generic_prod_rate \t"<<c.TNF_NK_generic_prod_rate_d;
         /*8*/ s<<"\n percentage_IFN_NK0_prod_rate_ \t"<<c.percentage_IFN_NK0_prod_rate_d;
         /*9*/ s<<"\n percentage_TNF_NK0_prod_rate_ \t"<<c.percentage_TNF_NK0_prod_rate_d;
         /*10*/ s<<"\n percentage_TNF_NKa_prod_rate_ \t"<<c.percentage_TNF_NKa_prod_rate_d;
         //*11*/ s<<"\n percentage_TNF_NKbo_prod_rate_ \t"<<c.percentage_TNF_NKbo_prod_rate_d;
         /*12*/ s<<"\n NK0_proliferation_rate_d \t"<<c.NK0_proliferation_rate_d;
         /*13*/ s<<"\n NKa_proliferation_rate_ \t"<<c.NKa_proliferation_rate_d;
+        s<<"\n NK_generic_proliferation_rate_ \t"<<c.NK_generic_proliferation_rate_d;
         //*14*/ s<<"\n NKbo_proliferation_rate_ \t"<<c.NKbo_proliferation_rate_d;
         /*15*/ s<<"\n NK0_apop_rate_ \t"<<c.NK0_apop_rate_d;
         //*16*/ s<<"\n NKa_apop_rate_ \t"<<c.NKa_apop_rate_d;
         //*17*/ s<<"\n NKbo_apop_rate_ \t"<<c.NKbo_apop_rate_d;
+        s<<"\n NK_generic_apop_rate_ \t"<<c.NK_generic_apop_rate_d;
         /*18*/ s<<"\n Ks_NK_m_TNF_ \t"<<c.Ks_NK_m_TNF_d;
         /*19*/ s<<"\n KaNK_ \t"<<c.KaNK_d;
         /*20*/ s<<"\n NK_NK_ \t"<<c.NK_NK_d;
@@ -524,11 +539,13 @@ NK_cells::NK_cells(const Parameters& p, const Treatment& t):
     /*2*/ IFN_NK0_prod_rate_d (p.mean("IFN_NK0_prod_rate")),
     /*3*/ IFN_NKa_prod_rate_d (p.mean("IFN_NKa_prod_rate")),
     /*4*/ IFN_NKbo_prod_rate_d (p.mean("IFN_NKbo_prod_rate")),
+    IFN_NK_generic_prod_rate_d (p.mean("IFN_NK_generic_prod_rate_d")),
 
     /// 3) TNF Poductions rates of each type of NK
     /*5*/ TNF_NK0_prod_rate_d (p.mean("TNF_NK0_prod_rate")),
     /*6*/ TNF_NKa_prod_rate_d(p.mean("TNF_NKa_prod_rate")),
     /*7*/ TNF_NKbo_prod_rate_d (p.mean("TNF_NKbo_prod_rate")),
+    TNF_NK_generic_prod_rate_d(p.mean("TNF_NK_generic_prod_rate")),
 
     /// 4) Percentages of IFN productions of each type of NK
     /*8*/ percentage_IFN_NK0_prod_rate_d (p.mean_ratio("Kpercentage_IFN_NK0_prod_rate")),
@@ -542,11 +559,13 @@ NK_cells::NK_cells(const Parameters& p, const Treatment& t):
     /*12*/ NK0_proliferation_rate_d (p.mean("NK0_proliferation_rate")),
     /*13*/ NKa_proliferation_rate_d (p.mean("NKa_proliferation_rate")),
     //*14*/ NKbo_proliferation_rate_d (p.mean("NKbo_proliferation_rate")),
+    NK_generic_proliferation_rate_d(p.mean("NK_generic_proliferation_rate")),
 
     /// 7) Apoptosis rates
     /*15*/ NK0_apop_rate_d (p.mean("NK0_apop_rate")),
     /*16*/ NKa_apop_rate_d (p.mean("NKa_apop_rate")),
     //*17*/ NKbo_apop_rate_d (p.mean("NKbo_apop_rate")),
+    NK_generic_apop_rate_d (p.mean("NK_generic_apop_rate")),
 
     /// 8) constant saturation of TNF for apoptosis
     /*18*/ Ks_NK_m_TNF_d (p.mean("Ks_NK_m_TNF")),
