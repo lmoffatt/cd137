@@ -140,9 +140,12 @@ Results::Results(std::string experimentName):
    /*32*/                APC_expression_.push_back(Measurement(0.0,3.0,0.6));//  //:means true error
         /*33*/        APC_expression_.push_back(Measurement(16.0,14.5,2.0));
         /*34*/        APC_expression_.push_back(Measurement(119.0,6.9,3.6));
+                           NK_expression_(Measurement(1.54,0.46));
         /*35*/        NK_expression_.push_back (Measurement (24.0, 11.32,1.36));
+                           NK_expression_.push_back(Measurement(119.0,1.81,1.36));
                        LT_expression_.push_back(Measurement (0.0, 2.1, 1.9));
       /*36*/        LT_expression_.push_back(Measurement (24.0, 4.1, 2.3));//
+                       LT_expression_.push_back(Measurement(16.0,2.4,0.7));
          /*37*/             LT_expression_.push_back(Measurement (119.0,29.7, 7.77));
         /*39*/              APC_IFNg_.push_back(Measurement (16.0,7.66,2.20));//
        /*40*/             APC_TNFa_.push_back (Measurement (119.0,7.05,4.03));
@@ -185,7 +188,7 @@ Results::Results(std::string experimentName):
 /*64*/        LT_TNFa_.push_back(Measurement (119.0,1.93,0.893));//
 //
               LT_Apoptosis_.push_back(Measurement(119.0,43.13,3.86));//
-/*66*/                   Proliferation_.push_back(Measurement(119.0,5740.0,4326.0));
+/*66*/                   Proliferation_.push_back(Measurement(119.0,5740.0,3326.0));
 /*67*/       num_cells_.push_back(Measurement(24.0,1.0e6,5.0e5));//
 /*68*/       num_cells_.push_back(Measurement(119.0,1.e6,5.0e5));//
 
