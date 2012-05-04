@@ -66,5 +66,10 @@ HEADERS += \
     Includes/RungeKutta4.h
 
 
+win32{
 LIBS += -L$$PWD/bin -lcygblas \
-	-L$$PWD/bin -lcyglapack
+        -L$$PWD/bin -lcyglapack
+} else {
+LIBS += -L$$PWD/bin -lblas \
+        -L$$PWD/bin -llapack
+}
