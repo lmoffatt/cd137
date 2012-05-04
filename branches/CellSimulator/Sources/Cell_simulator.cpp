@@ -1533,10 +1533,12 @@ void Cell_simulator::Optimize(const Parameters& priorPar,
          /*2*/ sp.push_back_1S("IFN_APC0_prod_rate",1.0e-8,1.0e-5);
          /*3*/ sp.push_back_1S("IFN_APCa_prod_rate",2.0e-6,2e-3);
          /*4*/ sp.push_back_1S("IFN_APCbo_prod_rate",1e-6,1e-3);
+     sp.push_back_1S("IFN_APC_generic_prod_rate",0.2,10.0);
          /// 3) TNF Poductions rates of each type of APC
          /*5*/ sp.push_back_1S("TNF_APC0_prod_rate",1.0e-8,1.0e-5);
          /*6*/ sp.push_back_1S("TNF_APCa_prod_rate",2.0e-4,2.0);//k
          /*7*/ sp.push_back_1S("TNF_APCbo_prod_rate",1.0e-4,1.0);
+     sp.push_back_1S("TNF_APC_generic_prod_rate",0.2,10.0);
          /// 4) Percentages of IFN productions of each type of APC
          /*8*/ sp.push_back_1S("Kpercentage_IFN_APC0_prod_rate",0.01,0.06);//oj
          /*9*/ sp.push_back_1S("Kpercentage_IFN_APCa_prod_rate",0.08,0.5);
@@ -1549,6 +1551,7 @@ void Cell_simulator::Optimize(const Parameters& priorPar,
          /*13*/ sp.push_back_1S("APC0_apop_rate",3.0e-6,3.0e-4);//k
          /*14*/ sp.push_back_1S("APCa_apop_rate",0.00001,0.001);//k
          /*15*/ sp.push_back_1S("APCbo_apop_rate",0.00001,0.001);//k
+     sp.push_back_1S("APC_generic_apop_rate",0.2,10.0);
          /// 8) constant saturation of TNF for apoptosis
          /*16*/ sp.push_back_1S("Ks_APC_m_TNF",0.002,20);//K
          /// 9) conversion rates
@@ -1573,10 +1576,12 @@ void Cell_simulator::Optimize(const Parameters& priorPar,
          /*2*/  sp.push_back_1S("IFN_NK0_prod_rate",1.0e-8,1.0e-5);
          /*3*/  sp.push_back_1S("IFN_NKa_prod_rate",2.0e-4,2.0);
          /*4*/  sp.push_back_1S("IFN_NKbo_prod_rate",1.0e-4,1.0);
+      sp.push_back_1S("IFN_NK_generic_prod_rate",0.2,10.0);
          /// 3) TNF Poductions rates of each type of NK
          /*5*/  sp.push_back_1S("TNF_NK0_prod_rate",1.0e-8,1.0e-5);
          /*6*/  sp.push_back_1S("TNF_NKa_prod_rate",2.0e-6,2e-3);
          /*7*/  sp.push_back_1S("TNF_NKbo_prod_rate",1e-6,1e-3);
+       sp.push_back_1S("IFN_NK_generic_prod_rate",0.2,10.0);
          /// 4) Percentages of IFN productions of each type of NK
          /*8*/  sp.push_back_1S("Kpercentage_IFN_NK0_prod_rate",0.1,0.06);
          /// 5)Percentages of TNF productions of each type of NK
@@ -1586,11 +1591,13 @@ void Cell_simulator::Optimize(const Parameters& priorPar,
          /// 6) Proliferation rates
          /*12*/  sp.push_back_1S("NK0_proliferation_rate",3.0e-6,3.0e-4);
          /*13*/  sp.push_back_1S("NKa_proliferation_rate",0.00001,0.001);
+        sp.push_back_1S("NK_generic_proliferation_rate",0.2,10.0);
          //*14*/  sp.push_back_1S("NKbo_proliferation_rate",0.00001,0.001);
          /// 7) Apoptosis rates
          /*15*/  sp.push_back_1S("NK0_apop_rate",3.0e-6,3.0e-4);
          /*16*/  sp.push_back_1S("NKa_apop_rate",0.00001,0.001);
          //*17*/  sp.push_back_1S("NKbo_apop_rate",0.00001,0.001);
+         sp.push_back_1S("NK_generic_apop_rate",0.2,10.0);
          /// 8) constant saturation of TNF for apoptosis
          /*18*/  sp.push_back_1S("Ks_NK_m_TNF",0.002,20);
          /// 9) conversion rates
@@ -1614,10 +1621,12 @@ void Cell_simulator::Optimize(const Parameters& priorPar,
             /*3*/  sp.push_back_1S("IFN_LTns_prod_rate",0.0000002,0.002);
             /*4*/  sp.push_back_1S("IFN_LTbo_prod_rate",0.000002,0.02);//k
             /*5*/  sp.push_back_1S("IFN_LTbl_prod_rate",0.000001,0.01);
+          sp.push_back_1S("IFN_LT_generic_prod_rate",0.2,10.0);
         /// 3) TNF Poductions rates of each type of LT
             /*6*/  sp.push_back_1S("TNF_LTns_prod_rate",0.00000002,0.0002);
             /*7*/  sp.push_back_1S("TNF_LTbo_prod_rate",0.0001,0.01);
             /*8*/  sp.push_back_1S("TNF_LTbl_prod_rate",0.00005,0.005);
+           sp.push_back_1S("IFN_LT_generic_prod_rate",0.2,10.0);
         /// 4) Percentages of IFN productions of each type of LT
             /*9*/  sp.push_back_1S("Kpercentage_IFN_LTns_prod_rate",0.01,0.06);
             /*10*/  sp.push_back_1S("Kpercentage_IFN_LTbo_prod_rate",0.05,0.5);
@@ -1630,10 +1639,12 @@ void Cell_simulator::Optimize(const Parameters& priorPar,
             /*15*/  sp.push_back_1S("LTns_proliferation_rate",1.0/6000.0,1.0/60);//oj
             /*16*/  sp.push_back_1S("LTbo_proliferation_rate",0.083,0.83);//K
             /*17*/  sp.push_back_1S("LTbl_proliferation_rate",0.041,0.41);//e
+            sp.push_back_1S("LT_generic_proliferation_rate",0.2,10.0);
         /// 7) Apoptosis rates
             /*18*/  sp.push_back_1S("LTns_apop_rate",0.0001,1);
             /*19*/  sp.push_back_1S("LTbo_apop_rate",0.055,0.55);
             /*20*/  sp.push_back_1S("LTbl_apop_rate",0.11,1.1);
+             sp.push_back_1S("LT_generic_apop_rate",0.2,10.0);
        /// 8) constant saturation of TNF for apoptosis
             /*21*/  sp.push_back_1S("Ks_LT_m_TNF",0.0004,4.0);//k, promedio de LN y lung
 
@@ -1686,6 +1697,7 @@ void Cell_simulator::Optimize(const Parameters& priorPar,
          /*13*/ sp.push_back_dB("APC0_apop_rate",3.0e-6,3.0e-4);//k
          /*14*/ sp.push_back_dB("APCa_apop_rate",0.00001,0.001);//k
          /*15*/ sp.push_back_dB("APCbo_apop_rate",0.00001,0.001);//k
+     sp.push_back_1S("APC_generic_apop:rate", 0.1,2.0);
          /// 8) constant saturation of TNF for apoptosis
          /*16*/ sp.push_back_dB("Ks_APC_m_TNF",0.002,20);//K
          /// 9) conversion rates
