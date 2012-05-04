@@ -212,8 +212,8 @@ void LT_cells::update(double& time_step, double t_run, const Media& m, const APC
               +APC.APC_LT_1()*LT0_d*(APC.APCbl())
               +APC.APC_LT_1()*LT0_d*(APC.APCbo())
               +APC.APC_LT_1()*LT0_d*(APC.APCbo_Ab())
-              +LTbo_proliferation_rate_d*LT_generic_proliferation_rate_d*m.prol_ratio()*LTbo_d
-              -LTbo_apop_rate_d*LT_generic_apop_rate_d*LTbo_d
+              +LTbo_proliferation_rate_d*m.prol_ratio()*LTbo_d
+              -LTbo_apop_rate_d*LTbo_d
               -LTbo_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))
                )*time_step;
 
@@ -230,12 +230,12 @@ void LT_cells::update(double& time_step, double t_run, const Media& m, const APC
 //                  )*time_step;
 else{LTbo_d=0;
     double LTbl_delta=(
-                           APC.APC_LT_1()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCa())
-                          +APC.APC_LT_1()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbl())
-                          +APC.APC_LT_1()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo())
-                          +APC.APC_LT_1()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo_Ab())
-                          +LTbo_proliferation_rate_d*LTbl_proliferation_rate_d*LT_generic_proliferation_rate_d*m.prol_ratio()*LTbl_d
-                          -LTbo_apop_rate_d*LTbl_apop_rate_d*LT_generic_apop_rate_d*LTbl_d
+                           APC.APC_LT_1()*LT0_d*(APC.APCa())
+                          +APC.APC_LT_1()*LT0_d*(APC.APCbl())
+                          +APC.APC_LT_1()*LT0_d*(APC.APCbo())
+                          +APC.APC_LT_1()*LT0_d*(APC.APCbo_Ab())
+                          +LTbo_proliferation_rate_d*LTbl_proliferation_rate_d*m.prol_ratio()*LTbl_d
+                          -LTbo_apop_rate_d*LTbl_apop_rate_d*LTbl_d
                           -LTbl_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))
                 )*time_step;
     LTbl_d+=LTbl_delta;
@@ -274,8 +274,8 @@ else{LTbo_d=0;
         double  Total_cells_in_apoptosis_delta;
         if ((t_run>t_apop_meas_d-t_duration_apoptosis_d)&&(t_run<=t_apop_meas_d)){
              Total_cells_in_apoptosis_delta=(LTns_apop_rate_d*LTns_d+LTns_apop_rate_d*LT0_d+
-                                          LTbo_apop_rate_d*LTbo_d*LT_generic_apop_rate_d+LTbo_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))+
-                                          LTbo_apop_rate_d*LTbl_d*LTbl_apop_rate_d*LT_generic_apop_rate_d+LTbl_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d)))*time_step;
+                                          LTbo_apop_rate_d*LTbo_d+LTbo_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))+
+                                          LTbo_apop_rate_d*LTbl_d*LTbl_apop_rate_d+LTbl_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d)))*time_step;
              Total_cells_in_apoptosis_d+= Total_cells_in_apoptosis_delta;
 }
 }
@@ -348,8 +348,8 @@ double LT_cells::LT_IFNgamma_production_rate() const
 
       double sum=LTns_d*percentage_IFN_LTns_prod_rate_d*IFN_LTns_prod_rate_d+
                LT0_d*percentage_IFN_LTns_prod_rate_d*IFN_LTns_prod_rate_d+
-               LTbo_d*percentage_IFN_LTbo_prod_rate_d*IFN_LTbo_prod_rate_d*IFN_LT_generic_prod_rate_d+
-               LTbl_d*percentage_IFN_LTbo_prod_rate_d*IFN_LTbo_prod_rate_d*IFN_LTbl_prod_rate_d*IFN_LT_generic_prod_rate_d;
+               LTbo_d*percentage_IFN_LTbo_prod_rate_d*IFN_LTbo_prod_rate_d+
+               LTbl_d*percentage_IFN_LTbo_prod_rate_d*IFN_LTbo_prod_rate_d*IFN_LTbl_prod_rate_d;
       return sum;
   }
 
@@ -373,8 +373,8 @@ double LT_cells::TNF_production_rate() const
 
       double sum=LTns_d*percentage_TNF_LTns_prod_rate_d*TNF_LTns_prod_rate_d+
                  LT0_d*percentage_TNF_LTns_prod_rate_d*TNF_LTns_prod_rate_d+
-                 LTbo_d*percentage_TNF_LTbo_prod_rate_d*TNF_LTbo_prod_rate_d*TNF_LT_generic_prod_rate_d+
-                 LTbl_d*percentage_TNF_LTbo_prod_rate_d*TNF_LTbo_prod_rate_d*TNF_LTbl_prod_rate_d*TNF_LT_generic_prod_rate_d;
+                 LTbo_d*percentage_TNF_LTbo_prod_rate_d*TNF_LTbo_prod_rate_d+
+                 LTbl_d*percentage_TNF_LTbo_prod_rate_d*TNF_LTbo_prod_rate_d*TNF_LTbl_prod_rate_d;
       return sum;
   }
 

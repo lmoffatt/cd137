@@ -261,46 +261,47 @@ void swap(APC_cells& one, APC_cells& other)
 /// Señaliza a través de L y R
 
 void APC_cells::update(double& time_step,const Media& m, const NK_cells& NK, const LT_cells& LT)
-{APCbo_Ab_d=0;
+{
+    APCbo_Ab_d=0;
     if (m.Ab()==0){
-    /// we update each subpopulation of cells independently and we take into account the transition from one state to the other
+        /// we update each subpopulation of cells independently and we take into account the transition from one state to the other
 
-    /// the number of naive cells (no Ag) die and some of them are "lost" since they internalize the Ag
-APCbl_d=0;
-    double APC0_delta=(-APC0_apop_rate_d*APC0_d//apoptosis
-                       // activation in inflamatory context APC0_d ->APCa_d
-                       -m.Ag()*APC0_d*APC_Ag_d*(m.IFNgamma()/(m.IFNgamma()+ Ksi_d))*(m.TNF()/(m.TNF()+Kst_d))
-                       //activation basal (dendritic cells)
-                       -APC_Ag_2_d*m.Ag()*APC0_d)*time_step;
+        /// the number of naive cells (no Ag) die and some of them are "lost" since they internalize the Ag
+        APCbl_d=0;
+        double APC0_delta=(-APC0_apop_rate_d*APC0_d//apoptosis
+                           // activation in inflamatory context APC0_d ->APCa_d
+                           -m.Ag()*APC0_d*APC_Ag_d*(m.IFNgamma()/(m.IFNgamma()+ Ksi_d))*(m.TNF()/(m.TNF()+Kst_d))
+                           //activation basal (dendritic cells)
+                           -APC_Ag_2_d*m.Ag()*APC0_d)*time_step;
 
-    APC0_d+=APC0_delta;
-    /// activated APC cells die and some of them are "lost" since they bind receptor or mAb, they came from APC0
-    double APCa_delta_pos=(// activation in inflamatory context APC0_d ->APCa_d
-                           m.Ag()*APC0_d*APC_Ag_d*(m.IFNgamma()/(m.IFNgamma()+ Ksi_d))*(m.TNF()/(m.TNF()+Kst_d))+
-                           APC_Ag_2_d*m.Ag()*APC0_d)*time_step;//activation basal (dendritic cells)
-    double APCa_delta_neg= (-APCa_apop_rate_d*APCa_d //apoptosis
-                            -u_APC_TNF_d*APCa_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d))//apoptosis by TNF
-                            -APC_APC_d*APCa_d*(2*APCa_d+APCbo_d+APCbl_d+APCbo_Ab_d)//APCa--->APCbo
-                            -APC_NK_d*APCa_d*(NK.NKa()*NK.NKa_expressing_receptor()+NK.NKbo()+NK.NKbl()+NK.NKbo_Ab())//APCa--->APCbo
-                            -APC_LT_1_d*LT.LT0()*APCa_d////APCa--->APCbo
-                            -APC_Ab_d*m.Ab()*APCa_d//bloqueo de la APC
-                            )*time_step;
+        APC0_d+=APC0_delta;
+        /// activated APC cells die and some of them are "lost" since they bind receptor or mAb, they came from APC0
+        double APCa_delta_pos=(// activation in inflamatory context APC0_d ->APCa_d
+                               m.Ag()*APC0_d*APC_Ag_d*(m.IFNgamma()/(m.IFNgamma()+ Ksi_d))*(m.TNF()/(m.TNF()+Kst_d))+
+                               APC_Ag_2_d*m.Ag()*APC0_d)*time_step;//activation basal (dendritic cells)
+        double APCa_delta_neg= (-APCa_apop_rate_d*APCa_d //apoptosis
+                                -u_APC_TNF_d*APCa_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d))//apoptosis by TNF
+                                -APC_APC_d*APCa_d*(2*APCa_d+APCbo_d+APCbl_d+APCbo_Ab_d)//APCa--->APCbo
+                                -APC_NK_d*APCa_d*(NK.NKa()*NK.NKa_expressing_receptor()+NK.NKbo()+NK.NKbl()+NK.NKbo_Ab())//APCa--->APCbo
+                                -APC_LT_1_d*LT.LT0()*APCa_d////APCa--->APCbo
+                                -APC_Ab_d*m.Ab()*APCa_d//bloqueo de la APC
+                                )*time_step;
 
 
-    APCa_d+=APCa_delta_pos+APCa_delta_neg;
-    /// only bound APC could proliferate. They also die. They came from APCa. Some of them are "lost" since they bind mAb
-    double APCbo_delta=(
-                APC_APC_d*APCa_d*(2*APCa_d+APCbo_d+APCbl_d+APCbo_Ab_d)//APCa--->APCbo
-                +APC_NK_d*APCa_d*(NK.NKa()*NK.NKa_expressing_receptor()+NK.NKbo()+NK.NKbl()+NK.NKbo_Ab())//APCa--->APCbo
-                +APC_LT_1_d*LT.LT0()*APCa_d//APCa--->APCbo
-                +APCbo_d*APC_bound_proliferation_rate_d*m.prol_ratio()//Proliferation
-                -APCbo_d*APCbo_apop_rate_d*APC_generic_apop_rate_d*APCa_apop_rate_d//apoptosis induced by CD137
-                -u_APC_TNF_d*APCbo_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d))//TNF apoptosis
-                )*time_step;
+        APCa_d+=APCa_delta_pos+APCa_delta_neg;
+        /// only bound APC could proliferate. They also die. They came from APCa. Some of them are "lost" since they bind mAb
+        double APCbo_delta=(
+                    APC_APC_d*APCa_d*(2*APCa_d+APCbo_d+APCbl_d+APCbo_Ab_d)//APCa--->APCbo
+                    +APC_NK_d*APCa_d*(NK.NKa()*NK.NKa_expressing_receptor()+NK.NKbo()+NK.NKbl()+NK.NKbo_Ab())//APCa--->APCbo
+                    +APC_LT_1_d*LT.LT0()*APCa_d//APCa--->APCbo
+                    +APCbo_d*APC_bound_proliferation_rate_d*m.prol_ratio()//Proliferation
+                    -APCbo_d*APCbo_apop_rate_d*APC_generic_apop_rate_d*APCa_apop_rate_d//apoptosis induced by CD137
+                    -u_APC_TNF_d*APCbo_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d))//TNF apoptosis
+                    )*time_step;
 
-    APCbo_d+=APCbo_delta;
+        APCbo_d+=APCbo_delta;
     }
-else{
+    else{
 
         APCbo_d=0;
         double APC0_delta=(-APC0_apop_rate_d*APC0_d//apoptosis
@@ -325,19 +326,18 @@ else{
 
         APCa_d+=APCa_delta_pos+APCa_delta_neg;
 
-    /// block APC has ligand free, so they can be signalized and "lost". They came from APCa.
-    double APCbl_delta= (
-                APC_APC_d*APCa_d*(2*APCa_d+APCbo_d+APCbl_d+APCbo_Ab_d)//APCa--->APCbo
-                +APC_NK_d*APCa_d*(NK.NKa()*NK.NKa_expressing_receptor()+NK.NKbo()+NK.NKbl()+NK.NKbo_Ab())//APCa--->APCbo
-                +APC_LT_1_d*LT.LT0()*APCa_d//APCa--->APCbo
-                +APCbl_d*m.prol_ratio()//Proliferation
-                -APCbl_d*APC_generic_apop_rate_d*APCa_apop_rate_d//apoptosis induced by CD137
-                -APCbl_d*APC_Ab_d*m.Ab()//bloqueo de las APCbo-->APCbo_bl
-                -u_APC_TNF_d*APCbo_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d))//TNF apoptosis
-                )*time_step;//APC_TNF apoptosis
-    APCbl_d+=APCbl_delta;
+        /// block APC has ligand free, so they can be signalized and "lost". They came from APCa.
+        double APCbl_delta= (
+                    APC_APC_d*APCa_d*(2*APCa_d+APCbo_d+APCbl_d+APCbo_Ab_d)//APCa--->APCbo
+                    +APC_NK_d*APCa_d*(NK.NKa()*NK.NKa_expressing_receptor()+NK.NKbo()+NK.NKbl()+NK.NKbo_Ab())//APCa--->APCbo
+                    +APC_LT_1_d*LT.LT0()*APCa_d//APCa--->APCbo
+                    -APCbl_d*APC_generic_apop_rate_d*APCa_apop_rate_d//apoptosis induced by CD137
+                    -APCbl_d*APC_Ab_d*m.Ab()//bloqueo de las APCbo-->APCbo_bl
+                    -u_APC_TNF_d*APCbo_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d))//TNF apoptosis
+                    )*time_step;//APC_TNF apoptosis
+        APCbl_d+=APCbl_delta;
 
- }
+    }
     double APC_TymTr_incorporated_delta;
     if (m.TymidineTriteate()>0)
     {
@@ -486,16 +486,18 @@ double APC_cells::percentage_cell_expressing_receptor() const
 double APC_cells::APC_IFNgamma_production_rate() const
 {
     double sum=APC0_d*IFN_APC0_prod_rate_d*percentage_IFN_APC0_prod_rate_d+
-            (APCa_d+APCbl_d)*IFN_APCa_prod_rate_d*IFN_APC_generic_prod_rate_d*percentage_IFN_APCa_prod_rate_d+
-            (APCbo_d+APCbo_Ab_d)*IFN_APCbo_prod_rate_d*IFN_APCa_prod_rate_d*IFN_APC_generic_prod_rate_d*percentage_IFN_APCa_prod_rate_d;
+            APCa_d*IFN_APCa_prod_rate_d*percentage_IFN_APCa_prod_rate_d+
+            APCbl_d*IFN_APCa_prod_rate_d*IFN_APC_generic_prod_rate_d*percentage_IFN_APCa_prod_rate_d+
+            APCbo_d*IFN_APCbo_prod_rate_d*IFN_APCa_prod_rate_d*IFN_APC_generic_prod_rate_d*percentage_IFN_APCa_prod_rate_d;
     return sum;
 }
 
 double APC_cells::APC_TNF_production_rate() const
 {
     double sum=APC0_d*TNF_APC0_prod_rate_d*percentage_TNF_APC0_prod_rate_d+
-            (APCa_d+APCbl_d)*TNF_APCa_prod_rate_d*TNF_APC_generic_prod_rate_d+
-            (APCbo_d+APCbo_Ab_d)*TNF_APCbo_prod_rate_d*TNF_APCa_prod_rate_d*TNF_APC_generic_prod_rate_d;
+            APCa_d*TNF_APCa_prod_rate_d+
+            APCbl_d*TNF_APCa_prod_rate_d*TNF_APC_generic_prod_rate_d+
+            APCbo_d*TNF_APCbo_prod_rate_d*TNF_APCa_prod_rate_d*TNF_APC_generic_prod_rate_d;
     return sum;
 }
 
@@ -693,7 +695,7 @@ APC_cells::APC_cells(const Parameters& p, const Treatment& t):
     /*13*/  APC0_apop_rate_d(p.mean("APC0_apop_rate")),
     /*14*/  APCa_apop_rate_d(p.mean("APCa_apop_rate")),
     /*15*/  APCbo_apop_rate_d(p.mean("APCbo_apop_rate")),
-    APC_generic_apop_rate_d(p.mean("APC_generic_apop_rate_d")),
+    APC_generic_apop_rate_d(p.mean("APC_generic_apop_rate")),
     /// 8) constant saturation of TNF for apoptosis
     /*16*/  Ks_APC_m_TNF_d(p.mean("Ks_APC_m_TNF")),
     /// 9) conversion rates
