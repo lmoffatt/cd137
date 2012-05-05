@@ -428,7 +428,8 @@ bool LevenbergMarquardtParameters::meetConvergenceCriteria()
             smallSSChange_||
             smallGradient_||
             surpassLanda_||
-            currSS_!=currSS_;
+            currSS_!=currSS_||
+            currSS_>1e9;
 }
 
 void LevenbergMarquardtParameters::initialize()

@@ -140,13 +140,13 @@ Results::Results(std::string experimentName):
    /*32*/                APC_expression_.push_back(Measurement(0.0,3.0,0.6));//  //:means true error
         /*33*/        APC_expression_.push_back(Measurement(16.0,14.5,2.0));
         /*34*/        APC_expression_.push_back(Measurement(119.0,6.9,3.6));
-                           NK_expression_.push_back(Measurement(119.0,1.54,0.46));
-        /*35*/        NK_expression_.push_back (Measurement (24.0, 11.32,1.36));
-                           NK_expression_.push_back(Measurement(119.0,1.81,1.36));
-                       LT_expression_.push_back(Measurement (0.0, 2.1, 1.9));
-      /*36*/        LT_expression_.push_back(Measurement (24.0, 4.1, 2.3));//
+                           NK_expression_.push_back(Measurement(0.0,1.54,0.46));
+        /*35*/        NK_expression_.push_back (Measurement (24.0, 12.32,1.36));
+                           NK_expression_.push_back(Measurement(119.0,1.81,1.38));
+                       LT_expression_.push_back(Measurement (0.0, 2.0, 1.1));
                        LT_expression_.push_back(Measurement(16.0,2.4,0.7));
-         /*37*/             LT_expression_.push_back(Measurement (119.0,29.7, 7.77));
+        /*36*/        LT_expression_.push_back(Measurement (24.0, 3.32, 1.2));//
+         /*37*/             LT_expression_.push_back(Measurement (119.0,28.7, 8.7));
         /*39*/              APC_IFNg_.push_back(Measurement (16.0,7.66,2.20));//
        /*40*/             APC_TNFa_.push_back (Measurement (119.0,7.05,4.03));
                        APC_TNFa_.push_back (Measurement(16.0,12.96,2.52));
