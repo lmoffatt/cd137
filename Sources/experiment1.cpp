@@ -89,6 +89,8 @@ void loadModel()
 
 
 
+
+
      //Modificar num iteracines
     //simulExp: simulado  E:experimental
     //OptimizationResults O=cell.Optimize(sp,sp,simulExp,1,500);
@@ -103,7 +105,7 @@ void loadModel()
             outputfilename.append(nowLabel()+".txt");
             BayesIteration b(&cell,prior,&E,outputfilename);
 
-            std::string filenameStartingParameter="resultMODEL.txt";
+            std::string filenameStartingParameter="resultMODEL 111.txt";
 
             std::ifstream f;
             f.open(filenameStartingParameter.c_str());
@@ -120,6 +122,14 @@ void loadModel()
         {
             std::string outputfilename="ModeloOptimizationContRand";
             outputfilename.append(nowLabel()+".txt");
+            std::ofstream fout;
+            fout.open(outputfilename.c_str(),std::ios_base::app);
+            fout<<"-------------------------------------------------------\n";
+            fout<<"----------Expected results--------------------------\n";
+            fout<<"--------------------------------------------------"
+               "---------------------------------------------------\n";
+            fout<<E;
+            fout.close();
 
             BayesIteration b(&cell,prior,&E,outputfilename);
 
@@ -131,10 +141,12 @@ void loadModel()
             Parameters seedPar;
             f>>seedPar;
 
+
+
             std::cout<<seedPar;
             f.close();
             double factor=1;
-            std::size_t numseeds=100;
+            std::size_t numseeds=1000;
             double probParameterChange=1;
             b.getPosterior(seedPar,factor,numseeds,probParameterChange);
 

@@ -132,7 +132,7 @@ BayesIteration& BayesIteration::getPosterior(const Parameters& startingPoint)
 
     Parameters p=priors_.back();
 
-   std::size_t numIterations=300;
+   std::size_t numIterations=1000;
 
     LevenbergMarquardtParameters LM(this,
                                     data,
@@ -205,7 +205,7 @@ BayesIteration& BayesIteration::getPosterior(const Parameters& startingPoint,
 
     Parameters p=priors_.back();
 
-    std::size_t numIterations=300;
+    std::size_t numIterations=1000;
 
     std::ofstream f;
 
@@ -230,6 +230,9 @@ BayesIteration& BayesIteration::getPosterior(const Parameters& startingPoint,
                                         w,
                                         numIterations);
         LM.optimize();
+        double SSmin=1000;
+        if (LM.SS()<SSmin)
+        {
 
 
 
@@ -241,19 +244,29 @@ BayesIteration& BayesIteration::getPosterior(const Parameters& startingPoint,
         put(f,seed);
 
 
+
         f<<"--------------------------------------------------"
            "---------------------------------------------------\n";
         f<<"----------Result of Levenberg Marquardt------------------\n";
         f<<"--------------------------------------------------"
            "---------------------------------------------------\n";
         f<<LM;
-        put(f,LM.OptimParameters());
         f<<"SS \t"<<LM.SS()<<"\n";
-        f<<"SS of seed \t"<<LM.SS()<<"\n";
+        f<<"Evidence \t"<<LM.getEvidence()<<"\n";
+        f<<"Posterior Likelihoo \t"<<LM.getLogPostLik()<<"\n";
+        f<<"logDetPriorCov \t"<<LM.logDetPriorCov()<<"\n";
+        f<<"logDetPostrCov \t"<<LM.logDetPostCov()<<"\n";
+        f<<"logDetPostrStd \t"<<LM.logDetPostStd()<<"\n";
+        f<<"SSdata \t"<<LM.SSdata()<<"\n";
+
         f<<"chi2Distance to seed\t"<<startingPoint.chi2Distance(LM.OptimParameters())<<"\n";
         f<<"dBDistance to seed\t"<<dbDistance(startingPoint,LM.OptimParameters())<<"\n";
         f<<"chi2Distance to prior\t"<<p.chi2Distance(LM.OptimParameters())<<"\n";
         f<<"dBDistance to prior\t"<<dbDistance(p,LM.OptimParameters())<<"\n";
+
+        put(f,LM.OptimParameters());
+        f<<"SS \t"<<LM.SS()<<"\n";
+        }
 
     }
 
@@ -275,10 +288,10 @@ BayesIteration& BayesIteration::getPosterior()
     Parameters p=priors_.back();
 
 
-    std::size_t factor=1;
+    std::size_t factor=100;
     std::size_t numIterations=300;
-    std::size_t numSeeds=100;
-    std::map<double,Parameters> seeds=getRandomParameters(numSeeds*factor,0.2);
+    std::size_t numSeeds=50;
+    std::map<double,Parameters> seeds=getRandomParameters(numSeeds*factor,1);
 
     std::map<double,Parameters> friuts;
 
