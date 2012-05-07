@@ -711,6 +711,13 @@ Results Cell_simulator::Simulate(const SimParameters& simPar,
         t_num_cells=num_cellss[inum_cells].Time();
     else t_num_cells=Duratione+1;
 
+    std::vector<Measurement> num_cellss_APC=results.num_cells_APC();
+    std::size_t inum_cells_APC=0;
+    double t_num_cells_APC;
+    if (!num_cellss_APC.empty())
+        t_num_cells_APC=num_cellss_APC[inum_cells_APC].Time();
+    else t_num_cells_APC=Duratione+1;
+
     double eps=1e-7;
 
     while (trun_d+eps<=results.Duration()&&(!( m.TNF()!=m.TNF())))
@@ -926,11 +933,25 @@ Results Cell_simulator::Simulate(const SimParameters& simPar,
 
           if(trun_d+eps>=t_num_cells)
           {
-              num_cellss[inum_cells].setMeasurement(m.num_cells());
+              num_cellss[inum_cells].setMeasurement(log10(m.num_cells()));
               ++inum_cells;
               if (inum_cells<num_cellss.size())
               {
                   t_num_cells=num_cellss[inum_cells].Time();
+              }
+              else
+              {
+                  t_num_cells=results.Duration()+1;
+              }
+          };
+
+          if(trun_d+eps>=t_num_cells_APC)
+          {
+              num_cellss_APC[inum_cells_APC].setMeasurement(log10(APC.num_APC()));
+              ++inum_cells_APC;
+              if (inum_cells_APC<num_cellss_APC.size())
+              {
+                  t_num_cells=num_cellss_APC[inum_cells_APC].Time();
               }
               else
               {
@@ -955,7 +976,22 @@ Results Cell_simulator::Simulate(const SimParameters& simPar,
 
     }
 
-    Results SimRes(TNFs,IFNs,APC_exp,NK_exp,LT_exp,APC_IFNs,APC_TNFs,NK_IFNs,NK_TNFs, LT_IFNs, LT_TNFs, LT_apops,Prols, num_cellss, Duratione);
+    Results SimRes(TNFs,
+                   IFNs,
+                   APC_exp,
+                   NK_exp,
+                   LT_exp,
+                   APC_IFNs,
+                   APC_TNFs,
+                   NK_IFNs,
+                   NK_TNFs,
+                   LT_IFNs,
+                   LT_TNFs,
+                   LT_apops,
+                   Prols,
+                   num_cellss,
+                   num_cellss_APC,
+                   Duratione);
     return SimRes;
 }
 
@@ -1236,6 +1272,13 @@ Results Cell_simulator::Simulate(const Parameters& simPar,
         t_num_cells=num_cellss[inum_cells].Time();
     else t_num_cells=Duratione+1;
 
+    std::vector<Measurement> num_cellss_APC=results.num_cells_APC();
+    std::size_t inum_cells_APC=0;
+    double t_num_cells_APC;
+    if (!num_cellss_APC.empty())
+        t_num_cells_APC=num_cellss_APC[inum_cells_APC].Time();
+    else t_num_cells_APC=Duratione+1;
+
     double eps=1e-7;
 
     RungeKutta4  RK(this,getState());
@@ -1451,7 +1494,7 @@ Results Cell_simulator::Simulate(const Parameters& simPar,
 
           if(trun_d+eps>=t_num_cells)
           {
-              num_cellss[inum_cells].setMeasurement (m.num_cells());
+              num_cellss[inum_cells].setMeasurement (log10(m.num_cells()));
               ++inum_cells;
               if (inum_cells<num_cellss.size())
               {
@@ -1463,6 +1506,19 @@ Results Cell_simulator::Simulate(const Parameters& simPar,
               }
           };
 
+          if(trun_d+eps>=t_num_cells_APC)
+          {
+              num_cellss[inum_cells].setMeasurement (log10(APC.num_APC()));
+              ++inum_cells_APC;
+              if (inum_cells_APC<num_cellss_APC.size())
+              {
+                  t_num_cells_APC=num_cellss_APC[inum_cells_APC].Time();
+              }
+              else
+              {
+                  t_num_cells_APC=results.Duration()+1;
+              }
+          };
 
         //char ch;
 
@@ -1487,7 +1543,7 @@ Results Cell_simulator::Simulate(const Parameters& simPar,
 
     }
 
-    Results SimRes(TNFs,IFNs,APC_exp,NK_exp,LT_exp,APC_IFNs,APC_TNFs,NK_IFNs,NK_TNFs, LT_IFNs, LT_TNFs, LT_apops,Prols, num_cellss, Duratione);
+    Results SimRes(TNFs,IFNs,APC_exp,NK_exp,LT_exp,APC_IFNs,APC_TNFs,NK_IFNs,NK_TNFs, LT_IFNs, LT_TNFs, LT_apops,Prols, num_cellss, num_cellss_APC,Duratione);
     return SimRes;
 }
 

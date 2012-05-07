@@ -25,6 +25,7 @@ public:
     const std::vector<Measurement>& LT_Apoptosis()const;
     const std::vector<Measurement>& Proliferation()const;
     const std::vector<Measurement>& num_cells() const;
+    const std::vector<Measurement>& num_cells_APC() const;
 
     Results();
     Results(std::string experimentName);
@@ -42,6 +43,7 @@ public:
             const std::vector<Measurement>& myLT_Apoptosis,
             const std::vector<Measurement>& myProliferation,
             const std::vector<Measurement>& mynum_cells,
+            const std::vector<Measurement>& mynum_cells_APC,
             double duration);
 
     virtual std::vector<double> getData()const;
@@ -80,7 +82,8 @@ private:
     std::vector<Measurement> LT_Apoptosis_;
 
     std::vector<Measurement> Proliferation_;
-    std::vector<Measurement> num_cells_;
+    std::vector<Measurement> log_num_cells_;
+    std::vector<Measurement> log_num_cells_APC_;
 
     double duration_;
 
