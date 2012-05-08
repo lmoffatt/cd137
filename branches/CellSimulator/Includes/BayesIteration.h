@@ -81,7 +81,12 @@ public:
 
     BayesIteration& getPosterior(const Parameters& startingPoint,double factor, std::size_t numSeeds,double probParChange);
 
+    Parameters getEvidence(const Parameters& maximumPostLik, std::size_t num);
 
+    Parameters getHessian(const Parameters& MAP, double eps=1e-3);
+
+
+    Parameters getHessianInterpol(const Parameters& MAP, double minP, double maxP);
 
     virtual std::ostream& put(std::ostream& s,const Parameters& parameters)const;
 

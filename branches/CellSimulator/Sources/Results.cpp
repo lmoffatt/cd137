@@ -84,7 +84,7 @@ const std::vector<Measurement>& Results::num_cells() const
     return log_num_cells_;
 }
 
-const std::vector<Measurement>& Results::num_cells_APC() const
+std::vector<Measurement> Results::num_cells_APC() const
 {
     return log_num_cells_APC_;
 }
@@ -154,15 +154,14 @@ Results::Results(std::string experimentName):
         /*36*/           LT_expression_.push_back(Measurement (24.0, 3.32, 1.2));//
          /*37*/          LT_expression_.push_back(Measurement (119.0,28.7, 8.7));
         /*39*/           APC_IFNg_.push_back(Measurement (16.0,7.66,2.20));//
-       /*40*/            APC_TNFa_.push_back (Measurement (119.0,7.05,4.03));
-                         APC_TNFa_.push_back (Measurement(16.0,12.96,2.52));
-        /*41*/           NK_IFNg_.push_back(Measurement (24.0,27.18,2.32));
+       /*40*/            APC_TNFa_.push_back (Measurement(16.0,12.96,2.52));
+                         APC_TNFa_.push_back (Measurement (119.0,7.05,4.03));
+                         NK_IFNg_.push_back(Measurement (24.0,27.18,2.32));
         /*42*/           NK_TNFa_.push_back (Measurement (24.0,5.81,0.97));
                          LT_TNFa_.push_back(Measurement (119.0,4.27,0.59));
                          LT_IFNg_.push_back(Measurement (119.0,9.4,1.5));
                          LT_Apoptosis_.push_back(Measurement(119.0,27.61,2.57));
         /*48*/           Proliferation_.push_back(Measurement(119.0,14173.0,1240.0));
-
         /*49*/           log_num_cells_.push_back(Measurement(24.0,log10(1.0e6),log10(2.0)));//
         /*50*/           log_num_cells_.push_back(Measurement(119.0,log10(1.0e6),log10(2.0)));//
                          log_num_cells_APC_.push_back(Measurement(119.0,log10(6000.0),log10(3.0)));//

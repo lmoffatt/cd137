@@ -284,7 +284,7 @@ void APC_cells::update(double& time_step,const Media& m, const NK_cells& NK, con
                                 -APC_APC_d*APCa_d*(2*APCa_d+APCbo_d+APCbl_d+APCbo_Ab_d)//APCa--->APCbo
                                 -APC_NK_d*APCa_d*(NK.NKa()*NK.NKa_expressing_receptor()+NK.NKbo()+NK.NKbl()+NK.NKbo_Ab())//APCa--->APCbo
                                 -APC_LT_1_d*LT.LT0()*APCa_d////APCa--->APCbo
-                                -APC_Ab_d*m.Ab()*APCa_d//bloqueo de la APC
+                            //    -APC_Ab_d*m.Ab()*APCa_d//bloqueo de la APC
                                 )*time_step;
 
 
@@ -320,7 +320,7 @@ void APC_cells::update(double& time_step,const Media& m, const NK_cells& NK, con
                                 -APC_APC_d*APCa_d*(2*APCa_d+APCbo_d+APCbl_d+APCbo_Ab_d)//APCa--->APCbo
                                 -APC_NK_d*APCa_d*(NK.NKa()*NK.NKa_expressing_receptor()+NK.NKbo()+NK.NKbl()+NK.NKbo_Ab())//APCa--->APCbo
                                 -APC_LT_1_d*LT.LT0()*APCa_d////APCa--->APCbo
-                                -APC_Ab_d*m.Ab()*APCa_d//bloqueo de la APC
+                     //           -APC_Ab_d*m.Ab()*APCa_d//bloqueo de la APC
                                 )*time_step;
 
 
@@ -332,7 +332,7 @@ void APC_cells::update(double& time_step,const Media& m, const NK_cells& NK, con
                     +APC_NK_d*APCa_d*(NK.NKa()*NK.NKa_expressing_receptor()+NK.NKbo()+NK.NKbl()+NK.NKbo_Ab())//APCa--->APCbo
                     +APC_LT_1_d*LT.LT0()*APCa_d//APCa--->APCbo
                     -APCbl_d*APC_generic_apop_rate_d*APCa_apop_rate_d//apoptosis induced by CD137
-                    -APCbl_d*APC_Ab_d*m.Ab()//bloqueo de las APCbo-->APCbo_bl
+                   // -APCbl_d*APC_Ab_d*m.Ab()//bloqueo de las APCbo-->APCbo_bl
                     -u_APC_TNF_d*APCbo_d*(m.TNF()/(m.TNF()+ Ks_APC_m_TNF_d))//TNF apoptosis
                     )*time_step;//APC_TNF apoptosis
         APCbl_d+=APCbl_delta;

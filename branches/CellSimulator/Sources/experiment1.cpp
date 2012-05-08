@@ -62,7 +62,8 @@ void loadModel()
 
 
 
-    std::string filenamePrior="priorMODEL.txt";
+//    std::string filenamePrior="priorMODEL.txt";
+    std::string filenamePrior="newPrior.txt";
 
     std::ifstream f;
     f.open(filenamePrior.c_str());
@@ -98,14 +99,18 @@ void loadModel()
     if (1)
     {
         if (false)
-            cell.Optimize(prior,E,"MODELOptimization.txt");
+        {
+            std::string outputfilename="MODELOptimization";
+            outputfilename.append(nowLabel()+".txt");
+            cell.Optimize(prior,E,outputfilename);
+        }
         else if (false)
         {
             std::string outputfilename="ModeloOptimizationCont";
             outputfilename.append(nowLabel()+".txt");
             BayesIteration b(&cell,prior,&E,outputfilename);
 
-            std::string filenameStartingParameter="resultMODEL 111.txt";
+            std::string filenameStartingParameter="resultMODEL 111 4.txt";
 
             std::ifstream f;
             f.open(filenameStartingParameter.c_str());
@@ -117,6 +122,7 @@ void loadModel()
             f.close();
 
             b.getPosterior(seedPar);
+
         }
         else
         {
@@ -133,7 +139,9 @@ void loadModel()
 
             BayesIteration b(&cell,prior,&E,outputfilename);
 
-            std::string filenameStartingParameter="resultMODEL.txt";
+//            std::string filenameStartingParameter="resultMODEL.txt";
+            std::string filenameStartingParameter="newPrior.txt";
+//            std::string filenameStartingParameter="min 126.txt";
 
             std::ifstream f;
             f.open(filenameStartingParameter.c_str());

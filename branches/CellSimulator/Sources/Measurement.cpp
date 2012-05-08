@@ -17,6 +17,10 @@ double Measurement::StdError()const
 }
 
 
+Measurement::~Measurement(){}
+
+
+
 Measurement::Measurement(double Time,double Measure,double Std
                          ):
     time_(Time),

@@ -21,7 +21,7 @@ public:
 
     Measurement();
 
-    ~Measurement(){}
+    ~Measurement();
 
     void friend swap(Measurement& one, Measurement& two);
 private:

@@ -1,7 +1,9 @@
 #include <vector>
 #include <fstream>
 #include <cmath>
+#include <map>
 #include "BayesIteration.h"
+#include "MatrixInverse.h"
 
 std::vector<double> ABC_data::getDataWeigth()
 {
@@ -178,12 +180,63 @@ BayesIteration& BayesIteration::getPosterior(const Parameters& startingPoint)
 
 
 
+
+
     f<<"chi2Distance to seed\t"<<startingPoint.chi2Distance(LM.OptimParameters())<<"\n";
     f<<"dBDistance to seed\t"<<dbDistance(startingPoint,LM.OptimParameters())<<"\n";
     f<<"chi2Distance to prior\t"<<p.chi2Distance(LM.OptimParameters())<<"\n";
     f<<"dBDistance to prior\t"<<dbDistance(p,LM.OptimParameters())<<std::endl;
     put(f,LM.OptimParameters());
     f<<"SS \t"<<LM.SS()<<"\n";
+
+
+    f<<"--------------------------------------------------"
+       "---------------------------------------------------\n";
+    f<<"----------Result of Hessian calculation---\n";
+    f<<"--------------------------------------------------"
+       "---------------------------------------------------\n";
+    Parameters h=getHessian(LM.OptimParameters(),1e-5);
+
+    double logDetPost=log(det(h.getCovariance()));
+    f<<"SS \t"<<LM.SS()<<"\n";
+
+    f<<"Evidence \t"<<LM.getEvidence()<<"\n";
+    f<<"Evidence Hess\t"<<LM.getEvidence()-0.5*LM.logDetPostCov()+0.5*logDetPost<<"\n";
+    f<<"logDetPostrCov \t"<<LM.logDetPostCov()<<"\n";
+    f<<"logDetPostrCov Hess\t"<<logDetPost<<"\n";
+
+    f<<h;
+
+
+    Parameters corrMax=getEvidence(LM.OptimParameters(),1000);
+    f<<corrMax;
+
+    f<<"--------------------------------------------------"
+       "---------------------------------------------------\n";
+    f<<"----------Result of Posterior LikelihoodSampling---\n";
+    f<<"--------------------------------------------------"
+       "---------------------------------------------------\n";
+    f<<corrMax;
+    logDetPost=log(det(corrMax.getCovariance()));
+    double SSc=SumWeighedSquare(corrMax);
+    f<<"SS \t"<<LM.SS()<<"\n";
+    f<<"SS corr\t"<<SSc<<"\n";
+
+    f<<"Evidence \t"<<LM.getEvidence()<<"\n";
+    f<<"Evidence corr SS\t"<<-0.5*LM.SS()+0.5*logDetPost<<"\n";
+    f<<"Evidence corr SSc\t"<<-0.5*SSc+0.5*logDetPost<<"\n";
+
+    f<<"Posterior Likelihoo \t"<<LM.getLogPostLik()<<"\n";
+    f<<"logDetPriorCov \t"<<LM.logDetPriorCov()<<"\n";
+    f<<"logDetPostrCov \t"<<LM.logDetPostCov()<<"\n";
+    f<<"logDetPostrCovCorr \t"<<logDetPost<<"\n";
+    f<<"logDetPostrStd \t"<<LM.logDetPostStd()<<"\n";
+
+
+    put(f,corrMax);
+
+
+
     f<<"Evidence \t"<<LM.getEvidence()<<"\n";
     f<<"chi2Distance to seed\t"<<startingPoint.chi2Distance(LM.OptimParameters())<<"\n";
     f<<"dBDistance to seed\t"<<dbDistance(startingPoint,LM.OptimParameters())<<"\n";
@@ -288,9 +341,9 @@ BayesIteration& BayesIteration::getPosterior()
     Parameters p=priors_.back();
 
 
-    std::size_t factor=100;
-    std::size_t numIterations=300;
-    std::size_t numSeeds=50;
+    std::size_t factor=2;
+    std::size_t numIterations=30;
+    std::size_t numSeeds=10;
     std::map<double,Parameters> seeds=getRandomParameters(numSeeds*factor,1);
 
     std::map<double,Parameters> friuts;
@@ -439,6 +492,191 @@ std::ostream& BayesIteration::put(std::ostream& s,const Parameters& parameters)c
      };
      return SSW;
  }
+
+ Parameters BayesIteration::getHessian(const Parameters& MAP,double eps)
+ {
+     std::vector<std::vector<double> > Hessian(MAP.size(),std::vector<double> (MAP.size(),0));
+     double ss=0.5*SumWeighedSquare(MAP);
+
+     for (std::size_t i=0; i<MAP.size(); i++)
+     {
+         Parameters fip(MAP);
+         fip[i]=fip[i]+eps;
+         Parameters fin(MAP);
+         fin[i]=fin[i]-eps;
+         double ssip=0.5*SumWeighedSquare(fip);
+         double ssin=0.5*SumWeighedSquare(fin);
+
+         Hessian[i][i]=(ssip+ssin-2.0*ss)/eps/eps;
+         for (std::size_t j=i+1; j<MAP.size(); j++)
+         {
+             Parameters fipjp(MAP);
+             fipjp[i]=fipjp[i]+eps;
+             Parameters fipjn(fipjp);
+             fipjp[j]=fipjp[j]+eps;
+             fipjn[j]=fipjn[j]-eps;
+
+             Parameters finjp(MAP);
+             finjp[i]=finjp[i]-eps;
+             Parameters finjn(finjp);
+             finjp[j]=finjp[j]+eps;
+             finjn[j]=finjn[j]-eps;
+
+             double ssipjp=0.5*SumWeighedSquare(fipjp);
+             double ssinjp=0.5*SumWeighedSquare(finjp);
+             double ssipjn=0.5*SumWeighedSquare(fipjn);
+             double ssinjn=0.5*SumWeighedSquare(finjn);
+
+             Hessian[i][j]=(ssipjp+ssinjn-ssipjn-ssinjp)/eps/eps/4.0;
+             Hessian[j][i]=Hessian[i][j];
+         }
+
+     }
+     Parameters result(MAP);
+     result.setCovariance(inv(Hessian));
+     return result;
+ }
+
+
+ Parameters BayesIteration::getHessianInterpol(const Parameters& MAP, double mindSS, double maxdSS)
+ {
+     std::vector<std::vector<double> > Hessian(MAP.size(),std::vector<double> (MAP.size(),0));
+     double ss=0.5*SumWeighedSquare(MAP);
+
+     for (std::size_t i=0; i<MAP.size(); i++)
+     {
+         double ep=1e-3;
+         double h;
+
+         Parameters fip(MAP);
+         Parameters fin(MAP);
+         double ssip;
+         double ssin;
+
+         fip[i]=MAP[i]+ep;
+         fin[i]=MAP[i]-ep;
+          ssip=0.5*SumWeighedSquare(fip);
+          ssin=0.5*SumWeighedSquare(fin);
+         h=(ssip+ssin-2.0*ss);
+         while (h<mindSS)
+         {
+
+         }
+
+
+
+
+         Hessian[i][i]=h;
+         for (std::size_t j=i+1; j<MAP.size(); j++)
+         {
+             Parameters fipjp(MAP);
+             fipjp[i]=fipjp[i]+ep;
+             Parameters fipjn(fipjp);
+             fipjp[j]=fipjp[j]+ep;
+             fipjn[j]=fipjn[j]-ep;
+
+             Parameters finjp(MAP);
+             finjp[i]=finjp[i]-ep;
+             Parameters finjn(finjp);
+             finjp[j]=finjp[j]+ep;
+             finjn[j]=finjn[j]-ep;
+
+             double ssipjp=0.5*SumWeighedSquare(fipjp);
+             double ssinjp=0.5*SumWeighedSquare(finjp);
+             double ssipjn=0.5*SumWeighedSquare(fipjn);
+             double ssinjn=0.5*SumWeighedSquare(finjn);
+
+             Hessian[i][j]=(ssipjp+ssinjn-ssipjn-ssinjp)/ep/ep/4.0;
+             Hessian[j][i]=Hessian[i][j];
+         }
+
+     }
+     Parameters result(MAP);
+     result.setCovariance(inv(Hessian));
+     return result;
+ }
+
+
+
+ Parameters BayesIteration::getEvidence(const Parameters& maximumPostLik, std::size_t num)
+ {
+     double ss0=SumWeighedSquare(maximumPostLik);
+     std::vector<Parameters> parvec;
+     std::vector<double> parvecVal;
+     std::vector<double> m=maximumPostLik.pMeans();
+     std::vector<std::vector<double> > covinv=inv(maximumPostLik.getCovariance());
+     double sumw=0;
+     double sumP=0;
+
+     for (std::size_t i=0; i<num; i++)
+     {
+         Parameters p;
+         double factor=1.0;
+         double  dss;
+         double sampLogLik=0;
+         p=maximumPostLik.randomSample(factor);
+         dss=SumWeighedSquare(p)-ss0;
+         std::vector<double> d=m;
+         for (std::size_t i0=0;i0<p.size(); i0++ )
+         {
+             d[i0]=p[i0]-m[i0];
+         }
+         for (std::size_t i0=0;i0<p.size(); i0++ )
+         {
+             sampLogLik+=d[i0]*d[i0]*covinv[i0][i0];
+             for (std::size_t j0=i0+1;j0<p.size(); j0++ )
+             {
+                 sampLogLik+=2*d[i0]*d[j0]*covinv[i0][j0];
+             }
+         }
+
+         double pv=exp(-0.5*(dss-sampLogLik));
+         double plik=0;
+         while((pv!=pv)||(pv<1e-2))
+         {
+             factor/=sqrt(2);
+             for (std::size_t i0=0;i0<p.size(); i0++ )
+             {
+                 p[i0]=m[i0]+factor*d[i0];
+             }
+             dss=SumWeighedSquare(p)-ss0;
+             pv=exp(-0.5*(dss-sampLogLik*factor*factor));
+
+         }
+
+
+         parvec.push_back(p);
+         parvecVal.push_back(pv);
+         sumw+=pv;
+     }
+
+     // now calculate expected mean and covariance
+     Parameters result(maximumPostLik);
+     std::vector<double> mout(m.size(),0);
+     std::vector<std::vector<double> > covout(m.size(),std::vector<double>(m.size(),0));
+
+     for(std::size_t im=0; im<parvec.size(); ++im)
+     {
+         for (std::size_t i=0; i<parvec[im].size(); i++)
+             mout[i]+=parvec[im][i]*parvecVal[im]/sumw;
+     }
+     for(std::size_t im=0; im<parvec.size(); ++im)
+     {
+         for (std::size_t i=0; i<parvec[im].size(); i++)
+             for (std::size_t j=0; j<parvec[im].size(); j++)
+                 covout[i][j]+=(parvec[im][i]-mout[i])*(parvec[im][j]-mout[j])*
+                         parvecVal[im]/sumw;
+     }
+     result.setpMeans(mout);
+     result.setCovariance(covout);
+
+     return result;
+
+
+
+
+ }
+
 
 
 

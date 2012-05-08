@@ -1508,7 +1508,7 @@ Results Cell_simulator::Simulate(const Parameters& simPar,
 
           if(trun_d+eps>=t_num_cells_APC)
           {
-              num_cellss[inum_cells].setMeasurement (log10(APC.num_APC()));
+              num_cellss[inum_cells_APC].setMeasurement (log10(APC.num_APC()));
               ++inum_cells_APC;
               if (inum_cells_APC<num_cellss_APC.size())
               {
