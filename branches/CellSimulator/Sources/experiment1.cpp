@@ -62,8 +62,8 @@ void loadModel()
 
 
 
-//    std::string filenamePrior="priorMODEL.txt";
-    std::string filenamePrior="newPrior.txt";
+    std::string filenamePrior="priorMODEL.txt";
+//    std::string filenamePrior="newPrior.txt";
 
     std::ifstream f;
     f.open(filenamePrior.c_str());
@@ -139,8 +139,8 @@ void loadModel()
 
             BayesIteration b(&cell,prior,&E,outputfilename);
 
-//            std::string filenameStartingParameter="resultMODEL.txt";
-            std::string filenameStartingParameter="newPrior.txt";
+            std::string filenameStartingParameter="resultMODEL.txt";
+    //        std::string filenameStartingParameter="newPrior.txt";
 //            std::string filenameStartingParameter="min 126.txt";
 
             std::ifstream f;
