@@ -5,12 +5,15 @@
 #include <istream>
 #include <sstream>
 #include <iostream>
+#include "MatrixInverse.h"
 
 Parameters::Parameters(const Parameters& other):
     name_(other.name_),
     pMean_(other.pMean_),
     pStd_(other.pStd_),
-    cov_(other.cov_){}
+    cov_(other.cov_),
+    cho_(other.cho_)
+{}
 
 
 
@@ -30,6 +33,7 @@ void swap(Parameters& one, Parameters& other)
     std::swap(one.pMean_,other.pMean_);
     std::swap(one.pStd_,other.pStd_);
     std::swap(one.cov_,other.cov_);
+    std::swap(one.cho_,other.cho_);
     std::swap(one.mode_,other.mode_);
 
 }
@@ -129,6 +133,11 @@ bool Parameters::setpMeans(const std::vector<std::string> names,const std::vecto
     }
     return true;
 
+}
+
+void Parameters::setpMeans(const std::vector<double> log10values)
+{
+    pMean_=log10values;
 }
 
 
@@ -271,34 +280,42 @@ std::vector<std::string> Parameters::commonNames(const Parameters& other)const
 
 
 
-Parameters Parameters::randomSample()const
+Parameters Parameters::randomSample(double factor)const
 {
     Parameters sample(*this);
+    if (cho_.empty())
+    {
     for (std::size_t i=0; i<pMean_.size();i++)
 
     {
-        sample.pMean_[i]=randNormal(pMean_[i],pStd_[i]);
+
+        sample.pMean_[i]=randNormal(pMean_[i],pStd_[i]*factor);
         sample.pStd_[i]=0;
+    }
+    }
+    else
+    {
+        std::vector<double> z(pMean_.size());
+        for (std::size_t i=0; i<pMean_.size();i++)
+        {
+            z[i]=randNormal()*factor;
+        }
+        for (std::size_t i=0; i<pMean_.size();i++)
+        {
+
+            sample.pMean_[i]=pMean_[i];
+            sample.pStd_[i]=0;
+            for (std::size_t j=0; j<i+1;j++)
+            {
+                sample.pMean_[i]+=cho_[i][j]*z[j];
+            }
+        }
     }
     Parameters s(sample);
     return s;
 
 }
 
-Parameters Parameters::randomSample(double factor)const{
-    Parameters sample;
-    for (std::map<std::string,std::size_t>::const_iterator it=name_.begin();
-         it!=name_.end();
-         ++it)
-
-    {
-        double m=pow(10,randNormal(pMean(it->first),factor*pStd(it->first)));
-        sample.push_back_dB(it->first,m,0);
-
-    }
-    return sample;
-
-}
 Parameters Parameters::randomSample(Parameters prior,double factor)const{
     Parameters sample;
     for (std::map<std::string,std::size_t>::const_iterator it=name_.begin();
@@ -313,6 +330,8 @@ Parameters Parameters::randomSample(Parameters prior,double factor)const{
     return sample;
 
 }
+
+
 
 
 
@@ -421,8 +440,15 @@ void Parameters::setCovariance(const std::vector< std::vector <double> >& cov)
         {
             pStd_[i]=sqrt(cov_[i][i]);
         }
+        cho_=chol(cov_);
     }
 }
+
+std::vector< std::vector <double> > Parameters::getCovariance()const
+{
+    return cov_;
+}
+
 
 
 
@@ -432,6 +458,10 @@ std::vector<double> Parameters::pMeans()const
 {
     return pMean_;
 }
+
+
+
+
 
 std::vector<double> Parameters::pStds()const
 {
@@ -503,6 +533,8 @@ std::ostream& operator<<(std::ostream& s, const Parameters& p){
      pMean_(std::vector<double>()),
      pStd_(std::vector<double> ()),  // not in dB
      cov_(std::vector< std::vector <double> > ()),
+     cho_(std::vector< std::vector <double> > ()),
+
        mode_("")
 
  {}

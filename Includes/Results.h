@@ -25,7 +25,7 @@ public:
     const std::vector<Measurement>& LT_Apoptosis()const;
     const std::vector<Measurement>& Proliferation()const;
     const std::vector<Measurement>& num_cells() const;
-    const std::vector<Measurement>& num_cells_APC() const;
+    std::vector<Measurement> num_cells_APC() const;
 
     Results();
     Results(std::string experimentName);

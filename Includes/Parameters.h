@@ -40,12 +40,16 @@ public:
     bool setpMeans(const std::vector<std::string> names,const std::vector<double> log10values);
     bool setpStd(const std::vector<std::string> names,const std::vector<double> values);
 
+    void setpMeans(const std::vector<double> log10values);
+
 
     std::vector<double> means(const std::vector<std::string> names)const;
 
     std::vector<double> pMeans()const;
 
     std::vector<double> pStds()const;
+
+    std::vector<std::string> names()const;
 
 
 
@@ -89,9 +93,13 @@ public:
 
     void setCovariance(const std::vector< std::vector <double> >& cov);
 
-    Parameters randomSample()const;
+    std::vector< std::vector <double> > getCovariance()const;
 
-    Parameters randomSample(double factor)const;
+
+    Parameters randomSample(double factor=1.0)const;
+
+
+
 
     Parameters randomSample(Parameters prior,double factor,double probIncludeParameter)const;
     Parameters randomSample(Parameters prior,double factor)const;
@@ -118,6 +126,7 @@ private:
     std::vector<double> pMean_;
     std::vector<double> pStd_;  // not in dB
     std::vector< std::vector <double> > cov_;
+    std::vector< std::vector <double> > cho_;
 
     std::string mode_;
 

@@ -19,13 +19,13 @@ LevenbergMarquardtParameters::LevenbergMarquardtParameters(
     initialParam_(initialParam),
     nPar_(initialParam_.size()),
     nData_(data.size()),
-    dx_(1e-9),
+    dx_(1e-5),
     maxIter_(numIterations),
     maxFeval_(10000),
     minParamChange_(1e-9),
     minSSChange_(1e-9),
     minGradient_(0.0000001),
-    maxLanda_(1e11),
+    maxLanda_(1e8),
     landa_(1000),
     v_(10),
     nIter_(0),
@@ -204,7 +204,7 @@ LevenbergMarquardtParameters& LevenbergMarquardtParameters::optimize()
     evidence_=0;
     logDetPriorCov_=0;
     LogPostLik_=0;
-  logDetPostStd_=0;
+    logDetPostStd_=0;
     for (std::size_t i=0; i<w_.size();i++)
     {
         LogPostLik_+=0.5*log(w_[i]);
