@@ -88,6 +88,28 @@ std::vector<Measurement> Results::num_cells_APC() const
 {
     return log_num_cells_APC_;
 }
+
+const std::vector<Measurement>& Results::num_cells_LTbo() const
+{
+    return log_num_cells_LTbo_;
+}
+
+std::vector<Measurement> Results::num_cells_LTbl() const
+{
+    return log_num_cells_LTbl_;
+}
+
+std::vector<Measurement> Results::NK_IFN_production_rate() const
+{
+    return log_NK_IFN_production_rate_;
+}
+
+
+std::vector<Measurement> Results::NK_IFN_production_rate() const
+{
+    return log_LT_IFN_production_rate_;
+}
+
 double Results::Duration() const
 {
     return duration_;
@@ -95,7 +117,8 @@ double Results::Duration() const
 
 Results::Results(std::string experimentName):
     TNF_(),IFN_(), APC_expression_(), NK_expression_ (), LT_expression_(), APC_IFNg_(), APC_TNFa_(),
-    NK_IFNg_(), NK_TNFa_(), LT_IFNg_(), LT_TNFa_(), LT_Apoptosis_(),Proliferation_(), log_num_cells_(), log_num_cells_APC_(),duration_()
+    NK_IFNg_(), NK_TNFa_(), LT_IFNg_(), LT_TNFa_(), LT_Apoptosis_(),Proliferation_(), log_num_cells_(), log_num_cells_APC_(),
+    log_num_cells_LTbo_(),log_num_cells_LTbl_(),log_NK_IFN_production_rate(),log_LT_IFN_production_rate(),duration_()
 
 {
 
@@ -222,6 +245,10 @@ Results::Results(const std::vector<Measurement>& myTNF,
                  const std::vector<Measurement>& myProliferation,
                  const std::vector<Measurement>& mynum_cells,
                  const std::vector<Measurement>& mynum_cells_APC,
+                 const std::vector<Measurement>& mynum_cells_LTbo,
+                 const std::vector<Measurement>& mynum_cells_LTbl,
+                 const std::vector<Measurement>& myNK_IFN_production_rate,
+                 const std::vector<Measurement>& myLT_IFN_production_rate,
 		 double duration):
     TNF_(myTNF),
     IFN_(myIFN),
@@ -238,6 +265,10 @@ Results::Results(const std::vector<Measurement>& myTNF,
     Proliferation_(myProliferation),
     log_num_cells_(mynum_cells),
     log_num_cells_APC_(mynum_cells_APC),
+    log_num_cells_LTbo_(mynum_cells_LTbo),
+    log_num_cells_LTbl_(mynum_cells_LTbl),
+    NK_IFN_production_rate_(myNK_IFN_production_rate),
+    LT_IFN_production_rate_(myLT_IFN_production_rate),
     duration_(duration)
 
 {if ((!TNF_.empty())&&duration_<TNF_[TNF_.size()-1].Time())
@@ -288,6 +319,17 @@ Results::Results(const std::vector<Measurement>& myTNF,
     if ((!log_num_cells_APC_.empty())&&duration_<log_num_cells_APC_[log_num_cells_APC_.size()-1].Time())
         duration_=log_num_cells_APC_[log_num_cells_APC_.size()-1].Time();
 
+    if ((!log_num_cells_LTbo_.empty())&&duration_<log_num_cells_LTbo_[log_num_cells_LTbo_.size()-1].Time())
+        duration_=log_num_cells_LTbo_[log_num_cells_LTbo_.size()-1].Time();
+
+    if ((!log_num_cells_LTbl_.empty())&&duration_<log_num_cells_LTbl_[log_num_cells_LTbl_.size()-1].Time())
+        duration_=log_num_cells_LTbl_[log_num_cells_LTbl_.size()-1].Time();
+
+    if ((!LT_IFN_production_rate_.empty())&&duration_<LT_IFN_production_rate_[LT_IFN_production_rate_.size()-1].Time())
+        duration_=LT_IFN_production_rate_[LT_IFN_production_rate_.size()-1].Time();
+
+    if ((!NK_IFN_production_rate_.empty())&&duration_<NK_IFN_production_rate_[NK_IFN_production_rate_.size()-1].Time())
+        duration_=NK_IFN_production_rate_[NK_IFN_production_rate_.size()-1].Time();
 }
 
 Results::Results(){}
@@ -904,7 +946,16 @@ std::vector<double> SumSquare_i(const Results& one, const Results& two)
     ss_other=SumSquare_num_cells(one,two);
     ss.insert(ss.end(),ss_other.begin(),ss_other.end());
 
-    ss_other=SumSquare_num_cells_APC(one,two);
+    ss_other=SumSquare_num_cells_LTbo(one,two);
+    ss.insert(ss.end(),ss_other.begin(),ss_other.end());
+
+    ss_other=SumSquare_num_cells_LTbl(one,two);
+    ss.insert(ss.end(),ss_other.begin(),ss_other.end());
+
+    ss_other=SumSquare_LT_IFN_production_rate(one,two);
+    ss.insert(ss.end(),ss_other.begin(),ss_other.end());
+
+    ss_other=SumSquare_NK_IFN_production_rate(one,two);
     ss.insert(ss.end(),ss_other.begin(),ss_other.end());
 
     return ss;
@@ -1024,6 +1075,33 @@ std::ostream& operator<<(std::ostream& s, const Results& res)
     res.num_cells_APC()[i].StdError()<<"\n";
 
 
+    s<<"num_cells_LTbo \n";
+    for (std::size_t i=0; i<res.num_cells_LTbo().size(); i++)
+        s<<res.num_cells_LTbo()[i].Time()<<"\t"<<
+           res.num_cells_LTbo()[i].Measure()<<"\t"<<
+    res.num_cells_LTbo()[i].StdError()<<"\n";
+
+
+    s<<"num_cells_LTbl \n";
+    for (std::size_t i=0; i<res.num_cells_LTbl().size(); i++)
+        s<<res.num_cells_LTbl()[i].Time()<<"\t"<<
+           res.num_cells_LTbl()[i].Measure()<<"\t"<<
+    res.num_cells_LTbl()[i].StdError()<<"\n";
+
+
+    s<<"NK_IFN_production_rate \n";
+    for (std::size_t i=0; i<res.NK_IFN_production_rate().size(); i++)
+        s<<res.NK_IFN_production_rate()[i].Time()<<"\t"<<
+           res.NK_IFN_production_rate()[i].Measure()<<"\t"<<
+    res.NK_IFN_production_rate()[i].StdError()<<"\n";
+
+    s<<"LT_IFN_production_rate \n";
+    for (std::size_t i=0; i<res.LT_IFN_production_rate().size(); i++)
+        s<<res.LT_IFN_production_rate()[i].Time()<<"\t"<<
+           res.LT_IFN_production_rate()[i].Measure()<<"\t"<<
+    res.LT_IFN_production_rate()[i].StdError()<<"\n";
+
+
 
     return s;
 
@@ -1077,6 +1155,18 @@ std::vector<double> Results::getData()const
         data.push_back(log_num_cells_[i].Measure());
 
     for (std::size_t i=0; i<log_num_cells_APC_.size(); ++i)
+        data.push_back(log_num_cells_APC_[i].Measure());
+
+    for (std::size_t i=0; i<log_num_cells_LTbo_.size(); ++i)
+        data.push_back(log_num_cells_LTbo_[i].Measure());
+
+    for (std::size_t i=0; i<log_num_cells_LTbl_.size(); ++i)
+        data.push_back(log_num_cells_LTbl_[i].Measure());
+
+    for (std::size_t i=0; i<log_NK_IFN_production_rate_.size(); ++i)
+        data.push_back(log_num_cells_APC_[i].Measure());
+
+    for (std::size_t i=0; i<log_LT_IFN_production_rate_.size(); ++i)
         data.push_back(log_num_cells_APC_[i].Measure());
 
     std::vector<double> o(data);
@@ -1136,6 +1226,19 @@ std::vector<double> Results::getDataStandardError()const
     for (std::size_t i=0; i<log_num_cells_APC_.size(); ++i)
         data.push_back(log_num_cells_APC_[i].StdError());
 
+    for (std::size_t i=0; i<log_num_cells_LTbo_.size(); ++i)
+        data.push_back(log_num_cells_LTbo_[i].StdError());
+
+    for (std::size_t i=0; i<log_num_cells_LTbl_.size(); ++i)
+        data.push_back(log_num_cells_LTbl_[i].StdError());
+
+    for (std::size_t i=0; i<log_NK_IFN_production_rate_.size(); ++i)
+        data.push_back(log_NK_IFN_production_rate_[i].StdError());
+
+    for (std::size_t i=0; i<log_LT_IFN_production_rate_.size(); ++i)
+        data.push_back(log_LT_IFN_production_rate_[i].StdError());
+
+
      return data;
  }
 
@@ -1161,6 +1264,10 @@ Results::Results(const Results& other):
     Proliferation_(other.Proliferation_),
     log_num_cells_(other.log_num_cells_),
     log_num_cells_APC_(other.log_num_cells_APC_),
+    log_num_cells_LTbo_(other.log_num_cells_LTbo_),
+    log_num_cells_LTbl_(other.log_num_cells_LTbl_),
+    log_NK_IFN_production_rate_(other.log_NK_IFN_production_rate_),
+    log_LT_IFN_production_rate_(other.log_LT_IFN_production_rate_),
     duration_(other.duration_)
 {}
 Results& Results::operator=(const Results& other)
@@ -1197,5 +1304,9 @@ void swap(Results& one, Results& other)
     std::swap(one.Proliferation_,other.Proliferation_);
     std::swap(one.log_num_cells_,other.log_num_cells_);
     std::swap(one.log_num_cells_APC_,other.log_num_cells_APC_);
+    std::swap(one.log_num_cells_LTbo_,other.log_num_cells_LTbo_);
+    std::swap(one.log_num_cells_LTbl_,other.log_num_cells_LTbl_);
+    std::swap(one.log_NK_IFN_production_rate_,other.log_LT_IFN_production_rate_);
+    std::swap(one.log_LT_IFN_production_rate_,other.log_LT_IFN_production_rate_);
     std::swap(one.duration_,other.duration_);
 }

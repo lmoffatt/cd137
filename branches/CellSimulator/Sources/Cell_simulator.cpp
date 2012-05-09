@@ -718,6 +718,35 @@ Results Cell_simulator::Simulate(const SimParameters& simPar,
         t_num_cells_APC=num_cellss_APC[inum_cells_APC].Time();
     else t_num_cells_APC=Duratione+1;
 
+    std::vector<Measurement> num_cellss_LTbo=results.num_cells_LTbo();
+    std::size_t inum_cells_LTbo=0;
+    double t_num_cells_LTbo;
+    if (!num_cellss_LTbo.empty())
+        t_num_cells_LTbo=num_cellss_LTbo[inum_cells_LTbo].Time();
+    else t_num_cells_LTbo=Duratione+1;
+
+    std::vector<Measurement> num_cellss_LTbl=results.num_cells_LTbl();
+    std::size_t inum_cells_LTbl=0;
+    double t_num_cells_LTbl;
+    if (!num_cellss_LTbl.empty())
+        t_num_cells_LTbl=num_cellss_LTbl[inum_cells_LTbl].Time();
+    else t_num_cells_LTbl=Duratione+1;
+
+    std::vector<Measurement> NK_IFN_production_rates=results.NK_IFN_production_rate();
+    std::size_t iNK_IFN_production_rate=0;
+    double t_NK_IFN_production_rate;
+    if (!NK_IFN_production_rates.empty())
+        t_NK_IFN_production_rate=NK_IFN_production_rates[iNK_IFN_production_rate].Time();
+    else t_NK_IFN_production_rate=Duratione+1;
+
+    std::vector<Measurement> LT_IFN_production_rates=results.LT_IFN_production_rate();
+    std::size_t iLT_IFN_production_rate=0;
+    double t_LT_IFN_production_rate;
+    if (!LT_IFN_production_rates.empty())
+        t_LT_IFN_production_rate=LT_IFN_production_rates[iLT_IFN_production_rate].Time();
+    else t_LT_IFN_production_rate=Duratione+1;
+
+
     double eps=1e-7;
 
     while (trun_d+eps<=results.Duration()&&(!( m.TNF()!=m.TNF())))
@@ -951,11 +980,67 @@ Results Cell_simulator::Simulate(const SimParameters& simPar,
               ++inum_cells_APC;
               if (inum_cells_APC<num_cellss_APC.size())
               {
-                  t_num_cells=num_cellss_APC[inum_cells_APC].Time();
+                  t_num_cells_APC=num_cellss_APC[inum_cells_APC].Time();
               }
               else
               {
-                  t_num_cells=results.Duration()+1;
+                  t_num_cells_APC=results.Duration()+1;
+              }
+          };
+
+          if(trun_d+eps>=t_num_cells_LTbo)
+          {
+              num_cellss_LTbo[inum_cells_LTbo].setMeasurement(log10(LT.LTbo());
+              ++inum_cells_LTbo;
+              if (inum_cells_LTbo<num_cellss_LTbo.size())
+              {
+                  t_num_cells_LTbo=num_cellss_LTbo[inum_cells_LTbo].Time();
+              }
+              else
+              {
+                  t_num_cells_LTbo=results.Duration()+1;
+              }
+          };
+
+          if(trun_d+eps>=t_num_cells_LTbl)
+          {
+              num_cellss_LTbl[inum_cells_LTbl].setMeasurement(log10(LT.LTbl()));
+              ++inum_cells_LTbl;
+              if (inum_cells_LTbl<num_cellss_LTbl.size())
+              {
+                  t_num_cells_LTbl=num_cellss_LTbl[inum_cells_LTbl].Time();
+              }
+              else
+              {
+                  t_num_cells_LTbl=results.Duration()+1;
+              }
+          };
+
+          if(trun_d+eps>=NK_IFN_production_rate)
+          {
+              NK_IFN_production_rate[iNK_IFN_production_rate].setMeasurement(log10(NK.NK_IFNgamma_production_rate()));
+              ++iNK_IFN_production_rate;
+              if (iNK_IFN_production_rate<NK_IFN_production_rates.size())
+              {
+                  NK_IFN_production_rate=NK_IFN_production_rates[iNK_IFN_production_rates].Time();
+              }
+              else
+              {
+                  NK_IFN_production_rate=results.Duration()+1;
+              }
+          };
+
+          if(trun_d+eps>=LT_IFN_production_rate)
+          {
+              LT_IFN_production_rate[iLT_IFN_production_rate].setMeasurement(log10(LT.LT_IFNgamma_production_rate()));
+              ++iLT_IFN_production_rate;
+              if (iLT_IFN_production_rate<LT_IFN_production_rates.size())
+              {
+                  LT_IFN_production_rate=LT_IFN_production_rates[iLT_IFN_production_rates].Time();
+              }
+              else
+              {
+                  LT_IFN_production_rate=results.Duration()+1;
               }
           };
 
@@ -991,6 +1076,10 @@ Results Cell_simulator::Simulate(const SimParameters& simPar,
                    Prols,
                    num_cellss,
                    num_cellss_APC,
+                   num_cellss_LTbo,
+                   num_cellss_LTbl,
+                   NK_IFN_production_rate,
+                   LT_IFN_production_rate,
                    Duratione);
     return SimRes;
 }
@@ -1279,6 +1368,36 @@ Results Cell_simulator::Simulate(const Parameters& simPar,
         t_num_cells_APC=num_cellss_APC[inum_cells_APC].Time();
     else t_num_cells_APC=Duratione+1;
 
+    std::vector<Measurement> num_cellss_LTbo=results.num_cells_LTbo();
+    std::size_t inum_cells_LTbo=0;
+    double t_num_cells_LTbo;
+    if (!num_cellss_LTbo.empty())
+        t_num_cells_LTbo=num_cellss_LTbo[inum_cells_LTbo].Time();
+    else t_num_cells_LTbo=Duratione+1;
+
+    std::vector<Measurement> num_cellss_LTbl=results.num_cells_LTbl();
+    std::size_t inum_cells_LTbl=0;
+    double t_num_cells_LTbl;
+    if (!num_cellss_LTbl.empty())
+        t_num_cells_LTbl=num_cellss_LTbl[inum_cells_LTbl].Time();
+    else t_num_cells_LTbl=Duratione+1;
+
+    std::vector<Measurement> NK_IFN_production_rates=results.NK_IFN_production_rate();
+    std::size_t iNK_IFN_production_rate=0;
+    double t_NK_IFN_production_rate;
+    if (!NK_IFN_production_rates.empty())
+        t_NK_IFN_production_rate=NK_IFN_production_rates[iNK_IFN_production_rate].Time();
+    else t_NK_IFN_production_rate=Duratione+1;
+
+    std::vector<Measurement> LT_IFN_production_rates=results.LT_IFN_production_rate();
+    std::size_t LT_IFN_production_rate=0;
+    double t_LT_IFN_production_rate;
+    if (!LT_IFN_production_rates.empty())
+        t_LT_IFN_production_rate=LT_IFN_production_rates[iLT_IFN_production_rate].Time();
+    else t_LT_IFN_production_rate=Duratione+1;
+
+
+
     double eps=1e-7;
 
     RungeKutta4  RK(this,getState());
@@ -1508,7 +1627,7 @@ Results Cell_simulator::Simulate(const Parameters& simPar,
 
           if(trun_d+eps>=t_num_cells_APC)
           {
-              num_cellss[inum_cells_APC].setMeasurement (log10(APC.num_APC()));
+              num_cellss_APC[inum_cells_APC].setMeasurement (log10(APC.num_APC()));
               ++inum_cells_APC;
               if (inum_cells_APC<num_cellss_APC.size())
               {
@@ -1517,6 +1636,62 @@ Results Cell_simulator::Simulate(const Parameters& simPar,
               else
               {
                   t_num_cells_APC=results.Duration()+1;
+              }
+          };
+
+          if(trun_d+eps>=t_num_cells_LTbo)
+          {
+              num_cellss_LTbo[inum_cells_LTbo].setMeasurement (log10(LT.LTbo()));
+              ++inum_cells_LTbo;
+              if (inum_cells_LTbo<num_cellss_LTbo.size())
+              {
+                  t_num_cells_LTbo=num_cellss_LTbo[inum_cells_LTbo].Time();
+              }
+              else
+              {
+                  t_num_cells_LTbo=results.Duration()+1;
+              }
+          };
+
+          if(trun_d+eps>=t_num_cells_LTbl)
+          {
+              num_cellss_LTbl[inum_cells_LTbl].setMeasurement (log10(LT.LTbl()));
+              ++inum_cells_LTbl;
+              if (inum_cells_LTbl<num_cellss_LTbl.size())
+              {
+                  t_num_cells_LTbl=num_cellss_LTbl[inum_cells_LTbl].Time();
+              }
+              else
+              {
+                  t_num_cells_LTbl=results.Duration()+1;
+              }
+          };
+
+          if(trun_d+eps>=t_NK_IFN_production_rate)
+          {
+              NK_IFN_production_rates[iNK_IFN_production_rate].setMeasurement (log10(NK.NK_IFNgamma_production_rate());
+              ++iNK_IFN_production_rate;
+              if (iNK_IFN_production_rate<NK_IFN_production_rates.size())
+              {
+                  t_NK_IFN_production_rate=NK_IFN_production_rates[iNK_IFN_production_rate].Time();
+              }
+              else
+              {
+                  t_NK_IFN_production_rate=results.Duration()+1;
+              }
+          };
+
+          if(trun_d+eps>=LT_IFN_production_rate)
+          {
+              LT_IFN_production_rates[iLT_IFN_production_rate].setMeasurement (log10(LT.LT_IFNgamma_production_rate()));
+              ++iLT_IFN_production_rate;
+              if (iLT_IFN_production_rate<LT_IFN_production_rates())
+              {
+                  t_LT_IFN_production_rate=LT_IFN_production_rates[iLT_IFN_production_rate].Time();
+              }
+              else
+              {
+                  t_LT_IFN_production_rate=results.Duration()+1;
               }
           };
 
@@ -1543,7 +1718,8 @@ Results Cell_simulator::Simulate(const Parameters& simPar,
 
     }
 
-    Results SimRes(TNFs,IFNs,APC_exp,NK_exp,LT_exp,APC_IFNs,APC_TNFs,NK_IFNs,NK_TNFs, LT_IFNs, LT_TNFs, LT_apops,Prols, num_cellss, num_cellss_APC,Duratione);
+    Results SimRes(TNFs,IFNs,APC_exp,NK_exp,LT_exp,APC_IFNs,APC_TNFs,NK_IFNs,NK_TNFs, LT_IFNs, LT_TNFs, LT_apops,Prols, num_cellss, num_cellss_APC,num_cellss_LTbo,
+                   num_cells_LTbl, NK_IFN_production_rates, LT_IFN_production_rates,Duratione);
     return SimRes;
 }
 
