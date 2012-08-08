@@ -19,12 +19,13 @@ public:
     /*2*/ double IFN_APC0_prod_rate_;
     /*3*/ double IFN_APCa_prod_rate_;
     /*4*/ double IFN_APCbo_prod_rate_;
-          double IFN_APC_generic_prod_rate_;
+
     /// 3) TNF Poductions rates of each type of APC
     /*5*/ double TNF_APC0_prod_rate_;
     /*6*/ double TNF_APCa_prod_rate_;
     /*7*/ double APC_TNF_Induction_CD137;
-          double TNF_APC_generic_prod_rate_;
+
+
     /// 4) Percentages of IFN productions of each type of APC
     /*8*/ double percentage_IFN_APC0_prod_rate_;
     /*9*/ double percentage_IFN_APCa_prod_rate_;
@@ -37,7 +38,7 @@ public:
     /*13*/ double APC0_apop_rate_;
     /*14*/ double APCa_apop_rate_;
     /*15*/ double APCbo_apop_rate_;
-           double APC_generic_apop_rate_;
+
     /// 8) constant saturation of TNF for apoptosis
     /*16*/ double Ks_APC_m_TNF_;
     /// 9) conversion rates
@@ -64,12 +65,12 @@ public:
     /*2*/ double IFN_NK0_prod_rate_;
     /*3*/ double IFN_NKa_prod_rate_;
     /*4*/ double IFN_NKbo_prod_rate_;
-           double IFN_NK_generic_prod_rate_;
+
     /// 3) TNF Poductions rates of each type of NK
     /*5*/ double TNF_NK0_prod_rate_;
     /*6*/ double TNF_NKa_prod_rate_;
     /*7*/ double TNF_NKbo_prod_rate_;
-           double TNF_NK_generic_prod_rate_;
+
     /// 4) Percentages of IFN productions of each type of NK
     /*8*/ double percentage_IFN_NK0_prod_rate_;
     /// 5)Percentages of TNF productions of each type of NK
@@ -79,11 +80,12 @@ public:
     /// 6) Proliferation rates
     /*12*/ double NK0_proliferation_rate_;
     /*13*/ double NKa_proliferation_rate_;
-    /*14*/ double NK_generic_proliferation_rate_;
+    //*14*/ double NKbo_proliferation_rate_;
+
     /// 7) Apoptosis rates
     /*15*/ double NK0_apop_rate_;
     /*16*/ double NKa_apop_rate_;
-    /*17*/ double NK_generic_apop_rate_;
+//*17*/ double NKbo_apop_rate_;
     /// 8) constant saturation of TNF for apoptosis
     /*18*/ double Ks_NK_m_TNF_;
     /// 9) conversion rates
@@ -108,12 +110,12 @@ public:
     /*3*/ double IFN_LTns_prod_rate_;
     /*4*/ double IFN_LTbo_prod_rate_;
     /*5*/ double IFN_LTbl_prod_rate_;
-           double IFN_LT_generic_prod_rate_;
+
     /// 3) TNF Poductions rates of each type of LT
     /*6*/ double TNF_LTns_prod_rate_;
     /*7*/ double TNF_LTbo_prod_rate_;
     /*8*/ double TNF_LTbl_prod_rate_;
-           double TNF_LT_generic_prod_rate_;
+
     /// 4) Percentages of IFN productions of each type of LT
     /*9*/ double percentage_IFN_LTns_prod_rate_;
     /*10*/ double percentage_IFN_LTbo_prod_rate_;
@@ -126,12 +128,10 @@ public:
     /*15*/ double LTns_proliferation_rate_;
     /*16*/ double LTbo_proliferation_rate_;
     /*17*/ double LTbl_proliferation_rate_;
-           double LT_generic_proliferation_rate_;
     /// 7) Apoptosis rates
     /*18*/ double LTns_apop_rate_;
     /*19*/ double LTbo_apop_rate_;
     /*20*/ double LTbl_apop_rate_;
-           double LT_generic_apop_rate_;
     /// 8) constant saturation of TNF for apoptosis
     /*21*/ double Ks_LT_m_TNF_;
     /// 9) Percentages of cell expressing receptor

@@ -674,8 +674,8 @@ APC_cells::APC_cells(const Parameters& p, const Treatment& t):
     /// 1) Init ratio of cells
     /*1*/  init_ratio_APC_d(p.mean_ratio("init_K_ratio_APC_NK")),
     /// 2) IFN Poductions rates of each type of APC
-    /*2*/  IFN_APC0_prod_rate_d(p.mean("IFN_NK0_prod_rate")/p.mean("IFN_APC0_prod_rate")),
-    /*3*/  IFN_APCa_prod_rate_d(p.mean("IFN_NKa_prod_rate")/p.mean("IFN_APCa_prod_rate")),
+    /*2*/  IFN_APC0_prod_rate_d(p.mean("IFN_APC0_prod_rate")),
+    /*3*/  IFN_APCa_prod_rate_d(p.mean("IFN_APCa_prod_rate")),
     /*4*/  IFN_APCbo_prod_rate_d(p.mean("IFN_APCbo_prod_rate")),
     IFN_APC_generic_prod_rate_d(p.mean("IFN_APC_generic_prod_rate")),
     /// 3) TNF Poductions rates of each type of APC
