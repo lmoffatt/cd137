@@ -234,7 +234,7 @@ else{LTbo_d=0;
                           +APC.APC_LT_1()*LT0_d*(APC.APCbl())
                           +APC.APC_LT_1()*LT0_d*(APC.APCbo())
                           +APC.APC_LT_1()*LT0_d*(APC.APCbo_Ab())
-                          +LTbo_proliferation_rate_d*LTbl_proliferation_rate_d*m.prol_ratio()*LTbl_d
+                          +LTbo_proliferation_rate_d/LTbl_proliferation_rate_d*m.prol_ratio()*LTbl_d
                           -LTbo_apop_rate_d*LTbl_apop_rate_d*LTbl_d
                           -LTbl_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))
                 )*time_step;
@@ -349,7 +349,7 @@ double LT_cells::LT_IFNgamma_production_rate() const
       double sum=LTns_d*percentage_IFN_LTns_prod_rate_d*IFN_LTns_prod_rate_d+
                LT0_d*percentage_IFN_LTns_prod_rate_d*IFN_LTns_prod_rate_d+
                LTbo_d*percentage_IFN_LTbo_prod_rate_d*IFN_LTbo_prod_rate_d+
-               LTbl_d*percentage_IFN_LTbo_prod_rate_d*IFN_LTbo_prod_rate_d*IFN_LTbl_prod_rate_d;
+               LTbl_d*percentage_IFN_LTbo_prod_rate_d*IFN_LTbo_prod_rate_d/IFN_LTbl_prod_rate_d;
       return sum;
   }
 
@@ -374,7 +374,7 @@ double LT_cells::TNF_production_rate() const
       double sum=LTns_d*percentage_TNF_LTns_prod_rate_d*TNF_LTns_prod_rate_d+
                  LT0_d*percentage_TNF_LTns_prod_rate_d*TNF_LTns_prod_rate_d+
                  LTbo_d*percentage_TNF_LTbo_prod_rate_d*TNF_LTbo_prod_rate_d+
-                 LTbl_d*percentage_TNF_LTbo_prod_rate_d*TNF_LTbo_prod_rate_d*TNF_LTbl_prod_rate_d;
+                 LTbl_d*percentage_TNF_LTbo_prod_rate_d*TNF_LTbo_prod_rate_d/TNF_LTbl_prod_rate_d;
       return sum;
   }
 
