@@ -1,11 +1,22 @@
-#include "Includes/Media.h"
 #include "Includes/APC.h"
+#include "Includes/Media.h"
 #include "Includes/LT.h"
 #include "Includes/NK.h"
 #include <cmath>
 
 
-LT_cells::LT_cells(/// 1) Init number of LT
+bool LT_cells::hasDirectInteraction()const
+{
+    return directInteraction;
+}
+void LT_cells::setDirectInteraction(bool boolean)
+{
+    directInteraction=boolean;
+}
+
+
+LT_cells::LT_cells(bool hasDirectInteraction,
+                   /// 1) Init number of LT
                    /*1*/ double ratio_init_LTns_,
                    /*2*/ double ratio_initLTspecific_,
                    /// 2) IFN Poductions rates of each type of LT
@@ -44,6 +55,7 @@ LT_cells::LT_cells(/// 1) Init number of LT
                    /*26*/ double LT_Ab_
 
                    ):
+    directInteraction(hasDirectInteraction),
     /*1*/ LTns_d(ratio_init_LTns_),
     /*2*/ LT0_d(ratio_initLTspecific_),
     /*3*/ LTbo_d(0),
@@ -83,6 +95,7 @@ LT_cells::LT_cells(/// 1) Init number of LT
 
 
 LT_cells::LT_cells(const LT_cells& other):
+    directInteraction(other.directInteraction),
     /*1*/ LTns_d(other.LTns_d),
     /*2*/ LT0_d(other.LT0_d),
     /*3*/ LTbo_d(other.LTbo_d),
@@ -130,6 +143,7 @@ LT_cells::operator=(const LT_cells& other)
 
 void swap(LT_cells& one, LT_cells& other)
 {
+    std::swap(one.directInteraction,other.directInteraction);
     /*1*/ std::swap(one.LTns_d,other.LTns_d);
     /*2*/ std::swap(one.LT0_d,other.LT0_d);
     /*3*/ std::swap(one.LTbo_d,other.LTbo_d);
@@ -199,7 +213,12 @@ void LT_cells::update(double& time_step, double t_run, const Media& m, const APC
                )*time_step;
 
     LTbo_d+=LTbo_delta;
-    double LTbl_delta=(
+
+double LTbl_delta;
+
+if (directInteraction)
+{
+     LTbl_delta=(
                            APC.APC_LT_1()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCa())
                           +APC.APC_LT_1()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbl())
                           +APC.APC_LT_1()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo())
@@ -208,25 +227,55 @@ void LT_cells::update(double& time_step, double t_run, const Media& m, const APC
                           -LTbo_apop_rate_d*LTbl_apop_rate_d*LTbl_d
                           -LTbl_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))
                 )*time_step;
-    LTbl_d+=LTbl_delta;
+ }
+else
+{
+ LTbl_delta=(
+                           APC.APC_LT_1()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCa())
+                          +APC.APC_LT_1()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbl())
+                          +APC.APC_LT_1()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo())
+                          +APC.APC_LT_1()*m.Ab()/(LT_Ab_d+m.Ab())*LT0_d*(APC.APCbo_Ab())
+                          +LTbo_proliferation_rate_d/*LTbl_proliferation_rate_d*/*m.prol_ratio()*LTbl_d
+                          -LTbo_apop_rate_d/*LTbl_apop_rate_d*/*LTbl_d
+                          -LTbl_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))
+                )*time_step;
+}
+
+   LTbl_d+=LTbl_delta;
 
 
    double LT_TymTr_incorporated_delta;
    if (m.TymidineTriteate()>0){
+
+if (directInteraction)
        LT_TymTr_incorporated_delta=(
                    (LTns_proliferation_rate_d*LTns_d*m.prol_ratio()+
                     LTns_proliferation_rate_d*m.prol_ratio()*LT0_d+
                     LTbo_proliferation_rate_d*LTbo_d*m.prol_ratio()
                                   +LTbo_proliferation_rate_d/LTbl_proliferation_rate_d*m.prol_ratio()*LTbl_d)*m.Prol_TymTr()
                    )*time_step;
+else
+ LT_TymTr_incorporated_delta=(
+                   (LTns_proliferation_rate_d*LTns_d*m.prol_ratio()+
+                    LTns_proliferation_rate_d*m.prol_ratio()*LT0_d+
+                    LTbo_proliferation_rate_d*LTbo_d*m.prol_ratio()
+                                  +LTbo_proliferation_rate_d/*LTbl_proliferation_rate_d*/*m.prol_ratio()*LTbl_d)*m.Prol_TymTr()
+                   )*time_step;
+
+
        LT_TymTr_incorporated_d+=LT_TymTr_incorporated_delta;
    }
    double  Total_cells_in_apoptosis_delta;
    if ((t_run>t_apop_meas_d-t_duration_apoptosis_d)&&(t_run<=t_apop_meas_d)){
+ if (directInteraction)
         Total_cells_in_apoptosis_delta=(LTns_apop_rate_d*LTns_d+LTns_apop_rate_d*LT0_d+
                                      LTbo_apop_rate_d*LTbo_d+LTbo_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))+
                                      LTbo_apop_rate_d*LTbl_apop_rate_d*LTbl_d+LTbl_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d)))*time_step;
-        Total_cells_in_apoptosis_d+= Total_cells_in_apoptosis_delta;
+   else
+        Total_cells_in_apoptosis_delta=(LTns_apop_rate_d*LTns_d+LTns_apop_rate_d*LT0_d+
+                                     LTbo_apop_rate_d*LTbo_d+LTbo_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d))+
+                                     LTbo_apop_rate_d/*LTbl_apop_rate_d*/*LTbl_d+LTbl_d*u_LT_TNF_d*(m.TNF()/(m.TNF()+Ks_LT_m_TNF_d)))*time_step;
+    Total_cells_in_apoptosis_d+= Total_cells_in_apoptosis_delta;
 }
 }
 
@@ -290,10 +339,21 @@ double LT_cells::LT_percentage_cell_expressing_receptor() const
 /// 4) Total cytokines production
 double LT_cells::LT_IFNgamma_production_rate() const
    {
-      double sum=LTns_d*percentage_IFN_LTns_prod_rate_d*IFN_LTns_prod_rate_d+
+      double sum;
+if (directInteraction)
+
+
+sum=LTns_d*percentage_IFN_LTns_prod_rate_d*IFN_LTns_prod_rate_d+
                LT0_d*percentage_IFN_LTns_prod_rate_d*IFN_LTns_prod_rate_d+
                LTbo_d*percentage_IFN_LTbo_prod_rate_d*IFN_LTbo_prod_rate_d+
                LTbl_d*percentage_IFN_LTbo_prod_rate_d*IFN_LTbo_prod_rate_d*IFN_LTbl_prod_rate_d;
+else
+sum=LTns_d*percentage_IFN_LTns_prod_rate_d*IFN_LTns_prod_rate_d+
+               LT0_d*percentage_IFN_LTns_prod_rate_d*IFN_LTns_prod_rate_d+
+               LTbo_d*percentage_IFN_LTbo_prod_rate_d*IFN_LTbo_prod_rate_d+
+               LTbl_d*percentage_IFN_LTbo_prod_rate_d*IFN_LTbo_prod_rate_d/*IFN_LTbl_prod_rate_d*/;
+      
+
       return sum;
   }
 
@@ -309,10 +369,19 @@ double LT_cells::percentage_LT_IFN_production() const
 
 double LT_cells::TNF_production_rate() const
    {
-      double sum=LTns_d*percentage_TNF_LTns_prod_rate_d*TNF_LTns_prod_rate_d+
+      double sum;
+if (directInteraction)
+sum=LTns_d*percentage_TNF_LTns_prod_rate_d*TNF_LTns_prod_rate_d+
                  LT0_d*percentage_TNF_LTns_prod_rate_d*TNF_LTns_prod_rate_d+
                  LTbo_d*percentage_TNF_LTbo_prod_rate_d*TNF_LTbo_prod_rate_d+
                  LTbl_d*percentage_TNF_LTbo_prod_rate_d*TNF_LTbo_prod_rate_d*TNF_LTbl_prod_rate_d;
+else
+sum=LTns_d*percentage_TNF_LTns_prod_rate_d*TNF_LTns_prod_rate_d+
+                 LT0_d*percentage_TNF_LTns_prod_rate_d*TNF_LTns_prod_rate_d+
+                 LTbo_d*percentage_TNF_LTbo_prod_rate_d*TNF_LTbo_prod_rate_d+
+                 LTbl_d*percentage_TNF_LTbo_prod_rate_d*TNF_LTbo_prod_rate_d/*TNF_LTbl_prod_rate_d*/;
+      
+
       return sum;
   }
 
@@ -400,7 +469,8 @@ std::ostream& operator<<(std::ostream& s, const LT_cells& c)
 }
 
 
-LT_cells::LT_cells(const Parameters& p, const Treatment& t):
+LT_cells::LT_cells(const Parameters& p, const Treatment& t, bool hasdirectInteraction):
+    directInteraction(hasdirectInteraction),
     /// number of non Ag specific cells
     LTns_d(
         p.mean_ratio("init_K_ratio_LT")*

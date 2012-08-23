@@ -63,7 +63,6 @@ void loadModel()
 
 
     std::string filenamePrior="priorMODEL.txt";
-//    std::string filenamePrior="newPrior.txt";
 
     std::ifstream f;
     f.open(filenamePrior.c_str());
@@ -86,9 +85,8 @@ void loadModel()
 
 */
 
-    Cell_simulator cell(prior,prior, E);
-
-
+    Cell_simulator cellWithDirect(prior,prior, E,true);
+    Cell_simulator cellNoDirect(prior,prior, E,true);
 
 
 
@@ -102,15 +100,19 @@ void loadModel()
         {
             std::string outputfilename="MODELOptimization";
             outputfilename.append(nowLabel()+".txt");
-            cell.Optimize(prior,E,outputfilename);
+            cellWithDirect.Optimize(prior,E,outputfilename);
         }
-        else if (true)
+        else if (false)
         {
-            std::string outputfilename="ModeloOptimizationCont";
-            outputfilename.append(nowLabel()+".txt");
-            BayesIteration b(&cell,prior,&E,outputfilename);
+            std::string outputfnameWithDirect="ModeloDirectoCont";
+            std::string outputfnameNoDirect="ModeloNoDirectoCont";
+            outputfnameWithDirect.append(nowLabel()+".txt");
+            outputfnameNoDirect.append(nowLabel()+".txt");
 
-            std::string filenameStartingParameter="resultMODEL 111 4.txt";
+            BayesIteration bWithDirect(&cellWithDirect,prior,&E,outputfnameWithDirect);
+            BayesIteration bNoDirect(&cellNoDirect,prior,&E,outputfnameNoDirect);
+
+            std::string filenameStartingParameter="resultMODEL.txt";
 
             std::ifstream f;
             f.open(filenameStartingParameter.c_str());
@@ -121,27 +123,45 @@ void loadModel()
             std::cout<<seedPar;
             f.close();
 
-            b.getPosterior(seedPar);
+            bWithDirect.getPosterior(seedPar);
+            bNoDirect.getPosterior(seedPar);
+
 
         }
         else
         {
-            std::string outputfilename="ModeloOptimizationContRand";
-            outputfilename.append(nowLabel()+".txt");
-            std::ofstream fout;
-            fout.open(outputfilename.c_str(),std::ios_base::app);
-            fout<<"-------------------------------------------------------\n";
-            fout<<"----------Expected results--------------------------\n";
-            fout<<"--------------------------------------------------"
+            std::string outputfnameWithDirect="ModeloDirectoRand";
+            outputfnameWithDirect.append(nowLabel()+".txt");
+            std::string outputfnameNoDirect="ModeloNoDirectoRand";
+            outputfnameNoDirect.append(nowLabel()+".txt");
+
+            std::ofstream foutWD;
+            foutWD.open(outputfnameWithDirect.c_str(),std::ios_base::app);
+            foutWD<<"-------------------------------------------------------\n";
+            foutWD<<"----------Expected results--------------------------\n";
+            foutWD<<"--------------------------------------------------"
                "---------------------------------------------------\n";
-            fout<<E;
-            fout.close();
+            foutWD<<E;
+            foutWD.close();
 
-            BayesIteration b(&cell,prior,&E,outputfilename);
 
-            std::string filenameStartingParameter="resultMODEL.txt";
-    //        std::string filenameStartingParameter="newPrior.txt";
-//            std::string filenameStartingParameter="min 126.txt";
+            std::ofstream foutND;
+            foutND.open(outputfnameNoDirect.c_str(),std::ios_base::app);
+            foutND<<"-------------------------------------------------------\n";
+            foutND<<"----------Expected results--------------------------\n";
+            foutND<<"--------------------------------------------------"
+               "---------------------------------------------------\n";
+            foutND<<E;
+            foutND.close();
+
+
+
+
+
+            BayesIteration bWithDirect(&cellWithDirect,prior,&E,outputfnameWithDirect);
+            BayesIteration bNoDirect(&cellNoDirect,prior,&E,outputfnameNoDirect);
+
+            std::string filenameStartingParameter="priorMODEL.txt";
 
             std::ifstream f;
             f.open(filenameStartingParameter.c_str());
@@ -149,14 +169,16 @@ void loadModel()
             Parameters seedPar;
             f>>seedPar;
 
-
-
             std::cout<<seedPar;
             f.close();
-            double factor=0.1;
-            std::size_t numseeds=1000;
+            double factor=1;
+            std::size_t numseeds=1;
             double probParameterChange=1;
-            b.getPosterior(seedPar,factor,numseeds,probParameterChange);
+            for (std::size_t i=0; i<100;i++)
+            {
+                bWithDirect.getPosterior(seedPar,factor,numseeds,probParameterChange);
+                bNoDirect.getPosterior(seedPar,factor,numseeds,probParameterChange);
+            }
 
         }
 
@@ -172,7 +194,7 @@ void loadModel()
         f.open(filename.c_str());
 
 
-        cell.run(f,prior);
+        cellWithDirect.run(f,prior);
         f.close();
 
     }
@@ -504,7 +526,7 @@ void compareTimeStep()
     Parameters sp=Cell_simulator::getStandardParameters();
 
 
-    Cell_simulator cell(sp,sp, E);
+    Cell_simulator cell(sp,sp, E,true);
 
     std::string filename="comparetimestep.txt";
     std::ofstream f;
@@ -575,7 +597,7 @@ void BayesParameters()
     Parameters sp=Cell_simulator::getStandardParameters();
 
 
-    Cell_simulator cell(sp,sp, E);
+    Cell_simulator cell(sp,sp, E,true);
 
      //Modificar num iteracines
     //simulExp: simulado  E:experimental
@@ -636,7 +658,7 @@ void BayesParametersTest()
     Parameters sp=Cell_simulator::getStandardParameters();
 
 
-    Cell_simulator cell(sp, sp,E);
+    Cell_simulator cell(sp, sp,E,true);
 
     Experiment SimE=cell.Simulate(sp,E);
 

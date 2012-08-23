@@ -19,13 +19,13 @@ LevenbergMarquardtParameters::LevenbergMarquardtParameters(
     initialParam_(initialParam),
     nPar_(initialParam_.size()),
     nData_(data.size()),
-    dx_(1e-5),
+    dx_(1e-9),
     maxIter_(numIterations),
     maxFeval_(10000),
     minParamChange_(1e-9),
     minSSChange_(1e-9),
     minGradient_(0.0000001),
-    maxLanda_(1e8),
+    maxLanda_(1e11),
     landa_(1000),
     v_(10),
     nIter_(0),
@@ -414,7 +414,7 @@ void LevenbergMarquardtParameters::updateLanda()
 
 bool LevenbergMarquardtParameters::meetConvergenceCriteria()
 {
-    surpassIter_=bool(nIter_>=maxIter_);
+    surpassIter_=(bool(nIter_>=maxIter_)&&(currSS_>100))||(nIter_>=maxIter_*5);
     surpassFeval_=nFeval_>=maxFeval_;
     surpassLanda_=landa_>=maxLanda_;
     smallParamChange_=ParamChange_<minParamChange_;
@@ -428,8 +428,7 @@ bool LevenbergMarquardtParameters::meetConvergenceCriteria()
             smallSSChange_||
             smallGradient_||
             surpassLanda_||
-            currSS_!=currSS_||
-            currSS_>1e9;
+            currSS_!=currSS_;
 }
 
 void LevenbergMarquardtParameters::initialize()

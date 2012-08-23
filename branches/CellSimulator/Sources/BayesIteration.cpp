@@ -283,9 +283,9 @@ BayesIteration& BayesIteration::getPosterior(const Parameters& startingPoint,
                                         w,
                                         numIterations);
         LM.optimize();
-        double SSmin=1000;
-        if (LM.SS()<SSmin)
-        {
+
+
+
 
 
 
@@ -298,13 +298,17 @@ BayesIteration& BayesIteration::getPosterior(const Parameters& startingPoint,
 
 
 
+
+
         f<<"--------------------------------------------------"
            "---------------------------------------------------\n";
         f<<"----------Result of Levenberg Marquardt------------------\n";
         f<<"--------------------------------------------------"
            "---------------------------------------------------\n";
-        f<<LM;
-        f<<"SS \t"<<LM.SS()<<"\n";
+        if (LM.SS()<200)
+            f<<LM;
+        f<<"Suma de cuadrados"<<LM.SS();
+        f<<"\t numero iteraciones"<<LM.numIter()<<"\tNumero evaluaciones"<<LM.numEval()<<"\n";
         f<<"Evidence \t"<<LM.getEvidence()<<"\n";
         f<<"Posterior Likelihoo \t"<<LM.getLogPostLik()<<"\n";
         f<<"logDetPriorCov \t"<<LM.logDetPriorCov()<<"\n";
@@ -319,7 +323,7 @@ BayesIteration& BayesIteration::getPosterior(const Parameters& startingPoint,
 
         put(f,LM.OptimParameters());
         f<<"SS \t"<<LM.SS()<<"\n";
-        }
+
 
     }
 

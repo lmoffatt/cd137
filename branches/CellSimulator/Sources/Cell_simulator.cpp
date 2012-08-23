@@ -362,8 +362,10 @@ f.open(filename.c_str(),std::ios_base::app);
 
 
 Cell_simulator::Cell_simulator(const SimParameters& sp,
-                               const Experiment& E):
+                               const Experiment& E,
+                               bool isDirectInteraction):
 
+    directInteraction(isDirectInteraction),
     m(),
     APC(),
     NK(),
@@ -383,7 +385,7 @@ Cell_simulator::Cell_simulator(const SimParameters& sp,
 
 
 Cell_simulator& Cell_simulator::applyParameters(const SimParameters& sp,
-						const Treatment& tr)
+                        const Treatment& tr)
 {
     m=Media(0,
             0,
@@ -395,12 +397,10 @@ Cell_simulator& Cell_simulator::applyParameters(const SimParameters& sp,
                   /*2*/ sp.IFN_APC0_prod_rate_,
                   /*3*/ sp.IFN_APCa_prod_rate_,
                   /*4*/ sp.IFN_APCbo_prod_rate_,
-                  sp.IFN_APC_generic_prod_rate_,
                   /// 3) TNF Poductions rates of each type of APC
                   /*5*/ sp.TNF_APC0_prod_rate_,
                   /*6*/ sp.TNF_APCa_prod_rate_,
                   /*7*/ sp.APC_TNF_Induction_CD137,
-                  sp.TNF_APC_generic_prod_rate_,
                   /// 4) Percentages of IFN productions of each type of APC
                   /*8*/ sp.percentage_IFN_APC0_prod_rate_,
                   /*9*/ sp.percentage_IFN_APCa_prod_rate_,
@@ -413,7 +413,6 @@ Cell_simulator& Cell_simulator::applyParameters(const SimParameters& sp,
                   /*13*/ sp.APC0_apop_rate_,
                   /*14*/ sp.APCa_apop_rate_,
                   /*15*/ sp.APCbo_apop_rate_,
-                  sp.APC_generic_apop_rate_,
                   /// 8) constant saturation of TNF for apoptosis
                   /*16*/ sp.Ks_APC_m_TNF_,
                   /// 9) conversion rates
@@ -438,12 +437,10 @@ Cell_simulator& Cell_simulator::applyParameters(const SimParameters& sp,
                  /*2*/ sp.IFN_NK0_prod_rate_,
                  /*3*/ sp.IFN_NKa_prod_rate_,
                  /*4*/ sp.IFN_NKbo_prod_rate_,
-                       sp.IFN_NK_generic_prod_rate_,
                  /// 3) TNF Poductions rates of each type of NK
                  /*5*/ sp.TNF_NK0_prod_rate_,
                  /*6*/ sp.TNF_NKa_prod_rate_,
                  /*7*/ sp.TNF_NKbo_prod_rate_,
-                       sp.TNF_NK_generic_prod_rate_,
                  /// 4) Percentages of IFN productions of each type of NK
                  /*8*/ sp.percentage_IFN_NK0_prod_rate_,
                  /// 5)Percentages of TNF productions of each type of NK
@@ -453,13 +450,11 @@ Cell_simulator& Cell_simulator::applyParameters(const SimParameters& sp,
                  /// 6) Proliferation rates
                  /*12*/ sp.NK0_proliferation_rate_,
                  /*13*/ sp.NKa_proliferation_rate_,
-                 sp.NK_generic_proliferation_rate_,
                  //*14*/ sp.NKbo_proliferation_rate_,
                  /// 7) Apoptosis rates
                  /*15*/ sp.NK0_apop_rate_,
                  /*16*/ sp.NKa_apop_rate_,
                  //*17*/ sp.NKbo_apop_rate_,
-                 sp.NK_generic_apop_rate_,
                  /// 8) constant saturation of TNF for apoptosis
                  /*18*/ sp.Ks_NK_m_TNF_,
                  /// 9) conversion rates
@@ -478,18 +473,17 @@ Cell_simulator& Cell_simulator::applyParameters(const SimParameters& sp,
                  /*27*/ sp.u_NK_TNF_);
 
 
-    LT=LT_cells  (sp.ratio_init_LTns_*tr.init_cells,
+    LT=LT_cells  (directInteraction,
+                sp.ratio_init_LTns_*tr.init_cells,
                   sp.ratio_initLTspecific_*tr.init_cells,
                   /// 2) IFN Poductions rates of each type of LT
                      /*3*/ sp.IFN_LTns_prod_rate_,
                      /*4*/ sp.IFN_LTbo_prod_rate_,
                      /*5*/ sp.IFN_LTbl_prod_rate_,
-                  sp.IFN_LT_generic_prod_rate_,
                  /// 3) TNF Poductions rates of each type of LT
                      /*6*/ sp.TNF_LTns_prod_rate_,
                      /*7*/ sp.TNF_LTbo_prod_rate_,
                      /*8*/ sp.TNF_LTbl_prod_rate_,
-                  sp.TNF_LT_generic_prod_rate_,
                  /// 4) Percentages of IFN productions of each type of LT
                      /*9*/ sp.percentage_IFN_LTns_prod_rate_,
                      /*10*/ sp.percentage_IFN_LTbo_prod_rate_,
@@ -502,12 +496,10 @@ Cell_simulator& Cell_simulator::applyParameters(const SimParameters& sp,
                      /*15*/ sp.LTns_proliferation_rate_,
                      /*16*/ sp.LTbo_proliferation_rate_,
                      /*17*/ sp.LTbl_proliferation_rate_,
-                            sp.LT_generic_proliferation_rate_,
                  /// 7) Apoptosis rates
                      /*18*/ sp.LTns_apop_rate_,
                      /*19*/ sp.LTbo_apop_rate_,
                      /*20*/ sp.LTbl_apop_rate_,
-                            sp.LT_generic_apop_rate_,
                  /// 8) constant saturation of TNF for apoptosis
                      /*21*/ sp.Ks_LT_m_TNF_,
                  /// 9) Percentages of cell expressing receptor
@@ -536,6 +528,7 @@ Cell_simulator::Cell_simulator(){}
 
 
 Cell_simulator::Cell_simulator(const Cell_simulator& other):
+    directInteraction(other.directInteraction),
     m(other.m),
     APC(other.APC),
     NK(other.NK),
@@ -572,6 +565,7 @@ Cell_simulator::operator=(const Cell_simulator& other)
 
 void swap(Cell_simulator& one, Cell_simulator& other)
 {
+    std::swap(one.directInteraction,other.directInteraction);
     std::swap(one.m,other.m);
     std::swap(one.APC,other.APC);
     std::swap(one.NK,other.NK);
@@ -710,42 +704,6 @@ Results Cell_simulator::Simulate(const SimParameters& simPar,
     if (!num_cellss.empty())
         t_num_cells=num_cellss[inum_cells].Time();
     else t_num_cells=Duratione+1;
-
-    std::vector<Measurement> num_cellss_APC=results.num_cells_APC();
-    std::size_t inum_cells_APC=0;
-    double t_num_cells_APC;
-    if (!num_cellss_APC.empty())
-        t_num_cells_APC=num_cellss_APC[inum_cells_APC].Time();
-    else t_num_cells_APC=Duratione+1;
-
-    std::vector<Measurement> num_cellss_LTbo=results.num_cells_LTbo();
-    std::size_t inum_cells_LTbo=0;
-    double t_num_cells_LTbo;
-    if (!num_cellss_LTbo.empty())
-        t_num_cells_LTbo=num_cellss_LTbo[inum_cells_LTbo].Time();
-    else t_num_cells_LTbo=Duratione+1;
-
-    std::vector<Measurement> num_cellss_LTbl=results.num_cells_LTbl();
-    std::size_t inum_cells_LTbl=0;
-    double t_num_cells_LTbl;
-    if (!num_cellss_LTbl.empty())
-        t_num_cells_LTbl=num_cellss_LTbl[inum_cells_LTbl].Time();
-    else t_num_cells_LTbl=Duratione+1;
-
-    std::vector<Measurement> NK_IFN_production_rates=results.NK_IFN_production_rate();
-    std::size_t iNK_IFN_production_rate=0;
-    double t_NK_IFN_production_rate;
-    if (!NK_IFN_production_rates.empty())
-        t_NK_IFN_production_rate=NK_IFN_production_rates[iNK_IFN_production_rate].Time();
-    else t_NK_IFN_production_rate=Duratione+1;
-
-    std::vector<Measurement> LT_IFN_production_rates=results.LT_IFN_production_rate();
-    std::size_t iLT_IFN_production_rate=0;
-    double t_LT_IFN_production_rate;
-    if (!LT_IFN_production_rates.empty())
-        t_LT_IFN_production_rate=LT_IFN_production_rates[iLT_IFN_production_rate].Time();
-    else t_LT_IFN_production_rate=Duratione+1;
-
 
     double eps=1e-7;
 
@@ -962,7 +920,7 @@ Results Cell_simulator::Simulate(const SimParameters& simPar,
 
           if(trun_d+eps>=t_num_cells)
           {
-              num_cellss[inum_cells].setMeasurement(log10(m.num_cells()));
+              num_cellss[inum_cells].setMeasurement(m.num_cells());
               ++inum_cells;
               if (inum_cells<num_cellss.size())
               {
@@ -971,76 +929,6 @@ Results Cell_simulator::Simulate(const SimParameters& simPar,
               else
               {
                   t_num_cells=results.Duration()+1;
-              }
-          };
-
-          if(trun_d+eps>=t_num_cells_APC)
-          {
-              num_cellss_APC[inum_cells_APC].setMeasurement(log10(APC.num_APC()));
-              ++inum_cells_APC;
-              if (inum_cells_APC<num_cellss_APC.size())
-              {
-                  t_num_cells_APC=num_cellss_APC[inum_cells_APC].Time();
-              }
-              else
-              {
-                  t_num_cells_APC=results.Duration()+1;
-              }
-          };
-
-          if(trun_d+eps>=t_num_cells_LTbo)
-          {
-              num_cellss_LTbo[inum_cells_LTbo].setMeasurement(log10(LT.LTbo());
-              ++inum_cells_LTbo;
-              if (inum_cells_LTbo<num_cellss_LTbo.size())
-              {
-                  t_num_cells_LTbo=num_cellss_LTbo[inum_cells_LTbo].Time();
-              }
-              else
-              {
-                  t_num_cells_LTbo=results.Duration()+1;
-              }
-          };
-
-          if(trun_d+eps>=t_num_cells_LTbl)
-          {
-              num_cellss_LTbl[inum_cells_LTbl].setMeasurement(log10(LT.LTbl()));
-              ++inum_cells_LTbl;
-              if (inum_cells_LTbl<num_cellss_LTbl.size())
-              {
-                  t_num_cells_LTbl=num_cellss_LTbl[inum_cells_LTbl].Time();
-              }
-              else
-              {
-                  t_num_cells_LTbl=results.Duration()+1;
-              }
-          };
-
-          if(trun_d+eps>=NK_IFN_production_rate)
-          {
-              NK_IFN_production_rate[iNK_IFN_production_rate].setMeasurement(log10(NK.NK_IFNgamma_production_rate()));
-              ++iNK_IFN_production_rate;
-              if (iNK_IFN_production_rate<NK_IFN_production_rates.size())
-              {
-                  NK_IFN_production_rate=NK_IFN_production_rates[iNK_IFN_production_rates].Time();
-              }
-              else
-              {
-                  NK_IFN_production_rate=results.Duration()+1;
-              }
-          };
-
-          if(trun_d+eps>=LT_IFN_production_rate)
-          {
-              LT_IFN_production_rate[iLT_IFN_production_rate].setMeasurement(log10(LT.LT_IFNgamma_production_rate()));
-              ++iLT_IFN_production_rate;
-              if (iLT_IFN_production_rate<LT_IFN_production_rates.size())
-              {
-                  LT_IFN_production_rate=LT_IFN_production_rates[iLT_IFN_production_rates].Time();
-              }
-              else
-              {
-                  LT_IFN_production_rate=results.Duration()+1;
               }
           };
 
@@ -1061,26 +949,7 @@ Results Cell_simulator::Simulate(const SimParameters& simPar,
 
     }
 
-    Results SimRes(TNFs,
-                   IFNs,
-                   APC_exp,
-                   NK_exp,
-                   LT_exp,
-                   APC_IFNs,
-                   APC_TNFs,
-                   NK_IFNs,
-                   NK_TNFs,
-                   LT_IFNs,
-                   LT_TNFs,
-                   LT_apops,
-                   Prols,
-                   num_cellss,
-                   num_cellss_APC,
-                   num_cellss_LTbo,
-                   num_cellss_LTbl,
-                   NK_IFN_production_rate,
-                   LT_IFN_production_rate,
-                   Duratione);
+    Results SimRes(TNFs,IFNs,APC_exp,NK_exp,LT_exp,APC_IFNs,APC_TNFs,NK_IFNs,NK_TNFs, LT_IFNs, LT_TNFs, LT_apops,Prols, num_cellss, Duratione);
     return SimRes;
 }
 
@@ -1216,8 +1085,8 @@ Cell_simulator& Cell_simulator::applyParameters(const Parameters& p,
 
     NK=NK_cells  (p,tr);
 
+    LT=LT_cells  (p,tr,directInteraction);
 
-    LT=LT_cells  (p,tr);
 
     time_step_d=tr.time_step_d;
     sim_duration_d=tr.sim_duration_d;
@@ -1228,8 +1097,10 @@ return *this;
 
 Cell_simulator::Cell_simulator(const Parameters& prior,
                                const Parameters& current,
-                               const Experiment& E):
+                               const Experiment& E,
+                               bool isDirectInteraction):
 
+    directInteraction(isDirectInteraction),
     m(),
     APC(),
     NK(),
@@ -1360,43 +1231,6 @@ Results Cell_simulator::Simulate(const Parameters& simPar,
     if (!num_cellss.empty())
         t_num_cells=num_cellss[inum_cells].Time();
     else t_num_cells=Duratione+1;
-
-    std::vector<Measurement> num_cellss_APC=results.num_cells_APC();
-    std::size_t inum_cells_APC=0;
-    double t_num_cells_APC;
-    if (!num_cellss_APC.empty())
-        t_num_cells_APC=num_cellss_APC[inum_cells_APC].Time();
-    else t_num_cells_APC=Duratione+1;
-
-    std::vector<Measurement> num_cellss_LTbo=results.num_cells_LTbo();
-    std::size_t inum_cells_LTbo=0;
-    double t_num_cells_LTbo;
-    if (!num_cellss_LTbo.empty())
-        t_num_cells_LTbo=num_cellss_LTbo[inum_cells_LTbo].Time();
-    else t_num_cells_LTbo=Duratione+1;
-
-    std::vector<Measurement> num_cellss_LTbl=results.num_cells_LTbl();
-    std::size_t inum_cells_LTbl=0;
-    double t_num_cells_LTbl;
-    if (!num_cellss_LTbl.empty())
-        t_num_cells_LTbl=num_cellss_LTbl[inum_cells_LTbl].Time();
-    else t_num_cells_LTbl=Duratione+1;
-
-    std::vector<Measurement> NK_IFN_production_rates=results.NK_IFN_production_rate();
-    std::size_t iNK_IFN_production_rate=0;
-    double t_NK_IFN_production_rate;
-    if (!NK_IFN_production_rates.empty())
-        t_NK_IFN_production_rate=NK_IFN_production_rates[iNK_IFN_production_rate].Time();
-    else t_NK_IFN_production_rate=Duratione+1;
-
-    std::vector<Measurement> LT_IFN_production_rates=results.LT_IFN_production_rate();
-    std::size_t LT_IFN_production_rate=0;
-    double t_LT_IFN_production_rate;
-    if (!LT_IFN_production_rates.empty())
-        t_LT_IFN_production_rate=LT_IFN_production_rates[iLT_IFN_production_rate].Time();
-    else t_LT_IFN_production_rate=Duratione+1;
-
-
 
     double eps=1e-7;
 
@@ -1613,7 +1447,7 @@ Results Cell_simulator::Simulate(const Parameters& simPar,
 
           if(trun_d+eps>=t_num_cells)
           {
-              num_cellss[inum_cells].setMeasurement (log10(m.num_cells()));
+              num_cellss[inum_cells].setMeasurement (m.num_cells());
               ++inum_cells;
               if (inum_cells<num_cellss.size())
               {
@@ -1625,75 +1459,6 @@ Results Cell_simulator::Simulate(const Parameters& simPar,
               }
           };
 
-          if(trun_d+eps>=t_num_cells_APC)
-          {
-              num_cellss_APC[inum_cells_APC].setMeasurement (log10(APC.num_APC()));
-              ++inum_cells_APC;
-              if (inum_cells_APC<num_cellss_APC.size())
-              {
-                  t_num_cells_APC=num_cellss_APC[inum_cells_APC].Time();
-              }
-              else
-              {
-                  t_num_cells_APC=results.Duration()+1;
-              }
-          };
-
-          if(trun_d+eps>=t_num_cells_LTbo)
-          {
-              num_cellss_LTbo[inum_cells_LTbo].setMeasurement (log10(LT.LTbo()));
-              ++inum_cells_LTbo;
-              if (inum_cells_LTbo<num_cellss_LTbo.size())
-              {
-                  t_num_cells_LTbo=num_cellss_LTbo[inum_cells_LTbo].Time();
-              }
-              else
-              {
-                  t_num_cells_LTbo=results.Duration()+1;
-              }
-          };
-
-          if(trun_d+eps>=t_num_cells_LTbl)
-          {
-              num_cellss_LTbl[inum_cells_LTbl].setMeasurement (log10(LT.LTbl()));
-              ++inum_cells_LTbl;
-              if (inum_cells_LTbl<num_cellss_LTbl.size())
-              {
-                  t_num_cells_LTbl=num_cellss_LTbl[inum_cells_LTbl].Time();
-              }
-              else
-              {
-                  t_num_cells_LTbl=results.Duration()+1;
-              }
-          };
-
-          if(trun_d+eps>=t_NK_IFN_production_rate)
-          {
-              NK_IFN_production_rates[iNK_IFN_production_rate].setMeasurement (log10(NK.NK_IFNgamma_production_rate());
-              ++iNK_IFN_production_rate;
-              if (iNK_IFN_production_rate<NK_IFN_production_rates.size())
-              {
-                  t_NK_IFN_production_rate=NK_IFN_production_rates[iNK_IFN_production_rate].Time();
-              }
-              else
-              {
-                  t_NK_IFN_production_rate=results.Duration()+1;
-              }
-          };
-
-          if(trun_d+eps>=LT_IFN_production_rate)
-          {
-              LT_IFN_production_rates[iLT_IFN_production_rate].setMeasurement (log10(LT.LT_IFNgamma_production_rate()));
-              ++iLT_IFN_production_rate;
-              if (iLT_IFN_production_rate<LT_IFN_production_rates())
-              {
-                  t_LT_IFN_production_rate=LT_IFN_production_rates[iLT_IFN_production_rate].Time();
-              }
-              else
-              {
-                  t_LT_IFN_production_rate=results.Duration()+1;
-              }
-          };
 
         //char ch;
 
@@ -1718,8 +1483,7 @@ Results Cell_simulator::Simulate(const Parameters& simPar,
 
     }
 
-    Results SimRes(TNFs,IFNs,APC_exp,NK_exp,LT_exp,APC_IFNs,APC_TNFs,NK_IFNs,NK_TNFs, LT_IFNs, LT_TNFs, LT_apops,Prols, num_cellss, num_cellss_APC,num_cellss_LTbo,
-                   num_cells_LTbl, NK_IFN_production_rates, LT_IFN_production_rates,Duratione);
+    Results SimRes(TNFs,IFNs,APC_exp,NK_exp,LT_exp,APC_IFNs,APC_TNFs,NK_IFNs,NK_TNFs, LT_IFNs, LT_TNFs, LT_apops,Prols, num_cellss, Duratione);
     return SimRes;
 }
 
@@ -1765,12 +1529,10 @@ void Cell_simulator::Optimize(const Parameters& priorPar,
          /*2*/ sp.push_back_1S("IFN_APC0_prod_rate",1.0e-8,1.0e-5);
          /*3*/ sp.push_back_1S("IFN_APCa_prod_rate",2.0e-6,2e-3);
          /*4*/ sp.push_back_1S("IFN_APCbo_prod_rate",1e-6,1e-3);
-     sp.push_back_1S("IFN_APC_generic_prod_rate",0.2,10.0);
          /// 3) TNF Poductions rates of each type of APC
          /*5*/ sp.push_back_1S("TNF_APC0_prod_rate",1.0e-8,1.0e-5);
          /*6*/ sp.push_back_1S("TNF_APCa_prod_rate",2.0e-4,2.0);//k
          /*7*/ sp.push_back_1S("TNF_APCbo_prod_rate",1.0e-4,1.0);
-     sp.push_back_1S("TNF_APC_generic_prod_rate",0.2,10.0);
          /// 4) Percentages of IFN productions of each type of APC
          /*8*/ sp.push_back_1S("Kpercentage_IFN_APC0_prod_rate",0.01,0.06);//oj
          /*9*/ sp.push_back_1S("Kpercentage_IFN_APCa_prod_rate",0.08,0.5);
@@ -1783,7 +1545,6 @@ void Cell_simulator::Optimize(const Parameters& priorPar,
          /*13*/ sp.push_back_1S("APC0_apop_rate",3.0e-6,3.0e-4);//k
          /*14*/ sp.push_back_1S("APCa_apop_rate",0.00001,0.001);//k
          /*15*/ sp.push_back_1S("APCbo_apop_rate",0.00001,0.001);//k
-     sp.push_back_1S("APC_generic_apop_rate",0.2,10.0);
          /// 8) constant saturation of TNF for apoptosis
          /*16*/ sp.push_back_1S("Ks_APC_m_TNF",0.002,20);//K
          /// 9) conversion rates
@@ -1808,12 +1569,10 @@ void Cell_simulator::Optimize(const Parameters& priorPar,
          /*2*/  sp.push_back_1S("IFN_NK0_prod_rate",1.0e-8,1.0e-5);
          /*3*/  sp.push_back_1S("IFN_NKa_prod_rate",2.0e-4,2.0);
          /*4*/  sp.push_back_1S("IFN_NKbo_prod_rate",1.0e-4,1.0);
-      sp.push_back_1S("IFN_NK_generic_prod_rate",0.2,10.0);
          /// 3) TNF Poductions rates of each type of NK
          /*5*/  sp.push_back_1S("TNF_NK0_prod_rate",1.0e-8,1.0e-5);
          /*6*/  sp.push_back_1S("TNF_NKa_prod_rate",2.0e-6,2e-3);
          /*7*/  sp.push_back_1S("TNF_NKbo_prod_rate",1e-6,1e-3);
-       sp.push_back_1S("IFN_NK_generic_prod_rate",0.2,10.0);
          /// 4) Percentages of IFN productions of each type of NK
          /*8*/  sp.push_back_1S("Kpercentage_IFN_NK0_prod_rate",0.1,0.06);
          /// 5)Percentages of TNF productions of each type of NK
@@ -1823,13 +1582,11 @@ void Cell_simulator::Optimize(const Parameters& priorPar,
          /// 6) Proliferation rates
          /*12*/  sp.push_back_1S("NK0_proliferation_rate",3.0e-6,3.0e-4);
          /*13*/  sp.push_back_1S("NKa_proliferation_rate",0.00001,0.001);
-        sp.push_back_1S("NK_generic_proliferation_rate",0.2,10.0);
          //*14*/  sp.push_back_1S("NKbo_proliferation_rate",0.00001,0.001);
          /// 7) Apoptosis rates
          /*15*/  sp.push_back_1S("NK0_apop_rate",3.0e-6,3.0e-4);
          /*16*/  sp.push_back_1S("NKa_apop_rate",0.00001,0.001);
          //*17*/  sp.push_back_1S("NKbo_apop_rate",0.00001,0.001);
-         sp.push_back_1S("NK_generic_apop_rate",0.2,10.0);
          /// 8) constant saturation of TNF for apoptosis
          /*18*/  sp.push_back_1S("Ks_NK_m_TNF",0.002,20);
          /// 9) conversion rates
@@ -1853,12 +1610,10 @@ void Cell_simulator::Optimize(const Parameters& priorPar,
             /*3*/  sp.push_back_1S("IFN_LTns_prod_rate",0.0000002,0.002);
             /*4*/  sp.push_back_1S("IFN_LTbo_prod_rate",0.000002,0.02);//k
             /*5*/  sp.push_back_1S("IFN_LTbl_prod_rate",0.000001,0.01);
-          sp.push_back_1S("IFN_LT_generic_prod_rate",0.2,10.0);
         /// 3) TNF Poductions rates of each type of LT
             /*6*/  sp.push_back_1S("TNF_LTns_prod_rate",0.00000002,0.0002);
             /*7*/  sp.push_back_1S("TNF_LTbo_prod_rate",0.0001,0.01);
             /*8*/  sp.push_back_1S("TNF_LTbl_prod_rate",0.00005,0.005);
-           sp.push_back_1S("IFN_LT_generic_prod_rate",0.2,10.0);
         /// 4) Percentages of IFN productions of each type of LT
             /*9*/  sp.push_back_1S("Kpercentage_IFN_LTns_prod_rate",0.01,0.06);
             /*10*/  sp.push_back_1S("Kpercentage_IFN_LTbo_prod_rate",0.05,0.5);
@@ -1871,12 +1626,10 @@ void Cell_simulator::Optimize(const Parameters& priorPar,
             /*15*/  sp.push_back_1S("LTns_proliferation_rate",1.0/6000.0,1.0/60);//oj
             /*16*/  sp.push_back_1S("LTbo_proliferation_rate",0.083,0.83);//K
             /*17*/  sp.push_back_1S("LTbl_proliferation_rate",0.041,0.41);//e
-            sp.push_back_1S("LT_generic_proliferation_rate",0.2,10.0);
         /// 7) Apoptosis rates
             /*18*/  sp.push_back_1S("LTns_apop_rate",0.0001,1);
             /*19*/  sp.push_back_1S("LTbo_apop_rate",0.055,0.55);
             /*20*/  sp.push_back_1S("LTbl_apop_rate",0.11,1.1);
-             sp.push_back_1S("LT_generic_apop_rate",0.2,10.0);
        /// 8) constant saturation of TNF for apoptosis
             /*21*/  sp.push_back_1S("Ks_LT_m_TNF",0.0004,4.0);//k, promedio de LN y lung
 
@@ -1929,7 +1682,6 @@ void Cell_simulator::Optimize(const Parameters& priorPar,
          /*13*/ sp.push_back_dB("APC0_apop_rate",3.0e-6,3.0e-4);//k
          /*14*/ sp.push_back_dB("APCa_apop_rate",0.00001,0.001);//k
          /*15*/ sp.push_back_dB("APCbo_apop_rate",0.00001,0.001);//k
-     sp.push_back_1S("APC_generic_apop:rate", 0.1,2.0);
          /// 8) constant saturation of TNF for apoptosis
          /*16*/ sp.push_back_dB("Ks_APC_m_TNF",0.002,20);//K
          /// 9) conversion rates
@@ -2081,6 +1833,19 @@ void Cell_simulator::Optimize(const Parameters& priorPar,
 
 
  }
+
+  bool Cell_simulator::hasDirectInteraction()const
+  {
+      return LT.hasDirectInteraction();
+  }
+  void Cell_simulator::setDirectInteraction(bool boolean)
+  {
+      directInteraction=boolean;
+      LT.setDirectInteraction(boolean);
+  }
+
+
+
 
  std::vector<double> Cell_simulator::getState()const
  {
