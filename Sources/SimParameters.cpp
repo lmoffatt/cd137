@@ -14,12 +14,10 @@ SimParameters::SimParameters():
     /*2*/ IFN_APC0_prod_rate_(1e-10),
     /*3*/ IFN_APCa_prod_rate_(1e-10),
     /*4*/ IFN_APCbo_prod_rate_(1e-10),
-    IFN_APC_generic_prod_rate_(1e-10),
     /// 3) TNF Poductions rates of each type of APC
     /*5*/ TNF_APC0_prod_rate_(1e-10),
     /*6*/ TNF_APCa_prod_rate_(1e-10),
     /*7*/ APC_TNF_Induction_CD137(1e-10),
-    TNF_APC_generic_prod_rate_(1e-10),
     /// 4) Percentages of IFN productions of each type of APC
     /*8*/ percentage_IFN_APC0_prod_rate_(0.01),
     /*9*/ percentage_IFN_APCa_prod_rate_(0.01),
@@ -32,7 +30,6 @@ SimParameters::SimParameters():
     /*13*/ APC0_apop_rate_(1e-6),
     /*14*/ APCa_apop_rate_(1e-6),
     /*15*/ APCbo_apop_rate_(1e-6),
-    APC_generic_apop_rate_(1e-10),
     /// 8) constant saturation of TNF for apoptosis
     /*16*/ Ks_APC_m_TNF_(1e-6),
     /// 9) conversion rates
@@ -59,12 +56,10 @@ SimParameters::SimParameters():
     /*2*/  IFN_NK0_prod_rate_(1e-10),
     /*3*/  IFN_NKa_prod_rate_(1e-10),
     /*4*/  IFN_NKbo_prod_rate_(1e-10),
-    IFN_NK_generic_prod_rate_(1e-10),
     /// 3) TNF Poductions rates of each type of NK
     /*5*/  TNF_NK0_prod_rate_(1e-10),
     /*6*/  TNF_NKa_prod_rate_(1e-10),
     /*7*/  TNF_NKbo_prod_rate_(1e-10),
-    TNF_NK_generic_prod_rate_(1e-10),
     /// 4) Percentages of IFN productions of each type of NK
     /*8*/  percentage_IFN_NK0_prod_rate_(0.01),
     /// 5)Percentages of TNF productions of each type of NK
@@ -74,13 +69,11 @@ SimParameters::SimParameters():
     /// 6) Proliferation rates
     /*12*/  NK0_proliferation_rate_(1e-6),
     /*13*/  NKa_proliferation_rate_(1e-6),
-    NK_generic_proliferation_rate_(1e-10),
     //*14*/  NKbo_proliferation_rate_(1e-6),
     /// 7) Apoptosis rates
     /*15*/  NK0_apop_rate_(1e-6),
     /*16*/  NKa_apop_rate_(1e-6),
     //*17*/  NKbo_apop_rate_(1e-6),
-    NK_generic_apop_rate_(1e-10),
     /// 8) constant saturation of TNF for apoptosis
     /*18*/  Ks_NK_m_TNF_(1e-6),
     /// 9) conversion rates
@@ -105,12 +98,10 @@ SimParameters::SimParameters():
        /*3*/  IFN_LTns_prod_rate_(1e-10),
        /*4*/  IFN_LTbo_prod_rate_(1e-10),
        /*5*/  IFN_LTbl_prod_rate_(1e-10),
-    IFN_LT_generic_prod_rate_(1e-10),
    /// 3) TNF Poductions rates of each type of LT
        /*6*/  TNF_LTns_prod_rate_(1e-10),
        /*7*/  TNF_LTbo_prod_rate_(1e-10),
        /*8*/  TNF_LTbl_prod_rate_(1e-10),
-    TNF_LT_generic_prod_rate_(1e-10),
    /// 4) Percentages of IFN productions of each type of LT
        /*9*/  percentage_IFN_LTns_prod_rate_(0.05),
        /*10*/  percentage_IFN_LTbo_prod_rate_(0.8),
@@ -123,12 +114,10 @@ SimParameters::SimParameters():
        /*15*/  LTns_proliferation_rate_(1e-10),
        /*16*/  LTbo_proliferation_rate_(1e-10),
        /*17*/  LTbl_proliferation_rate_(1e-10),
-    LT_generic_proliferation_rate_(1e-10),
    /// 7) Apoptosis rates
        /*18*/  LTns_apop_rate_(1e-10),
        /*19*/  LTbo_apop_rate_(1e-10),
        /*20*/  LTbl_apop_rate_(1e-10),
-    LT_generic_apop_rate_(1e-10),
    /// 8) constant saturation of TNF for apoptosis
        /*21*/  Ks_LT_m_TNF_(1e-10),
    /// 9) Percentages of cell expressing receptor

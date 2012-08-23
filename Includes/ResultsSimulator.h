@@ -8,7 +8,8 @@
 class ResultsSimulator {
 public:
     Experiment Simulate(const SimParameters& simPar,
-                     const Experiment& results);
+                     const Experiment& results,
+                        bool isDirectInteraction);
 
     double SumSquare(const SimParameters& SimPar,
                      const Results& results);

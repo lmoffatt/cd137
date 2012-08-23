@@ -1,9 +1,10 @@
 #include "ResultsSimulator.h"
 #include <vector>
 Experiment ResultsSimulator::Simulate(const SimParameters& simPar,
-                 const Experiment& E)
+                 const Experiment& E,
+                                      bool isDirectInteraction)
 {
-    Cell_simulator sim(simPar,E);
+    Cell_simulator sim(simPar,E, isDirectInteraction);
     Experiment out;
     for (std::size_t i=0; i<E.size();i++)
 

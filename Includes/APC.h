@@ -87,12 +87,10 @@ public:
         /*2*/ double IFN_APC0_prod_rate_,
         /*3*/ double IFN_APCa_prod_rate_,
         /*4*/ double IFN_APCbo_prod_rate_,
-              double IFN_APC_generic_prod_rate_,
         /// 3) TNF Poductions rates of each type of APC
         /*5*/ double TNF_APC0_prod_rate_,
         /*6*/ double TNF_APCa_prod_rate_,
         /*7*/ double TNF_APCbo_prod_rate_,
-              double TNF_APC_generic_prod_rate_,
         /// 4) Percentages of IFN productions of each type of APC
         /*8*/ double percentage_IFN_APC0_prod_rate_,
         /*9*/ double percentage_IFN_APCa_prod_rate_,
@@ -105,7 +103,6 @@ public:
         /*13*/ double APC0_apop_rate_,
         /*14*/ double APCa_apop_rate_,
         /*15*/ double APCbo_apop_rate_,
-               double APC_generic_apop_rate_,
         /// 8) constant saturation of TNF for apoptosis
         /*16*/ double Ks_APC_m_TNF_,
         /// 9) conversion rates
@@ -164,12 +161,10 @@ private:
     /*2*/ double IFN_APC0_prod_rate_d;
     /*3*/ double IFN_APCa_prod_rate_d;
     /*4*/ double IFN_APCbo_prod_rate_d;
-          double IFN_APC_generic_prod_rate_d;
     /// 3) TNF Poductions rates of each type of APC
     /*5*/ double TNF_APC0_prod_rate_d;
     /*6*/ double TNF_APCa_prod_rate_d;
     /*7*/ double TNF_APCbo_prod_rate_d;
-          double TNF_APC_generic_prod_rate_d;
     /// 4) Percentages of IFN productions of each type of APC
     /*8*/ double percentage_IFN_APC0_prod_rate_d;
     /*9*/ double percentage_IFN_APCa_prod_rate_d;
@@ -182,7 +177,6 @@ private:
     /*13*/ double APC0_apop_rate_d;
     /*14*/ double APCa_apop_rate_d;
     /*15*/ double APCbo_apop_rate_d;
-           double APC_generic_apop_rate_d;
     /// 8) constant saturation of TNF for apoptosis
     /*16*/ double Ks_APC_m_TNF_d;
     /// 9) conversion rates

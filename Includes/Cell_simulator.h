@@ -32,7 +32,7 @@ public:
 
 
     Cell_simulator& applyParameters(const SimParameters& sp,
-				    const Treatment& tr);
+                    const Treatment& tr);
 
 
     virtual Cell_simulator& setData(const ABC_data& conditions){}
@@ -40,7 +40,7 @@ public:
 
 
     Cell_simulator(const SimParameters& sp,
-                   const Experiment& E);
+                   const Experiment& E, bool isDirectInteraction);
 
     Results Simulate(const SimParameters& simPar,
                      const Treatment& protocol,
@@ -72,7 +72,8 @@ public:
 
     Cell_simulator(const Parameters& prior,
                    const Parameters& current,
-                   const Experiment& E);
+                   const Experiment& E,
+                   bool isDirectInteraction);
 
     Results Simulate(const Parameters& current,
                      const Treatment& protocol,
@@ -116,7 +117,8 @@ public:
 
     std::vector<double> getData(const std::vector<double>& param);
 
-
+    bool hasDirectInteraction()const;
+    void setDirectInteraction(bool);
 
     Cell_simulator(const Cell_simulator& other);
 
@@ -129,6 +131,7 @@ public:
   //  void reset(const SimParameters& sp,const Treatment& tr);
 
 private:
+    bool directInteraction;
     Media   m;
     APC_cells APC;
     NK_cells NK;
